@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeesite.modules.sys.dao.MailDao">
+	
+	<!-- 查询数据 -->
+	<select id="findList" resultType="Mail">
+		SELECT ${sqlMap.column.toSql()},
+			(select t.user_name from js_sys_user t where t.login_code=a.stu)stuname,
+			(select t.user_name from js_sys_user t where t.login_code=a.com)comname
+		FROM ${sqlMap.table.toSql()}
+		<where>
+			${sqlMap.where.toSql()}
+			<if test="stuname !='' and stuname !=null">
+				and a.stu in (select t.login_code from js_sys_user t where t.user_name like '%'||#{stuname}||'%')
+			</if>
+			<if test="comname !='' and comname !=null">
+				and a.com in (select t.login_code from js_sys_user t where t.user_name like '%'||#{comname}||'%')
+			</if>
+		</where>
+		ORDER BY ${sqlMap.order.toSql()}
+	</select>
+	
+</mapper>
