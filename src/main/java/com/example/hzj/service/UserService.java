@@ -5,6 +5,8 @@ import com.example.hzj.dao.UserDao;
 import com.example.hzj.entity.MineInfo;
 import com.example.hzj.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,4 +42,12 @@ public class UserService {
         }
     }
 
+    public List<User> getOrgsList() {
+        User user = new User();
+        user.setType(2);
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.exact());
+        Example<User> example = Example.of(user,exampleMatcher);
+        return userDao.findAll(example);
+    }
 }
