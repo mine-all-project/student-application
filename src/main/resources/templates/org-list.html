@@ -69,9 +69,9 @@
                                             </thead>
                                             <tbody>
                                             <tr data-th-each="model : ${orgs}">
-                                                <td>${model.id}</td>
-                                                <td>2017-01-01 11:11:42</td>
-                                                <td>2017-01-01 11:11:42</td>
+                                                <td data-th-text="${model.id}"></td>
+                                                <td data-th-text="${model.id}"></td>
+                                                <td data-th-text="${model.id}"></td>
                                                 <td class="td-manage">
                                                     <a title="投递"  onclick="xadmin.open('编辑','admin-edit.html')" href="javascript:;">
                                                         <i class="layui-icon">&#xe642;</i>
