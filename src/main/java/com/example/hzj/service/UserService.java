@@ -24,9 +24,9 @@ public class UserService {
     public User getMineInfoList(HttpServletRequest request){
         User user = (User) request.getSession().getAttribute("user");
         List<MineInfo> mineInfos = new ArrayList<>();
-//        Optional<User> optional = userDao.findById(user.getId());
+        Optional<User> optional = userDao.findById(user.getId());
         User _thisUser = null;
-        Optional<User> optional = userDao.findById("1");
+//        Optional<User> optional = userDao.findById("1");
         if(optional.isPresent()){
             _thisUser = optional.get();
         }

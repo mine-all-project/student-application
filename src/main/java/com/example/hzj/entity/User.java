@@ -36,6 +36,15 @@ public class User extends BaseEntity {
     )
     MineInfo mineInfo;
 
+    @OneToOne
+    @JoinTable(name="userToOrgInfo",	//用来指定中间表的名称
+            //用于指定本表在中间表的字段名称，以及中间表依赖的是本表的哪个字段
+            joinColumns= {@JoinColumn(name="userId",referencedColumnName="id")},
+            //用于指定对方表在中间表的字段名称，以及中间表依赖的是它的哪个字段
+            inverseJoinColumns= {@JoinColumn(name="orgInfoId",referencedColumnName="id")}
+    )
+    OrgInfo orgInfo;
+
     public String getUsername() {
         return username;
     }
@@ -90,6 +99,14 @@ public class User extends BaseEntity {
 
     public void setMineInfo(MineInfo mineInfo) {
         this.mineInfo = mineInfo;
+    }
+
+    public OrgInfo getOrgInfo() {
+        return orgInfo;
+    }
+
+    public void setOrgInfo(OrgInfo orgInfo) {
+        this.orgInfo = orgInfo;
     }
 
     @Override
