@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+</head>
+<body>
+<form method="post" action="" id="listform">
+  	<div class="panel admin-panel">
+  	<div class="padding border-bottom" data-th-if="${session.user.shiro!=1}">
+			<ul class="search" style="padding-left:10px;">
+		        <li> <a class="button border-main icon-plus-square-o" href="addUser"> 录入员工</a> </li>
+			</ul> 
+	    </div>
+    <div class="panel-head"><strong class="icon-reorder">员工列表</strong></div>
+    <table class="table table-hover text-center">
+      <tr>
+        <th>工号</th>
+        <th>部门</th>
+        <th>职务</th>
+        <th>姓名</th>
+        <th>用户名</th>
+        <th>性别</th>
+        <th>年龄</th>
+        <th>入职时间</th>
+        <th>操作</th>
+      </tr>
+      
+      <tbody data-th-each="model : ${users}">
+        <tr>  
+          <td data-th-text="${model.number}"></td>
+          <td data-th-text="${model.jobName}"></td>
+          <td data-th-if="${model.shiro==1}">员工</td>
+          <td data-th-if="${model.shiro==2}">经理</td>
+          <td data-th-text="${model.name}"></td>
+          <td data-th-text="${model.username}"></td>
+          <td data-th-if="${model.sex==0}" >男</td>
+          <td data-th-if="${model.sex==1}" >女</td>
+          <td data-th-text="${model.age}"></td>
+          <td data-th-text="${model.insert_time}"></td>
+          <td>
+          	<input type="hidden" data-th-value="${model.id}"/>
+          	<a class="button border-red" onclick="delUser(this);" style="padding: 4px 8px;">删除员工</a>
+          </td>
+        </tr>
+       </tbody>
+    </table>
+  </div>
+</form>
+<script>
+	function delUser(e){
+		if(confirm("确定要删除该用户吗")){
+			var id = $($(e).prev()[0]).val();
+			$.ajax({
+	             type: "GET",
+	             url: "/wskjglxt/delUser",
+	             data: {
+	            	 id:id
+	            	 },
+	             dataType: "json",
+	             success: 
+	            	 function(e){
+	            	 	window.location.reload();
+	                      }
+	         });
+		}else{
+			console.log('取消');
+		}
+	}
+</script>
+</body>
+</html>

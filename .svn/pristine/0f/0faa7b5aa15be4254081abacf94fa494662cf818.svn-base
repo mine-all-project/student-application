@@ -1,0 +1,42 @@
+package com.controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.entity.User;
+import com.entity.Work;
+import com.service.Service1;
+
+@Controller
+public class Controller1 {
+	@Autowired
+	Service1 service1;
+	
+	@RequestMapping("submit_work")
+	public String submit_work(HttpServletRequest request) {
+		List<Work> works = service1.getWorkListByUserId(request);
+		request.setAttribute("works", works);
+		return "submitWork";
+	}
+	
+	@RequestMapping("subWork")
+	@ResponseBody
+	public String subWork(Work work) {
+		Integer status = service1.subWork(work);
+		return status.toString();
+	}
+	
+	@RequestMapping("userInfo")
+	public String userInfo(String id,HttpServletRequest request) {
+		User user = service1.getUserInfoBySession(request);
+		User user1 = service1.getUserInfoById(id);
+		request.setAttribute("user", user1);
+		return "userInfo";
+	}
+}

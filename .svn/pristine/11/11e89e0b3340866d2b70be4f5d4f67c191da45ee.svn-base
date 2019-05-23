@@ -1,0 +1,48 @@
+//package com.controller;
+//
+//import javax.servlet.http.HttpServletRequest;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Controller;
+//import org.springframework.web.bind.annotation.RequestMapping;
+//
+//import com.service.IndexService;
+//
+//
+//
+//
+///**
+// * HeQuan
+// * PC-name 29404
+// * @author Wishfor_you@foxmail.com
+// * 2019年2月19日 上午1:06:53
+// * 
+// */
+//@Controller
+//public class Controller3 {
+//	@Autowired
+//	IndexService indexService;
+//	
+////	@ResponseBody
+////	@RequestMapping("/")
+////	public String toLogin() {
+////		System.out.println("toLogin");
+////		return "ToLogin";
+////	}
+//	@RequestMapping("login")
+//	public String login(HttpServletRequest request,String username,String password) {
+//		if(indexService.checkUser(request,username,password)) {
+//			return "index";
+//		}
+//		return "fail";
+//	}
+//	@RequestMapping("test")
+//	public String test(HttpServletRequest request) {
+//		login(request,"1","1");
+//		return "index";
+//	}
+//	@RequestMapping("main")
+//	public String main() {
+//		return "main";
+//	}
+//}

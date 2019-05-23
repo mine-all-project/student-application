@@ -1,0 +1,105 @@
+package com.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.entity.Job;
+import com.entity.User;
+import com.service.Service2;
+import com.service.Service3;
+
+@Controller
+public class Controller3 {
+	@Autowired
+	Service2 service2;
+	@Autowired
+	Service3 service3;
+	
+	@RequestMapping("addUser")
+	public String addUser(HttpServletRequest request) {
+		List<Job> jobs = service3.getJob();
+		request.setAttribute("jobs", jobs);
+		return "addUser";
+	}
+	
+	@RequestMapping("saveUser")
+	@ResponseBody
+	public String saveUser(User user) {
+		Integer status = service3.saveUser(user);
+		return status.toString();
+	}
+	
+	@RequestMapping("delUserList")
+	public String delUserList(HttpServletRequest request) {
+		List<User> users = service3.getUserNotManager();
+		request.setAttribute("users", users);
+		return "delUserList";
+	}
+	
+	@RequestMapping("delUser")
+	@ResponseBody
+	public String delUser(String id) {
+		Integer status = service3.delUser(id);
+		return status.toString();
+	}
+	
+	@RequestMapping("updateLevel")
+	public String updateLevel(HttpServletRequest request) {
+		List<User> users = service3.getUserNotManager();
+		request.setAttribute("users", users);
+		return "updateLevel";
+	}
+	
+	@RequestMapping("upLevel")
+	@ResponseBody
+	public String upLevel(String id,int shiro) {
+		Integer status = service3.upLevel(id,shiro);
+		return status.toString();
+	}
+	
+	@RequestMapping("updateJobList")
+	public String updateJobList(HttpServletRequest request) {
+		List<Map<String,String>> updateJobs = service3.updateJobList();
+		request.setAttribute("updateJobs", updateJobs);
+		return "updateJobList";
+	}
+	
+	@RequestMapping("endUpdateJob")
+	@ResponseBody
+	public String endUpdateJob(String id,int end) {
+		Integer status = service3.endUpdateJob(id,end);
+		return status.toString();
+	}
+	
+	@RequestMapping("addJob")
+	public String addJob() {
+		return "addJob";
+	}
+	
+	@RequestMapping("saveJob")
+	@ResponseBody
+	public String saveJob(Job job) {
+		Integer status = service3.saveJob(job);
+		return status.toString();
+	}
+	
+	@RequestMapping("delJobList")
+	public String delJobList(HttpServletRequest request) {
+		List<Job> jobs = service3.getJob();
+		request.setAttribute("jobs", jobs);
+		return "delJobList";
+	}
+	@RequestMapping("delJob")
+	public String jobList(HttpServletRequest request) {
+		List<Job> jobs = service3.getJob();
+		request.setAttribute("jobs", jobs);
+		return "delJob";
+	}
+}

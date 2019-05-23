@@ -1,0 +1,85 @@
+package com.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.entity.Button;
+import com.entity.Button.Buttons;
+import com.entity.User;
+import com.enums.Status;
+import com.mapper.IndexMapping;
+
+@Service
+public class IndexService {
+	@Autowired
+	IndexMapping indexMappring;
+	/**
+	 * @param request 
+	 * @param username
+	 * @param password
+	 * @return 
+	 */
+	public boolean checkUser(HttpServletRequest request, String username, String password) {
+		User user = getUserByUsernameAndPassword(username,password);
+		System.out.println(user);
+		if(null!=user) {
+			List<Button> buttons = null;
+			int shiro = user.getShiro();
+			System.out.println(shiro);
+			switch(shiro) {
+				case 1 :{
+					buttons = getIndexButtonList(1);
+					break;
+				}
+				case 2 :{
+					buttons = getIndexButtonList(2);
+					break;
+				}
+				case 3 :{
+					buttons = getIndexButtonList(3);
+					break;
+				}
+			}
+			request.getSession().setAttribute("user", user);
+			request.setAttribute("buttons", buttons);
+			return Status.isSuccess(Status.SUCCESS);
+		}else {
+			return Status.isSuccess(Status.FAIL);
+		}
+		
+	}
+	/**
+	 * @param i
+	 * @return
+	 */
+	public List<Button> getIndexButtonList(int i) {
+		List<Button> list = new ArrayList<Button>();
+		List<Map<String,String>> buttonList = indexMappring.getIndexButtonByShiro(i);
+		for (Map<String, String> buttonMap : buttonList) {
+			Button button = new Button();
+			button.setId(buttonMap.get("id"));
+			button.setName(buttonMap.get("name"));
+			List<Map<String,String>> buttonsListMap = indexMappring.getIndexButtonsByPid(buttonMap.get("id"));
+			List<Buttons> buttonsList = new ArrayList<Buttons>();
+			for (Map<String, String> buttonsMap : buttonsListMap) {
+				Buttons buttons = button.new Buttons(); 
+				buttons.setName(buttonsMap.get("name"));
+				buttons.setLink(buttonsMap.get("link"));
+				buttonsList.add(buttons);
+			}
+			button.setButtons(buttonsList);
+			list.add(button);
+		}
+		return list;
+	}
+	public User getUserByUsernameAndPassword(String username, String password) {
+		return indexMappring.getUserByUsernameAndPassword(username,password);
+	}
+
+}

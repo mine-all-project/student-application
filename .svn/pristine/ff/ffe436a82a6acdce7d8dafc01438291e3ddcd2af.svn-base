@@ -1,0 +1,39 @@
+package com.service;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.entity.User;
+import com.entity.Work;
+import com.mapper.Mapping1;
+
+@Service
+public class Service1 {
+	@Autowired
+	Mapping1 mapping1;
+	public List<Work> getWorkListByUserId(HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("user");
+		List<Work> works = mapping1.getWorkListByUserId(user.getId());
+		return works;
+	}
+	
+	public int subWork(Work work) {
+		int status = mapping1.subWork(work);
+		return status;
+	}
+	
+	public User getUserInfoBySession(HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("user");
+		return user;
+	}
+
+	public User getUserInfoById(String id) {
+		User user = mapping1.getUserInfoById(id);
+		return user;
+	}
+
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.mapper.Mapping1">
+
+	<select id="getWorkListByUserId" resultType="com.entity.Work" parameterType="String">
+		select * from work where userId = #{id} order by insert_time desc
+	</select>
+	
+	<update id="subWork">
+		update work set status = 2 where id = #{id}
+	</update>
+	
+	<select id="getUserInfoById" resultType="com.entity.User" parameterType="String">
+		select * from user where id = #{id}
+	</select>
+	
+</mapper>

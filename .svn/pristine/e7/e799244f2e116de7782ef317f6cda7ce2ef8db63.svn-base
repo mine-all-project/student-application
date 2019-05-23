@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+</head>
+<body>
+<form method="post" action="" id="listform">
+  	<div class="panel admin-panel">
+	<div class="padding border-bottom">
+		<ul class="search" style="padding-left:10px;">
+	        <li> <a class="button border-main icon-plus-square-o" href="addNeed"> 添加需求</a> </li>
+		</ul> 
+    </div>
+    <div class="panel-head"><strong class="icon-reorder">需求列表</strong></div>
+    <table class="table table-hover text-center">
+      <tr>
+        <th>设备编号</th>
+        <th>设备名称</th>
+        <th>申请时间</th>
+        <th>设备状态</th>
+      </tr>
+      
+      <tbody data-th-each="model : ${devices}">
+      <script>
+      	console.log("[[${model}]]");
+      </script>
+        <tr>  
+          <td data-th-text="${model.number}"></td>
+          <td>
+          	<font data-th-text="${model.name}"></font>
+          </td>
+          <td data-th-text="${model.insert_time}"></td>
+          <td data-th-if="${model.status==0}" style="color:red">待发布</td>
+          <td data-th-if="${model.status==1}" style="color:#00CC99;">工作中</td>
+          <td data-th-if="${model.status==2}" style="color:blue">待反馈</td>
+          <td data-th-if="${model.status==3}" >已结束</td>
+          <td data-th-if="${model.status != 0 && model.status != 1 && model.status != 2 && model.status != 3}">未知</td>
+        </tr>
+       </tbody>
+    </table>
+  </div>
+</form>
+</body>
+</html>

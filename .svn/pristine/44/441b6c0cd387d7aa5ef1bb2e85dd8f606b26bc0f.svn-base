@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.mapper.IndexMapping">
+	<select id="getUserByUsernameAndPassword" resultType="com.entity.User" parameterType="String">
+		select * from user where username = #{username} and password = #{password}
+	</select>
+	
+	<select id="getIndexButtonByShiro" resultType="java.util.Map" parameterType="String">
+		select id,name from button where shiro = ${shiro}
+	</select>
+	
+	<select id="getIndexButtonsByPid" resultType="java.util.Map" parameterType="String">
+		select name,link from button where pid = #{pid}
+	</select>
+	
+	<select id="getDeviceList" resultType="com.entity.Device">
+		select * from device order by insert_time desc
+	</select>
+	
+	<insert id="saveQuestion" parameterType="com.entity.Question">
+		insert into question (id,pid,question) values(#{id},#{pid},#{question})
+	</insert>
+	
+	<update id="updateQuestion" parameterType="com.entity.Question">
+		update question set result = #{result} where id = #{id}
+	</update>
+	
+	<insert id="saveNeed" parameterType="com.entity.Device">
+		insert into device (id,name) values (#{id},#{name})
+	</insert>
+	
+</mapper>

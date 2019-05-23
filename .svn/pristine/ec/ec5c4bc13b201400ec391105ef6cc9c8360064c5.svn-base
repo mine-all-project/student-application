@@ -1,0 +1,44 @@
+package com.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.service.IndexService;
+
+@Controller
+public class IndexController {
+	@Autowired
+	IndexService indexService;
+	
+//	@ResponseBody
+//	@RequestMapping("/")
+//	public String toLogin() {
+//		System.out.println("toLogin");
+//		return "ToLogin";
+//	}
+	@RequestMapping("login")
+	public String login(HttpServletRequest request,String username,String password) {
+		if(indexService.checkUser(request,username,password)) {
+			return "index";
+		}
+		return "fail";
+	}
+	@RequestMapping("test1")
+	public String test1(HttpServletRequest request) {
+		login(request,"1","1");
+		return "index";
+	}
+	@RequestMapping("test2")
+	public String test2(HttpServletRequest request) {
+		login(request,"2","2");
+		return "index";
+	}
+	@RequestMapping("test3")
+	public String test3(HttpServletRequest request) {
+		login(request,"3","3");
+		return "index";
+	}
+}

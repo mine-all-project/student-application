@@ -1,0 +1,34 @@
+package test;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.controller.IndexController;
+import com.mapper.IndexMapping;
+import com.service.IndexService;
+
+/**
+ * HeQuan
+ * PC-name 29404
+ * @author Wishfor_you@foxmail.com
+ * 2019年3月7日 下午5:50:50
+ * 
+ */
+public class TestClass {
+	ApplicationContext ac;
+	@Before
+	public void before() {
+		ac = new ClassPathXmlApplicationContext("classpath:spring-*.xml");
+		System.out.println(ac);
+//		indexService = (IndexService) ac.getBean("indexService");
+//		indexController = ac.getBean(IndexController.class);
+//		indexMapping = ac.getBean(IndexMappring.class);
+	}
+	@Test
+	public void case1(){
+//		System.out.println(indexService);
+//		indexService.getIndexButtonList(1);
+	}
+}

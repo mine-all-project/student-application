@@ -1,0 +1,165 @@
+package com.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.entity.Device;
+import com.entity.Job;
+import com.entity.Question;
+import com.entity.User;
+import com.service.Service2;
+import com.service.Service3;
+
+@Controller
+public class Controller3 {
+	@Autowired
+	Service2 service2;
+	@Autowired
+	Service3 service3;
+	
+	@RequestMapping("addUser")
+	public String addUser(HttpServletRequest request) {
+		List<Job> jobs = service3.getJob();
+		request.setAttribute("jobs", jobs);
+		return "addUser";
+	}
+	
+	@RequestMapping("saveUser")
+	public String saveUser(HttpServletRequest request,User user) {
+		Integer status = service3.saveUser(user);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("delUserList")
+	public String delUserList(HttpServletRequest request) {
+		List<User> users = service3.getUserNotManager();
+		request.setAttribute("users", users);
+		return "delUserList";
+	}
+	
+	@RequestMapping("delUser")
+	public String delUser(HttpServletRequest request,String id) {
+		Integer status = service3.delUser(id);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("updateLevel")
+	public String updateLevel(HttpServletRequest request) {
+		List<User> users = service3.getUserNotManager();
+		request.setAttribute("users", users);
+		return "updateLevel";
+	}
+	
+	@RequestMapping("upLevel")
+	public String upLevel(HttpServletRequest request,String id,int shiro) {
+		Integer status = service3.upLevel(id,shiro);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("updateJobList")
+	public String updateJobList(HttpServletRequest request) {
+		List<Map<String,String>> updateJobs = service3.updateJobList();
+		request.setAttribute("updateJobs", updateJobs);
+		return "updateJobList";
+	}
+	
+	@RequestMapping("endUpdateJob")
+	public String endUpdateJob(HttpServletRequest request,String id,int end) {
+		Integer status = service3.endUpdateJob(id,end);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("addJob")
+	public String addJob() {
+		return "addJob";
+	}
+	
+	@RequestMapping("saveJob")
+	public String saveJob(HttpServletRequest request,Job job) {
+		Integer status = service3.saveJob(job);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("delJobList")
+	public String delJobList(HttpServletRequest request) {
+		List<Job> jobs = service3.getJob();
+		request.setAttribute("jobs", jobs);
+		return "delJobList";
+	}
+	
+	@RequestMapping("delJob")
+	public String delJob(HttpServletRequest request,String id) {
+		Integer status = service3.delJob(id);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("mergeJobList")
+	public String mergeJobList(HttpServletRequest request,String id) {
+		Job job = service3.getJobById(id);
+		List<Job> jobs = service3.getJob();
+		request.setAttribute("job", job);
+		request.setAttribute("jobs", jobs);
+		return "mergeJob";
+	}
+	
+	@RequestMapping("mergeJob")
+	public String mergeJob(HttpServletRequest request,String id,String ids) {
+		Integer status = service3.mergeJob(id,ids);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("needDeviceList")
+	public String needDeviceList(HttpServletRequest request) {
+		List<Device> devices = service3.needDeviceList();
+		request.setAttribute("devices", devices);
+		return "needDeviceList";
+	}
+	
+	@RequestMapping("addDevice")
+	public String addDevice(HttpServletRequest request,String id,String number) {
+		Integer status = service3.addDevice(id,number);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("unAddDevidce")
+	public String unAddDevidce(HttpServletRequest request,String id) {
+		Integer status = service3.unAddDevidce(id);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("feedbackDeviceList")
+	public String feedbackDeviceList(HttpServletRequest request) {
+		List<Map<String,Object>> questions = service3.feedbackDeviceList();
+		request.setAttribute("questions", questions);
+		return "feedbackDeviceList";
+	}
+	
+	@RequestMapping("enQuestion")
+	public String enQuestion(HttpServletRequest request,String id) {
+		Integer status = service3.enQuestion(id);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("unEnQuestion")
+	public String unEnQuestion(HttpServletRequest request,String id) {
+		Integer status = service3.unEnQuestion(id);
+		request.setAttribute("result", status);
+		return "result";
+	}
+}

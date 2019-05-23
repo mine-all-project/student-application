@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.mapper.Mapping2">
+
+	<select id="getWorkListByJobNum" resultType="com.entity.Work" parameterType="String">
+		select * from work where jobNum = #{jobNum} order by insert_time desc limit 0,${page} 
+	</select>
+	
+	<select id="getWorkById" resultType="com.entity.Work" parameterType="String">
+		select * from work where id = #{id} order by insert_time desc
+	</select>
+	
+	<select id="getUserByJobNum" resultType="com.entity.User" parameterType="String">
+		select * from user where jobNum = #{jobNum}
+	</select>
+	
+	<insert id="insertWork" parameterType="com.entity.Work">
+		insert into work (id,number,name,describe,money,jobNum) values(#{id},#{number},#{name},#{describe},${money},#{jobNum},)
+	</insert>
+	
+	<update id="startWork" parameterType="com.entity.Work">
+		update work set userId = #{userId} , userName = #{userName} , status = 1 where id = #{id}
+	</update>
+	
+	<select id="getDeviceList" resultType="com.entity.Device">
+		select * from device order by insert_time desc
+	</select>
+	
+	<insert id="saveQuestion" parameterType="com.entity.Question">
+		insert into question (id,pid,question) values(#{id},#{pid},#{question})
+	</insert>
+	
+	<update id="updateQuestion" parameterType="com.entity.Question">
+		update question set result = #{result} where id = #{id}
+	</update>
+	
+	<insert id="saveNeed" parameterType="com.entity.Device">
+		insert into device (id,name) values (#{id},#{name})
+	</insert>
+</mapper>

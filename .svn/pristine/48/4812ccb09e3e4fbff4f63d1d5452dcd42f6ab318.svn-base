@@ -1,0 +1,117 @@
+package com.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.entity.Job;
+import com.entity.User;
+import com.entity.Work;
+import com.service.Service2;
+import com.service.Service3;
+
+@Controller
+public class Controller2 {
+	@Autowired
+	Service2 service2;
+	
+	@Autowired
+	Service3 service3;
+	
+	@RequestMapping("addWork")
+	public String addWork() {
+		return "addWork";
+	}
+	
+	@RequestMapping("workList")
+	public String workList(HttpServletRequest request,int page) {
+		List<Work> works = service2.getWorkListByJobNum(request,page);
+		request.setAttribute("works", works);
+		request.setAttribute("sum", works.size()/10+1);
+		return "workList";
+	}
+	
+	@RequestMapping("startWork")
+	public String startWork(HttpServletRequest request,String id) {
+		Work work = service2.getWorkById(id);
+		User user = (User) request.getSession().getAttribute("user");
+		List<User> users = service2.getUserByJobNumAndShiro(user.getJobNum(),1);
+		request.setAttribute("work", work);
+		request.setAttribute("users", users);
+		return "startWork";
+	}
+	
+	@RequestMapping("saveWork")
+	public String saveWork(HttpServletRequest request,Work work) {
+		Integer status = service2.saveWork(work);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("feedbackWork")
+	public String feedbackWork(HttpServletRequest request,String id) {
+		Integer status = service2.feedbackWork(id);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("deleteWork")
+	public String deleteWork(HttpServletRequest request,String id) {
+		Integer status = service2.deleteWork(id);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("moneyList")
+	public String moneyList(HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("user");
+		List<Map<String, Object>> moneys = service2.getMoneyListByJobId(user.getJobNum(),1);
+		request.setAttribute("moneys", moneys);
+		return "moneyList";
+	}
+	
+	@RequestMapping("mangFree")
+	public String mangFree(HttpServletRequest request) {
+		String jobNum = ((User)request.getSession().getAttribute("user")).getJobNum();
+		List<Map<String,Object>> frees= service2.mangFree(jobNum);
+		request.setAttribute("frees", frees);
+		return "freeList";
+	}
+	
+	@RequestMapping("updateFree")
+	public String updateFree(HttpServletRequest request,String id,int flag) {
+		Integer status = service2.updateFree(id,flag);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("userList")
+	public String userList(HttpServletRequest request) {
+		String jobNum = ((User)request.getSession().getAttribute("user")).getJobNum();
+		List<User> users= service2.getUserByJobNumAndShiro(jobNum, 1);
+		request.setAttribute("users", users);
+		return "userList";
+	}
+	
+	@RequestMapping("getMoneyTable")
+	public ResponseEntity<byte[]> getMoneyTable(HttpServletRequest request) {
+		ResponseEntity<byte[]> data = service2.getMoneyTable(request);
+		return data;
+	}
+	
+	@RequestMapping("updateJob2")
+	public String updateJob2(HttpServletRequest request) {
+		String jobNum = ((User)request.getSession().getAttribute("user")).getJobNum();
+		List<User> users= service2.getUserByJobNumAndShiro(jobNum, 1);
+		List<Job> jobs = service3.getJob();
+		request.setAttribute("jobs", jobs);
+		request.setAttribute("users", users);
+		return "updateJob2";
+	}
+}

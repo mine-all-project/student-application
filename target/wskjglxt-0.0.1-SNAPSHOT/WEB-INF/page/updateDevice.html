@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8"> 
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>报修设备</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="saveQuestion">  
+       <div class="form-group">
+          <div class="label">
+            <label>选择设备：</label>
+          </div>
+          <div class="field l10">
+            <select name="pid" class="input w100" data-validate="required:请选择需要报修的设备">
+              <span data-th-each="model : ${devices}"><option data-th-value="${model.id}" data-th-text="${model.name}"></option></span>
+            </select>
+            <div class="tips"></div>
+          </div>
+        </div>
+        
+      <div class="form-group">  	
+        <div class="label">
+          <label>报修原因：</label>
+        </div>
+        <div class="field l10">
+          <textarea style="resize: none;height: 10rem"class="input w100"  name="question" data-validate="required:请输入报修原因" maxlength="20"></textarea>
+          <div class="tips"></div>
+        </div>
+      </div>
+
+        <div class="field">
+          <button class="button bg-main icon-check-square-o" type="submit" style="margin-left: 500px;"> 提交</button>
+        </div>
+    </form>
+      </div>
+    </div>
+</body>
+</html>

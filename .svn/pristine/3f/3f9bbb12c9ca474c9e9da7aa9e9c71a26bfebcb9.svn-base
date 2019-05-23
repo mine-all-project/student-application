@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.mapper.ManagerMapping">
+
+	<select id="getWorkListByJobNum" resultType="com.entity.Work" parameterType="String">
+		select * from work where jobNum = #{jobNum} order by insert_time desc
+	</select>
+	
+	<select id="getWorkById" resultType="com.entity.Work" parameterType="String">
+		select * from work where id = #{id} order by insert_time desc
+	</select>
+	
+	<select id="getUserByJobNumAndShiro" resultType="com.entity.User" parameterType="String">
+		select * from user where jobNum = #{jobNum} and shiro = ${shiro}
+	</select>
+	
+	<insert id="insertWork" parameterType="com.entity.Work">
+		insert into work (id,number,name,info,money,jobNum) values(#{id},#{number},#{name},#{info},${money},#{jobNum})
+	</insert>
+	
+	<update id="startWork" parameterType="com.entity.Work">
+		update work set userId = #{userId} , userName = #{userName} , status = 1 where id = #{id}
+	</update>
+	
+	<select id="getWorkListByUserId" parameterType="String" resultType="com.entity.Work">
+		select * from work where userId = #{id} and status = 4
+	</select>
+	
+	<update id="feedbackWork" parameterType="String">
+		update work set status = 4 where id = #{id}
+	</update>
+	
+	<update id="deleteWork" parameterType="String">
+		update work set status = 3 where id = #{id}
+	</update>
+	
+	<select id="getFreeByJobNum" parameterType="String" resultType="java.util.Map">
+		select * from free where jobNum = #{jobNum}
+	</select>
+	
+	<update id="updateFree" parameterType="String" >
+		update free set status = ${status} where id = #{id}
+	</update>
+	
+	<select id="getFreeByUserId" parameterType="String" resultType="java.util.Map">
+		select * from free where user_id = #{user_id}
+	</select>
+</mapper>

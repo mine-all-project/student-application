@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.mapper.EmployeeMapping">
+
+	<select id="getWorkListByUserId" resultType="com.entity.Work" parameterType="String">
+		select * from work where userId = #{id} order by insert_time desc
+	</select>
+	
+	<update id="subWork">
+		update work set status = 2,file = #{file} where id = #{id}
+	</update>
+	
+	<select id="getUserInfoById" resultType="com.entity.User" parameterType="String">
+		select * from user where id = #{id}
+	</select>
+	
+	<update id="savePwd" parameterType="String">
+		update user set password = #{new_password} where id = #{id} and password = #{password}
+	</update>
+	
+	<insert id="subUpdateJob" parameterType="java.util.Map">
+		insert into updateJob (id,user_id,old_id,new_id) values (#{map.id},#{map.user_id},#{map.old_id},#{map.new_id})
+	</insert>
+	
+	<insert id="saveFree" parameterType="java.util.Map">
+		insert into free (id,user_id,info,time,jobNum) values (#{map.id},#{map.user_id},#{map.info},#{map.time},#{map.jobNum})
+	</insert>
+	
+		<insert id="saveQuestion" parameterType="com.entity.Question">
+		insert into question (id,pid,question) values(#{id},#{pid},#{question})
+	</insert>
+	
+	<update id="updateQuestion" parameterType="com.entity.Question">
+		update question set result = #{result} where id = #{id}
+	</update>
+</mapper>

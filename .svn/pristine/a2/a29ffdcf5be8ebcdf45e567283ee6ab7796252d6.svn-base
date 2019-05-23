@@ -1,0 +1,117 @@
+package com.service;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.entity.Device;
+import com.entity.Question;
+import com.entity.User;
+import com.entity.Work;
+import com.mapper.Mapping2;
+
+@Service
+public class Service2 {
+	@Autowired
+	Mapping2 mapping2;
+
+	/**
+	 * @param request 
+	 * @return
+	 */
+	public List<Work> getWorkListByJobNum(HttpServletRequest request,int page) {
+		User user = (User) request.getSession().getAttribute("user");
+		List<Work> works = mapping2.getWorkListByJobNum(user.getJobNum(),page*10);
+		return works;
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	public Work getWorkById(String id) {
+		Work work = mapping2.getWorkById(id);
+		return work;
+	}
+
+	/**
+	 * @param jobNum
+	 * @return
+	 */
+	public List<User> getUserByJobNum(String jobNum) {
+		 List<User> users = mapping2.getUserByJobNum(jobNum);
+		return users;
+	}
+
+	/**
+	 * @param work
+	 */
+	public int saveWork(Work work) {
+		String id = work.getId();
+		int status = 0;
+		try {
+			if(null == id) {
+				id = UUID.randomUUID().toString();
+				work.setId(id);
+				status = mapping2.insertWork(work);
+			}else {
+				String userId = work.getUserId().split(",")[0];
+				String userName = work.getUserId().split(",")[1];
+				work.setUserId(userId);
+				work.setUserName(userName);
+				status = mapping2.startWork(work);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(work);
+		return status;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<Device> getDeviceList() {
+		List<Device> devices = mapping2.getDeviceList();
+		return devices;
+	}
+
+	/**
+	 * @param question
+	 * @return
+	 */
+	public Integer saveQuestion(Question question) {
+		String id = question.getId();
+		int status = 0;
+		if(null==id) {
+			id = UUID.randomUUID().toString();
+			question.setId(id);
+			status = mapping2.saveQuestion(question);
+		}else {
+			status = mapping2.updateQuestion(question);
+		}
+		return status;
+	}
+
+	/**
+	 * @param device
+	 * @return
+	 */
+	public Integer saveNeed(Device device) {
+		String id = device.getId();
+		int status = 0;
+		if(null==id) {
+			id = UUID.randomUUID().toString();
+			device.setId(id);
+			status = mapping2.saveNeed(device);
+		}else {
+			status = mapping2.updateNeed(device);
+		}
+		return status;
+	}
+
+}

@@ -1,0 +1,86 @@
+package com.controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.entity.Job;
+import com.entity.User;
+import com.entity.Work;
+import com.service.Service1;
+import com.service.Service3;
+
+@Controller
+public class Controller1 {
+	@Autowired
+	Service1 service1;
+	@Autowired
+	Service3 service3;
+	
+	@RequestMapping("submit_work")
+	public String submit_work(HttpServletRequest request) {
+		List<Work> works = service1.getWorkListByUserId(request);
+		request.setAttribute("works", works);
+		return "submitWork";
+	}
+	
+	@RequestMapping("subWork")
+	@ResponseBody
+	public String subWork(Work work) {
+		Integer status = service1.subWork(work);
+		return status.toString();
+	}
+	
+	@RequestMapping("updateJob")
+	public String updateJob(HttpServletRequest request) {
+		List<Job> jobs = service3.getJob();
+		request.setAttribute("jobs", jobs);
+		return "updateJob";
+	}
+	
+	@RequestMapping("subUpdateJob")
+	@ResponseBody
+	public String subUpdateJob(String user_id,String old_id,String id) {
+		Integer status = service1.subUpdateJob(user_id,old_id,id);
+		return status.toString();
+	}
+	
+	@RequestMapping("userInfo")
+	public String userInfo(HttpServletRequest request) {
+		String id = ((User)request.getSession().getAttribute("user")).getId();
+		User user = service1.getUserInfoById(id);
+		request.setAttribute("user", user);
+		return "userInfo";
+	}
+	
+	@RequestMapping("updatePassword")
+	public String updatePassword(HttpServletRequest request) {
+		User user = service1.getUserInfoBySession(request);
+		request.setAttribute("user", user);
+		return "updatePassword";
+	}
+	
+	@RequestMapping("savePwd")
+	@ResponseBody
+	public String savePwd(String id,String password,String new_password,String new_password_1) {
+		Integer status = service1.savePwd(id,password,new_password,new_password_1);
+		return status.toString();
+	}
+	
+	@RequestMapping("addFree")
+	public String addFree() {
+		return "addFree";
+	}
+	
+	@RequestMapping("saveFree")
+	@ResponseBody
+	public String saveFree(String user_id,String info, String time,String jobNum) {
+		Integer status = service1.saveFree(user_id,info,time,jobNum);
+		return status.toString();
+	}
+}

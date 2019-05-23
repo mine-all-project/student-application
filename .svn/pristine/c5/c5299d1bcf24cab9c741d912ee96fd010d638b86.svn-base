@@ -1,0 +1,62 @@
+package com.controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.entity.Device;
+import com.entity.Question;
+import com.service.IndexService;
+
+@Controller
+public class IndexController {
+	@Autowired
+	IndexService indexService;
+	
+	@RequestMapping("login")
+	public String login(HttpServletRequest request,String username,String password) {
+		if(indexService.checkUser(request,username,password)) {
+			return "index";
+		}
+		return "fail";
+	}
+	
+	@RequestMapping("updateDevice")
+	public String updateDevice(HttpServletRequest request) {
+		List<Device> devices = indexService.getDeviceList();
+		request.setAttribute("devices", devices);
+		return "updateDevice";
+	}
+	
+	@RequestMapping("saveQuestion")
+	public String saveQuestion(HttpServletRequest request,Question question) {
+		Integer status = indexService.saveQuestion(question);
+		request.setAttribute("result", status);
+		return "result";
+	}
+	
+	@RequestMapping("needDevice")
+	public String needDevice(HttpServletRequest request) {
+		List<Device> devices = indexService.getDeviceList();
+		request.setAttribute("devices", devices);
+		return "needDevice";
+	}
+	
+	@RequestMapping("addNeed")
+	public String addNeed(HttpServletRequest request) {
+		List<Device> devices = indexService.getDeviceList();
+		request.setAttribute("devices", devices);
+		return "addNeed";
+	}
+	
+	@RequestMapping("saveNeed")
+	public String saveNeed(HttpServletRequest request,Device device) {
+		Integer status = indexService.saveNeed(device);
+		request.setAttribute("result", status);
+		return "result";
+	}
+}

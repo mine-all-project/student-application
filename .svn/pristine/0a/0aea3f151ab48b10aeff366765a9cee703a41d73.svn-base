@@ -1,0 +1,35 @@
+package com.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import com.entity.Device;
+import com.entity.Question;
+import com.entity.User;
+import com.entity.Work;
+
+@Repository
+public interface Mapping2 {
+
+	List<Work> getWorkListByJobNum(@Param("jobNum")String jobNum,@Param("page")int page);
+
+	Work getWorkById(@Param("id")String id);
+
+	List<User> getUserByJobNum(@Param("jobNum")String jobNum);
+
+	int insertWork(Work work);
+
+	int startWork(Work work);
+
+	List<Device> getDeviceList();
+
+	int saveQuestion(Question question);
+
+	int updateQuestion(Question question);
+
+	int saveNeed(Device device);
+
+	int updateNeed(Device device);
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+</head>
+<body>
+<ul class="search" style="padding-left:10px;">
+        <li>搜索：</li>
+        <!-- <if condition="$iscid eq 1">
+          <li>
+            <select name="shiro" class="input ss" style="width:200px; line-height:17px;" onchange="changesearch()">
+              <option value="">请选择职务</option>
+              <option value="1">员工</option>
+              <option value="2">经理</option>
+            </select>
+          </li>
+        </if> -->
+        <li>
+          <input type="text" placeholder="请输入姓名" name="keywords" class="input" style="width:250px; line-height:17px;display:inline-block" id="name"/>
+          <a href="javascript:void(0)" class="button border-main icon-search" onclick="changesearch()" > 搜索</a>
+          </li>
+</ul> 
+<form method="post" action="" id="listform">
+  	<div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder">员工列表</strong></div>
+    <table class="table table-hover text-center">
+      <tr>
+        <th>工号</th>
+        <th>部门</th>
+        <th>职务</th>
+        <th>姓名</th>
+        <th>用户名</th>
+        <th>性别</th>
+        <th>生日</th>
+        <th>入职时间</th>
+      </tr>
+      
+      <tbody data-th-each="model : ${users}" id="tr_data">
+        <tr>  
+          <td data-th-text="${model.number}"></td>
+          <td data-th-text="${model.jobName}"></td>
+          <td data-th-if="${model.shiro==1}">员工</td>
+          <td data-th-if="${model.shiro==2}">经理</td>
+          <td data-th-text="${model.name}"></td>
+          <td data-th-text="${model.username}"></td>
+          <td data-th-if="${model.sex==1}" >男</td>
+          <td data-th-if="${model.sex==0}" >女</td>
+          <td data-th-text="${model.age}"></td>
+          <td data-th-text="${model.insert_time}"></td>
+        </tr>
+       </tbody>
+    </table>
+  </div>
+</form>
+<script>
+	function changesearch(){
+		var name = $('#name').val();
+		if(!name){
+			return;
+		}
+		$.ajax({
+			type: "GET",
+			url: "/wskjglxt/getUserByName",
+			data: {
+				name:name
+			},
+			dataType: "json",
+			success: 
+				function(e){
+					console.log(e)
+					var parent = $('#tr_data').empty();
+					for (var i = 0; i < e.length; i++) {
+						var son = '<td>'+e[i].number+'</td>'
+						+'<td>'+e[i].jobName+'</td>'
+						+'<td>'+(e[i].shiro==1?'员工':'经理')+'</td>'
+						+'<td>'+e[i].name+'</td>'
+						+'<td>'+e[i].username+'</td>'
+						+'<td>'+(e[i].sex==1?'男':'女')+'</td>'
+						+'<td>'+e[i].age+'</td>'
+						+'<td>'+e[i].insert_time+'</td>';
+						parent.append(son);
+					}
+				}
+			}); 
+	}
+</script>
+</body>
+</html>

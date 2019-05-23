@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8"> 
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>个人信息</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action=saveUserInfo>
+		<input type="hidden" data-th-value="${user.id}" name="id"/>
+      <div class="form-group">  	
+        <div class="label">
+          <label>工号：</label>
+        </div>
+        <div class="field l10" >
+          <input type="text" class="input w100" data-th-value="${user.number}"  readonly="readonly"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">  	
+        <div class="label">
+          <label>用户名：</label>
+        </div>
+        <div class="field l10">
+          <input type="text" class="input w100" data-th-value="${user.username}" readonly="readonly"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">  	
+        <div class="label">
+          <label>姓名：</label>
+        </div>
+        <div class="field l10">
+          <input type="text" class="input w100" data-th-value="${user.name}" name="name" data-validate="required:请输入姓名" />
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+          <div class="label">
+            <label>性别：</label>
+          </div>
+          <div class="field l10">
+            <select name="sex" class="input w100" data-validate="required:请选择性别" >
+              <option value="" data-th-text="请选择"></option>
+              <option value="1" data-th-text="男"></option>
+              <option value="0" data-th-text="女"></option>
+            </select>
+            <div class="tips"></div>
+          </div>
+        </div>
+      <div class="form-group">  	
+        <div class="label">
+          <label>生日：</label>
+        </div>
+        <div class="field l10">
+          <input type="date" class="input w100" data-th-value="${user.age}" name="age" data-validate="required:请输入生日" />
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">  	
+        <div class="label">
+          <label>入职时间：</label>
+        </div>
+        <div class="field l10">
+          <input type="text" class="input w100" data-th-value="${user.insert_time}" readonly="readonly"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+        <div class="field">
+          <button class="button bg-main icon-check-square-o" type="submit" style="margin-left: 500px;"> 提交</button>
+        </div>
+    </form>
+  </div>
+</div>
+
+</body></html>

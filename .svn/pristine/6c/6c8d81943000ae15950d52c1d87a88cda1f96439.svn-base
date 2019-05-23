@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.mapper.Mapping3">
+
+	<select id="getJob" resultType="com.entity.Job" parameterType="String">
+		select * from Job  order by insert_time desc
+	</select>
+	
+	<insert id="addUser" parameterType="com.entity.User">
+		insert into user (id,number,username,password,name,sex,age,jobNum,phone) 
+		values 
+		(#{id},#{number},#{username},#{password},#{name},${sex},${age},#{jobNum},#{phone})
+	</insert>
+	
+	<update id="updateUser" parameterType="com.entity.User">
+		update user set name = #{name} , sex = ${sex} , age = ${age} , phone = #{phone} where id = #{id}
+	</update>
+	
+	<select id="getUserNotManager" resultType="com.entity.User">
+		select * from User where shiro = 1 or shiro = 2 order by insert_time desc
+	</select>
+	
+	<delete id="delUser">
+		delete from user where id = #{id}
+	</delete>
+	
+	<delete id="delWorkByUserId">
+		delete from work where userId = #{user_id}
+	</delete>
+	
+	<delete id="delFreeByUserId">
+		delete from free where user_id = #{user_id}
+	</delete>
+	
+	<delete id="delUpdateJobByUserId">
+		delete from updatejob where user_id = #{user_id}
+	</delete>
+	
+	<update id="upLevel" parameterType="com.entity.User">
+		update user set shiro = ${shiro}  where id = #{id}
+	</update>
+	
+	<select id="updateJobList" resultType="java.util.Map">
+		select a.*,b.name new_name from (
+			select a.*,b.name old_name from (
+				select a.id,a.user_id,b.name,b.number,a.old_id,new_id,a.insert_time from updateJob a,user b  where a.user_id = b.id
+			) a,job b where a.old_id = b.id
+		) a,job b where a.new_id = b.id
+	</select>
+	
+	<select id="getUpdateJobByid" resultType="java.util.Map">
+		select user_id,new_id from updatejob where id = #{id}
+	</select>
+	
+	<update id="updateUserJobNumByUserId" parameterType="String">
+		update user set jobNum = ${new_id}  where id = #{user_id}
+	</update>
+	
+	<delete id="delUpdateJobByid" parameterType="String">
+		delete from updatejob where id = #{id}
+	</delete>
+</mapper>

@@ -1,0 +1,37 @@
+package com.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import com.entity.Button;
+import com.entity.User;
+
+@Repository
+public interface IndexMapping {
+
+	/**
+	 * @param username
+	 * @param password
+	 */
+	User getUserByUsernameAndPassword(@Param("username")String username, @Param("password")String password);
+
+	/**
+	 * @param i
+	 * @return
+	 */
+	Map<String,List<Button>> getIndexButtonList(int shiro);
+
+	/**
+	 * @param i
+	 */
+	List<Map<String,String>> getIndexButtonByShiro(@Param("shiro")int shiro);
+
+	/**
+	 * @param string
+	 * @return
+	 */
+	List<Map<String,String>> getIndexButtonsByPid(@Param("pid")String pid);
+}

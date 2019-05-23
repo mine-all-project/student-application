@@ -1,0 +1,85 @@
+package com.service;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.entity.User;
+import com.entity.Work;
+import com.mapper.Mapping2;
+
+@Service
+public class Service2 {
+	@Autowired
+	Mapping2 mapping2;
+
+	public List<Work> getWorkListByJobNum(HttpServletRequest request,int page) {
+		User user = (User) request.getSession().getAttribute("user");
+		List<Work> works = mapping2.getWorkListByJobNum(user.getJobNum(),page*10);
+		return works;
+	}
+
+	public Work getWorkById(String id) {
+		Work work = mapping2.getWorkById(id);
+		return work;
+	}
+
+	public List<User> getUserByJobNum(String jobNum) {
+		 List<User> users = mapping2.getUserByJobNum(jobNum);
+		return users;
+	}
+
+	public int saveWork(Work work) {
+		String id = work.getId();
+		int status = 0;
+		try {
+			if(null == id) {
+				id = UUID.randomUUID().toString();
+				work.setId(id);
+				status = mapping2.insertWork(work);
+			}else {
+				String userId = work.getUserId().split(",")[0];
+				String userName = work.getUserId().split(",")[1];
+				work.setUserId(userId);
+				work.setUserName(userName);
+				status = mapping2.startWork(work);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(work);
+		return status;
+	}
+
+	public List<Work> getWorkListByUserId(String id) {
+		List<Work> works = mapping2.getWorkListByUserId(id);
+		return works;
+	}
+
+	public List<User> getMoneyListByJobId(String jobNum) {
+		List<User> users = getUserByJobNum(jobNum);
+		for (User user : users) {
+			List<Work> works = getWorkListByUserId(user.getId());
+			double shouldMoney = 0.0;
+			double finalMoney = 0.0;
+			for (Work work : works) {
+				shouldMoney += work.getMoney();
+				finalMoney += work.getMoney();
+				System.out.println("工作:"+work);
+			}
+			user.setShouldMoney(shouldMoney);
+			user.setFinalMoney(finalMoney);
+			System.out.println(user);
+		}
+		return users;
+	}
+
+	public int feedbackWork(Work work) {
+		int status = mapping2.feedbackWork(work);
+		return status;
+	}
+}

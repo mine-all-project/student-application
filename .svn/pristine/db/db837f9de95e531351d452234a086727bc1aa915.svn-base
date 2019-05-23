@@ -1,0 +1,94 @@
+package com.service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import com.entity.Job;
+import com.entity.User;
+import com.mapper.Mapping1;
+import com.mapper.Mapping3;
+
+@Service
+public class Service3 {
+	@Autowired
+	Mapping3 mapping3;
+	@Autowired
+	Mapping1 mapping1;
+
+	public List<Job> getJob() {
+		return mapping3.getJob();
+	}
+
+	public Integer saveUser(User user) {
+		String id = user.getId();
+		int status = 0;
+		if(StringUtils.isEmpty(id)) {
+			id = UUID.randomUUID().toString();
+			user.setId(id);
+			status = mapping3.addUser(user);
+		}else {
+			status = mapping3.updateUser(user);
+		}
+		return status;
+	}
+
+	public List<User> getUserNotManager() {
+		List<User> users = mapping3.getUserNotManager();
+		return users;
+	}
+
+	public Integer delUser(String id) {
+		int status = mapping3.delUser(id);
+		if(status==1) {
+			mapping3.delWorkByUserId(id);
+			mapping3.delFreeByUserId(id);
+			mapping3.delUpdateJobByUserId(id);
+		}
+		return status;
+	}
+
+
+	public Integer upLevel(String id, int shiro) {
+		int status = mapping3.upLevel(id,shiro);
+		return status;
+	}
+
+	public List<Map<String, String>> updateJobList() {
+		List<Map<String, String>> updateJobs = mapping3.updateJobList();
+		return updateJobs;
+	}
+
+	public Integer endUpdateJob(String id, int end) {
+		int status = 0;
+		if(end==1) {
+			Map<String,String> updateJob = mapping3.getUpdateJobByid(id);
+			String new_id = updateJob.get("new_id");
+			String user_id = updateJob.get("user_id");
+			int i = mapping3.updateUserJobNumByUserId(user_id,new_id);
+			if(i==1) {
+				status = mapping3.delUpdateJobByid(id);
+			}
+		}else {
+			status = mapping3.delUpdateJobByid(id);
+		}
+		return status;
+	}
+
+	public int saveJob(Job job) {
+		int status = 0;
+		String id = job.getId();
+		if(null==id) {
+			id = UUID.randomUUID().toString();
+			job.setId(id);
+			status = mapping3.addJob(job);
+		}
+				
+		return status;
+	}
+	
+}
