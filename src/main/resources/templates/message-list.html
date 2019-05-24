@@ -68,11 +68,11 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr data-th-each="model : ${orgs}">
+                                            <tr data-th-each="model : ${messages}">
                                                 <input type="hidden" data-th-value="${model.id}"/>
-                                                <td data-th-text="${model.orgInfo.money}"></td>
-                                                <td data-th-text="${model.orgInfo.city}"></td>
-                                                <td data-th-text="${model.orgInfo.info}"></td>
+                                                <td data-th-text="${model.id}"></td>
+                                                <td data-th-text="${model.id}"></td>
+                                                <td data-th-text="${model.id}"></td>
                                                 <td class="td-manage">
                                                     <a title="投递"  onclick="send(this)" href="javascript:;">
                                                         <i class="layui-icon">&#xe642;</i>

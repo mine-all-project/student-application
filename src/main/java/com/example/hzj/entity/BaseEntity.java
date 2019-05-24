@@ -1,7 +1,11 @@
 package com.example.hzj.entity;
 
 
+import com.google.gson.Gson;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
@@ -9,7 +13,8 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class BaseEntity {
     @Id
-    @Column(length = 50)
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     @Column(length = 10)
@@ -33,9 +38,6 @@ public abstract class BaseEntity {
 
     @Override
     public String toString() {
-        return "BaseEntity{" +
-                "id='" + id + '\'' +
-                ", create_time=" + create_time +
-                '}';
+        return new Gson().toJson(this);
     }
 }

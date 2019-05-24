@@ -1,7 +1,9 @@
 package com.example.hzj.service;
 
+import com.example.hzj.dao.MessageDao;
 import com.example.hzj.dao.MineInfoDao;
 import com.example.hzj.dao.UserDao;
+import com.example.hzj.entity.Message;
 import com.example.hzj.entity.MineInfo;
 import com.example.hzj.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -21,6 +22,8 @@ public class UserService {
     UserDao userDao;
     @Autowired
     MineInfoDao mineInfoDao;
+    @Autowired
+    MessageDao messageDao;
     public User getMineInfoList(HttpServletRequest request){
         User user = (User) request.getSession().getAttribute("user");
         List<MineInfo> mineInfos = new ArrayList<>();
@@ -49,5 +52,20 @@ public class UserService {
                 .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.exact());
         Example<User> example = Example.of(user,exampleMatcher);
         return userDao.findAll(example);
+    }
+
+    public void saveMessage(Message message) {
+        messageDao.saveAndFlush(message);
+    }
+
+    public List<Message> getMessageList(HttpServletRequest request) {
+        User _this = (User) request.getSession().getAttribute("user");
+        Message message = new Message();
+//        message.setToId(_this.getId());
+        message.setToId("2");
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching().
+                withMatcher("toId",ExampleMatcher.GenericPropertyMatchers.exact());
+        Example<Message> example = Example.of(message,exampleMatcher);
+        return messageDao.findAll(example);
     }
 }
