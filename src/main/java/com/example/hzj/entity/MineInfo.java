@@ -14,12 +14,6 @@ public class MineInfo extends BaseEntity{
     @Column(length = 20)
     private String city;
 
-    @Column(length = 11)
-    private String phone;
-
-    @Column(length = 30)
-    private String email;
-
     @Column(length = 500)
     private String info;
 
@@ -37,22 +31,6 @@ public class MineInfo extends BaseEntity{
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getInfo() {

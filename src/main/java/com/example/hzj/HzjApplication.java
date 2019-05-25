@@ -7,5 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HzjApplication {
     public static void main(String[] args) {
         SpringApplication.run(HzjApplication.class, args);
+        System.err.println("欢迎使用遵义医科大学双选会系统");
     }
 }

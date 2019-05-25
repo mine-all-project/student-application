@@ -35,14 +35,14 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr data-th-each="model : ${orgs}">
+                                            <tr data-th-each="model : ${info}">
                                                 <input type="hidden" data-th-value="${model.id}"/>
                                                 <input type="hidden" data-th-value="${model.name}"/>
-                                                <td data-th-text="${model.orgInfo.money}"></td>
-                                                <td data-th-text="${model.orgInfo.city}"></td>
-                                                <td data-th-text="${model.orgInfo.info}"></td>
+                                                <td data-th-text="${model.mineInfo.money}"></td>
+                                                <td data-th-text="${model.mineInfo.city}"></td>
+                                                <td data-th-text="${model.mineInfo.info}"></td>
                                                 <td class="td-manage">
-                                                    <a title="投递"  onclick="send(this)" href="javascript:;">
+                                                    <a title="邀请"  onclick="send(this)" href="javascript:;">
                                                         <i class="layui-icon">&#xe642;</i>
                                                     </a>
                                                 </td>

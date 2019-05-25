@@ -2,9 +2,11 @@ package com.example.hzj.service;
 
 import com.example.hzj.dao.MessageDao;
 import com.example.hzj.dao.MineInfoDao;
+import com.example.hzj.dao.OrgInfoDao;
 import com.example.hzj.dao.UserDao;
 import com.example.hzj.entity.Message;
 import com.example.hzj.entity.MineInfo;
+import com.example.hzj.entity.OrgInfo;
 import com.example.hzj.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -23,13 +25,14 @@ public class UserService {
     @Autowired
     MineInfoDao mineInfoDao;
     @Autowired
+    OrgInfoDao orgInfoDao;
+    @Autowired
     MessageDao messageDao;
     public User getMineInfoList(HttpServletRequest request){
-        User user = (User) request.getSession().getAttribute("user");
+        User _this = (User) request.getSession().getAttribute("user");
         List<MineInfo> mineInfos = new ArrayList<>();
-        Optional<User> optional = userDao.findById(user.getId());
         User _thisUser = null;
-//        Optional<User> optional = userDao.findById("1");
+        Optional<User> optional = userDao.findById(_this.getId());
         if(optional.isPresent()){
             _thisUser = optional.get();
         }
@@ -45,15 +48,14 @@ public class UserService {
         }
     }
 
-    public List<User> getOrgsList() {
+    public List<User> getUserList(int type) {
         User user = new User();
-        user.setType(2);
+        user.setType(type);
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
                 .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.exact());
         Example<User> example = Example.of(user,exampleMatcher);
         return userDao.findAll(example);
     }
-
     public void saveMessage(Message message) {
         messageDao.saveAndFlush(message);
     }
@@ -61,11 +63,33 @@ public class UserService {
     public List<Message> getMessageList(HttpServletRequest request) {
         User _this = (User) request.getSession().getAttribute("user");
         Message message = new Message();
-//        message.setToId(_this.getId());
-        message.setToId("2");
+        message.setToId(_this.getId());
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().
                 withMatcher("toId",ExampleMatcher.GenericPropertyMatchers.exact());
         Example<Message> example = Example.of(message,exampleMatcher);
         return messageDao.findAll(example);
+    }
+
+    public void saveUser(String mineInfoId, User user, MineInfo mineInfo) {
+        User _this = userDao.findById(user.getId()).get();
+        user.setPassword(_this.getPassword());
+        user.setType(_this.getType());
+        user.setBirthday(_this.getBirthday());
+        user.setUsername(_this.getUsername());
+        mineInfo.setId(mineInfoId);
+        user.setMineInfo(mineInfo);
+        mineInfoDao.saveAndFlush(user.getMineInfo());
+        userDao.saveAndFlush(user);
+    }
+    public void saveUser(String orgInfoId, User user, OrgInfo orgInfo) {
+        User _this = userDao.findById(user.getId()).get();
+        user.setPassword(_this.getPassword());
+        user.setType(_this.getType());
+        user.setBirthday(_this.getBirthday());
+        user.setUsername(_this.getUsername());
+        orgInfo.setId(orgInfoId);
+        user.setOrgInfo(orgInfo);
+        orgInfoDao.saveAndFlush(user.getOrgInfo());
+        userDao.saveAndFlush(user);
     }
 }

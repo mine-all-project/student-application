@@ -25,6 +25,12 @@ public class User extends BaseEntity {
     @Column(length = 1)
     private Integer type;
 
+    @Column(length = 30)
+    private String phone;
+
+    @Column(length = 30)
+    private String email;
+
     @Column(length = 10)
     private LocalDateTime birthday;
 
@@ -84,6 +90,22 @@ public class User extends BaseEntity {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDateTime getBirthday() {

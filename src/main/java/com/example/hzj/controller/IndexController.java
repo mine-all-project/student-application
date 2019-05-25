@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class IndexController {
+public class IndexController extends BaseHandle {
     @Autowired
     IndexService indexService;
     @RequestMapping("/")
@@ -19,7 +19,12 @@ public class IndexController {
     @RequestMapping("login")
     public String login(HttpServletRequest request, User user){
         if (indexService.login(request, user)){
-            return "index";
+            User _this = (User) request.getSession().getAttribute("user");
+            if(checkUser(_this)){
+                return "studentIndex";
+            }else{
+                return "orgIndex";
+            }
         }
         return "";
     }

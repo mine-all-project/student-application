@@ -10,6 +10,8 @@ public class Message extends BaseEntity{
     @Column(length = 50)
     private String fromId;
     @Column(length = 50)
+    private String name;
+    @Column(length = 50)
     private String toId;
     @Column(length = 1)
     private String status;
@@ -20,6 +22,14 @@ public class Message extends BaseEntity{
 
     public void setFromId(String fromId) {
         this.fromId = fromId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getToId() {
