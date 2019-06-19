@@ -72,7 +72,6 @@ public class UserService {
 
     public void saveUser(String mineInfoId, User user, MineInfo mineInfo) {
         User _this = userDao.findById(user.getId()).get();
-        user.setPassword(_this.getPassword());
         user.setType(_this.getType());
         user.setBirthday(_this.getBirthday());
         user.setUsername(_this.getUsername());
@@ -83,7 +82,6 @@ public class UserService {
     }
     public void saveUser(String orgInfoId, User user, OrgInfo orgInfo) {
         User _this = userDao.findById(user.getId()).get();
-        user.setPassword(_this.getPassword());
         user.setType(_this.getType());
         user.setBirthday(_this.getBirthday());
         user.setUsername(_this.getUsername());
