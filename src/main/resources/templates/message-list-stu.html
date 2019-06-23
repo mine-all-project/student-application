@@ -30,7 +30,7 @@
                                         <table class="layui-table layui-form">
                                             <thead>
                                             <tr>
-                                                <th>公司名</th>
+                                                <th>学生名</th>
                                                 <th>消息</th>
                                             </tr>
                                             </thead>
@@ -38,7 +38,7 @@
                                             <tr data-th-each="model : ${messages}">
                                                 <input type="hidden" data-th-value="${model.id}"/>
                                                 <td data-th-text="${model.name}"></td>
-                                                <td data-th-text="查看消息"></td>
+                                                <td><a target="_blank" data-th-href="'yourInfo/'+${model.fromId}" data-th-text="查看简历"></a></td>
                                             </tr>
                                             </tbody>
                                         </table>

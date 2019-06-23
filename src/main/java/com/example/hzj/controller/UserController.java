@@ -7,10 +7,13 @@ import com.example.hzj.entity.User;
 import com.example.hzj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -25,8 +28,17 @@ public class UserController extends BaseHandle{
         if(checkUser(user)){
             return "mineInfo";
         }
-        System.err.println(_thisUser);
         return "orgInfo";
+    }
+
+    @RequestMapping("yourInfo/{id}")
+    public String yourInfo(HttpServletRequest request, @PathVariable("id") String id){
+        User user = userService.getUserById(id);
+        request.setAttribute("_thisUser",user);
+        if(checkUser(user)){
+            return "yourInfo-org";
+        }
+        return "yourInfo-stu";
     }
 
     @RequestMapping("saveMineInfo")
@@ -61,15 +73,25 @@ public class UserController extends BaseHandle{
     public String send(HttpServletRequest request,Message message){
         User _this = (User)request.getSession().getAttribute("user");
         message.setFromId(_this.getId());
+        message.setName(_this.getName());
         userService.saveMessage(message);
         return "1";
     }
 
     @RequestMapping("messageList")
-    public String messageList(HttpServletRequest request){
+    public String messageList(HttpSession session, HttpServletRequest request){
         List<Message> messages = userService.getMessageList(request);
         request.setAttribute("messages",messages);
-        return "message-list";
+        User user = (User) session.getAttribute("user");
+        if(null != user){
+            if(user.getType()==1){
+                return "message-list-org";
+            }
+            if(user.getType()==2){
+                return "message-list-stu";
+            }
+        }
+        return "welcome";
     }
 
 }

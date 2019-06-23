@@ -65,7 +65,7 @@ public class UserService {
         Message message = new Message();
         message.setToId(_this.getId());
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().
-                withMatcher("toId",ExampleMatcher.GenericPropertyMatchers.exact());
+                withMatcher("fromId",ExampleMatcher.GenericPropertyMatchers.exact());
         Example<Message> example = Example.of(message,exampleMatcher);
         return messageDao.findAll(example);
     }
@@ -89,5 +89,9 @@ public class UserService {
         user.setOrgInfo(orgInfo);
         orgInfoDao.saveAndFlush(user.getOrgInfo());
         userDao.saveAndFlush(user);
+    }
+
+    public User getUserById(String id) {
+        return userDao.findById(id).get();
     }
 }
