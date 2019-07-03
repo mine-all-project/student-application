@@ -30,7 +30,7 @@
                         <div class="layui-col-md12">
                             <div class="layui-card">
                                 <div class="layui-card-body ">
-                                    <form action="saveMineInfo" method="post">
+                                    <form action="saveUpdate" method="post">
                                         <input type="hidden" name="id" data-th-value="${_thisUser.id}">
                                         <input type="hidden" name="mineInfoId" data-th-value="${_thisUser.mineInfo.id}">
                                         <table class="layui-table">
@@ -40,36 +40,8 @@
                                                 <td><input type="text" name="name" data-th-value="${_thisUser.name}"></td>
                                             </tr>
                                             <tr>
-                                                <th>专业</th>
-                                                <td><input type="text" name="zhuanye" data-th-value="${_thisUser.mineInfo.zhuanye}"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>性别</th>
-                                                <td><input type="text" name="sex" data-th-value="${_thisUser.sex}"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>电话</th>
-                                                <td><input type="text" name="phone" data-th-value="${_thisUser.phone}"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>邮箱</th>
-                                                <td><input type="text" name="email" data-th-value="${_thisUser.email}"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>地址</th>
-                                                <td><input type="text" name="city" data-th-value="${_thisUser.mineInfo.city}"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>证书</th>
-                                                <td><input type="text" name="zhengshu" data-th-value="${_thisUser.mineInfo.zhengshu}"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>期望薪资</th>
-                                                <td><input type="text" name="money" data-th-value="${_thisUser.mineInfo.money}"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>工作经历</th>
-                                                <td><textarea name="info" data-th-text="${_thisUser.mineInfo.info}"></textarea></td>
+                                                <th>密码</th>
+                                                <td><input type="password" name="password" data-th-value="${_thisUser.password}"></td>
                                             </tr>
                                             </tbody>
                                         </table>

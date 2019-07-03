@@ -19,8 +19,8 @@ public class User extends BaseEntity {
     @Column(length = 20)
     private String name;
 
-    @Column(length = 1)
-    private Integer sex;
+    @Column(length = 3)
+    private String sex;
 
     @Column(length = 1)
     private Integer type;
@@ -76,11 +76,11 @@ public class User extends BaseEntity {
         this.name = name;
     }
 
-    public Integer getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

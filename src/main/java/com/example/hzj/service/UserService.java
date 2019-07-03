@@ -70,6 +70,17 @@ public class UserService {
         return messageDao.findAll(example);
     }
 
+    public void update(String mineInfoId, User user) {
+        User _this = userDao.findById(user.getId()).get();
+        if(null!=user.getName()){
+            _this.setName(user.getName());
+        }
+        if(null!=user.getPassword()){
+            _this.setPassword(user.getPassword());
+        }
+        mineInfoDao.saveAndFlush(_this.getMineInfo());
+        userDao.saveAndFlush(_this);
+    }
     public void saveUser(String mineInfoId, User user, MineInfo mineInfo) {
         User _this = userDao.findById(user.getId()).get();
         user.setType(_this.getType());

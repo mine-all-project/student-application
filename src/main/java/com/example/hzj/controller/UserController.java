@@ -8,7 +8,6 @@ import com.example.hzj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,6 +19,7 @@ import java.util.List;
 public class UserController extends BaseHandle{
     @Autowired
     UserService userService;
+
     @RequestMapping("mineInfo")
     public String mineInfoList(HttpServletRequest request){
         User user = (User) request.getSession().getAttribute("user");
@@ -29,6 +29,13 @@ public class UserController extends BaseHandle{
             return "mineInfo";
         }
         return "orgInfo";
+    }
+
+    @RequestMapping("update")
+    public String update(HttpServletRequest request){
+        User _thisUser = userService.getMineInfoList(request);
+        request.setAttribute("_thisUser",_thisUser);
+        return "update";
     }
 
     @RequestMapping("yourInfo/{id}")
@@ -45,6 +52,12 @@ public class UserController extends BaseHandle{
     @ResponseBody
     public String saveMineInfo(String mineInfoId,User user,MineInfo mineInfo){
         userService.saveUser(mineInfoId,user,mineInfo);
+        return "更新成功";
+    }
+    @RequestMapping("saveUpdate")
+    @ResponseBody
+    public String saveUpdate(String mineInfoId,User user){
+        userService.update(mineInfoId,user);
         return "更新成功";
     }
 
