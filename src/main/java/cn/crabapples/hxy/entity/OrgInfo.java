@@ -1,4 +1,4 @@
-package com.example.hzj.entity;
+package cn.crabapples.hxy.entity;
 
 import com.google.gson.Gson;
 

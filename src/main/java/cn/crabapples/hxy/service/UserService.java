@@ -1,13 +1,13 @@
-package com.example.hzj.service;
+package cn.crabapples.hxy.service;
 
-import com.example.hzj.dao.MessageDao;
-import com.example.hzj.dao.MineInfoDao;
-import com.example.hzj.dao.OrgInfoDao;
-import com.example.hzj.dao.UserDao;
-import com.example.hzj.entity.Message;
-import com.example.hzj.entity.MineInfo;
-import com.example.hzj.entity.OrgInfo;
-import com.example.hzj.entity.User;
+import cn.crabapples.hxy.dao.MessageDao;
+import cn.crabapples.hxy.dao.MineInfoDao;
+import cn.crabapples.hxy.dao.OrgInfoDao;
+import cn.crabapples.hxy.entity.MineInfo;
+import cn.crabapples.hxy.entity.OrgInfo;
+import cn.crabapples.hxy.entity.User;
+import cn.crabapples.hxy.dao.UserDao;
+import cn.crabapples.hxy.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;

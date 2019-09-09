@@ -1,7 +1,7 @@
-package com.example.hzj.controller;
+package cn.crabapples.hxy.controller;
 
 
-import com.example.hzj.entity.User;
+import cn.crabapples.hxy.entity.User;
 
 public abstract class BaseHandle {
 

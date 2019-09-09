@@ -1,11 +1,11 @@
-package com.example.hzj.dao;
+package cn.crabapples.hxy.dao;
 
-import com.example.hzj.entity.MineInfo;
+import cn.crabapples.hxy.entity.OrgInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 
 @Repository
-public interface MineInfoDao extends JpaRepository<MineInfo, Serializable> {
+public interface OrgInfoDao extends JpaRepository<OrgInfo, Serializable> {
 }

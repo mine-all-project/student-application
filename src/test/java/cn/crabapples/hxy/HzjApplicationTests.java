@@ -1,4 +1,4 @@
-package com.example.hzj;
+package cn.crabapples.hxy;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

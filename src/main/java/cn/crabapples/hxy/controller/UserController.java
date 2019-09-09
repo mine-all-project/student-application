@@ -1,10 +1,10 @@
-package com.example.hzj.controller;
+package cn.crabapples.hxy.controller;
 
-import com.example.hzj.entity.Message;
-import com.example.hzj.entity.MineInfo;
-import com.example.hzj.entity.OrgInfo;
-import com.example.hzj.entity.User;
-import com.example.hzj.service.UserService;
+import cn.crabapples.hxy.entity.MineInfo;
+import cn.crabapples.hxy.entity.OrgInfo;
+import cn.crabapples.hxy.entity.User;
+import cn.crabapples.hxy.service.UserService;
+import cn.crabapples.hxy.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,7 +50,7 @@ public class UserController extends BaseHandle{
 
     @RequestMapping("saveMineInfo")
     @ResponseBody
-    public String saveMineInfo(String mineInfoId,User user,MineInfo mineInfo){
+    public String saveMineInfo(String mineInfoId, User user, MineInfo mineInfo){
         userService.saveUser(mineInfoId,user,mineInfo);
         return "更新成功";
     }

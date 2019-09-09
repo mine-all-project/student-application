@@ -1,7 +1,7 @@
-package com.example.hzj.controller;
+package cn.crabapples.hxy.controller;
 
-import com.example.hzj.entity.User;
-import com.example.hzj.service.IndexService;
+import cn.crabapples.hxy.entity.User;
+import cn.crabapples.hxy.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
