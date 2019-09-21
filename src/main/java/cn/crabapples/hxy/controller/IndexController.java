@@ -30,7 +30,7 @@ public class IndexController extends BaseHandle {
     }
     @RequestMapping("welcome")
     public String welcome(HttpServletRequest request){
-        request.setAttribute("welcome","欢迎使用遵义医科大学双选会系统!");
+        request.setAttribute("welcome","登录成功!");
         return "welcome";
     }
 }
