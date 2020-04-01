@@ -1,53 +1,16 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="renderer" content="webkit"/>
-  <meta name="force-rendering" content="webkit"/>
   <title></title>
-  <link type="text/css" rel="stylesheet" href="../../css/style.css" />
-  <link type="text/css" rel="stylesheet" href="../../css/animate.css" />
-  <script type="text/javascript" src="../../js/jquery-1.8.2.min.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $("ul.nav li").hover(function () {
-        $(this).find(".navtwo").toggle();
-      })
-    })
-  </script>
+  <div data-th-include="base :: meta"></div>
+  <div data-th-include="base :: style"></div>
+  <div data-th-include="base :: javascript"></div>
 </head>
 
 <body>
 <div class="header0">
-  <ul class="nav">
-    <li>
-      <a href="../../index.html">首页</a>
-    </li>
-    <li>
-      <a href="../../about.html">景区概况</a>
-    </li>
-    <li>
-      <a href="../../piclist.html">文苑之旅</a>
-      <div class="navtwo">
-        <a href="../../piclist.html">文苑之旅</a>
-        <a href="../../piclist.html">文苑之旅</a>
-        <a href="../../piclist.html">文苑之旅</a>
-      </div>
-    </li>
-    <li>
-      <a href="../../piclist.html">舒雅住宅</a>
-    </li>
-    <li>
-      <a href="../../list.html">新闻动态</a>
-      <div class="navtwo">
-        <a href="../../list.html">公司新闻</a>
-        <a href="../../list.html">行业新闻</a>
-      </div>
-    </li>
-    <li>
-      <a href="../../about.html">联系我们</a>
-    </li>
-  </ul>
+  <div data-th-include="base :: nav"></div>
 </div>
 <div class="clear"></div>
 <div class="banner0">
