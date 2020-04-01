@@ -25,7 +25,7 @@ public class UserController extends BaseHandle{
         User user = (User) request.getSession().getAttribute("user");
         User _thisUser = userService.getMineInfoList(request);
         request.setAttribute("_thisUser",_thisUser);
-        if(checkUser(user)){
+        if(checkSession(request)){
             return "mineInfo";
         }
         return "orgInfo";
@@ -42,7 +42,7 @@ public class UserController extends BaseHandle{
     public String yourInfo(HttpServletRequest request, @PathVariable("id") String id){
         User user = userService.getUserById(id);
         request.setAttribute("_thisUser",user);
-        if(checkUser(user)){
+        if(checkSession(request)){
             return "yourInfo-org";
         }
         return "yourInfo-stu";
@@ -71,7 +71,7 @@ public class UserController extends BaseHandle{
     @RequestMapping("orgList")
     public String orgList(HttpServletRequest request){
         User user = (User) request.getSession().getAttribute("user");
-        if(checkUser(user)){
+        if(checkSession(request)){
             List<User> orgs = userService.getUserList(2);
             request.setAttribute("orgs",orgs);
             return "org-list";

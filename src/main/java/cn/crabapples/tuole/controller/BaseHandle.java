@@ -1,16 +1,9 @@
 package cn.crabapples.tuole.controller;
 
-
-import cn.crabapples.tuole.entity.User;
+import javax.servlet.http.HttpServletRequest;
 
 public abstract class BaseHandle {
-
-    public boolean checkUser(User user){
-        if(user.getType()==1) {
-            return true;
-        }else{
-            return false;
-        }
+    public boolean checkSession(HttpServletRequest request) {
+        return false;
     }
-
 }

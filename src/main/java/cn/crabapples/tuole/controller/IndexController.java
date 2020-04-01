@@ -44,7 +44,7 @@ public class IndexController extends BaseHandle {
     public String login(HttpServletRequest request, User user) {
         if (indexService.login(request, user)) {
             User _this = (User) request.getSession().getAttribute("user");
-            if (checkUser(_this)) {
+            if (checkSession(request)) {
                 return "studentIndex";
             } else {
                 return "orgIndex";
