@@ -5,6 +5,14 @@
   <div data-th-include="base :: meta"></div>
   <div data-th-include="base :: style"></div>
   <div data-th-include="base :: javascript"></div>
+  <style>
+    .foot-img{
+      width: 30%;
+      display: inline-block;
+      height: 200px;
+      margin: 0 15px;
+    }
+  </style>
 </head>
 
 <body>
@@ -13,9 +21,8 @@
 </div>
 <div class="clear"></div>
 <div class="banner0">
-  <img src="../images/banner.png"/>
+  <img data-th-src="@{/images/customs/banner.jpeg}" class="children-banner"/>
 </div>
-<div class="clear"></div>
 <div class="clear"></div>
 <div class="part1">
   <div class="main">
@@ -27,12 +34,14 @@
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       妥乐古银杏风景区位于距盘州市双凤镇35km之石桥镇妥乐村。妥乐古银杏村位于盘县石桥镇，距盘州市新城红果25公里。
     </div>
-    <img src="../images/2.jpg" class="aboutimg"/>
+    <div>
+      <img data-th-src="@{/images/customs/image1.jpeg}" class="foot-img"/>
+      <img data-th-src="@{/images/customs/image2.jpeg}" class="foot-img"/>
+      <img data-th-src="@{/images/customs/image3.jpeg}" class="foot-img"/>
+    </div>
     <div class="morebox"></div>
   </div>
 </div>
-<div class="clear"></div>
-
 <div class="clear"></div>
 <div data-th-include="base :: footer"></div>
 </body>

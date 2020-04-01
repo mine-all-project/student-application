@@ -762,6 +762,11 @@ ul.piclistul li p:hover {
     width: 100%
 }
 
+.children-banner{
+    height: 400px;
+    margin: 0 auto;
+}
+
 
 ul.listul {
     width: 1200px;
@@ -898,7 +903,6 @@ ul.listul li .newsr time {
     display: block;
     margin: 0 auto
 }
-
 
 
 

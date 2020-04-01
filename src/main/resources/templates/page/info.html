@@ -5,6 +5,16 @@
   <div data-th-include="base :: meta"></div>
   <div data-th-include="base :: style"></div>
   <div data-th-include="base :: javascript"></div>
+  <style>
+    .foot-img{
+      width: 23%;
+      display: inline-block;
+      height: 200px;
+      margin: 0 auto;
+      padding: 5px;
+      border-radius: 10px;
+    }
+  </style>
 </head>
 
 <body>
@@ -13,7 +23,7 @@
 </div>
 <div class="clear"></div>
 <div class="banner0">
-  <img src="../images/banner.png"/>
+  <img data-th-src="@{/images/info/banner.jpeg}" class="children-banner"/>
 </div>
 <div class="clear"></div>
 <div class="clear"></div>
@@ -29,12 +39,15 @@
       全妥乐村拥有古银杏1200余株，胸径一般在50一150cm，最大220cm。一般树龄在300年以上，最长者为1500年，树干高达几十米。
       是世界上古银杏生长密度最高、保存最完好的地方。
     </div>
-    <img src="../images/2.jpg" class="aboutimg"/>
+    <div>
+      <img data-th-src="@{/images/info/image1.jpeg}" class="foot-img"/>
+      <img data-th-src="@{/images/info/image2.jpeg}" class="foot-img"/>
+      <img data-th-src="@{/images/info/image3.jpeg}" class="foot-img"/>
+      <img data-th-src="@{/images/info/image4.jpeg}" class="foot-img"/>
+    </div>
     <div class="morebox"></div>
   </div>
 </div>
-<div class="clear"></div>
-
 <div class="clear"></div>
 <div data-th-include="base :: footer"></div>
 </body>

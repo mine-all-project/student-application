@@ -5,6 +5,14 @@
   <div data-th-include="base :: meta"></div>
   <div data-th-include="base :: style"></div>
   <div data-th-include="base :: javascript"></div>
+  <style>
+    .foot-img{
+      width: 30%;
+      display: inline-block;
+      height: 200px;
+      margin: 0 15px;
+    }
+  </style>
 </head>
 
 <body>
@@ -13,7 +21,7 @@
 </div>
 <div class="clear"></div>
 <div class="banner0">
-  <img src="../images/banner.png"/>
+  <img data-th-src="@{/images/history/banner.jpeg}" class="children-banner"/>
 </div>
 <div class="clear"></div>
 <div class="clear"></div>
@@ -58,7 +66,11 @@
       潺潺溪流贯村而过，千年银杏虬枝蔓叶，希望这个自然界留给人们的奇特村庄可以一直留存下去，为游人和当地人带去更多的享受。
       但由于资金不足，当地人仍然没有一户人家搬出银杏林。住在植物“活化石”中的人们，对对面的世界并不太了解，甚至还是通过外来游客了解一些情况。
     </div>
-    <img src="../images/2.jpg" class="aboutimg"/>
+    <div>
+      <img data-th-src="@{/images/history/image1.jpeg}" class="foot-img"/>
+      <img data-th-src="@{/images/history/image2.jpeg}" class="foot-img"/>
+      <img data-th-src="@{/images/history/image3.jpeg}" class="foot-img"/>
+    </div>
     <div class="morebox"></div>
   </div>
 </div>
