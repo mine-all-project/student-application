@@ -55,12 +55,12 @@ public class SysController extends BaseController {
         return responseDTO;
     }
 
-    @PostMapping("/uploadFile/{id}")
+    @RequestMapping("/uploadFile/{id}")
     @ResponseBody
     public ResponseDTO uploadFile(HttpServletRequest request, @PathVariable("id") String id) {
         logger.info("收到请求->上传文件:[{}]", id);
-        ResponseDTO responseDTO = sysService.uploadFile(request,id);
-        logger.info("文件上传完成");
+        ResponseDTO responseDTO = sysService.uploadFile(request, id);
+        logger.info("文件上传完成:[{}]", responseDTO);
         return responseDTO;
     }
 

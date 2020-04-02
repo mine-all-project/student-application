@@ -22,5 +22,5 @@ public interface SysService {
      */
     ResponseDTO login(UserForm form);
 
-    ResponseDTO uploadFile(HttpServletRequest request, String id);
+    ResponseDTO uploadFile(HttpServletRequest request,String id);
 }

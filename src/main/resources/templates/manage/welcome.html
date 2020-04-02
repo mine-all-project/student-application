@@ -10,10 +10,12 @@
 <body>
 <div class="layui-fluid">
   <div class="layui-row layui-col-space15" id="manage-picture">
-    <div class="layui-col-sm6 layui-col-md4" v-for="(item,index) in pictures">
+    <div class="layui-col-sm6 layui-col-md4" v-for="item in pictures">
       <div class="layui-card">
         <div class="layui-card-body" style="min-height: 300px;">
-          <img :src="item.src" class="layui-col-sm12 upload" style="height: 300px;" :id="`image${index}`"/>
+          <img :src="`/file/${item.url}`" class="layui-col-sm12 upload"
+               :lay-data="`{url: '/manage/uploadFile/${item.id}'}`"
+               style="height: 300px;"/>
         </div>
       </div>
     </div>
@@ -24,32 +26,32 @@
   layui.use('upload', function () {
     let $ = layui.jquery
     let upload = layui.upload;
-
-    //普通图片上传
     let uploadInst = upload.render({
       elem: '.upload',
       auto: true,
-      url: '/manage/uploadFile/123',//改成您自己的上传接口
-      // choose: function (obj) {
-      //   obj.pushFile();
-      //   obj.preview(function (index, file, result) {
-      //     console.log(index); //得到文件索引
-      //     console.log(file); //得到文件对象
-      //     console.log(result); //得到文件base64编码，比如图片
-      //     $('#demo1').attr('src', result); //图片链接（base64）
-      //     //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
-			//
-      //     //这里还可以做一些 append 文件列表 DOM 的操作
-			//
-      //     //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
-      //     //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
-      //   })
-      // },
-      done: function (res) {
-        if (res.code > 0) {
-          return layer.msg('上传失败');
+      accept: 'images',
+      choose: function (obj) {
+        // obj.pushFile();
+        // obj.preview(function (index, file, result) {
+        //   console.log(index); //得到文件索引
+        //   console.log(file); //得到文件对象
+        //   console.log(result); //得到文件base64编码，比如图片
+        //   $('#demo1').attr('src', result); //图片链接（base64）
+        //obj.resetFile(index, file, '123.jpg'); //重命名文件名，layui 2.3.0 开始新增
+
+        //这里还可以做一些 append 文件列表 DOM 的操作
+
+        //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+        //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+        // })
+      },
+      done: function (result) {
+        if (result.status !== 200) {
+          layer.msg(result.message)
+          return
         }
         return layer.msg('上传成功');
+        vue.getPictures()
       }
     });
   });
@@ -59,47 +61,30 @@
     el: '#manage-picture',
     data() {
       return {
-        isDebug: true,
-        pictures: [
-          {
-            src: '/file/123.png'
-          },
-        ],
+        pictures: [],
       }
     },
     mounted() {
-      this.uploadFile(1)
+      this.getPictures()
     },
     methods: {
-      uploadFile(index) {
-        // uploadInst()
-        // layer.open({
-        //   type: 1,
-        //   area: ['800px', '500px'],
-        //   offset: 'auto', //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-        //   id: 'layerDemo' + 'auto', //防止重复弹出
-        //   content:
-        //       `<div class="layui-upload" >
-        // 				<button type="button" class="layui-btn" id="upload" style="margin: 0 auto">选择图片</button>
-        // 				<div class="layui-upload-list">
-        // 					<img class="layui-upload-img" id="demo1">
-        // 					<p id="demoText"></p>
-        // 				</div>
-        // 			</div> `,
-        //   btn: ['确认上传', '取消上传'],
-        //   btnAlign: 'r', //按钮居中
-        //   shade: 0.5, //不显示遮罩
-        //   yes: function () {
-        //     console.log(1)
-        //     // layer.closeAll();
-        //   },
-        //   btn2: function () {
-        //     console.log(2)
-        //   }
-        // });
-        // let ref = `#input${index}`
-        // console.log(document.querySelector(ref).dispatchEvent(new MouseEvent('click')))
-        // console.log(this.$refs[ref])
+      getPictures() {
+        const _this = this
+        axios.get('/api/getPictures').then(response => {
+          const result = response.data
+          console.log(result)
+          if (result.status !== 200) {
+            layer.msg(result.message)
+            return
+          }
+          _this.pictures = result.data
+          while (_this.pictures.length < 9) {
+            _this.pictures.push({})
+          }
+        }).catch(function (error) {
+          // 请求失败处理
+          console.log(error);
+        });
       },
     }
   })

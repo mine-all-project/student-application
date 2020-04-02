@@ -1,12 +1,12 @@
 package cn.crabapples.tuole.service.impl;
 
 import cn.crabapples.tuole.config.ApplicationConfigure;
-import cn.crabapples.tuole.dao.SysMenuRepository;
+import cn.crabapples.tuole.dao.PictureRepository;
 import cn.crabapples.tuole.dto.ResponseDTO;
+import cn.crabapples.tuole.entity.Picture;
 import cn.crabapples.tuole.entity.SysUser;
 import cn.crabapples.tuole.form.UserForm;
 import cn.crabapples.tuole.service.SysService;
-import cn.crabapples.tuole.service.UserService;
 import cn.crabapples.tuole.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -16,7 +16,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -36,43 +36,18 @@ import javax.servlet.http.HttpServletRequest;
 public class SysServiceImpl implements SysService {
 
     private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
-    private String aesKey;
-    private String redisPrefix;
-    private Long tokenCacheTime;
     private String salt;
+    @Value("${filePath}")
+    private String filePath;
 
-    private final UserService userService;
+    private final PictureRepository pictureRepository;
 
-    private final SysMenuRepository sysMenuRepository;
 
-    private final RedisTemplate<String, Object> redisTemplate;
-
-    public SysServiceImpl(ApplicationConfigure applicationConfigure,
-                          UserService userService,
-                          SysMenuRepository sysMenuRepository,
-                          RedisTemplate<String, Object> redisTemplate) {
-        this.userService = userService;
-        this.sysMenuRepository = sysMenuRepository;
-        this.redisTemplate = redisTemplate;
-        this.aesKey = applicationConfigure.AES_KEY;
-        this.redisPrefix = applicationConfigure.REDIS_PREFIX;
-        this.tokenCacheTime = applicationConfigure.TOKEN_CACHE_TIME;
+    public SysServiceImpl(ApplicationConfigure applicationConfigure, PictureRepository pictureRepository) {
+        this.pictureRepository = pictureRepository;
         this.salt = applicationConfigure.SALT;
     }
 
-    /**
-     * Cacheable
-     * * key: redis中key的值
-     * * value: redis中key的前缀
-     * * 例:
-     * * key::value:tom
-     * * userLogin::${#p0.username}
-     * <p>
-     * 用户登录验证
-     *
-     * @param form 用户信息
-     * @return token
-     */
     @Override
     public ResponseDTO login(UserForm form) {
         try {
@@ -94,10 +69,15 @@ public class SysServiceImpl implements SysService {
     public ResponseDTO uploadFile(HttpServletRequest request, String id) {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile multipartFile = multipartRequest.getFile("file");
-        FileUtils fileUtils = new FileUtils("d:/test/");
+        FileUtils fileUtils = new FileUtils(filePath);
         String path = fileUtils.saveFile(multipartFile);
-        System.err.println(path);
-        return ResponseDTO.returnSuccess("文件上传成功");
+        Picture picture = pictureRepository.findById(id).orElse(null);
+        if(null != picture){
+            picture.setUrl(path);
+            pictureRepository.save(picture);
+            return ResponseDTO.returnSuccess("文件上传成功");
+        }
+        return ResponseDTO.returnError("文件上传失败");
     }
 
     /**

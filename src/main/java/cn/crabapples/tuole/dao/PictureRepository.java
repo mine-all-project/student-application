@@ -17,5 +17,5 @@ import java.util.List;
  */
 @Repository
 public interface PictureRepository extends JpaRepository<Picture, String> {
-    List<Picture> findAllByKeyOrderBySort(String picture);
+    List<Picture> findAllByKeyFlagOrderBySort(String keyFlag);
 }

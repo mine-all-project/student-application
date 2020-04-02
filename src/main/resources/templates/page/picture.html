@@ -2,14 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
   <title></title>
-  <div data-th-include="base :: meta"></div>
-  <div data-th-include="base :: style"></div>
-  <div data-th-include="base :: javascript"></div>
+  <div data-th-include="/page/base :: meta"></div>
+  <div data-th-include="/page/base :: style"></div>
 </head>
 
 <body>
 <div class="header0">
-  <div data-th-include="base :: nav"></div>
+  <div data-th-include="/page/base :: nav"></div>
 </div>
 <div class="clear"></div>
 <div class="typebox"></div>
@@ -17,92 +16,52 @@
   <p><a href="../about.html" class="ccsl">美景图库</a></p>
   <span class="ccsl">BEAUTIFUL PICTURE</span>
 </div>
-<ul class="piclistul">
-  <li>
+<ul class="piclistul" id="page-pictures">
+  <li v-for="item in pictures">
     <div class="kug"></div>
     <div class="proimg">
-      <a data-th-href="@{/images/picture/image1.png}">
-        <img data-th-src="@{/images/picture/image1.png}"/>
+      <a :href="`/file/${item.url}`">
+        <img :src="`/file/${item.url}`"/>
       </a>
     </div>
-    <a data-th-href="@{/images/picture/image1.png}"><p class="ccsl">图片1</p></a>
   </li>
-   <li>
-    <div class="kug"></div>
-    <div class="proimg">
-      <a data-th-href="@{/images/picture/image2.png}">
-        <img data-th-src="@{/images/picture/image2.png}"/>
-      </a>
-    </div>
-    <a data-th-href="@{/images/picture/image2.png}"><p class="ccsl">图片2</p></a>
-  </li>
-   <li>
-    <div class="kug"></div>
-    <div class="proimg">
-      <a data-th-href="@{/images/picture/image3.png}">
-        <img data-th-src="@{/images/picture/image3.png}"/>
-      </a>
-    </div>
-    <a data-th-href="@{/images/picture/image3.png}"><p class="ccsl">图片3</p></a>
-  </li>
-   <li>
-    <div class="kug"></div>
-    <div class="proimg">
-      <a data-th-href="@{/images/picture/image4.png}">
-        <img data-th-src="@{/images/picture/image4.png}"/>
-      </a>
-    </div>
-    <a data-th-href="@{/images/picture/image4.png}"><p class="ccsl">图片4</p></a>
-  </li>
-   <li>
-    <div class="kug"></div>
-    <div class="proimg">
-      <a data-th-href="@{/images/picture/image5.png}">
-        <img data-th-src="@{/images/picture/image5.png}"/>
-      </a>
-    </div>
-    <a data-th-href="@{/images/picture/image5.png}"><p class="ccsl">图片5</p></a>
-  </li>
-   <li>
-    <div class="kug"></div>
-    <div class="proimg">
-      <a data-th-href="@{/images/picture/image6.png}">
-        <img data-th-src="@{/images/picture/image6.png}"/>
-      </a>
-    </div>
-    <a data-th-href="@{/images/picture/image6.png}"><p class="ccsl">图片6</p></a>
-  </li>
-   <li>
-    <div class="kug"></div>
-    <div class="proimg">
-      <a data-th-href="@{/images/picture/image7.png}">
-        <img data-th-src="@{/images/picture/image7.png}"/>
-      </a>
-    </div>
-    <a data-th-href="@{/images/picture/image7.png}"><p class="ccsl">图片7</p></a>
-  </li>
-   <li>
-    <div class="kug"></div>
-    <div class="proimg">
-      <a data-th-href="@{/images/picture/image8.png}">
-        <img data-th-src="@{/images/picture/image8.png}"/>
-      </a>
-    </div>
-    <a data-th-href="@{/images/picture/image8.png}"><p class="ccsl">图片8</p></a>
-  </li>
-   <li>
-    <div class="kug"></div>
-    <div class="proimg">
-      <a data-th-href="@{/images/picture/image9.png}">
-        <img data-th-src="@{/images/picture/image9.png}"/>
-      </a>
-    </div>
-    <a data-th-href="@{/images/picture/image9.png}"><p class="ccsl">图片9</p></a>
-  </li>
-
 </ul>
 <div class="clear"></div>
 <div class="clear"></div>
-<div data-th-include="base :: footer"></div>
+<div data-th-include="/page/base :: javascript"></div>
+<div data-th-include="/page/base :: footer"></div>
+<script>
+  let vue = new Vue({
+    el: '#page-pictures',
+    data() {
+      return {
+        pictures: [],
+      }
+    },
+    mounted() {
+      this.getPictures()
+    },
+    methods: {
+      getPictures() {
+        const _this = this
+        axios.get('/api/getPictures').then(response => {
+          const result = response.data
+          console.log(result)
+          if (result.status !== 200) {
+            layer.msg(result.message)
+            return
+          }
+          _this.pictures = result.data
+          while (_this.pictures.length < 9) {
+            _this.pictures.push({})
+          }
+        }).catch(function (error) {
+          // 请求失败处理
+          console.log(error);
+        });
+      },
+    }
+  })
+</script>
 </body>
 </html>

@@ -14,8 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class RestFulController extends BaseController {
-    final
-    RestFulService restFulService;
+    private final RestFulService restFulService;
 
     public RestFulController(RestFulService restFulService) {
         this.restFulService = restFulService;
@@ -28,7 +27,7 @@ public class RestFulController extends BaseController {
     public ResponseDTO getPictures() {
         List<Picture> pictures = restFulService.getPictures();
         logger.info("收到请求->获取美景图库图片");
-        return null;
+        return ResponseDTO.returnSuccess("操作成功", pictures);
     }
 
 }
