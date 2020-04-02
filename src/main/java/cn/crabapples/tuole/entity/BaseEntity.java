@@ -2,6 +2,8 @@ package cn.crabapples.tuole.entity;
 
 
 import com.google.gson.Gson;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -10,31 +12,18 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(length = 64)
     private String id;
 
     @Column(length = 10)
-    private LocalDateTime create_time;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCreate_time() {
-        return create_time;
-    }
-
-    public void setCreate_time(LocalDateTime create_time) {
-        this.create_time = create_time;
-    }
+    private LocalDateTime createTime;
 
     @Override
     public String toString() {

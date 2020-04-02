@@ -40,19 +40,6 @@ public class IndexController extends BaseHandle {
         return "index";
     }
 
-    @RequestMapping("login")
-    public String login(HttpServletRequest request, User user) {
-        if (indexService.login(request, user)) {
-            User _this = (User) request.getSession().getAttribute("user");
-            if (checkSession(request)) {
-                return "studentIndex";
-            } else {
-                return "orgIndex";
-            }
-        }
-        return "";
-    }
-
     @RequestMapping("welcome")
     public String welcome(HttpServletRequest request) {
         request.setAttribute("welcome", "欢迎使用遵义医科大学双选会系统!");

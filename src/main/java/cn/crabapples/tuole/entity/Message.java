@@ -1,52 +1,24 @@
 package cn.crabapples.tuole.entity;
 
 import com.google.gson.Gson;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
+@Getter
+@Setter
 public class Message extends BaseEntity{
-    @Column(length = 50)
-    private String fromId;
+    @Column(length = 32)
+    private String userId;
     @Column(length = 50)
     private String name;
-    @Column(length = 50)
-    private String toId;
+    @Column(columnDefinition = "int(2) default 1 comment '模板'")
+    private Integer template;
     @Column(length = 1)
     private String status;
-
-    public String getFromId() {
-        return fromId;
-    }
-
-    public void setFromId(String fromId) {
-        this.fromId = fromId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getToId() {
-        return toId;
-    }
-
-    public void setToId(String toId) {
-        this.toId = toId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     @Override
     public String toString() {
