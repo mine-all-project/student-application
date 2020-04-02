@@ -2,11 +2,9 @@ package cn.crabapples.tuole.service;
 
 
 import cn.crabapples.tuole.dto.ResponseDTO;
-import cn.crabapples.tuole.entity.SysMenu;
-import cn.crabapples.tuole.entity.SysUser;
 import cn.crabapples.tuole.form.UserForm;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * TODO 系统相关服务
@@ -24,9 +22,5 @@ public interface SysService {
      */
     ResponseDTO login(UserForm form);
 
-    /**
-     * 获取系统菜单
-     * @return
-     */
-    List<SysMenu> getSysMenus(SysUser user);
+    ResponseDTO uploadFile(HttpServletRequest request, String id);
 }

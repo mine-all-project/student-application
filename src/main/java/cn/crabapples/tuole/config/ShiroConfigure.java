@@ -8,7 +8,7 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -47,17 +47,15 @@ public class ShiroConfigure {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(DefaultWebSecurityManager securityManager){
         ShiroFilterFactoryBean shiroFilterFactory = new ShiroFilterFactoryBean();
         shiroFilterFactory.setSecurityManager(securityManager);
-        Map<String,String> filterMap = new HashMap<>();
+        Map<String,String> filterMap = new LinkedHashMap<>();
         /*
          * shiro过滤器配置
          *  authc需要认证的url
          *  anon不需要认证的url
          *  perms需要授权的url
          */
-//        filterMap.put("/**","authc");
+        filterMap.put("/manage/loginCheck","anon");
         filterMap.put("/manage/**","authc");
-        filterMap.put("/login","anon");
-        filterMap.put("/","anon");
 
         filterMap.put("/js/**","anon");
         filterMap.put("/css/**","anon");

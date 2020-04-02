@@ -20,17 +20,17 @@ public class IndexController extends BaseController {
     }
 
     private Logger logger = LoggerFactory.getLogger(IndexController.class);
-    private final String PAGE = "page/";
+    private static final String PAGE = "page/";
 
     @GetMapping("/page/{pageName}")
     public String page(@PathVariable("pageName") String pageName) {
-        logger.info("收到请求->进入页面[{}]", pageName);
+        logger.info("收到请求->进入页面[{}]", PAGE + pageName);
         return PAGE + pageName;
     }
 
     @GetMapping("/page/{dir}/{pageName}")
     public String dirPage(@PathVariable("dir") String dir, @PathVariable("pageName") String pageName) {
-        logger.info("收到请求->进入二级页面[{}/{}]", dir, pageName);
+        logger.info("收到请求->进入二级页面[{}]", PAGE + dir + "/" + pageName);
         return PAGE + dir + "/" + pageName;
     }
 

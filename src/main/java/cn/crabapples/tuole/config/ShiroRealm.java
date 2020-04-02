@@ -15,9 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 /**
@@ -46,10 +44,10 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
-        List<SysMenu> menus = sysService.getSysMenus(user);
-        Set<String> permissions = getPermissions(menus).stream().filter(Objects::nonNull).collect(Collectors.toSet());
+//        List<SysMenu> menus = sysService.getSysMenus(user);
+//        Set<String> permissions = getPermissions(menus).stream().filter(Objects::nonNull).collect(Collectors.toSet());
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        authorizationInfo.setStringPermissions(permissions);
+//        authorizationInfo.setStringPermissions(permissions);
         return authorizationInfo;
     }
 
