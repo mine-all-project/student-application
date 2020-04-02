@@ -14,16 +14,16 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @version 2018-10-1
  */
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer {
-	
+public class StudentApplication extends SpringBootServletInitializer {
+
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(StudentApplication.class, args);
 	}
-	
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		this.setRegisterErrorPageFilter(false); // 错误页面有容器来处理，而不是SpringBoot
-		return builder.sources(Application.class);
+		return builder.sources(StudentApplication.class);
 	}
-	
+
 }
