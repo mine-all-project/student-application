@@ -60,7 +60,7 @@
         methods: {
             login(data) {
                 console.log(data)
-                axios.post('/login', data).then(response => {
+                axios.post('/manage/loginCheck', data).then(response => {
                     const result = response.data
                     console.log(result)
                     if (result.status !== 200) {
@@ -68,7 +68,7 @@
                         return
                     }
                     layer.msg(result.message)
-                    window.location.href = '/index'
+                    window.location.href = '/manage/index'
                 }).catch(exception => {
                     layer.msg('系统错误')
                     console.error('系统错误', exception)

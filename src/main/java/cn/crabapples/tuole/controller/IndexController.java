@@ -1,6 +1,5 @@
 package cn.crabapples.tuole.controller;
 
-import cn.crabapples.tuole.entity.User;
 import cn.crabapples.tuole.service.IndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class IndexController extends BaseHandle {
+public class IndexController extends BaseController {
     final
     IndexService indexService;
 
