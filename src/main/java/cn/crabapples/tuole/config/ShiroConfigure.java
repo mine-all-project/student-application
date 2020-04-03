@@ -55,7 +55,7 @@ public class ShiroConfigure {
          *  perms需要授权的url
          */
         filterMap.put("/manage/loginCheck","anon");
-        filterMap.put("/manage/**","authc");
+//        filterMap.put("/manage/**","authc");
         filterMap.put("/api/**","anon");
 
         filterMap.put("/js/**","anon");

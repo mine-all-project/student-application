@@ -17,7 +17,7 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     public List<Picture> getPictures() {
-        List<Picture> pictures = pictureRepository.findAllByKeyFlagOrderBySort("picture");
+        List<Picture> pictures = pictureRepository.findAllByKeyWordOrderBySort("picture");
         return pictures;
     }
 }

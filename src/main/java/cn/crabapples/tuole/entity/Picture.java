@@ -22,6 +22,6 @@ public class Picture extends BaseEntity {
     @Column(columnDefinition = "longtext")
     private String url;
     @Column(columnDefinition = "varchar(64)")
-    private String keyFlag;
+    private String keyWord;
     private Integer sort;
 }
