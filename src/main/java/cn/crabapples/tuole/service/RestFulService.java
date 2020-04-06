@@ -20,4 +20,6 @@ public interface RestFulService {
     AudioFile getAudioFileById(String id);
 
     void removeAudioFileById(String id);
+
+    List<AudioFile> getAudioFileListNot(String keyWord, String id);
 }

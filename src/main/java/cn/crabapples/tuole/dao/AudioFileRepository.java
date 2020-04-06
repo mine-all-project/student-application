@@ -22,4 +22,6 @@ public interface AudioFileRepository extends JpaRepository<AudioFile, String> {
     List<AudioFile> findAllByKeyWord(String video);
 
     List<AudioFile> findAllByKeyWordOrderByCreateTime(String keyWord);
+
+    List<AudioFile> findAllByKeyWordAndIdNotOrderByCreateTime(String keyWord, String id);
 }

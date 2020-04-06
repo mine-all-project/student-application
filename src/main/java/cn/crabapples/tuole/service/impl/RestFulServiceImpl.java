@@ -72,6 +72,7 @@ public class RestFulServiceImpl implements RestFulService {
             }
             throw new ApplicationException("文件上传失败");
         } else {
+            audioFile.setCreateTime(LocalDateTime.now());
             return audioFileRepository.save(audioFile);
         }
     }
@@ -108,5 +109,10 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public List<AudioFile> getAudioFileListByKeyWord(String keyWord) {
         return audioFileRepository.findAllByKeyWordOrderByCreateTime(keyWord);
+    }
+
+    @Override
+    public List<AudioFile> getAudioFileListNot(String keyWord, String id) {
+        return audioFileRepository.findAllByKeyWordAndIdNotOrderByCreateTime(keyWord, id);
     }
 }

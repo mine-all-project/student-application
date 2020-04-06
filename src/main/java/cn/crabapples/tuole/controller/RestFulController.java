@@ -21,7 +21,6 @@ public class RestFulController extends BaseController {
         this.restFulService = restFulService;
     }
 
-
     @RequestMapping("/uploadFile/{id}")
     @ResponseBody
     public ResponseDTO uploadFile(HttpServletRequest request, @PathVariable("id") String id) {
@@ -63,6 +62,14 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", audioFiles);
     }
 
+ @GetMapping("/getAudioFileListNot/{keyWord}/{id}")
+    public ResponseDTO getAudioFileListNot(@PathVariable("keyWord") String keyWord,@PathVariable("id") String id) {
+        logger.info("收到请求->获取媒体数据列表,keyword:[{}],排除id:[{}]", keyWord,id);
+        List<AudioFile> audioFiles = restFulService.getAudioFileListNot(keyWord,id);
+        logger.info("返回结果->获取媒体数据列表完成:[{}]", audioFiles);
+        return ResponseDTO.returnSuccess("操作成功", audioFiles);
+    }
+
     @GetMapping("/getAudioFileById/{id}")
     public ResponseDTO getAudioFileById(@PathVariable("id") String id) {
         logger.info("收到请求->获取媒体数据,id:[{}]", id);
@@ -71,7 +78,7 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", audioFile);
     }
 
-    @PostMapping("/removeAudioFileById/{id}")
+    @DeleteMapping("/removeAudioFileById/{id}")
     public ResponseDTO removeAudioFileById(@PathVariable("id") String id) {
         logger.info("收到请求->删除媒体数据,id:[{}]", id);
         restFulService.removeAudioFileById(id);
