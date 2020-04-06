@@ -2,55 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
   <title></title>
-  <div data-th-include="base :: meta"></div>
-  <div data-th-include="base :: style"></div>
-  <div data-th-include="base :: javascript"></div>
+  <div data-th-include="/base/page :: meta"></div>
+  <div data-th-include="/base/page :: style"></div>
+  <div data-th-include="/base/page :: javascript"></div>
 </head>
 
 <body>
 <div class="header0">
-  <div data-th-include="base :: nav"></div>
+  <div data-th-include="/base/page :: nav"></div>
 </div>
 <div class="clear"></div>
-<div class="banner0">
-  <img src="../../images/banner.png"/>
-</div>
 <div class="typebox">
 </div>
 <div class="clear"></div>
-<ul class="listul">
-  <li>
-    <div class="newsl">
-      <img src="../../images/1.png"/>
-    </div>
+<ul class="listul" id="page-notice-list">
+  <li v-for="item in audioList">
     <div class="newsc">
-      <a href="../strategy.html" class="ccsl">暑假去哪玩？桃花苑天地避暑甚好！</a>
-      <div class="sub">
-        暑期近在眼前，还在犹豫带孩子去哪儿玩吗？炎热的夏天，一颗躁动的心，背上收拾好的背包，走遍大好河山，感受大千世界，还不如隐居室外桃源桃花苑天地精品。少一些城市的喧嚣，回归大自然的清新脱俗，来一场说走就走的夏日之旅吧。
-      </div>
-    </div>
-    <div class="newsr">
-      <span>05.25</span>
-      <time>2016</time>
-    </div>
-  </li>
-  <li>
-    <div class="newsl">
-      <img src="../../images/1.png"/>
-    </div>
-    <div class="newsc">
-      <a href="../strategy.html" class="ccsl">暑假去哪玩？桃花苑天地避暑甚好！</a>
-      <div class="sub">
-        暑期近在眼前，还在犹豫带孩子去哪儿玩吗？炎热的夏天，一颗躁动的心，背上收拾好的背包，走遍大好河山，感受大千世界，还不如隐居室外桃源桃花苑天地精品。少一些城市的喧嚣，回归大自然的清新脱俗，来一场说走就走的夏日之旅吧。
-      </div>
-    </div>
-    <div class="newsr">
-      <span>05.25</span>
-      <time>2016</time>
+      <a :href=`/page/notice/info.html?${item.id}` class="ccsl">{{item.title}}</a>
+      <div class="sub" v-html="item.url">正文内容</div>
     </div>
   </li>
 </ul>
 <div class="clear"></div>
-<div data-th-include="base :: footer"></div>
+<div data-th-include="/base/page :: footer"></div>
+<script>
+  let vue = new Vue({
+    el: '#page-notice-list',
+    data() {
+      return {
+        audioList: [],
+      }
+    },
+    mounted() {
+      this.getAudioFileList();
+    },
+    methods: {
+      getAudioFileList() {
+        const _this = this;
+        axios.get('/api/getAudioFileList/notice').then(response => {
+          const result = response.data;
+          console.log('通过api获取到的数据:', result);
+          if (result.status !== 200) {
+            this.$message.error('数据加载失败');
+            return;
+          }
+          _this.audioList = result.data;
+        }).catch(function (error) {
+          console.log('请求出现错误:', error);
+        });
+      },
+    }
+  })
+</script>
 </body>
 </html>
