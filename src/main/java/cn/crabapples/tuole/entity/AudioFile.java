@@ -18,7 +18,8 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
-public class Picture extends BaseEntity {
+public class AudioFile extends BaseEntity {
+    private String title;
     @Column(columnDefinition = "longtext")
     private String url;
     @Column(columnDefinition = "varchar(64)")

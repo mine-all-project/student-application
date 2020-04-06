@@ -4,8 +4,6 @@ package cn.crabapples.tuole.service;
 import cn.crabapples.tuole.dto.ResponseDTO;
 import cn.crabapples.tuole.form.UserForm;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * TODO 系统相关服务
  *
@@ -22,5 +20,4 @@ public interface SysService {
      */
     ResponseDTO login(UserForm form);
 
-    ResponseDTO uploadFile(HttpServletRequest request,String id);
 }

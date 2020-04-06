@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * TODO 系统相关接口
  *
@@ -52,15 +50,6 @@ public class SysController extends BaseController {
         super.validator(form, IsLogin.class);
         ResponseDTO responseDTO = sysService.login(form);
         logger.info("登录验证结束->用户信息:[{}]", responseDTO);
-        return responseDTO;
-    }
-
-    @RequestMapping("/uploadFile/{id}")
-    @ResponseBody
-    public ResponseDTO uploadFile(HttpServletRequest request, @PathVariable("id") String id) {
-        logger.info("收到请求->上传文件:[{}]", id);
-        ResponseDTO responseDTO = sysService.uploadFile(request, id);
-        logger.info("文件上传完成:[{}]", responseDTO);
         return responseDTO;
     }
 }

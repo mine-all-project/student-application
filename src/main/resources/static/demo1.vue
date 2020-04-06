@@ -42,7 +42,7 @@
                 const _this = this
                 axios.get('/api/getPictures').then(response => {
                     const result = response.data
-                    console.log(result)
+                    console.log('通过api获取到的数据:', result)
                     if (result.status !== 200) {
                         layer.msg(result.message)
                         return
@@ -53,7 +53,7 @@
                     }
                 }).catch(function (error) {
                     // 请求失败处理
-                    console.log(error);
+                    console.log('请求出现错误:', error);
                 });
             },
 

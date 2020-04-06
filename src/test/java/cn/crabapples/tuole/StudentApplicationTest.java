@@ -1,4 +1,4 @@
-package com.example.hzj;
+package cn.crabapples.tuole;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class HzjApplicationTests {
+public class StudentApplicationTest {
 
     @Test
     public void contextLoads() {

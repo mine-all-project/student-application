@@ -46,13 +46,13 @@
                 console.log(data)
                 axios.post('/manage/loginCheck', data).then(response => {
                     const result = response.data
-                    console.log(result)
+                    console.log('通过api获取到的数据:', result)
                     if (result.status !== 200) {
                         layer.msg(result.message)
                         return
                     }
                     layer.msg(result.message)
-                    window.location.href = '/manage/index'
+                    window.location.href = '../../static/vue/manage/index'
                 }).catch(exception => {
                     layer.msg('系统错误')
                     console.error('系统错误', exception)

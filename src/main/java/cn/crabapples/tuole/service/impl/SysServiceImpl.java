@@ -1,13 +1,10 @@
 package cn.crabapples.tuole.service.impl;
 
 import cn.crabapples.tuole.config.ApplicationConfigure;
-import cn.crabapples.tuole.dao.PictureRepository;
 import cn.crabapples.tuole.dto.ResponseDTO;
-import cn.crabapples.tuole.entity.Picture;
 import cn.crabapples.tuole.entity.SysUser;
 import cn.crabapples.tuole.form.UserForm;
 import cn.crabapples.tuole.service.SysService;
-import cn.crabapples.tuole.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -16,12 +13,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * TODO 系统相关服务实现类
@@ -37,14 +29,9 @@ public class SysServiceImpl implements SysService {
 
     private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
     private String salt;
-    @Value("${filePath}")
-    private String filePath;
-
-    private final PictureRepository pictureRepository;
 
 
-    public SysServiceImpl(ApplicationConfigure applicationConfigure, PictureRepository pictureRepository) {
-        this.pictureRepository = pictureRepository;
+    public SysServiceImpl(ApplicationConfigure applicationConfigure) {
         this.salt = applicationConfigure.SALT;
     }
 
@@ -63,21 +50,6 @@ public class SysServiceImpl implements SysService {
             return ResponseDTO.returnError(e.getMessage());
         }
         return ResponseDTO.returnSuccess("登录成功");
-    }
-
-    @Override
-    public ResponseDTO uploadFile(HttpServletRequest request, String id) {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        MultipartFile multipartFile = multipartRequest.getFile("file");
-        FileUtils fileUtils = new FileUtils(filePath);
-        String path = fileUtils.saveFile(multipartFile);
-        Picture picture = pictureRepository.findById(id).orElse(null);
-        if(null != picture){
-            picture.setUrl(path);
-            pictureRepository.save(picture);
-            return ResponseDTO.returnSuccess("文件上传成功");
-        }
-        return ResponseDTO.returnError("文件上传失败");
     }
 
     /**
