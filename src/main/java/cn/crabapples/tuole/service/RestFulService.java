@@ -1,6 +1,7 @@
 package cn.crabapples.tuole.service;
 
 import cn.crabapples.tuole.entity.AudioFile;
+import cn.crabapples.tuole.entity.Order;
 import cn.crabapples.tuole.entity.Shop;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,4 +27,10 @@ public interface RestFulService {
     List<AudioFile> getAudioFileListNot(String keyWord, String id);
 
     Map<String, String> uploadShopFile(HttpServletRequest request);
+
+    Shop getShopInfo(String keyword);
+
+    Shop saveShopInfo(Shop shop);
+
+    Order submitOrder(Shop shop);
 }

@@ -2,6 +2,7 @@ package cn.crabapples.tuole.controller;
 
 import cn.crabapples.tuole.dto.ResponseDTO;
 import cn.crabapples.tuole.entity.AudioFile;
+import cn.crabapples.tuole.entity.Order;
 import cn.crabapples.tuole.entity.Shop;
 import cn.crabapples.tuole.service.RestFulService;
 import org.slf4j.Logger;
@@ -30,15 +31,6 @@ public class RestFulController extends BaseController {
         AudioFile audioFile = restFulService.uploadFile(request, id);
         logger.info("文件上传完成:[{}]", audioFile);
         return ResponseDTO.returnSuccess("操作成功", audioFile);
-    }
-
-    @RequestMapping("/uploadShopFile/{keyword}")
-    @ResponseBody
-    public ResponseDTO uploadShopFile(HttpServletRequest request, @PathVariable("keyword") String keyword) {
-        logger.info("收到请求->上传商品文件:[{}]", keyword);
-        Map<String, String> path = restFulService.uploadShopFile(request);
-        logger.info("商品文件上传完成:[{}]", path);
-        return ResponseDTO.returnSuccess("操作成功", path);
     }
 
     @PostMapping("/saveAudioFile/{id}")
@@ -97,4 +89,39 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
+    @RequestMapping("/uploadShopFile/{keyword}")
+    @ResponseBody
+    public ResponseDTO uploadShopFile(HttpServletRequest request, @PathVariable("keyword") String keyword) {
+        logger.info("收到请求->上传商品图片:[{}]", keyword);
+        Map<String, String> path = restFulService.uploadShopFile(request);
+        logger.info("返回结果->商品图片上传完成:[{}]", path);
+        return ResponseDTO.returnSuccess("操作成功", path);
+    }
+
+    @RequestMapping("/getShopInfo/{keyword}")
+    @ResponseBody
+    public ResponseDTO getShopInfo(@PathVariable("keyword") String keyword) {
+        logger.info("收到请求->获取商品信息:[{}]", keyword);
+        Shop shop = restFulService.getShopInfo(keyword);
+        logger.info("返回结果->获取商品信息完成:[{}]", shop);
+        return ResponseDTO.returnSuccess("操作成功", shop);
+    }
+
+    @RequestMapping("/saveShopInfo")
+    @ResponseBody
+    public ResponseDTO saveShopInfo(@RequestBody Shop shop) {
+        logger.info("收到请求->保存商品信息:[{}]", shop);
+        shop = restFulService.saveShopInfo(shop);
+        logger.info("返回结果->保存商品信息完成:[{}]", shop);
+        return ResponseDTO.returnSuccess("操作成功", shop);
+    }
+
+    @RequestMapping("/submitOrder")
+    @ResponseBody
+    public ResponseDTO submitOrder(@RequestBody Shop shop) {
+        logger.info("收到请求->提交订单:[{}]", shop);
+        Order order = restFulService.submitOrder(shop);
+        logger.info("返回结果->提交订单完成:[{}]", order);
+        return ResponseDTO.returnSuccess("操作成功", order);
+    }
 }

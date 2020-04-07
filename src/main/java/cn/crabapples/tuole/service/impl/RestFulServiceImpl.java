@@ -2,30 +2,38 @@ package cn.crabapples.tuole.service.impl;
 
 import cn.crabapples.tuole.config.ApplicationException;
 import cn.crabapples.tuole.dao.AudioFileRepository;
+import cn.crabapples.tuole.dao.OrderRepository;
+import cn.crabapples.tuole.dao.ShopRepository;
 import cn.crabapples.tuole.entity.AudioFile;
+import cn.crabapples.tuole.entity.Order;
 import cn.crabapples.tuole.entity.Shop;
+import cn.crabapples.tuole.entity.SysUser;
 import cn.crabapples.tuole.service.RestFulService;
 import cn.crabapples.tuole.utils.FileUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
     @Value("${filePath}")
     private String filePath;
     private final AudioFileRepository audioFileRepository;
+    private final ShopRepository shopRepository;
+    private final OrderRepository orderRepository;
 
-    public RestFulServiceImpl(AudioFileRepository audioFileRepository) {
+    public RestFulServiceImpl(AudioFileRepository audioFileRepository, ShopRepository shopRepository, OrderRepository orderRepository) {
         this.audioFileRepository = audioFileRepository;
+        this.shopRepository = shopRepository;
+        this.orderRepository = orderRepository;
     }
 
     private String getfilePath(HttpServletRequest request) {
@@ -124,5 +132,33 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public List<AudioFile> getAudioFileListNot(String keyWord, String id) {
         return audioFileRepository.findAllByKeyWordAndIdNotOrderByCreateTime(keyWord, id);
+    }
+
+    @Override
+    public Shop getShopInfo(String keyword) {
+        return shopRepository.findAllByKeyWord(keyword);
+    }
+
+    @Override
+    public Shop saveShopInfo(Shop shop) {
+        return shopRepository.saveAndFlush(shop);
+    }
+
+    @Override
+    public Order submitOrder(Shop shop) {
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        Order order = new Order();
+        List<Shop> shops = new ArrayList<>();
+        shops.add(shop);
+        order.setShops(shops);
+        order.setSysUser(sysUser);
+        order.setCreateTime(LocalDateTime.now());
+        order.setUpdateTime(LocalDateTime.now());
+        Order order1 = orderRepository.findAllBySysUserNotAndCreateTimeNot(sysUser, LocalDate.now()).orElse(null);
+        if (order1 == null) {
+            orderRepository.save(order);
+        }
+        return order;
     }
 }

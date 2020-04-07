@@ -1,5 +1,6 @@
 package cn.crabapples.tuole.entity;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,4 +27,8 @@ public class Shop extends BaseEntity {
     @Column(columnDefinition = "varchar(64)")
     private String keyWord;
     private Integer sort;
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
 }
