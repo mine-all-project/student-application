@@ -3,6 +3,7 @@ package cn.crabapples.tuole.service.impl;
 import cn.crabapples.tuole.config.ApplicationException;
 import cn.crabapples.tuole.dao.AudioFileRepository;
 import cn.crabapples.tuole.entity.AudioFile;
+import cn.crabapples.tuole.entity.Shop;
 import cn.crabapples.tuole.service.RestFulService;
 import cn.crabapples.tuole.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +13,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -25,7 +28,7 @@ public class RestFulServiceImpl implements RestFulService {
         this.audioFileRepository = audioFileRepository;
     }
 
-    private String getfilePath(HttpServletRequest request, String id) {
+    private String getfilePath(HttpServletRequest request) {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile multipartFile = multipartRequest.getFile("file");
         FileUtils fileUtils = new FileUtils(filePath);
@@ -34,7 +37,7 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     public AudioFile uploadFile(HttpServletRequest request, String id) {
-        String path = getfilePath(request, id);
+        String path = getfilePath(request);
         AudioFile picture = audioFileRepository.findById(id).orElse(null);
         if (null != picture) {
             picture.setUrl(path);
@@ -43,6 +46,13 @@ public class RestFulServiceImpl implements RestFulService {
             return audioFileRepository.save(picture);
         }
         throw new ApplicationException("文件上传失败");
+    }
+
+    @Override
+    public Map<String, String> uploadShopFile(HttpServletRequest request) {
+        Map<String, String> path = new HashMap<>(1);
+        path.put("path", getfilePath(request));
+        return path;
     }
 
     @Override
@@ -63,7 +73,7 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public AudioFile saveAudioFile(HttpServletRequest request, AudioFile audioFile, String id) {
         if (request instanceof MultipartHttpServletRequest) {
-            String path = getfilePath(request, id);
+            String path = getfilePath(request);
             AudioFile byId = audioFileRepository.findById(id).orElse(audioFile);
             if (null != byId) {
                 byId.setUrl(path);

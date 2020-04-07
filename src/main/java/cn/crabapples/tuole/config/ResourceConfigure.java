@@ -24,7 +24,7 @@ public class ResourceConfigure implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/file/**").addResourceLocations("file:/" + filePath + "/");
+        registry.addResourceHandler("/file/**").addResourceLocations("file:" + filePath + "/");
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 }

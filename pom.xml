@@ -11,7 +11,7 @@
   <groupId>cn.crabapples</groupId>
   <artifactId>tuole</artifactId>
   <version>1.0</version>
-  <name>tuole</name>
+  <name>student-project</name>
   <description>this is a student project</description>
 
   <properties>

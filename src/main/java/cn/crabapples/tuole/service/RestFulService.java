@@ -1,9 +1,11 @@
 package cn.crabapples.tuole.service;
 
 import cn.crabapples.tuole.entity.AudioFile;
+import cn.crabapples.tuole.entity.Shop;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 public interface RestFulService {
 
@@ -22,4 +24,6 @@ public interface RestFulService {
     void removeAudioFileById(String id);
 
     List<AudioFile> getAudioFileListNot(String keyWord, String id);
+
+    Map<String, String> uploadShopFile(HttpServletRequest request);
 }

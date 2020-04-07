@@ -2,6 +2,7 @@ package cn.crabapples.tuole.controller;
 
 import cn.crabapples.tuole.dto.ResponseDTO;
 import cn.crabapples.tuole.entity.AudioFile;
+import cn.crabapples.tuole.entity.Shop;
 import cn.crabapples.tuole.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -28,6 +30,15 @@ public class RestFulController extends BaseController {
         AudioFile audioFile = restFulService.uploadFile(request, id);
         logger.info("文件上传完成:[{}]", audioFile);
         return ResponseDTO.returnSuccess("操作成功", audioFile);
+    }
+
+    @RequestMapping("/uploadShopFile/{keyword}")
+    @ResponseBody
+    public ResponseDTO uploadShopFile(HttpServletRequest request, @PathVariable("keyword") String keyword) {
+        logger.info("收到请求->上传商品文件:[{}]", keyword);
+        Map<String, String> path = restFulService.uploadShopFile(request);
+        logger.info("商品文件上传完成:[{}]", path);
+        return ResponseDTO.returnSuccess("操作成功", path);
     }
 
     @PostMapping("/saveAudioFile/{id}")
@@ -62,10 +73,10 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", audioFiles);
     }
 
- @GetMapping("/getAudioFileListNot/{keyWord}/{id}")
-    public ResponseDTO getAudioFileListNot(@PathVariable("keyWord") String keyWord,@PathVariable("id") String id) {
-        logger.info("收到请求->获取媒体数据列表,keyword:[{}],排除id:[{}]", keyWord,id);
-        List<AudioFile> audioFiles = restFulService.getAudioFileListNot(keyWord,id);
+    @GetMapping("/getAudioFileListNot/{keyWord}/{id}")
+    public ResponseDTO getAudioFileListNot(@PathVariable("keyWord") String keyWord, @PathVariable("id") String id) {
+        logger.info("收到请求->获取媒体数据列表,keyword:[{}],排除id:[{}]", keyWord, id);
+        List<AudioFile> audioFiles = restFulService.getAudioFileListNot(keyWord, id);
         logger.info("返回结果->获取媒体数据列表完成:[{}]", audioFiles);
         return ResponseDTO.returnSuccess("操作成功", audioFiles);
     }
