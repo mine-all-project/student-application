@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="x-admin-sm">
-    
+
     <head>
         <meta charset="UTF-8">
         <title>欢迎页面-X-admin2.2</title>
@@ -73,7 +73,7 @@
                                     <i class="layui-icon x-show" status='true'>&#xe623;</i>
                                     产品管理
                                   </td>
-                                  <td><input type="text" class="layui-input x-sort" name="order" value="1"></td>
+                                  <td><input type="text" class="layui-input x-sort" name="orders" value="1"></td>
                                   <td>
                                     <input type="checkbox" name="switch"  lay-text="开启|停用"  checked="" lay-skin="switch">
                                   </td>
@@ -93,7 +93,7 @@
                                     <i class="layui-icon x-show" status='true'>&#xe623;</i>
                                     产品列表
                                   </td>
-                                  <td><input type="text" class="layui-input x-sort" name="order" value="1"></td>
+                                  <td><input type="text" class="layui-input x-sort" name="orders" value="1"></td>
                                   <td>
                                     <input type="checkbox" name="switch"  lay-text="开启|停用"  checked="" lay-skin="switch">
                                   </td>
@@ -112,7 +112,7 @@
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     ├产品列表
                                   </td>
-                                  <td><input type="text" class="layui-input x-sort" name="order" value="1"></td>
+                                  <td><input type="text" class="layui-input x-sort" name="orders" value="1"></td>
                                   <td>
                                     <input type="checkbox" name="switch"  lay-text="开启|停用"  checked="" lay-skin="switch">
                                   </td>
@@ -131,7 +131,7 @@
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     ├产品列表
                                   </td>
-                                  <td><input type="text" class="layui-input x-sort" name="order" value="1"></td>
+                                  <td><input type="text" class="layui-input x-sort" name="orders" value="1"></td>
                                   <td>
                                     <input type="checkbox" name="switch"  lay-text="开启|停用"  checked="" lay-skin="switch">
                                   </td>
@@ -147,10 +147,10 @@
                                   </td>
                                   <td>5</td>
                                   <td>
-                                    
+
                                     <i class="layui-icon x-show" status='true'>&#xe623;</i>新闻
                                   </td>
-                                  <td><input type="text" class="layui-input x-sort" name="order" value="1"></td>
+                                  <td><input type="text" class="layui-input x-sort" name="orders" value="1"></td>
                                   <td>
                                     <input type="checkbox" name="switch"  lay-text="开启|停用"  checked="" lay-skin="switch">
                                   </td>
@@ -169,7 +169,7 @@
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     ├国内新闻
                                   </td>
-                                  <td><input type="text" class="layui-input x-sort" name="order" value="1"></td>
+                                  <td><input type="text" class="layui-input x-sort" name="orders" value="1"></td>
                                   <td>
                                     <input type="checkbox" name="switch"  lay-text="开启|停用"  checked="" lay-skin="switch">
                                   </td>
@@ -188,7 +188,7 @@
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     ├国外新闻
                                   </td>
-                                  <td><input type="text" class="layui-input x-sort" name="order" value="1"></td>
+                                  <td><input type="text" class="layui-input x-sort" name="orders" value="1"></td>
                                   <td>
                                     <input type="checkbox" name="switch"  lay-text="开启|停用"  checked="" lay-skin="switch">
                                   </td>
@@ -219,7 +219,7 @@
         <script>
           layui.use(['form'], function(){
             form = layui.form;
-            
+
           });
 
            /*用户-删除*/
@@ -232,13 +232,13 @@
           }
 
           // 分类展开收起的分类的逻辑
-          // 
+          //
           $(function(){
             $("tbody.x-cate tr[fid!='0']").hide();
             // 栏目多级显示效果
             $('.x-show').click(function () {
                 if($(this).attr('status')=='true'){
-                    $(this).html('&#xe625;'); 
+                    $(this).html('&#xe625;');
                     $(this).attr('status','false');
                     cateId = $(this).parents('tr').attr('cate-id');
                     $("tbody tr[fid="+cateId+"]").show();
@@ -263,7 +263,7 @@
                   getCateId(id);
               });
           }
-   
+
         </script>
     </body>
 </html>

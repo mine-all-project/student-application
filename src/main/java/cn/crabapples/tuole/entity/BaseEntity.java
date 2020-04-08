@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -65,4 +66,5 @@ public abstract class BaseEntity implements Serializable {
     public String toString() {
         return JSONObject.toJSONString(this);
     }
+
 }

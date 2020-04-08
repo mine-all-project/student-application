@@ -1,6 +1,6 @@
 package cn.crabapples.tuole.dao;
 
-import cn.crabapples.tuole.entity.Order;
+import cn.crabapples.tuole.entity.Orders;
 import cn.crabapples.tuole.entity.SysUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,8 +18,12 @@ import java.util.Optional;
  * pc-name 29404
  */
 @Repository
-public interface OrderRepository extends JpaRepository<Order, String> {
+public interface OrderRepository extends JpaRepository<Orders, String> {
 
-    Optional<Order> findAllBySysUserNotAndCreateTimeNot(SysUser sysUser, LocalDate createTime);
+    Optional<Orders> findAllBySysUser(SysUser sysUser);
+    Optional<Orders> findAllBySysUserNotAndOrderTimeNot(SysUser sysUser, LocalDate orderTime);
 
+    Optional<Orders> findAllByOrderTimeNot(LocalDate now);
+
+    Optional<Orders> findAllBySysUserAndOrderTime(SysUser sysUser, LocalDate now);
 }

@@ -46,10 +46,6 @@
         this.$message.success('上传成功');
         this.getPictures()
       },
-      uploadError(file) {
-        console.log(file);
-        this.$message.error('上传失败');
-      },
 
     }
   }

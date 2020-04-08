@@ -2,11 +2,12 @@ package cn.crabapples.tuole.service.impl;
 
 import cn.crabapples.tuole.config.ApplicationException;
 import cn.crabapples.tuole.dao.AudioFileRepository;
+import cn.crabapples.tuole.dao.GoodsRepository;
 import cn.crabapples.tuole.dao.OrderRepository;
-import cn.crabapples.tuole.dao.ShopRepository;
+import cn.crabapples.tuole.dao.SysUserRepository;
 import cn.crabapples.tuole.entity.AudioFile;
-import cn.crabapples.tuole.entity.Order;
-import cn.crabapples.tuole.entity.Shop;
+import cn.crabapples.tuole.entity.Orders;
+import cn.crabapples.tuole.entity.Goods;
 import cn.crabapples.tuole.entity.SysUser;
 import cn.crabapples.tuole.service.RestFulService;
 import cn.crabapples.tuole.utils.FileUtils;
@@ -27,13 +28,15 @@ public class RestFulServiceImpl implements RestFulService {
     @Value("${filePath}")
     private String filePath;
     private final AudioFileRepository audioFileRepository;
-    private final ShopRepository shopRepository;
+    private final GoodsRepository goodsRepository;
     private final OrderRepository orderRepository;
+    private final SysUserRepository sysUserRepository;
 
-    public RestFulServiceImpl(AudioFileRepository audioFileRepository, ShopRepository shopRepository, OrderRepository orderRepository) {
+    public RestFulServiceImpl(AudioFileRepository audioFileRepository, GoodsRepository goodsRepository, OrderRepository orderRepository, SysUserRepository sysUserRepository) {
         this.audioFileRepository = audioFileRepository;
-        this.shopRepository = shopRepository;
+        this.goodsRepository = goodsRepository;
         this.orderRepository = orderRepository;
+        this.sysUserRepository = sysUserRepository;
     }
 
     private String getfilePath(HttpServletRequest request) {
@@ -135,30 +138,36 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
-    public Shop getShopInfo(String keyword) {
-        return shopRepository.findAllByKeyWord(keyword);
+    public List<Goods> getGoodsList(String keyword) {
+        return goodsRepository.findAllByKeyWord(keyword);
     }
 
     @Override
-    public Shop saveShopInfo(Shop shop) {
-        return shopRepository.saveAndFlush(shop);
+    public Goods saveGoodsInfo(Goods goods) {
+        return goodsRepository.saveAndFlush(goods);
     }
 
     @Override
-    public Order submitOrder(Shop shop) {
+    public Orders submitOrder(String ticketsId) {
+        Goods tickets = goodsRepository.findById(ticketsId).orElse(null);
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
-        Order order = new Order();
-        List<Shop> shops = new ArrayList<>();
-        shops.add(shop);
-        order.setShops(shops);
-        order.setSysUser(sysUser);
-        order.setCreateTime(LocalDateTime.now());
-        order.setUpdateTime(LocalDateTime.now());
-        Order order1 = orderRepository.findAllBySysUserNotAndCreateTimeNot(sysUser, LocalDate.now()).orElse(null);
-        if (order1 == null) {
-            orderRepository.save(order);
+        if (sysUser == null) {
+            sysUser = sysUserRepository.findById("001").orElse(null);
         }
-        return order;
+        Orders orders = new Orders();
+        List<Goods> goods = new ArrayList<>();
+        goods.add(tickets);
+        orders.setGoods(goods);
+        orders.setSysUser(sysUser);
+        orders.setCreateTime(LocalDateTime.now());
+        orders.setUpdateTime(LocalDateTime.now());
+        orders.setOrderTime(LocalDate.now());
+        Orders exist = orderRepository.findAllBySysUserAndOrderTime(sysUser, LocalDate.now()).orElse(null);
+        if (exist != null) {
+            throw new ApplicationException("每个用户每日只能购买一张门票");
+        }
+        orderRepository.save(orders);
+        return orders;
     }
 }

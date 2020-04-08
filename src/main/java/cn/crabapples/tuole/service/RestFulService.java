@@ -1,8 +1,8 @@
 package cn.crabapples.tuole.service;
 
 import cn.crabapples.tuole.entity.AudioFile;
-import cn.crabapples.tuole.entity.Order;
-import cn.crabapples.tuole.entity.Shop;
+import cn.crabapples.tuole.entity.Orders;
+import cn.crabapples.tuole.entity.Goods;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -28,9 +28,9 @@ public interface RestFulService {
 
     Map<String, String> uploadShopFile(HttpServletRequest request);
 
-    Shop getShopInfo(String keyword);
+    List<Goods> getGoodsList(String keyword);
 
-    Shop saveShopInfo(Shop shop);
+    Goods saveGoodsInfo(Goods goods);
 
-    Order submitOrder(Shop shop);
+    Orders submitOrder(String shop);
 }

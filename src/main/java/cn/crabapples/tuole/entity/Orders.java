@@ -4,29 +4,32 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.math.BigDecimal;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
- * TODO
+ * TODO 订单模块实体类
  *
  * @author Mr.He
- * 2020/4/2 20:48
+ * 2020/4/7 22:56
  * e-mail crabapples.cn@gmail.com
  * qq 294046317
  * pc-name 29404
  */
-@Entity
 @Getter
 @Setter
-public class Shop extends BaseEntity {
-    private BigDecimal sale;
-    @Column(columnDefinition = "longtext")
-    private String url;
-    @Column(columnDefinition = "varchar(64)")
-    private String keyWord;
-    private Integer sort;
+@Entity
+public class Orders extends BaseEntity {
+
+    private LocalDate orderTime;
+    @OneToOne
+    private SysUser sysUser;
+    @OneToMany
+    private List<Goods> goods;
+
     @Override
     public String toString() {
         return JSONObject.toJSONString(this);

@@ -53,6 +53,6 @@ public abstract class BaseController {
     @ResponseBody
     protected ResponseDTO applicationExceptionHandler(ApplicationException e){
         logger.error("ajax出现异常:[{}]\n",e.getMessage(),e);
-        return ResponseDTO.returnError("操作失败",e.getMessage());
+        return ResponseDTO.returnError(e.getMessage());
     }
 }

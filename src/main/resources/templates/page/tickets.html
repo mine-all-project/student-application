@@ -1,86 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-  <title></title>
-  <div data-th-include="/base/page :: meta"></div>
-  <div data-th-include="/base/page :: style"></div>
+	<title></title>
+	<div data-th-include="/base/page :: meta"></div>
+	<div data-th-include="/base/page :: style"></div>
+	<div data-th-include="/base/lay-ui :: style"></div>
 </head>
 
 <body>
 <div class="header0">
-  <div data-th-include="/base/page :: nav"></div>
+	<div data-th-include="/base/page :: nav"></div>
 </div>
 <div class="clear"></div>
 <div class="brandnav"></div>
 <div class="clear"></div>
 
 <div class="detailbox" id="page-tickets-info">
-  <div class="xq">
-    <h1>景区门票</h1>
-    <div class="con" style="width: 400px;height: 500px;margin: 0 auto">
-      <div class="con" style="width: 400px;height: 300px">
-        <img v-if="ticketsInfo.url" :src=`/file/${ticketsInfo.url}` alt="" style="width: 100%;height: 100%">
-      </div>
-      <div class="layui-row" style="font-size: 2em;">
-        <div class="layui-col-md9">
-          <span v-text="`票价: ￥${ticketsInfo.sale}元`"></span>
-        </div>
-        <div class="layui-col-md3">
-          <button class="layui-btn layui-btn-normal" size="small" @click="submit">立即购买</button>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="xq">
+		<h1>景区门票</h1>
+		<div class="con" style="width: 400px;height: 500px;margin: 0 auto" v-for="item in ticketsInfo">
+			<div class="con" style="width: 400px;height: 300px">
+				<img :src=`/file/${item.url}` alt="" style="width: 100%;height: 100%">
+			</div>
+			<div class="layui-row" style="font-size: 2em;">
+				<div class="layui-col-md9">
+					<span v-text="`票价: ￥${item.sale}元`"></span>
+				</div>
+				<div class="layui-col-md3">
+					<button class="layui-btn layui-btn-normal" size="small" @click="submit(item.id)">立即购买</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="clear"></div>
 <div data-th-include="/base/page :: javascript"></div>
+<div data-th-include="/base/lay-ui :: javascript"></div>
 <div data-th-include="/base/page :: footer"></div>
 <script>
-  let vue = new Vue({
-    el: '#page-tickets-info',
-    data() {
-      return {
-        ticketsInfo: {},
-      }
-    },
-    mounted() {
-      this.getShop()
-    },
-    methods: {
-      getShop() {
-        const _this = this;
-        axios.get(`/api/getShopInfo/tickets`).then(response => {
-          const result = response.data;
-          console.log('通过api获取到的数据:', result);
-          if (result.status !== 200) {
-            _this.$message.error('数据加载失败');
-            return
-          }
-          if (result.data !== null) {
-            _this.ticketsInfo = result.data;
-          }
-        }).catch(function (error) {
-          console.log('请求出现错误:', error);
-        });
-      },
-      submit() {
-        const _this = this;
-        axios.get(`/api/submitOrder`).then(response => {
-          const result = response.data;
-          console.log('通过api获取到的数据:', result);
-          if (result.status !== 200) {
-            _this.$message.error('数据加载失败');
-            return
-          }
-          if (result.data !== null) {
-            _this.ticketsInfo = result.data;
-          }
-        }).catch(function (error) {
-          console.log('请求出现错误:', error);
-        });
-      },
-    }
-  })
+    let vue = new Vue({
+        el: '#page-tickets-info',
+        data() {
+            return {
+                ticketsInfo: {},
+            }
+        },
+        mounted() {
+            this.getShop()
+        },
+        methods: {
+            getShop() {
+                const _this = this;
+                axios.get(`/api/getGoodsList/tickets`).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        layer.msg(`${result.message}`);
+                        return
+                    }
+                    if (result.data !== null) {
+                        _this.ticketsInfo = result.data;
+                    }
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            },
+            submit(id) {
+                axios.get(`/api/submitOrder/${id}`).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        layer.msg(`${result.message}`);
+                        return
+                    }
+                    layer.msg(`${result.message}`);
+                }).catch(error => {
+                    console.log('请求出现错误:', error);
+                });
+            },
+        }
+    })
 </script>
 </body>
 </html>

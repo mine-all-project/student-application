@@ -1,134 +1,183 @@
 <template>
-  <el-row>
-    <el-col :span="24">
-      <el-row type="flex" class="row">
-        <el-col :span="2">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">门票图片:</div>
-        </el-col>
-        <el-col :span="10">
-          <el-upload class="avatar-uploader" :action="`/api/uploadShopFile/tickets`"
-                     :show-file-list="false" ref="uploadFile" :on-success="successUpload">
-            <img v-if="form.url" :src=`/file/${form.url}` class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-col>
-      </el-row>
-
-      <el-row type="flex" class="row">
-        <el-col :span="2">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light">门票价格:</div>
-        </el-col>
-        <el-col :span="10">
-          <el-input size="small" v-model="form.sale" type="number"></el-input>
-        </el-col>
-      </el-row>
-
-      <el-row type="flex" class="row">
-        <el-col :span="2">
-          <div class="grid-content bg-purple"></div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple-light"></div>
-        </el-col>
-        <el-col :span="10">
-          <el-button type="danger" @click="submitShop">提交</el-button>
-        </el-col>
-      </el-row>
-    </el-col>
-  </el-row>
+	<el-row>
+		<el-table :data="tableData" stripe style="width: 100%">
+			<el-table-column prop="createTime" label="酒店名称" width="220"></el-table-column>
+			<el-table-column prop="title" label="酒店图片" width="180"></el-table-column>
+			<el-table-column prop="url" label="酒店价格" :show-overflow-tooltip="true"></el-table-column>
+			<el-table-column label="操作" width="160">
+				<template slot-scope="scope">
+					<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
+					<el-button type="primary" @click="drawerOpen(scope)" size="mini">编辑</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+		<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
+		<el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="60%">
+			<div class="demo-drawer__content">
+				<el-form v-model="drawer.form">
+					<el-form-item label="酒店名称" :label-width="formLabelWidth">
+						<el-input v-model="drawer.form.name" autocomplete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="酒店价格" :label-width="formLabelWidth">
+						<el-input v-model="drawer.form.sale" autocomplete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="酒店预览图">
+						<el-upload class="avatar-uploader" :action="`/api/uploadShopFile/tickets`"
+						           :show-file-list="false" ref="uploadFile" :on-success="uploadSuccess">
+							<img v-if="drawer.form.url" :src=`/file/${drawer.form.url}` class="avatar">
+							<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+						</el-upload>
+					</el-form-item>
+				</el-form>
+				<div class="drawer-footer">
+					<el-button type="primary" @click="saveDrawer" :loading="drawer.loading">
+						{{ drawer.loading ? '提交中 ...' : '确定'}}
+					</el-button>
+					<el-button @click="drawerClose">取 消</el-button>
+				</div>
+			</div>
+		</el-drawer>
+	</el-row>
 
 </template>
 
 <script>
-  module.exports = {
-    data() {
-      return {
-        form: {
-          sale: '',
-          url: '',
-          keyWord: 'tickets',
+    module.exports = {
+        data() {
+            return {
+                tableData: [],
+                audioFile: {},
+                drawer: {
+                    show: false,
+                    loading: false,
+                    form: {
+                        keyword: '',
+                        name: '',
+                        sale: '',
+                        url: '',
+                    },
+                },
+                editor: null,
+                formLabelWidth: '80px',
+                timer: null,
+
+            };
         },
-      };
-    },
-    mounted() {
-      this.getShop()
-    },
-    methods: {
-      getShop() {
-        const _this = this;
-        axios.get(`/api/getShopInfo/tickets`).then(response => {
-          const result = response.data;
-          console.log('通过api获取到的数据:', result);
-          if (result.status !== 200) {
-            _this.$message.error('数据加载失败');
-            return
-          }
-          if (result.data !== null) {
-            _this.form = result.data;
-          }
-        }).catch(function (error) {
-          console.log('请求出现错误:', error);
-        });
-      },
-      successUpload(res, file) {
-        this.form.url = res.data.path;
-      },
-      submitShop() {
-        const _this = this;
-        console.log(_this.form);
-        axios.post(`/api/saveShopInfo`, _this.form).then(response => {
-          const result = response.data;
-          console.log('通过api获取到的数据:', result);
-          if (result.status !== 200) {
-            _this.$message.error('数据加载失败');
-            return
-          }
-          if (result.data !== null) {
-            _this.form = result.data
-          }
-        }).catch(function (error) {
-          console.log('请求出现错误:', error);
-        });
-      }
+        mounted() {
+            this.getGoodsList()
+        },
+        methods: {
+            remove(scope) {
+                const _this = this;
+                const id = scope.row.id;
+                _this.$confirm('确认删除？').then(e => {
+                    _this.drawer.loading = true;
+                    axios.delete(`/api/removeAudioFileById/${id}`).then(response => {
+                        _this.getAudioFileList();
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            _this.$message.error('数据加载失败');
+                            return
+                        }
+                        _this.$message.success('操作成功')
+                    }).catch(function (error) {
+                        _this.getAudioFileList();
+                        console.log('请求出现错误:', error);
+                    });
+                });
+            },
+
+            getGoodsList() {
+                const _this = this;
+                axios.get('/api/getGoodsList/hotel').then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return;
+                    }
+                    _this.tableData = result.data;
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            },
+
+            drawerOpen(scope) {
+                this.drawer.show = true;
+                this.$nextTick(() => {
+                    this.getAudioFileById(scope ? scope.row.id : undefined);
+                })
+            },
+
+            getAudioFileById(id) {
+                const _this = this;
+                if (id !== undefined) {
+                    axios.get(`/api/getAudioFileById/${id}`).then(response => {
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            this.$message.error('数据加载失败');
+                            return
+                        }
+                        _this.drawer.form = result.data;
+                        _this.editor.txt.html(_this.drawer.form.url)
+                    }).catch(function (error) {
+                        console.log('请求出现错误:', error);
+                    });
+                }
+            },
+
+            drawerClose() {
+                this.drawer.loading = false;
+                this.drawer.show = false;
+                this.$refs.drawer.closeDrawer();
+                this.getAudioFileList();
+            },
+
+            saveDrawer() {
+                const _this = this;
+                const id = _this.drawer.form.id;
+                _this.drawer.form.url = _this.editor.txt.html();
+                _this.drawer.loading = true;
+                _this.drawer.form.keyword = 'hotel';
+                axios.post(`/api/saveGoodsInfo/${id ? id : 'create'}`, _this.drawer.form).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    _this.content = result.data;
+                    _this.$message.success('操作成功');
+                    window.location.reload();
+                }).catch(function (error) {
+                    window.location.reload();
+                    console.log('请求出现错误:', error);
+                });
+            },
+
+            uploadSuccess(result) {
+                console.log('通过api获取到的数据:', result);
+                if (result.status !== 200) {
+                    this.$message.error('上传失败');
+                    return
+                }
+                this.drawer.form.url = result.data.path;
+                this.$message.success('上传成功');
+            },
+        }
     }
-  }
 </script>
 
 <style scoped>
-  .row {
-    margin-top: 20px;
-  }
+	.table-row-hidden {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+	.drawer-footer {
+		margin-left: 10px;
+	}
 </style>

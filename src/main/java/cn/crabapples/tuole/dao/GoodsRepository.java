@@ -1,8 +1,10 @@
 package cn.crabapples.tuole.dao;
 
-import cn.crabapples.tuole.entity.Shop;
+import cn.crabapples.tuole.entity.Goods;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * TODO 销售信息持久层
@@ -14,8 +16,8 @@ import org.springframework.stereotype.Repository;
  * pc-name 29404
  */
 @Repository
-public interface ShopRepository extends JpaRepository<Shop, String> {
+public interface GoodsRepository extends JpaRepository<Goods, String> {
 
-    Shop findAllByKeyWord(String video);
+    List<Goods> findAllByKeyWord(String video);
 
 }
