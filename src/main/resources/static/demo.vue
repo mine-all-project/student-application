@@ -6,8 +6,8 @@
       <el-table-column prop="createTime" label="日期" sortable width="220"></el-table-column>
       <el-table-column prop="content" label="内容"></el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="addMessage(scope.row)">回复</el-button>
+        <template slot-scope="scope" >
+          <el-button size="mini" @click="addMessage(scope.row)" v-if="scope.row.level === 1">回复</el-button>
           <el-button size="mini" type="danger" @click="remove(scope)">删除</el-button>
         </template>
       </el-table-column>
@@ -21,48 +21,9 @@
   module.exports = {
     data() {
       return {
-        messages: [
-          {
-            id: 1,
-            date: '2016-05-02',
-            user: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          },
-          {
-            id: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          },
-          {
-            id: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-            children: [
-              {
-                id: 31,
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-              },
-              {
-                id: 32,
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-              }
-            ]
-          },
-          {
-            id: 4,
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }
-        ],
+        messages: [],
         form: {
-          area: '0',
+          area: '1',
           content: '',
         },
       };
@@ -100,9 +61,8 @@
         const _this = this;
         const id = scope.row.id;
         _this.$confirm('确认删除？').then(e => {
-          _this.drawer.loading = true;
           axios.delete(`/api/removeMessageById/${id}`).then(response => {
-            _this.getAudioFileList();
+            _this.getMessages();
             const result = response.data;
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
@@ -111,7 +71,7 @@
             }
             _this.$message.success('操作成功')
           }).catch(function (error) {
-            _this.getAudioFileList();
+            _this.getMessages();
             console.log('请求出现错误:', error);
           });
         });

@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 public class Message extends BaseEntity{
     private Integer area;
+    private Integer level;
     @Column(columnDefinition = "longtext")
     private String content;
 

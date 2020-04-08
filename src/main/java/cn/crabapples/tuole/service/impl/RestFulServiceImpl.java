@@ -171,6 +171,7 @@ public class RestFulServiceImpl implements RestFulService {
     public Message submitMessage(Message message) {
         SysUser sysUser = getUser();
         message.setUser(sysUser.getName());
+        message.setLevel(1);
         return messageRepository.save(message);
     }
 
@@ -188,6 +189,7 @@ public class RestFulServiceImpl implements RestFulService {
             throw new ApplicationException("数据异常");
         }
         message.setUser(getUser().getName());
+        message.setLevel(2);
         List<Message> children = parent.getChildren();
         children.add(message);
         parent.setChildren(children);

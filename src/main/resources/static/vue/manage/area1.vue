@@ -6,7 +6,7 @@
       <el-table-column prop="createTime" label="日期" sortable width="220"></el-table-column>
       <el-table-column prop="content" label="内容"></el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="scope">
+        <template slot-scope="scope" v-if="scope.row.level === 1">
           <el-button size="mini" @click="addMessage(scope.row)">回复</el-button>
           <el-button size="mini" type="danger" @click="remove(scope)">删除</el-button>
         </template>
