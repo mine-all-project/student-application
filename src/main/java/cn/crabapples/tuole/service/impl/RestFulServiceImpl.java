@@ -1,14 +1,8 @@
 package cn.crabapples.tuole.service.impl;
 
 import cn.crabapples.tuole.config.ApplicationException;
-import cn.crabapples.tuole.dao.AudioFileRepository;
-import cn.crabapples.tuole.dao.GoodsRepository;
-import cn.crabapples.tuole.dao.OrderRepository;
-import cn.crabapples.tuole.dao.SysUserRepository;
-import cn.crabapples.tuole.entity.AudioFile;
-import cn.crabapples.tuole.entity.Orders;
-import cn.crabapples.tuole.entity.Goods;
-import cn.crabapples.tuole.entity.SysUser;
+import cn.crabapples.tuole.dao.*;
+import cn.crabapples.tuole.entity.*;
 import cn.crabapples.tuole.service.RestFulService;
 import cn.crabapples.tuole.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
@@ -31,12 +25,14 @@ public class RestFulServiceImpl implements RestFulService {
     private final GoodsRepository goodsRepository;
     private final OrderRepository orderRepository;
     private final SysUserRepository sysUserRepository;
+    private final MessageRepository messageRepository;
 
-    public RestFulServiceImpl(AudioFileRepository audioFileRepository, GoodsRepository goodsRepository, OrderRepository orderRepository, SysUserRepository sysUserRepository) {
+    public RestFulServiceImpl(AudioFileRepository audioFileRepository, GoodsRepository goodsRepository, OrderRepository orderRepository, SysUserRepository sysUserRepository, MessageRepository messageRepository) {
         this.audioFileRepository = audioFileRepository;
         this.goodsRepository = goodsRepository;
         this.orderRepository = orderRepository;
         this.sysUserRepository = sysUserRepository;
+        this.messageRepository = messageRepository;
     }
 
     private String getfilePath(HttpServletRequest request) {
@@ -159,11 +155,7 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public Orders submitOrder(String ticketsId) {
         Goods tickets = goodsRepository.findById(ticketsId).orElse(null);
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-        if (sysUser == null) {
-            sysUser = sysUserRepository.findById("001").orElse(null);
-        }
+        SysUser sysUser = getUser();
         Orders orders = new Orders();
         List<Goods> goods = new ArrayList<>();
         goods.add(tickets);
@@ -178,5 +170,26 @@ public class RestFulServiceImpl implements RestFulService {
         }
         orderRepository.save(orders);
         return orders;
+    }
+
+    @Override
+    public List<Message> getMessages(Integer area) {
+        return messageRepository.findAllByArea(area);
+    }
+
+    @Override
+    public Message submitMessage(Message message) {
+        SysUser sysUser = getUser();
+        message.setFromUser(sysUser);
+        return messageRepository.save(message);
+    }
+
+    private SysUser getUser(){
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        if (sysUser == null) {
+            sysUser = sysUserRepository.findById("001").orElse(null);
+        }
+        return sysUser;
     }
 }

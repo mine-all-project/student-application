@@ -1,6 +1,7 @@
 package cn.crabapples.tuole.service;
 
 import cn.crabapples.tuole.entity.AudioFile;
+import cn.crabapples.tuole.entity.Message;
 import cn.crabapples.tuole.entity.Orders;
 import cn.crabapples.tuole.entity.Goods;
 
@@ -35,4 +36,8 @@ public interface RestFulService {
     Orders submitOrder(String shop);
 
     Goods getGoodsById(String id);
+
+    Message submitMessage(Message message);
+
+    List<Message> getMessages(Integer area);
 }

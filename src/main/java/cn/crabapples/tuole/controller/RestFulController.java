@@ -2,8 +2,9 @@ package cn.crabapples.tuole.controller;
 
 import cn.crabapples.tuole.dto.ResponseDTO;
 import cn.crabapples.tuole.entity.AudioFile;
-import cn.crabapples.tuole.entity.Orders;
 import cn.crabapples.tuole.entity.Goods;
+import cn.crabapples.tuole.entity.Message;
+import cn.crabapples.tuole.entity.Orders;
 import cn.crabapples.tuole.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,10 +127,28 @@ public class RestFulController extends BaseController {
 
     @RequestMapping("/submitOrder/{ticketsId}")
     @ResponseBody
-    public ResponseDTO submitOrder( @PathVariable("ticketsId") String ticketsId) {
+    public ResponseDTO submitOrder(@PathVariable("ticketsId") String ticketsId) {
         logger.info("收到请求->提交订单:[{}]", ticketsId);
         Orders orders = restFulService.submitOrder(ticketsId);
         logger.info("返回结果->提交订单完成:[{}]", orders);
         return ResponseDTO.returnSuccess("操作成功", orders);
+    }
+
+    @RequestMapping("/getMessages/{area}")
+    @ResponseBody
+    public ResponseDTO getMessages(@PathVariable Integer area) {
+        logger.info("收到请求->获取评论:[{}]", area);
+        List<Message> message = restFulService.getMessages(area);
+        logger.info("返回结果->获取评论完成:[{}]", message);
+        return ResponseDTO.returnSuccess("操作成功", message);
+    }
+
+    @RequestMapping("/submitMessage")
+    @ResponseBody
+    public ResponseDTO submitMessage(@RequestBody Message message) {
+        logger.info("收到请求->发布评论:[{}]", message);
+        message = restFulService.submitMessage(message);
+        logger.info("返回结果->发布评论完成:[{}]", message);
+        return ResponseDTO.returnSuccess("操作成功", message);
     }
 }
