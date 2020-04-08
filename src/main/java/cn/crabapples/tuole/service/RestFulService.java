@@ -40,4 +40,6 @@ public interface RestFulService {
     Message submitMessage(Message message);
 
     List<Message> getMessages(Integer area);
+
+    void removeMessageById(String id);
 }

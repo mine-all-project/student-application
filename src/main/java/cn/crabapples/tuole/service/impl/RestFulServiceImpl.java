@@ -169,8 +169,14 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public Message submitMessage(Message message) {
         SysUser sysUser = getUser();
-        message.setFromUser(sysUser);
+        message.setUser(sysUser.getName());
         return messageRepository.save(message);
+    }
+
+
+    @Override
+    public void removeMessageById(String id) {
+        messageRepository.deleteById(id);
     }
 
     private SysUser getUser(){
@@ -181,4 +187,5 @@ public class RestFulServiceImpl implements RestFulService {
         }
         return sysUser;
     }
+
 }

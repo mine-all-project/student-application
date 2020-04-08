@@ -38,15 +38,15 @@
         <hr>
         <li v-for="item in messages">
           <div class="layui-row">
-            <div class="layui-col-md2">{{item.fromUser.name}}</div>
+            <div class="layui-col-md2">{{item.user}}</div>
             <div class="layui-col-md2">{{item.createTime}}</div>
             <div class="layui-col-md6">
               <span>{{item.content}}</span>
-              <ul>
+              <ul v-if="item.children.length">
                 <hr>
-                <li v-for="item in item.children" v-if="item.children">
+                <li v-for="child in item.children" >
                   <div class="layui-row">
-                    <div class="layui-col-md12">{{item.content}}</div>
+                    <div class="layui-col-md12">{{child.content}}</div>
                   </div>
                 </li>
               </ul>
@@ -66,42 +66,7 @@
     el: '#page-talk-area1',
     data() {
       return {
-        messages: [
-          {
-            fromUser: {
-              name: '测试'
-            },
-            createTime: '20200220',
-            content: '于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…',
-            children: [
-              {
-                fromUser: {
-                  name: '测试'
-                },
-                createTime: '20200221',
-                content: '于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…11',
-                children: []
-              }
-            ]
-          },
-          {
-            fromUser: {
-              name: '测试'
-            },
-            createTime: '20200220',
-            content: '于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…',
-            children: [
-              {
-                fromUser: {
-                  name: '测试'
-                },
-                createTime: '20200221',
-                content: '于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…11',
-                children: []
-              }
-            ]
-          }
-        ],
+        messages: [],
         form: {
           content: '777777',
           area: 1
@@ -136,7 +101,9 @@
             layer.msg(`${result.message}`);
             return
           }
+          window.location.reload()
         }).catch(function (error) {
+          window.location.reload()
           console.log('请求出现错误:', error);
         });
       }

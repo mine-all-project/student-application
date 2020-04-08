@@ -1,14 +1,17 @@
 <template>
   <el-row>
-    <el-table :data="messages" style="width: 100%;margin-bottom: 20px;" row-key="id" border default-expand-all
-              :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column prop="user" label="姓名" sortable width="180"></el-table-column>
-      <el-table-column prop="createTime" label="日期" sortable width="220"></el-table-column>
-      <el-table-column prop="content" label="内容"></el-table-column>
-      <el-table-column label="操作">
+    <el-table :data="tableData" stripe style="width: 100%">
+      <el-table-column prop="name" label="菜品名称11" width="220"></el-table-column>
+      <el-table-column label="菜品图片" width="180">
         <template slot-scope="scope">
-          <el-button size="mini" @click="addMessage(scope.row)">回复</el-button>
-          <el-button size="mini" type="danger" @click="remove(scope)">删除</el-button>
+          <img :src=`/file/${scope.row.url}` alt="" style="width: 100%;height: 100px;">
+        </template>
+      </el-table-column>
+      <el-table-column prop="sale" label="价格" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column label="操作" width="160">
+        <template slot-scope="scope">
+          <el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
+          <el-button type="primary" @click="drawerOpen(scope)" size="mini">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -46,46 +49,7 @@
   module.exports = {
     data() {
       return {
-        messages: [
-          {
-            id: 1,
-            date: '2016-05-02',
-            user: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          },
-          {
-            id: 2,
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          },
-          {
-            id: 3,
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄',
-            children: [
-              {
-                id: 31,
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-              },
-              {
-                id: 32,
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-              }
-            ]
-          },
-          {
-            id: 4,
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }
-        ],
+        tableData: [],
         audioFile: {},
         drawer: {
           show: false,
@@ -104,19 +68,15 @@
       };
     },
     mounted() {
-      this.getMessages()
+      this.getGoodsList()
     },
     methods: {
-      addMessage(row) {
-        console.log(row);
-      },
-
       remove(scope) {
         const _this = this;
         const id = scope.row.id;
         _this.$confirm('确认删除？').then(e => {
           _this.drawer.loading = true;
-          axios.delete(`/api/removeMessageById/${id}`).then(response => {
+          axios.delete(`/api/removeAudioFileById/${id}`).then(response => {
             _this.getAudioFileList();
             const result = response.data;
             console.log('通过api获取到的数据:', result);
@@ -132,16 +92,16 @@
         });
       },
 
-      getMessages() {
-        const _this = this
-        axios.get('/api/getMessages/1').then(response => {
-          const result = response.data
-          console.log('通过api获取到的数据:', result)
+      getGoodsList() {
+        const _this = this;
+        axios.get('/api/getGoodsList/food').then(response => {
+          const result = response.data;
+          console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
-            layer.msg(`${result.message}`);
-            return
+            this.$message.error('数据加载失败');
+            return;
           }
-          _this.messages = result.data
+          _this.tableData = result.data;
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });

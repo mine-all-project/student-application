@@ -151,4 +151,12 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->发布评论完成:[{}]", message);
         return ResponseDTO.returnSuccess("操作成功", message);
     }
+
+    @DeleteMapping("/removeMessageById/{id}")
+    public ResponseDTO removeMessageById(@PathVariable("id") String id) {
+        logger.info("收到请求->删除评论,id:[{}]", id);
+        restFulService.removeMessageById(id);
+        logger.info("返回结果->删除评论完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
 }
