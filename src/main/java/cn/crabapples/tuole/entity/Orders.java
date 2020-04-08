@@ -3,6 +3,7 @@ package cn.crabapples.tuole.entity;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -24,6 +25,7 @@ import java.util.List;
 @Entity
 public class Orders extends BaseEntity {
 
+    @CreatedDate
     private LocalDate orderTime;
     @OneToOne
     private SysUser sysUser;

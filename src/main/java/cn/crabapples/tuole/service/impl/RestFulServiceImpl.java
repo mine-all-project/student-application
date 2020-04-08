@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -48,7 +47,6 @@ public class RestFulServiceImpl implements RestFulService {
         AudioFile picture = audioFileRepository.findById(id).orElse(null);
         if (null != picture) {
             picture.setUrl(path);
-            picture.setUpdateTime(LocalDateTime.now());
             audioFileRepository.save(picture);
             return audioFileRepository.save(picture);
         }
@@ -70,8 +68,6 @@ public class RestFulServiceImpl implements RestFulService {
             picture.setId(UUID.randomUUID().toString().replace("-", ""));
             picture.setKeyWord("picture");
             picture.setSort(i);
-            picture.setCreateTime(LocalDateTime.now());
-            picture.setUpdateTime(LocalDateTime.now());
             pictures.add(audioFileRepository.save(picture));
         }
         return pictures;
@@ -84,12 +80,10 @@ public class RestFulServiceImpl implements RestFulService {
             AudioFile byId = audioFileRepository.findById(id).orElse(audioFile);
             if (null != byId) {
                 byId.setUrl(path);
-                byId.setUpdateTime(LocalDateTime.now());
                 return audioFileRepository.save(byId);
             }
             throw new ApplicationException("文件上传失败");
         } else {
-            audioFile.setCreateTime(LocalDateTime.now());
             return audioFileRepository.save(audioFile);
         }
     }
@@ -103,8 +97,6 @@ public class RestFulServiceImpl implements RestFulService {
             AudioFile audioFile = new AudioFile();
             audioFile.setId(UUID.randomUUID().toString().replace("-", ""));
             audioFile.setKeyWord(keyWord);
-            audioFile.setCreateTime(LocalDateTime.now());
-            audioFile.setUpdateTime(LocalDateTime.now());
             return audioFileRepository.save(audioFile);
         }
     }
@@ -161,9 +153,6 @@ public class RestFulServiceImpl implements RestFulService {
         goods.add(tickets);
         orders.setGoods(goods);
         orders.setSysUser(sysUser);
-        orders.setCreateTime(LocalDateTime.now());
-        orders.setUpdateTime(LocalDateTime.now());
-        orders.setOrderTime(LocalDate.now());
         Orders exist = orderRepository.findAllBySysUserAndOrderTime(sysUser, LocalDate.now()).orElse(null);
         if (exist != null) {
             throw new ApplicationException("每个用户每日只能购买一张门票");
