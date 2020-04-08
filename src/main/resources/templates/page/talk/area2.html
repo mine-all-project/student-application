@@ -44,7 +44,7 @@
               <span>{{item.content}}</span>
               <ul v-if="item.children.length">
                 <hr>
-                <li v-for="child in item.children" >
+                <li v-for="child in item.children">
                   <div class="layui-row">
                     <div class="layui-col-md12">{{child.content}}</div>
                   </div>
@@ -69,7 +69,7 @@
         messages: [],
         form: {
           content: '',
-          area: 1
+          area: 2
         },
       }
     },
@@ -79,7 +79,7 @@
     methods: {
       getMessages() {
         const _this = this
-        axios.get('/api/getMessages/1').then(response => {
+        axios.get('/api/getMessages/2').then(response => {
           const result = response.data
           console.log('通过api获取到的数据:', result)
           if (result.status !== 200) {

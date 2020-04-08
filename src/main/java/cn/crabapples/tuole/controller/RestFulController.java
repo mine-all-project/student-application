@@ -143,7 +143,7 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", message);
     }
 
-    @RequestMapping("/submitMessage")
+    @RequestMapping("/submitMessage/{id}")
     @ResponseBody
     public ResponseDTO submitMessage(@RequestBody Message message) {
         logger.info("收到请求->发布评论:[{}]", message);
@@ -157,6 +157,15 @@ public class RestFulController extends BaseController {
         logger.info("收到请求->删除评论,id:[{}]", id);
         restFulService.removeMessageById(id);
         logger.info("返回结果->删除评论完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/addMessage/{id}")
+    @ResponseBody
+    public ResponseDTO addMessage(@RequestBody Message message, @PathVariable("id") String id) {
+        logger.info("收到请求->回复评论:[{}],id:[{}]", message, id);
+        restFulService.addMessage(message, id);
+        logger.info("返回结果->回复评论完成");
         return ResponseDTO.returnSuccess("操作成功");
     }
 }

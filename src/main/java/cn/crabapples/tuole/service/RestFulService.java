@@ -42,4 +42,6 @@ public interface RestFulService {
     List<Message> getMessages(Integer area);
 
     void removeMessageById(String id);
+
+    void addMessage(Message message, String id);
 }

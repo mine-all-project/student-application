@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -179,6 +180,21 @@ public class RestFulServiceImpl implements RestFulService {
         messageRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional
+    public void addMessage(Message message, String id) {
+        Message parent = messageRepository.findById(id).orElse(null);
+        if(parent == null){
+            throw new ApplicationException("数据异常");
+        }
+        message.setUser(getUser().getName());
+        List<Message> children = parent.getChildren();
+        children.add(message);
+        parent.setChildren(children);
+        messageRepository.saveAndFlush(message);
+        messageRepository.saveAndFlush(parent);
+    }
+
     private SysUser getUser(){
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
@@ -187,5 +203,6 @@ public class RestFulServiceImpl implements RestFulService {
         }
         return sysUser;
     }
+
 
 }

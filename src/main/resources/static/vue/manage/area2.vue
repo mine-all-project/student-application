@@ -23,7 +23,7 @@
       return {
         messages: [],
         form: {
-          area: '1',
+          area: '2',
           content: '',
         },
       };
@@ -80,7 +80,7 @@
 
       getMessages() {
         const _this = this
-        axios.get('/api/getMessages/1').then(response => {
+        axios.get('/api/getMessages/2').then(response => {
           const result = response.data
           console.log('通过api获取到的数据:', result)
           if (result.status !== 200) {
