@@ -141,7 +141,6 @@
 
       saveDrawer() {
         const _this = this;
-        // const id = _this.drawer.form.id;
         _this.drawer.loading = true;
         _this.drawer.form.keyword = 'hotel';
         axios.post(`/api/saveGoodsInfo`, _this.drawer.form).then(response => {

@@ -1,13 +1,13 @@
 <template>
   <el-row>
     <el-table :data="tableData" stripe style="width: 100%">
-      <el-table-column prop="name" label="酒店名称" width="220"></el-table-column>
-      <el-table-column label="酒店图片" width="180">
+      <el-table-column prop="name" label="菜品名称" width="220"></el-table-column>
+      <el-table-column label="菜品图片" width="180">
         <template slot-scope="scope">
           <img :src=`/file/${scope.row.url}` alt="" style="width: 100%;height: 100px;">
         </template>
       </el-table-column>
-      <el-table-column prop="sale" label="酒店价格" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column prop="sale" label="价格" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column label="操作" width="160">
         <template slot-scope="scope">
           <el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
@@ -19,13 +19,13 @@
     <el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="60%">
       <div class="demo-drawer__content">
         <el-form v-model="drawer.form">
-          <el-form-item label="酒店名称" :label-width="formLabelWidth">
+          <el-form-item label="菜品名称" :label-width="formLabelWidth">
             <el-input v-model="drawer.form.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="酒店价格" :label-width="formLabelWidth">
+          <el-form-item label="价格" :label-width="formLabelWidth">
             <el-input v-model="drawer.form.sale" autocomplete="off" type="number"></el-input>
           </el-form-item>
-          <el-form-item label="酒店预览图">
+          <el-form-item label="预览图">
             <el-upload class="avatar-uploader" :action="`/api/uploadShopFile/tickets`"
                        :show-file-list="false" ref="uploadFile" :on-success="uploadSuccess">
               <img v-if="drawer.form.url" :src=`/file/${drawer.form.url}` class="avatar">
@@ -94,7 +94,7 @@
 
       getGoodsList() {
         const _this = this;
-        axios.get('/api/getGoodsList/hotel').then(response => {
+        axios.get('/api/getGoodsList/food').then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
@@ -141,9 +141,8 @@
 
       saveDrawer() {
         const _this = this;
-        // const id = _this.drawer.form.id;
         _this.drawer.loading = true;
-        _this.drawer.form.keyword = 'hotel';
+        _this.drawer.form.keyword = 'food';
         axios.post(`/api/saveGoodsInfo`, _this.drawer.form).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);

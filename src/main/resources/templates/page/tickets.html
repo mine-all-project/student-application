@@ -18,7 +18,7 @@
 <div class="detailbox" id="page-tickets-info">
 	<div class="xq">
 		<h1>景区门票</h1>
-		<div class="con" style="width: 400px;height: 500px;margin: 0 auto" v-for="item in ticketsInfo">
+		<div class="con" style="width: 400px;height: 500px;margin: 0 auto" v-for="item in goodsInfo">
 			<div class="con" style="width: 400px;height: 300px">
 				<img :src=`/file/${item.url}` alt="" style="width: 100%;height: 100%">
 			</div>
@@ -42,7 +42,7 @@
         el: '#page-tickets-info',
         data() {
             return {
-                ticketsInfo: {},
+							goodsInfo: {},
             }
         },
         mounted() {
@@ -59,7 +59,7 @@
                         return
                     }
                     if (result.data !== null) {
-                        _this.ticketsInfo = result.data;
+                        _this.goodsInfo = result.data;
                     }
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);

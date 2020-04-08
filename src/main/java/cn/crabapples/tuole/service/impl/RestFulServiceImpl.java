@@ -143,6 +143,15 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    public Goods getGoodsById(String id) {
+        Goods goods = goodsRepository.findById(id).orElse(null);
+        if (goods == null) {
+            throw new ApplicationException("商品信息不存在");
+        }
+        return goods;
+    }
+
+    @Override
     public Goods saveGoodsInfo(Goods goods) {
         return goodsRepository.saveAndFlush(goods);
     }

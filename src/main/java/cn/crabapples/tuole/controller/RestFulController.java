@@ -89,6 +89,14 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
+    @GetMapping("/getGoodsById/{id}")
+    public ResponseDTO getGoodsById(@PathVariable("id") String id) {
+        logger.info("收到请求->获取商品数据,id:[{}]", id);
+        Goods goods = restFulService.getGoodsById(id);
+        logger.info("返回结果->获取商品数据完成:[{}]", goods);
+        return ResponseDTO.returnSuccess("操作成功", goods);
+    }
+
     @RequestMapping("/uploadShopFile/{keyword}")
     @ResponseBody
     public ResponseDTO uploadShopFile(HttpServletRequest request, @PathVariable("keyword") String keyword) {

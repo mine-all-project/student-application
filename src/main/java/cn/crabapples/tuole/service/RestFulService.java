@@ -33,4 +33,6 @@ public interface RestFulService {
     Goods saveGoodsInfo(Goods goods);
 
     Orders submitOrder(String shop);
+
+    Goods getGoodsById(String id);
 }

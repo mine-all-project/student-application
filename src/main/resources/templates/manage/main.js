@@ -18,13 +18,13 @@ const routes = [
 
   {path: '/manage/dynamic', component: httpVueLoader('/vue/manage/dynamic.vue')},
   {path: '/manage/tourism', component: httpVueLoader('/vue/manage/tourism.vue')},
-  {path: '/manage/food', component: httpVueLoader('/vue/manage/food.vue')},
-  {path: '/manage/specialty', component: httpVueLoader('/vue/manage/specialty.vue')},
+  {path: '/manage/active', component: httpVueLoader('/vue/manage/active.vue')},
+  {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
 
   {path: '/manage/tickets', component: httpVueLoader('/vue/manage/tickets.vue')},
   {path: '/manage/hotel', component: httpVueLoader('/vue/manage/hotel.vue')},
-  {path: '/manage/active', component: httpVueLoader('/vue/manage/active.vue')},
-  {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
+  {path: '/manage/food', component: httpVueLoader('/vue/manage/food.vue')},
+  {path: '/manage/specialty', component: httpVueLoader('/vue/manage/specialty.vue')},
 
   {path: '/manage/area1', component: httpVueLoader('/vue/manage/area1.vue')},
   {path: '/manage/area2', component: httpVueLoader('/vue/manage/area2.vue')},
@@ -121,37 +121,37 @@ const app = new Vue({
         //     },
         //   ]
         // },
-        {
-          id: '3',
-          name: '在线预约',
-          icon: 'el-icon-message',
-          children: [
-            {
-              id: '3-1',
-              name: '门票预定',
-              icon: 'el-icon-message',
-              url: '/manage/tickets'
-            },
-            {
-              id: '3-2',
-              name: '住宿',
-              icon: '',
-              url: '/manage/hotel'
-            },
-            {
-              id: '3-3',
-              name: '餐饮',
-              icon: '',
-              url: '/manage/food'
-            },
-            {
-              id: '3-4',
-              name: '特产',
-              icon: '',
-              url: '/manage/specialty'
-            },
-          ]
-        },
+        // {
+        //   id: '3',
+        //   name: '在线预约',
+        //   icon: 'el-icon-message',
+        //   children: [
+        //     {
+        //       id: '3-1',
+        //       name: '门票预定',
+        //       icon: 'el-icon-message',
+        //       url: '/manage/tickets'
+        //     },
+        //     {
+        //       id: '3-2',
+        //       name: '住宿',
+        //       icon: '',
+        //       url: '/manage/hotel'
+        //     },
+        //     {
+        //       id: '3-3',
+        //       name: '餐饮',
+        //       icon: '',
+        //       url: '/manage/food'
+        //     },
+        //     {
+        //       id: '3-4',
+        //       name: '特产',
+        //       icon: '',
+        //       url: '/manage/specialty'
+        //     },
+        //   ]
+        // },
         {
           id: '4',
           name: '评论',
@@ -169,7 +169,6 @@ const app = new Vue({
               icon: '',
               url: '/manage/area2'
             },
-
           ]
         },
         {
