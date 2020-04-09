@@ -2,7 +2,7 @@
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-  <title>后台登录</title>
+  <title>用户登陆</title>
   <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <link rel="stylesheet" data-th-href="@{/X-admin/css/login.css}">
   <header data-th-include="/base/page :: meta"></header>
@@ -11,7 +11,7 @@
 </head>
 <body class="login-bg">
 <div class="login layui-anim layui-anim-up">
-  <div class="message">管理后台</div>
+  <div class="message">用户登录</div>
   <div id="darkbannerwrap"></div>
   <form method="post" class="layui-form" id="loginForm">
     <input name="username" autocomplete="off" lay-verify="required" class="layui-input"
@@ -21,6 +21,8 @@
            placeholder="密码" type="password">
     <hr class="hr15">
     <input lay-submit lay-filter="login" style="width:100%;" type="button" value="登录">
+    <hr class="hr15">
+    <a href="/registry"><input lay-submit style="width:100%;" type="button" value="注册"></a>
     <hr class="hr20">
   </form>
 </div>
@@ -52,7 +54,7 @@
             return
           }
           layer.msg(result.message)
-          window.location.href = '/manage/index'
+          window.location.href = '/index'
         }).catch(exception => {
           layer.msg('系统错误')
           console.error('系统错误', exception)

@@ -59,99 +59,99 @@ const app = new Vue({
     return {
       tableData: Array(20).fill(item),
       menus: [
-        // {
-        //   id: '1',
-        //   name: '感知妥乐',
-        //   icon: 'el-icon-message',
-        //   children: [
-        //     {
-        //       id: '1-1',
-        //       name: '美景图库',
-        //       icon: 'el-icon-message',
-        //       url: '/manage/pictures'
-        //     },
-        //     {
-        //       id: '1-2',
-        //       name: '精彩视频',
-        //       icon: '',
-        //       url: '/manage/video'
-        //     },
-        //     {
-        //       id: '1-3',
-        //       name: '旅游攻略',
-        //       icon: '',
-        //       url: '/manage/strategy'
-        //     },
-        //     {
-        //       id: '1-4',
-        //       name: '文明旅游',
-        //       icon: '',
-        //       url: '/manage/civilization'
-        //     },
-        //   ]
-        // },
-        // {
-        //   id: '2',
-        //   name: '妥乐资讯',
-        //   icon: 'el-icon-message',
-        //   children: [
-        //     {
-        //       id: '2-1',
-        //       name: '最新动态',
-        //       icon: 'el-icon-message',
-        //       url: '/manage/dynamic'
-        //     },
-        //     {
-        //       id: '2-2',
-        //       name: '旅游资讯',
-        //       icon: '',
-        //       url: '/manage/tourism'
-        //     },
-        //     {
-        //       id: '2-3',
-        //       name: '活动资讯',
-        //       icon: '',
-        //       url: '/manage/active'
-        //     },
-        //     {
-        //       id: '2-4',
-        //       name: '通知公告',
-        //       icon: '',
-        //       url: '/manage/notice'
-        //     },
-        //   ]
-        // },
-        // {
-        //   id: '3',
-        //   name: '在线预约',
-        //   icon: 'el-icon-message',
-        //   children: [
-        //     {
-        //       id: '3-1',
-        //       name: '门票预定',
-        //       icon: 'el-icon-message',
-        //       url: '/manage/tickets'
-        //     },
-        //     {
-        //       id: '3-2',
-        //       name: '住宿',
-        //       icon: '',
-        //       url: '/manage/hotel'
-        //     },
-        //     {
-        //       id: '3-3',
-        //       name: '餐饮',
-        //       icon: '',
-        //       url: '/manage/food'
-        //     },
-        //     {
-        //       id: '3-4',
-        //       name: '特产',
-        //       icon: '',
-        //       url: '/manage/specialty'
-        //     },
-        //   ]
-        // },
+        {
+          id: '1',
+          name: '感知妥乐',
+          icon: 'el-icon-message',
+          children: [
+            {
+              id: '1-1',
+              name: '美景图库',
+              icon: 'el-icon-message',
+              url: '/manage/pictures'
+            },
+            {
+              id: '1-2',
+              name: '精彩视频',
+              icon: '',
+              url: '/manage/video'
+            },
+            {
+              id: '1-3',
+              name: '旅游攻略',
+              icon: '',
+              url: '/manage/strategy'
+            },
+            {
+              id: '1-4',
+              name: '文明旅游',
+              icon: '',
+              url: '/manage/civilization'
+            },
+          ]
+        },
+        {
+          id: '2',
+          name: '妥乐资讯',
+          icon: 'el-icon-message',
+          children: [
+            {
+              id: '2-1',
+              name: '最新动态',
+              icon: 'el-icon-message',
+              url: '/manage/dynamic'
+            },
+            {
+              id: '2-2',
+              name: '旅游资讯',
+              icon: '',
+              url: '/manage/tourism'
+            },
+            {
+              id: '2-3',
+              name: '活动资讯',
+              icon: '',
+              url: '/manage/active'
+            },
+            {
+              id: '2-4',
+              name: '通知公告',
+              icon: '',
+              url: '/manage/notice'
+            },
+          ]
+        },
+        {
+          id: '3',
+          name: '在线预约',
+          icon: 'el-icon-message',
+          children: [
+            {
+              id: '3-1',
+              name: '门票预定',
+              icon: 'el-icon-message',
+              url: '/manage/tickets'
+            },
+            {
+              id: '3-2',
+              name: '住宿',
+              icon: '',
+              url: '/manage/hotel'
+            },
+            {
+              id: '3-3',
+              name: '餐饮',
+              icon: '',
+              url: '/manage/food'
+            },
+            {
+              id: '3-4',
+              name: '特产',
+              icon: '',
+              url: '/manage/specialty'
+            },
+          ]
+        },
         {
           id: '4',
           name: '评论',

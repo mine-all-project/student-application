@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 
 /**
- * TODO 通用返回值DTO
+ * TODO 通用返回实体DTO
  *
  * @author Mr.He
  * 2019/9/21 17:45
@@ -17,6 +17,7 @@ public class ResponseDTO {
     @Getter
     enum Status{
         SUCCESS(200),
+        AUTH_FAIL(401),
         ERROR(500);
         int code;
         Status(int code) {
@@ -25,6 +26,7 @@ public class ResponseDTO {
     }
 
     private static final int SUCCESS = 200;
+    private static final int AUTH_FAIL = 401;
     private static final int ERROR = 500;
     private int status;
     private String message;
@@ -56,6 +58,13 @@ public class ResponseDTO {
     }
     public static ResponseDTO returnError(String message, Object data){
         return new ResponseDTO(Status.ERROR,message,data);
+    }
+
+    public static ResponseDTO returnAuthFail(String message){
+        return new ResponseDTO(Status.AUTH_FAIL,message,null);
+    }
+    public static ResponseDTO returnAuthFail(String message, Object data){
+        return new ResponseDTO(Status.AUTH_FAIL,message,data);
     }
 
     public static ResponseDTO returnCustom(int status, String message, Object data){

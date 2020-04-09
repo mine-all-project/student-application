@@ -4,6 +4,9 @@ package cn.crabapples.tuole.service;
 import cn.crabapples.tuole.dto.ResponseDTO;
 import cn.crabapples.tuole.form.UserForm;
 
+import javax.mail.MessagingException;
+import java.util.Map;
+
 /**
  * TODO 系统相关服务
  *
@@ -20,4 +23,7 @@ public interface SysService {
      */
     ResponseDTO login(UserForm form);
 
+    Map<String, String> sendCodeByMail(String mail);
+
+    Map<String, String> getCodeByPhone(String phone);
 }

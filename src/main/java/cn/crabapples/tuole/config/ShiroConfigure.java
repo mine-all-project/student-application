@@ -55,7 +55,9 @@ public class ShiroConfigure {
          *  perms需要授权的url
          */
         filterMap.put("/manage/loginCheck","anon");
-//        filterMap.put("/manage/**","authc");
+        filterMap.put("/manage/getCodeByMail/**","anon");
+        filterMap.put("/manage/getCodeByPhone/**","anon");
+        filterMap.put("/manage/**","authc");
         filterMap.put("/api/**","anon");
 
         filterMap.put("/js/**","anon");
@@ -78,9 +80,11 @@ public class ShiroConfigure {
          * 授权失败跳转的页面
          * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
          */
-        shiroFilterFactory.setUnauthorizedUrl("/manage/login");
+//        shiroFilterFactory.setUnauthorizedUrl("/manage/login");
         return shiroFilterFactory;
     }
+
+
 
 
     /*

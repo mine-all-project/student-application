@@ -15,7 +15,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -44,30 +46,37 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
-//        List<SysMenu> menus = sysService.getSysMenus(user);
-//        Set<String> permissions = getPermissions(menus).stream().filter(Objects::nonNull).collect(Collectors.toSet());
+        Set<String> permissions = new HashSet<>();
+        if (user != null) {
+            permissions.add("login");
+            if (user.getIsAdmin() == 0) {
+                permissions.add("manage");
+            }
+        }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-//        authorizationInfo.setStringPermissions(permissions);
+        authorizationInfo.setStringPermissions(permissions);
         return authorizationInfo;
     }
 
     /**
      * 获取用户权限
+     *
      * @param menus 用户菜单列表
      * @return 用户权限列表
      */
-    private Set<String> getPermissions(List<SysMenu> menus){
+    private Set<String> getPermissions(List<SysMenu> menus) {
         Set<String> permissions = new HashSet<>();
-        menus.forEach(e->{
+        menus.forEach(e -> {
             permissions.addAll(getPermissions(e.getChildren()));
             permissions.add(e.getPermission());
         });
         return permissions;
     }
+
     /**
      * shiro认证调用的方法,认证失败时会抛出异常
-     *  IncorrectCredentialsException密码错误
-     *  UnknownAccountException用户名错误
+     * IncorrectCredentialsException密码错误
+     * UnknownAccountException用户名错误
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {

@@ -6,6 +6,7 @@ import cn.crabapples.tuole.entity.*;
 import cn.crabapples.tuole.service.RestFulService;
 import cn.crabapples.tuole.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,7 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    @RequiresPermissions("manage")
     public AudioFile uploadFile(HttpServletRequest request, String id) {
         String path = getfilePath(request);
         AudioFile picture = audioFileRepository.findById(id).orElse(null);
@@ -55,6 +57,7 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    @RequiresPermissions("manage")
     public Map<String, String> uploadShopFile(HttpServletRequest request) {
         Map<String, String> path = new HashMap<>(1);
         path.put("path", getfilePath(request));
@@ -75,6 +78,7 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    @RequiresPermissions("manage")
     public AudioFile saveAudioFile(HttpServletRequest request, AudioFile audioFile, String id) {
         if (request instanceof MultipartHttpServletRequest) {
             String path = getfilePath(request);
@@ -112,6 +116,7 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    @RequiresPermissions("manage")
     public void removeAudioFileById(String id) {
         audioFileRepository.deleteById(id);
     }
@@ -141,11 +146,13 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    @RequiresPermissions("manage")
     public Goods saveGoodsInfo(Goods goods) {
         return goodsRepository.saveAndFlush(goods);
     }
 
     @Override
+    @RequiresPermissions("login")
     public Orders submitOrder(String ticketsId) {
         Goods tickets = goodsRepository.findById(ticketsId).orElse(null);
         SysUser sysUser = getUser();
@@ -168,6 +175,7 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    @RequiresPermissions("login")
     public Message submitMessage(Message message) {
         SysUser sysUser = getUser();
         message.setUser(sysUser.getName());
@@ -177,12 +185,14 @@ public class RestFulServiceImpl implements RestFulService {
 
 
     @Override
+    @RequiresPermissions("manage")
     public void removeMessageById(String id) {
         messageRepository.deleteById(id);
     }
 
     @Override
     @Transactional
+    @RequiresPermissions("manage")
     public void addMessage(Message message, String id) {
         Message parent = messageRepository.findById(id).orElse(null);
         if(parent == null){
@@ -200,9 +210,6 @@ public class RestFulServiceImpl implements RestFulService {
     private SysUser getUser(){
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
-        if (sysUser == null) {
-            sysUser = sysUserRepository.findById("001").orElse(null);
-        }
         return sysUser;
     }
 

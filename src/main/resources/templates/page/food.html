@@ -69,10 +69,15 @@
         axios.get(`/api/submitOrder/${id}`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
-          if (result.status !== 200) {
-            layer.msg(`${result.message}`);
-            return
-          }
+            if (result.status !== 200) {
+                layer.msg(`${result.message}`);
+                setTimeout(() => {
+                    window.location.href = '/login'
+                }, 5000)
+                if (result.status === 401) {
+                }
+                return
+            }
           layer.msg(`${result.message}`);
         }).catch(error => {
           console.log('请求出现错误:', error);

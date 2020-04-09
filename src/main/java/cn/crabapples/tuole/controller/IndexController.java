@@ -35,13 +35,22 @@ public class IndexController extends BaseController {
     }
 
     @RequestMapping("/")
-    public String toLogin() {
+    public String index() {
         return "index";
     }
 
-    @RequestMapping("welcome")
-    public String welcome(HttpServletRequest request) {
-        request.setAttribute("welcome", "欢迎使用遵义医科大学双选会系统!");
-        return "welcome";
+    @RequestMapping("/index")
+    public String toIndex() {
+        return "index";
+    }
+
+    @RequestMapping("/login")
+    public String toLogin() {
+        return "login";
+    }
+
+    @RequestMapping("/registry")
+    public String registry() {
+        return "registry";
     }
 }

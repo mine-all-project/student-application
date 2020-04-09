@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * TODO 系统相关接口
  *
@@ -37,6 +39,27 @@ public class SysController extends BaseController {
         return MANAGE + pageName;
     }
 
+    @GetMapping("/getCodeByMail/{mail}")
+    @ResponseBody
+    public ResponseDTO getCodeByMail(@PathVariable("mail") String mail) {
+        logger.info("收到请求->进入发送验证码[{}]", mail);
+        Map<String, String> code = sysService.sendCodeByMail(mail);
+        return ResponseDTO.returnSuccess("验证码下发成功", code);
+    }
+    @GetMapping("/getCodeByPhone/{phone}")
+    @ResponseBody
+    public ResponseDTO getCodeByPhone(@PathVariable("phone") String phone) {
+        logger.info("收到请求->进入发送验证码[{}]", phone);
+        Map<String, String> code = sysService.getCodeByPhone(phone);
+        return ResponseDTO.returnSuccess("验证码下发成功", code);
+    }
+
+    @GetMapping("/registry")
+    public String registry(@PathVariable("pageName") String pageName) {
+        logger.info("收到请求->进入页面[{}]", MANAGE + pageName);
+        return MANAGE + pageName;
+    }
+
     /**
      * 发起登录请求
      *
@@ -52,4 +75,5 @@ public class SysController extends BaseController {
         logger.info("登录验证结束->用户信息:[{}]", responseDTO);
         return responseDTO;
     }
+
 }

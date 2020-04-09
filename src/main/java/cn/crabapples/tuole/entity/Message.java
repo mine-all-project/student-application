@@ -9,6 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+/**
+ * @author hequan@gogpay.cn
+ * @date 2020/4/9 15:40
+ */
 @Entity
 @Getter
 @Setter

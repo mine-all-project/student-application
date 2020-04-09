@@ -4,6 +4,7 @@
   <title></title>
   <div data-th-include="/base/page :: meta"></div>
   <div data-th-include="/base/page :: style"></div>
+  <div data-th-include="/base/lay-ui :: style"></div>
 </head>
 
 <body>
@@ -44,7 +45,7 @@
               <span>{{item.content}}</span>
               <ul v-if="item.children.length">
                 <hr>
-                <li v-for="child in item.children" >
+                <li v-for="child in item.children">
                   <div class="layui-row">
                     <div class="layui-col-md12">{{child.content}}</div>
                   </div>
@@ -60,55 +61,61 @@
 </div>
 <div class="clear"></div>
 <div data-th-include="/base/page :: javascript"></div>
+<div data-th-include="/base/lay-ui :: javascript"></div>
 <div data-th-include="/base/page :: footer"></div>
 <script>
-  let vue = new Vue({
-    el: '#page-talk-area1',
-    data() {
-      return {
-        messages: [],
-        form: {
-          content: '',
-          area: 1
+    let vue = new Vue({
+        el: '#page-talk-area1',
+        data() {
+            return {
+                messages: [],
+                form: {
+                    content: '',
+                    area: 1
+                },
+            }
         },
-      }
-    },
-    mounted() {
-      this.getMessages()
-    },
-    methods: {
-      getMessages() {
-        const _this = this
-        axios.get('/api/getMessages/1').then(response => {
-          const result = response.data
-          console.log('通过api获取到的数据:', result)
-          if (result.status !== 200) {
-            layer.msg(`${result.message}`);
-            return
-          }
-          _this.messages = result.data
-        }).catch(function (error) {
-          console.log('请求出现错误:', error);
-        });
-      },
-      submit() {
-        console.log(this.form)
-        const _this = this
-        axios.post('/api/submitMessage', _this.form).then(response => {
-          const result = response.data
-          console.log('通过api获取到的数据:', result)
-          if (result.status !== 200) {
-            layer.msg(`${result.message}`);
-            return
-          }
-          window.location.reload()
-        }).catch(function (error) {
-          window.location.reload()
-          console.log('请求出现错误:', error);
-        });
-      }
-    }
-  })
+        mounted() {
+            this.getMessages()
+        },
+        methods: {
+            getMessages() {
+                const _this = this
+                axios.get('/api/getMessages/1').then(response => {
+                    const result = response.data
+                    console.log('通过api获取到的数据:', result)
+                    if (result.status !== 200) {
+                        layer.msg(`${result.message}`);
+                        return
+                    }
+                    _this.messages = result.data
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            },
+            submit() {
+                console.log(this.form)
+                const _this = this
+                axios.post('/api/submitMessage', _this.form).then(response => {
+                    const result = response.data
+                    console.log('通过api获取到的数据:', result)
+                    if (result.status !== 200) {
+                        layer.msg(`${result.message}`);
+                        setTimeout(() => {
+                            window.location.href = '/login'
+                        }, 5000)
+                        if (result.status === 401) {
+                        }
+                        return
+                    }
+                    window.location.reload()
+                }).catch(function (error) {
+                    window.location.reload()
+                    console.log('请求出现错误:', error);
+                });
+            }
+        }
+    })
 </script>
 </body>
 </html>

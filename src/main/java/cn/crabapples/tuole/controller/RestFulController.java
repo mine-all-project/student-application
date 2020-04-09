@@ -6,6 +6,7 @@ import cn.crabapples.tuole.entity.Goods;
 import cn.crabapples.tuole.entity.Message;
 import cn.crabapples.tuole.entity.Orders;
 import cn.crabapples.tuole.service.RestFulService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -143,7 +144,7 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", message);
     }
 
-    @RequestMapping("/submitMessage/{id}")
+    @RequestMapping("/submitMessage")
     @ResponseBody
     public ResponseDTO submitMessage(@RequestBody Message message) {
         logger.info("收到请求->发布评论:[{}]", message);

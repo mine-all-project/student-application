@@ -2,6 +2,7 @@ package cn.crabapples.tuole.controller;
 
 import cn.crabapples.tuole.config.ApplicationException;
 import cn.crabapples.tuole.dto.ResponseDTO;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,20 +40,12 @@ public abstract class BaseController {
     }
 
     @ExceptionHandler
-    protected String exceptionHandler(Exception e){
-        String info = "";
-        if(e instanceof UnauthorizedException){
-            info = "未获授权";
-        }
-        logger.error("出现异常:[{}][{}]\n",info,e.getMessage(),e);
-
-        return "redirect:http://www.baidu.com";
-    }
-
-    @ExceptionHandler
     @ResponseBody
-    protected ResponseDTO applicationExceptionHandler(ApplicationException e){
+    protected ResponseDTO applicationExceptionHandler(Exception e){
         logger.error("ajax出现异常:[{}]\n",e.getMessage(),e);
+        if(e instanceof UnauthenticatedException){
+            return ResponseDTO.returnAuthFail("未获授权,请先登陆后重试,5秒后自动跳转");
+        }
         return ResponseDTO.returnError(e.getMessage());
     }
 }

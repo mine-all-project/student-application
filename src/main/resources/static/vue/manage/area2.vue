@@ -6,7 +6,7 @@
       <el-table-column prop="createTime" label="日期" sortable width="220"></el-table-column>
       <el-table-column prop="content" label="内容"></el-table-column>
       <el-table-column label="操作">
-        <template slot-scope="scope" >
+        <template slot-scope="scope">
           <el-button size="mini" @click="addMessage(scope.row)" v-if="scope.row.level === 1">回复</el-button>
           <el-button size="mini" type="danger" @click="remove(scope)">删除</el-button>
         </template>
@@ -18,81 +18,81 @@
 </template>
 
 <script>
-  module.exports = {
-    data() {
-      return {
-        messages: [],
-        form: {
-          area: '2',
-          content: '',
+    module.exports = {
+        data() {
+            return {
+                messages: [],
+                form: {
+                    area: '2',
+                    content: '',
+                },
+            };
         },
-      };
-    },
-    mounted() {
-      this.getMessages()
-    },
-    methods: {
-      addMessage(row) {
-        const _this = this;
-        this.$prompt('请输入内容', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        }).then(({value}) => {
-          _this.form.content = value;
-          axios.post(`/api/addMessage/${row.id}`, _this.form).then(response => {
-            const result = response.data;
-            console.log('通过api获取到的数据:', result);
-            if (result.status !== 200) {
-              this.$message.error('数据加载失败');
-              return
-            }
-            _this.$message.success('操作成功');
-            window.location.reload();
-          }).catch(function (error) {
-            window.location.reload();
-            console.log('请求出现错误:', error);
-          });
-        }).catch(() => {
-          console.log('取消输入')
-        });
-      },
+        mounted() {
+            this.getMessages()
+        },
+        methods: {
+            addMessage(row) {
+                const _this = this;
+                this.$prompt('请输入内容', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({value}) => {
+                    _this.form.content = value;
+                    axios.post(`/api/addMessage/${row.id}`, _this.form).then(response => {
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            this.$message.error('数据加载失败');
+                            return
+                        }
+                        _this.$message.success('操作成功');
+                        window.location.reload();
+                    }).catch(function (error) {
+                        window.location.reload();
+                        console.log('请求出现错误:', error);
+                    });
+                }).catch(() => {
+                    console.log('取消输入')
+                });
+            },
 
-      remove(scope) {
-        const _this = this;
-        const id = scope.row.id;
-        _this.$confirm('确认删除？').then(e => {
-          axios.delete(`/api/removeMessageById/${id}`).then(response => {
-            _this.getMessages();
-            const result = response.data;
-            console.log('通过api获取到的数据:', result);
-            if (result.status !== 200) {
-              _this.$message.error('数据加载失败');
-              return
-            }
-            _this.$message.success('操作成功')
-          }).catch(function (error) {
-            _this.getMessages();
-            console.log('请求出现错误:', error);
-          });
-        });
-      },
+            remove(scope) {
+                const _this = this;
+                const id = scope.row.id;
+                _this.$confirm('确认删除？').then(e => {
+                    axios.delete(`/api/removeMessageById/${id}`).then(response => {
+                        _this.getMessages();
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            _this.$message.error('数据加载失败');
+                            return
+                        }
+                        _this.$message.success('操作成功')
+                    }).catch(function (error) {
+                        _this.getMessages();
+                        console.log('请求出现错误:', error);
+                    });
+                });
+            },
 
-      getMessages() {
-        const _this = this
-        axios.get('/api/getMessages/2').then(response => {
-          const result = response.data
-          console.log('通过api获取到的数据:', result)
-          if (result.status !== 200) {
-            layer.msg(`${result.message}`);
-            return
-          }
-          _this.messages = result.data
-        }).catch(function (error) {
-          console.log('请求出现错误:', error);
-        });
-      },
+            getMessages() {
+                const _this = this
+                axios.get('/api/getMessages/2').then(response => {
+                    const result = response.data
+                    console.log('通过api获取到的数据:', result)
+                    if (result.status !== 200) {
+                        _this.$message.error(`${result.message}`);
+                        return
+                    }
+                    _this.messages = result.data
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            },
+        }
     }
-  }
 </script>
 
 <style scoped>
