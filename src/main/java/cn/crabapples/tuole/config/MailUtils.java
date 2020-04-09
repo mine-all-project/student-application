@@ -8,7 +8,10 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
 /**
  * TODO SMTP发送邮件演示
@@ -30,7 +33,7 @@ public class MailUtils {
      * @param configure 邮件配置
      * @return session
      */
-    public static Session initSession(MailUtilsConfigure configure) {
+    private static Session initSession(MailUtilsConfigure configure) {
         logger.info("开始初始化session");
         Properties properties = new Properties();
         properties.put("mail.transport.protocol", configure.getProtocol());
@@ -67,11 +70,6 @@ public class MailUtils {
              * 设置收件人地址
              * ↓ ↓ ↓ ↓ ↓ ↓ ↓
              */
-//            InternetAddress[] target = new InternetAddress[targets.length];
-//            for (int i = 0; i < targets.length; i++) {
-//                logger.debug("添加收件人:[{}]", targets[i]);
-//                target[i] = new InternetAddress(targets[i]);
-//            }
             message.addRecipients(Message.RecipientType.TO, target);
             logger.info("初始化message完成:[{}]", message);
             return message;
@@ -88,7 +86,7 @@ public class MailUtils {
      * @param session   连接信息
      * @param message   邮件信息
      */
-    public static void sendEmail(MailUtilsConfigure configure, Session session, MimeMessage message) {
+    private static void sendEmail(MailUtilsConfigure configure, Session session, MimeMessage message) {
         try {
             logger.info("开始发送邮件");
             Transport transport = session.getTransport(configure.getProtocol());
@@ -99,6 +97,20 @@ public class MailUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public static void sendMail(String title, String content, String target) throws MessagingException {
+            MailUtilsConfigure configure = new MailUtilsConfigure();
+            configure.setDebug(true);
+            Session session = initSession(configure);
+            MimeMessage message = initMessage(configure, session, title, target);
+            Multipart multipart = new MimeMultipart();
+            addMailContentText(multipart, content);
+            assert message != null;
+            message.setContent(multipart);
+            message.saveChanges();
+            sendEmail(configure, session, message);
     }
 
     /**
