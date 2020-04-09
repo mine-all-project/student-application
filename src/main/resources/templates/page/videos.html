@@ -13,16 +13,15 @@
 <div class="clear"></div>
 <div class="typebox"></div>
 <div class="contitbox">
-  <p><a href="../about.html" class="ccsl">精彩视频</a></p>
-  <span class="ccsl">BEAUTIFUL PICTURE</span>
+  <p><a href="#" class="ccsl">精彩视频</a></p>
+  <span class="ccsl">BEAUTIFUL VIDEO</span>
 </div>
 <ul class="piclistul">
   <div class="kug"></div>
-  <div class="proimg">
-    <a href="../picdetail.html">
+  <div class="proimg" id="page-video">
+    <a href="#">
       <video width="100%" height="100%" controls>
-        <source src="movie.mp4" type="video/mp4">
-        <source src="movie.ogg" type="video/ogg">
+        <source :src="video.url" type="video/mp4">
       </video>
     </a>
   </div>
@@ -31,5 +30,36 @@
 <div class="clear"></div>
 <div data-th-include="/base/page :: javascript"></div>
 <div data-th-include="/base/page :: footer"></div>
+
+<script>
+  let vue = new Vue({
+    el: '#page-video',
+    data() {
+      return {
+        video: {},
+      }
+    },
+    mounted() {
+      this.getVideo()
+    },
+    methods: {
+      getVideo() {
+        const _this = this
+        axios.get('/api/getAudioFile/video').then(response => {
+          const result = response.data
+          console.log('通过api获取到的数据:', result)
+          if (result.status !== 200) {
+            this.$message.error('视频缓冲失败');
+            return
+          }
+          _this.video = result.data
+        }).catch(function (error) {
+          // 请求失败处理
+          console.log('请求出现错误:', error);
+        });
+      },
+    }
+  })
+</script>
 </body>
 </html>

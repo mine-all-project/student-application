@@ -1,198 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-	<title></title>
-	<div data-th-include="/base/page :: meta"></div>
-	<div data-th-include="/base/page :: style"></div>
+  <title></title>
+  <div data-th-include="/base/page :: meta"></div>
+  <div data-th-include="/base/page :: style"></div>
+	<style>
+		.foot-img {
+			width: 23%;
+			display: inline-block;
+			height: 200px;
+			margin: 0 auto;
+			padding: 5px;
+			border-radius: 10px;
+		}
+	</style>
 </head>
 
 <body>
 <div class="header">
-	<div data-th-include="/base/page :: nav"></div>
+  <div data-th-include="/base/page :: nav"></div>
 </div>
-<div class="clear"></div>
-<div class="banner">
-	<div class="b-img">
-		<img src="images/banner1.jpg" width="100%"/>
-		<img src="images/banner1.jpg" width="100%"/>
-	</div>
-	<div class="clear"></div>
-	<div class="b-list"></div>
+<div id="page-index">
+  <div class="clear"></div>
+  <div class="banner">
+    <div class="b-img">
+      <img src="images/banner1.jpg" width="100%"/>
+      <img src="images/banner1.jpg" width="100%"/>
+    </div>
+    <div class="clear"></div>
+    <div class="b-list"></div>
+  </div>
+  <div class="clear"></div>
+  <div class="part1">
+    <div class="main">
+      <div class="contitbox">
+        <p><a href="/page/info.html" class="ccsl">妥乐概况</a></p>
+        <span class="ccsl">SCENIC OVERVIEW</span>
+      </div>
+      <div class="conbox" style="text-align: left">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        妥乐古银杏风景区位于贵州省盘州市妥乐村，是国家AAAA级景区，这里流水潺潺，小桥流水，风景秀丽，古树绵绵，小桥映虹，奇峰傍寺。
+        全妥乐村拥有古银杏1200余株，胸径一般在50一150cm，最大220cm。一般树龄在300年以上，最长者为1500年，树干高达几十米。
+        是世界上古银杏生长密度最高、保存最完好的地方。
+      </div>
+      <div>
+        <img data-th-src="@{/images/info/image1.jpeg}" class="foot-img"/>
+        <img data-th-src="@{/images/info/image2.jpeg}" class="foot-img"/>
+        <img data-th-src="@{/images/info/image3.jpeg}" class="foot-img"/>
+        <img data-th-src="@{/images/info/image4.jpeg}" class="foot-img"/>
+      </div>
+      <div class="morebox"></div>
+    </div>
+  </div>
+  <div class="part2">
+    <ul class="piclistul">
+      <div class="contitbox">
+        <p><a href="/page/video.html" class="ccsl">精彩视频</a></p>
+        <span class="ccsl">VIDEO</span>
+      </div>
+      <div class="proimg">
+        <a href="#">
+          <video width="100%" height="100%" controls>
+            <source :src="video.url" type="video/mp4">
+          </video>
+        </a>
+      </div>
+    </ul>
+  </div>
+  <div class="clear"></div>
 </div>
-<div class="clear"></div>
-<div class="part1">
-	<div class="main">
-		<div class="contitbox">
-			<p><a href="about.html" class="ccsl">景区概况</a></p>
-			<span class="ccsl">SCENIC OVERVIEW</span>
-		</div>
-		<div class="conbox">
-			石家庄飞天益游天下旅行社有限公司是首批专注于精品民宿的新型创业连锁平台。<br>公司成立于2017年2月，注册资金1000万元。益游使命在于构筑"万众创新、大众创业"的新型平台，建立一个为历史和未来负责的、"留得住浓浓的乡愁"的城镇化村落服务体系，<br>为中国城镇化进程中的美丽乡村建设贡献一份力量。
-		</div>
-		<div class="morebox">
-			<span class="img"></span>
-		</div>
-	</div>
-</div>
-<div class="clear"></div>
-<div class="part2">
-	<div class="contitbox">
-		<p><a href="piclist.html" class="ccsl">文苑之旅</a></p>
-		<span class="ccsl">COURT TRAVEL</span>
-	</div>
-	<ul>
-		<li>
-			<div class="kug"></div>
-			<div class="proimg">
-				<a href="picdetail.html"><img src="images/1.png"/></a>
-			</div>
-			<a href="picdetail.html"><p class="ccsl">万竹林海(一)</p></a>
-		</li>
-		<li>
-			<div class="kug"></div>
-			<div class="proimg">
-				<a href="picdetail.html"><img src="images/1.png"/></a>
-			</div>
-			<a href="picdetail.html"><p class="ccsl">万竹林海(一)</p></a>
-		</li>
-		<li>
-			<div class="kug"></div>
-			<div class="proimg">
-				<a href="picdetail.html"><img src="images/1.png"/></a>
-			</div>
-			<a href="picdetail.html"><p class="ccsl">万竹林海(一)</p></a>
-		</li>
-	</ul>
-</div>
-<div class="clear"></div>
-<div class="part3">
-	<div class="contitbox">
-		<p><a href="piclist.html" class="ccsl">舒雅住宅</a></p>
-		<span class="ccsl">COURT TRAVEL</span>
-	</div>
-	<div class="p3con">
-		<div class="p3conL">
-			<div class="subBox0">
-				<ul style="margin-left: 0px; overflow: hidden">
-					<li><a href="picdetail.html"><img src="images/2.png"/></a></li>
-					<li><a href="picdetail.html"><img src="images/2.png"/></a></li>
-					<li><a href="picdetail.html"><img src="images/2.png"/></a></li>
-				</ul>
-			</div>
-		</div>
-		<div class="p3conR">
-			<img src="images/3.png"/>
-			<div class="tit ccsl">客 | 房 | 介 | 绍</div>
-			<div class="sub">桃花林苑中有各式客房100套,房型分为中式、现代两个类型,以满足客人的不同需求…</div>
-			<div class="updowm">
-				<p class="up">上一个</p>
-				<p class="down">下一个</p>
-			</div>
-		</div>
-	</div>
-	<script type="text/javascript">
-     $(function () {
-         var left = $(".up");
-         var right = $(".down");
-         var obj = $(".subBox0 ul");
-         var w = obj.find("li").innerWidth();
-
-         left.click(function () {
-             obj.find("li:last").prependTo(obj);
-             obj.css("margin-left", -w);
-             obj.animate({"margin-left": 0});
-         });
-
-         right.click(function () {
-             obj.animate({"margin-left": -w}, function () {
-                 obj.find("li:first").appendTo(obj);
-                 obj.css("margin-left", "0");
-             });
-         });
-         var moving = setInterval(function () {
-             right.click()
-         }, 3000);
-         obj.hover(function () {
-             clearInterval(moving);
-         }, function () {
-             moving = setInterval(function () {
-                 right.click()
-             }, 3000);
-         })
-     });
-	</script>
-	<div class="morebox">
-		<span class="img"></span>
-	</div>
-</div>
-<div class="clear"></div>
-<div class="part4">
-	<div class="main">
-		<div class="contitbox">
-			<p><a href="list.html" class="ccsl">新闻动态</a></p>
-			<span class="ccsl">NEWS</span>
-		</div>
-		<ul>
-			<li>
-				<div class="newl">
-					<a href="detail.html" class="ccsl">暑假去哪玩？桃花苑天地避暑甚好！</a>
-					<div class="sub">
-						暑期近在眼前，还在犹豫带孩子去哪儿玩吗？炎热的夏天，一颗躁动的心，背上收拾好的背包，走遍大好河山感受大千世界，还不如隐居室外桃源桃花苑天地精品。少一些城市的喧嚣，回归大自然的清新脱俗，来一场说走就走的夏日之旅吧。
-					</div>
-				</div>
-				<div class="newr">
-					<span>07.21</span>
-					<time>2016</time>
-				</div>
-				<div class="clear"></div>
-			</li>
-			<li>
-				<div class="newl">
-					<a href="detail.html" class="ccsl">暑假去哪玩？桃花苑天地避暑甚好！</a>
-					<div class="sub">
-						暑期近在眼前，还在犹豫带孩子去哪儿玩吗？炎热的夏天，一颗躁动的心，背上收拾好的背包，走遍大好河山感受大千世界，还不如隐居室外桃源桃花苑天地精品。少一些城市的喧嚣，回归大自然的清新脱俗，来一场说走就走的夏日之旅吧。
-					</div>
-				</div>
-				<div class="newr">
-					<span>07.21</span>
-					<time>2016</time>
-				</div>
-				<div class="clear"></div>
-			</li>
-			<li>
-				<div class="newl">
-					<a href="detail.html" class="ccsl">暑假去哪玩？桃花苑天地避暑甚好！</a>
-					<div class="sub">
-						暑期近在眼前，还在犹豫带孩子去哪儿玩吗？炎热的夏天，一颗躁动的心，背上收拾好的背包，走遍大好河山感受大千世界，还不如隐居室外桃源桃花苑天地精品。少一些城市的喧嚣，回归大自然的清新脱俗，来一场说走就走的夏日之旅吧。
-					</div>
-				</div>
-				<div class="newr">
-					<span>07.21</span>
-					<time>2016</time>
-				</div>
-				<div class="clear"></div>
-			</li>
-			<li>
-				<div class="newl">
-					<a href="detail.html" class="ccsl">暑假去哪玩？桃花苑天地避暑甚好！</a>
-					<div class="sub">
-						暑期近在眼前，还在犹豫带孩子去哪儿玩吗？炎热的夏天，一颗躁动的心，背上收拾好的背包，走遍大好河山感受大千世界，还不如隐居室外桃源桃花苑天地精品。少一些城市的喧嚣，回归大自然的清新脱俗，来一场说走就走的夏日之旅吧。
-					</div>
-				</div>
-				<div class="newr">
-					<span>07.21</span>
-					<time>2016</time>
-				</div>
-				<div class="clear"></div>
-			</li>
-		</ul>
-		<div class="more2">
-			<a href="list.html">MORE</a>
-		</div>
-	</div>
-</div>
-<div class="clear"></div>
 <div data-th-include="/base/page :: footer"></div>
-<div data-th-include="/base/page:: javascript"></div>
+<div data-th-include="/base/page :: javascript"></div>
+<script>
+  let vue = new Vue({
+    el: '#page-index',
+    data() {
+      return {
+        banner: [],
+        video: {},
+      }
+    },
+    mounted() {
+      this.getVideo()
+    },
+    methods: {
+      getVideo() {
+        const _this = this
+        axios.get('/api/getAudioFile/video').then(response => {
+          const result = response.data
+          console.log('通过api获取到的数据:', result)
+          if (result.status !== 200) {
+            this.$message.error('视频缓冲失败');
+            return
+          }
+          _this.video = result.data
+        }).catch(function (error) {
+          // 请求失败处理
+          console.log('请求出现错误:', error);
+        });
+      },
+    }
+  })
+</script>
 </body>
 </html>

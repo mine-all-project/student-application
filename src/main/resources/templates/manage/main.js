@@ -47,14 +47,12 @@ const router = new VueRouter({
 const app = new Vue({
   el: '#app',
   router,
-  components: {
-    // Demo
-  },
+  components: {},
   data() {
     const item = {
-      date: '2016-05-02',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄'
+      date: '2020-04-01',
+      name: '全',
+      address: '贵州省六盘水市钟山区'
     };
     return {
       tableData: Array(20).fill(item),
@@ -190,16 +188,15 @@ const app = new Vue({
             },
           ]
         },
-      ]
+      ],
+      welcome: true
     }
   },
   methods: {
     clickMenu(url) {
+      this.welcome = false
       router.push({path: url, params: {userId: 123}})
       console.log(url)
     }
   }
 })
-
-
-// 现在，应用已经启动了！
