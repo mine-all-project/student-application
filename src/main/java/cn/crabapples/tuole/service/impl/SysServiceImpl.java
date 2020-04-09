@@ -4,6 +4,7 @@ import cn.crabapples.tuole.config.ApplicationConfigure;
 import cn.crabapples.tuole.config.ApplicationException;
 import cn.crabapples.tuole.config.MailUtils;
 import cn.crabapples.tuole.config.SmsUtils;
+import cn.crabapples.tuole.dao.SysUserRepository;
 import cn.crabapples.tuole.dto.ResponseDTO;
 import cn.crabapples.tuole.entity.SysUser;
 import cn.crabapples.tuole.form.UserForm;
@@ -18,8 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.UUID;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,17 +36,20 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class SysServiceImpl implements SysService {
-    private static final String CODE_KEY = "code:";
+    private static final String CODE_KEY = "CODE:";
+    private static final String CODE_TEMP = "CODE:TEMP:";
     private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
     private String salt;
     private final StringRedisTemplate redisTemplate;
     private final SmsUtils smsUtils;
+    private final SysUserRepository sysUserRepository;
 
 
-    public SysServiceImpl(ApplicationConfigure applicationConfigure, StringRedisTemplate redisTemplate, SmsUtils smsUtils) {
+    public SysServiceImpl(ApplicationConfigure applicationConfigure, StringRedisTemplate redisTemplate, SmsUtils smsUtils, SysUserRepository sysUserRepository) {
         this.salt = applicationConfigure.SALT;
         this.redisTemplate = redisTemplate;
         this.smsUtils = smsUtils;
+        this.sysUserRepository = sysUserRepository;
     }
 
     @Override
@@ -61,6 +67,35 @@ public class SysServiceImpl implements SysService {
             return ResponseDTO.returnError(e.getMessage());
         }
         return ResponseDTO.returnSuccess("登录成功");
+    }
+
+    @Override
+    public SysUser registry(Map<String, String> map) {
+        SysUser exist = sysUserRepository.findByUsername(map.get("username")).orElse(null);
+        if (exist != null) {
+            throw new ApplicationException("用户名已经存在");
+        }
+
+        String redisKey = CODE_KEY + map.get("phone");
+        String code = redisTemplate.opsForValue().get(redisKey);
+        if (StringUtils.isEmpty(code)) {
+            throw new ApplicationException("验证码失效，请重新获取");
+        }
+        if (!code.equals(map.get("code"))) {
+            throw new ApplicationException("验证码错误");
+        }
+        String username = map.get("username");
+        String password = new Md5Hash(map.get("password"), salt).toString();
+        SysUser sysUser = new SysUser();
+        sysUser.setUsername(username);
+        sysUser.setPassword(password);
+        sysUser.setName(map.get("name"));
+        sysUser.setPhone(map.get("phone"));
+        sysUser.setMail(map.get("mail"));
+        sysUser.setAge(18);
+        sysUser.setIsAdmin(0);
+        sysUser.setStatus(0);
+        return sysUserRepository.save(sysUser);
     }
 
     /**
@@ -86,37 +121,55 @@ public class SysServiceImpl implements SysService {
         return null;
     }
 
+
     @Override
     public void sendCodeByMail(String mail) {
         try {
+            String redisKey = CODE_TEMP + mail;
+            Long time = redisTemplate.opsForValue().getOperations().getExpire(redisKey);
+            if (time > 0) {
+                throw new ApplicationException("请" + time + "秒后再重新获取");
+            }
             String code = createCheckCode(mail);
             String title = "验证邮件";
             String content = String.format("您的验证码为 [%s]", code);
             logger.info("本次验证码发送至:[{}],验证码为:[{}]", mail, code);
             MailUtils.sendMail(title, content, mail);
+            redisTemplate.opsForValue().set(redisKey, code, 60, TimeUnit.SECONDS);
         } catch (Exception e) {
             logger.warn("邮件发送异常:[{}]", e.getMessage(), e);
-            throw new ApplicationException("验证码发送异常");
+            throw new ApplicationException(e.getMessage());
         }
     }
 
     @Override
     public void sendCodeByPhone(String phone) {
         try {
+            String redisKey = CODE_TEMP + phone;
+            Long time = redisTemplate.opsForValue().getOperations().getExpire(redisKey);
+            if (time > 0) {
+                throw new ApplicationException("请" + time + "秒后再重新获取");
+            }
             String code = createCheckCode(phone);
             logger.info("本次验证码发送至:[{}],验证码为:[{}]", phone, code);
-            smsUtils.sendCodeMessage(phone, code);
+//            smsUtils.sendCodeMessage(phone, code);
+            redisTemplate.opsForValue().set(redisKey, code, 60, TimeUnit.SECONDS);
         } catch (Exception e) {
             logger.warn("短信发送异常:[{}]", e.getMessage(), e);
-            throw new ApplicationException("验证码发送异常");
+            throw new ApplicationException(e.getMessage());
         }
     }
 
     private String createCheckCode(String userKey) {
         String redisKey = CODE_KEY + userKey;
         String code = redisTemplate.opsForValue().get(redisKey);
-        if (null == code || "".equals(code)) {
-            code = UUID.randomUUID().toString().substring(0, 5);
+        if (StringUtils.isEmpty(code)) {
+            StringBuilder newCode = new StringBuilder();
+            Random random = new Random();
+            for (int i = 0; i < 6; i++) {
+                newCode.append(random.nextInt(10));
+            }
+            code = newCode.toString();
             redisTemplate.opsForValue().set(redisKey, code, 10, TimeUnit.MINUTES);
         }
         return code;

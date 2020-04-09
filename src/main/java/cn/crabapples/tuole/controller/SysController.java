@@ -2,12 +2,15 @@ package cn.crabapples.tuole.controller;
 
 import cn.crabapples.tuole.config.groups.IsLogin;
 import cn.crabapples.tuole.dto.ResponseDTO;
+import cn.crabapples.tuole.entity.SysUser;
 import cn.crabapples.tuole.form.UserForm;
 import cn.crabapples.tuole.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * TODO 系统相关接口
@@ -48,16 +51,20 @@ public class SysController extends BaseController {
     @GetMapping("/getCodeByPhone/{phone}")
     @ResponseBody
     public ResponseDTO getCodeByPhone(@PathVariable("phone") String phone) {
-        logger.info("收到请求->进入发送验证码[{}]", phone);
+        logger.info("收到请求->发送验证码[{}]", phone);
         sysService.sendCodeByPhone(phone);
         return ResponseDTO.returnSuccess("验证码下发成功");
     }
 
-//    @GetMapping("/registry")
-//    public String registry(@PathVariable("pageName") String pageName) {
-//        logger.info("收到请求->进入页面[{}]", MANAGE + pageName);
-//        return MANAGE + pageName;
-//    }
+    @PostMapping("/registryCheck")
+    @ResponseBody
+    public ResponseDTO registryCheck(@RequestBody Map<String, String> map) {
+//        super.validator(form, IsLogin.class);
+        logger.info("收到请求->用户注册[{}]", map);
+        SysUser sysUser = sysService.registry(map);
+        logger.info("注册验证结束->用户信息:[{}]", sysUser);
+        return ResponseDTO.returnSuccess("注册成功", sysUser);
+    }
 
     /**
      * 发起登录请求

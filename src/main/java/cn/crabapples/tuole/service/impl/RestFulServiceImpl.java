@@ -1,6 +1,7 @@
 package cn.crabapples.tuole.service.impl;
 
 import cn.crabapples.tuole.config.ApplicationException;
+import cn.crabapples.tuole.config.MailUtils;
 import cn.crabapples.tuole.config.SmsUtils;
 import cn.crabapples.tuole.dao.AudioFileRepository;
 import cn.crabapples.tuole.dao.GoodsRepository;
@@ -26,6 +27,8 @@ import java.util.*;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
+    @Value("${usePhone}")
+    private boolean usePhone;
     @Value("${filePath}")
     private String filePath;
     private final AudioFileRepository audioFileRepository;
@@ -178,10 +181,13 @@ public class RestFulServiceImpl implements RestFulService {
             throw new ApplicationException("每个用户每日只能购买一张门票");
         }
         try {
-            String title = "通知邮件";
-            String content = String.format("亲爱的 [%s] ,您的 [%s] 已经预约成功", sysUser.getName(), tickets.getName());
-//            MailUtils.sendMail(title, content, sysUser.getMail());
-//            smsUtils.sendNoticeMessage(sysUser.getPhone(), sysUser.getName(), tickets.getName());
+            if (usePhone) {
+                smsUtils.sendNoticeMessage(sysUser.getPhone(), sysUser.getName(), tickets.getName());
+            } else {
+                String title = "通知邮件";
+                String content = String.format("亲爱的 [%s] ,您的 [%s] 已经预约成功", sysUser.getName(), tickets.getName());
+                MailUtils.sendMail(title, content, sysUser.getMail());
+            }
             orderRepository.save(orders);
             return orders;
         } catch (Exception e) {

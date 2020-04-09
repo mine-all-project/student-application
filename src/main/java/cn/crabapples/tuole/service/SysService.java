@@ -2,7 +2,10 @@ package cn.crabapples.tuole.service;
 
 
 import cn.crabapples.tuole.dto.ResponseDTO;
+import cn.crabapples.tuole.entity.SysUser;
 import cn.crabapples.tuole.form.UserForm;
+
+import java.util.Map;
 
 /**
  * TODO 系统相关服务
@@ -23,4 +26,6 @@ public interface SysService {
     void sendCodeByMail(String mail);
 
     void sendCodeByPhone(String phone);
+
+    SysUser registry(Map<String,String> map);
 }

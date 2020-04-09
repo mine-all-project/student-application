@@ -31,8 +31,9 @@
     <hr class="hr15">
     <input name="phone" autocomplete="off" lay-verify="required" class="layui-input"
            placeholder="手机号" type="text" v-model="form.phone">
+    <input style="width:100%;" type="button" value="获取验证码" @click="getCode">
     <hr class="hr15">
-    <input name="email" autocomplete="off" lay-verify="required" class="layui-input"
+    <input name="mail" autocomplete="off" lay-verify="required" class="layui-input"
            placeholder="邮箱" type="text" v-model="form.mail">
     <hr class="hr15">
     <input name="code" autocomplete="off" lay-verify="required" class="layui-input"
@@ -40,9 +41,9 @@
     <hr class="hr15">
     <input lay-submit lay-filter="login" style="width:100%;" type="button" value="立即注册">
     <hr class="hr15">
-<!--    <a href="/login">-->
+    <a href="/login">
       <input style="width:100%;" type="button" value="返回登陆" @click="getCode">
-<!--    </a>-->
+    </a>
     <hr class="hr20">
   </form>
 </div>
@@ -50,72 +51,72 @@
 <div data-th-replace="/base/lay-ui :: javascript"></div>
 <script>
 
-    let vue = new Vue({
-        el: '#registryForm',
-        data() {
-            return {
-                form: {
-                    username: '111',
-                    password: '123',
-                    rePassword: '123',
-                    name: '测试 ',
-                    sex: 'NO',
-                    phone: '13111111111',
-                    mail: '294046317@qq.com',
-                    code: '1234',
-                },
-                check: true,
+  let vue = new Vue({
+    el: '#registryForm',
+    data() {
+      return {
+        form: {
+          username: '111',
+          password: '123',
+          rePassword: '123',
+          name: '测试 ',
+          sex: 'NO',
+          phone: '13111111111',
+          mail: '294046317@qq.com',
+          code: '1234',
+        },
+        check: true,
+      }
+    },
+    mounted() {
+      layui.use('form', function () {
+        let form = layui.form;
+        //layUi监听提交
+        form.on('submit(login)', function (data) {
+          let loginForm = $('#registryForm').serializeObject()
+          vue.registry(loginForm)
+          return false;
+        });
+      });
+    },
+    methods: {
+      registry(data) {
+        console.log(data)
+        console.log(this.form)
+        axios.post('/manage/registryCheck', data).then(response => {
+            const result = response.data
+            console.log('通过api获取到的数据:', result)
+            if (result.status !== 200) {
+                layer.msg(result.message)
+                return
             }
-        },
-        mounted() {
-            layui.use('form', function () {
-                let form = layui.form;
-                //layUi监听提交
-                form.on('submit(login)', function (data) {
-                    let loginForm = $('#registryForm').serializeObject()
-                    vue.login(loginForm)
-                    return false;
-                });
-            });
-        },
-        methods: {
-            login(data) {
-                console.log(data)
-                console.log(this.form)
-                // axios.post('/manage/registry', data).then(response => {
-                //     const result = response.data
-                //     console.log('通过api获取到的数据:', result)
-                //     if (result.status !== 200) {
-                //         layer.msg(result.message)
-                //         return
-                //     }
-                //     layer.msg(result.message)
-                //     window.location.href = '/index'
-                // }).catch(exception => {
-                //     layer.msg('系统错误')
-                //     console.error('系统错误', exception)
-                // })
-            },
-            ckeckPwd() {
-                this.check = this.form.password === this.form.rePassword
-            },
-            getCode(){
-                axios.get(`/manage/getCodeByMail/${this.form.mail}`).then(response => {
-                    const result = response.data
-                    console.log('通过api获取到的数据:', result)
-                    if (result.status !== 200) {
-                        layer.msg(result.message)
-                        return
-                    }
-                    layer.msg(result.message)
-                    // window.location.href = '/index'
-                }).catch(exception => {
-                    layer.msg('系统错误')
-                    console.error('系统错误', exception)
-                })
-            },
-        }
-    })
+            layer.msg(result.message)
+            // window.location.href = '/index'
+        }).catch(exception => {
+            layer.msg('系统错误')
+            console.error('系统错误', exception)
+        })
+      },
+      ckeckPwd() {
+        this.check = this.form.password === this.form.rePassword
+      },
+      getCode() {
+        axios.get(`/manage/getCodeByPhone/${this.form.phone}`).then(response => {
+          const result = response.data
+          console.log('通过api获取到的数据:', result)
+          if (result.status !== 200) {
+            layer.msg(result.message)
+            return
+          }
+          layer.msg(result.message)
+          // window.location.href = '/index'
+        }).catch(exception => {
+          layer.msg('系统错误')
+          console.error('系统错误', exception)
+        })
+      },
+    }
+  })
 </script>
 </body>
 </html>

@@ -2,7 +2,6 @@ package cn.crabapples.tuole.service;
 
 import cn.crabapples.tuole.dao.SysUserRepository;
 import cn.crabapples.tuole.entity.SysUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -12,8 +11,12 @@ import java.util.Optional;
 
 @Service
 public class IndexService {
-    @Autowired
-    SysUserRepository sysUserRepository;
+    private final SysUserRepository sysUserRepository;
+
+    public IndexService(SysUserRepository sysUserRepository) {
+        this.sysUserRepository = sysUserRepository;
+    }
+
     public boolean login(HttpServletRequest request, SysUser sysUser){
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
                 .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.exact())
