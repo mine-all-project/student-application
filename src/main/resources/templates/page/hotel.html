@@ -38,53 +38,53 @@
 <div data-th-include="/base/lay-ui :: javascript"></div>
 <div data-th-include="/base/page :: footer"></div>
 <script>
-    let vue = new Vue({
-        el: '#page-tickets-info',
-        data() {
-            return {
-                goodsInfo: {},
+  let vue = new Vue({
+    el: '#page-tickets-info',
+    data() {
+      return {
+        goodsInfo: {},
+      }
+    },
+    mounted() {
+      this.getShop()
+    },
+    methods: {
+      getShop() {
+        const _this = this;
+        axios.get(`/api/getGoodsList/hotel`).then(response => {
+          const result = response.data;
+          console.log('通过api获取到的数据:', result);
+          if (result.status !== 200) {
+            layer.msg(`${result.message}`);
+            return
+          }
+          if (result.data !== null) {
+            _this.goodsInfo = result.data;
+          }
+        }).catch(function (error) {
+          console.log('请求出现错误:', error);
+        });
+      },
+      submit(id) {
+        axios.get(`/api/submitOrder/${id}`).then(response => {
+          const result = response.data;
+          console.log('通过api获取到的数据:', result);
+          if (result.status !== 200) {
+            layer.msg(`${result.message}`);
+            if (result.status === 401) {
+              setTimeout(() => {
+                window.location.href = '/login'
+              }, 5000)
             }
-        },
-        mounted() {
-            this.getShop()
-        },
-        methods: {
-            getShop() {
-                const _this = this;
-                axios.get(`/api/getGoodsList/hotel`).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        layer.msg(`${result.message}`);
-                        return
-                    }
-                    if (result.data !== null) {
-                        _this.goodsInfo = result.data;
-                    }
-                }).catch(function (error) {
-                    console.log('请求出现错误:', error);
-                });
-            },
-            submit(id) {
-                axios.get(`/api/submitOrder/${id}`).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        layer.msg(`${result.message}`);
-                        setTimeout(() => {
-                            window.location.href = '/login'
-                        }, 5000)
-                        if (result.status === 401) {
-                        }
-                        return
-                    }
-                    layer.msg(`${result.message}`);
-                }).catch(error => {
-                    console.log('请求出现错误:', error);
-                });
-            },
-        }
-    })
+            return
+          }
+          layer.msg(`${result.message}`);
+        }).catch(error => {
+          console.log('请求出现错误:', error);
+        });
+      },
+    }
+  })
 </script>
 </body>
 </html>

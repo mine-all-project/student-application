@@ -11,12 +11,11 @@
   <div data-th-include="/base/page :: nav"></div>
 </div>
 <div class="clear"></div>
-<div class="clear"></div>
 <div class="brandnav"></div>
 <div class="clear"></div>
-<div class="detailbox" id="page-civilization">
+<div class="detailbox" id="page-strategy">
   <div class="xq">
-    <h1>文明旅游</h1>
+    <h1>旅游常识</h1>
     <div class="con" v-html="paper.url">正文</div>
   </div>
 </div>
@@ -25,7 +24,7 @@
 <div data-th-include="/base/page :: footer"></div>
 <script>
   let vue = new Vue({
-    el: '#page-civilization',
+    el: '#page-strategy',
     data() {
       return {
         paper: {},
@@ -37,7 +36,7 @@
     methods: {
       getPaper() {
         const _this = this
-        axios.get('/api/getAudioFile/civilization').then(response => {
+        axios.get('/api/getAudioFile/common').then(response => {
           const result = response.data
           console.log('通过api获取到的数据:', result)
           if (result.status !== 200) {

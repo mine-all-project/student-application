@@ -48,6 +48,14 @@ public class SysUser extends BaseEntity {
     @NotBlank(message = "姓名不能为空", groups = IsNotNull.class)
     private String name;
 
+    @Column(columnDefinition = "varchar(32) comment '邮箱'")
+    @NotBlank(message = "邮箱不能为空", groups = IsNotNull.class)
+    private String mail;
+
+    @Column(columnDefinition = "varchar(11) comment '手机号'")
+    @NotBlank(message = "手机号不能为空", groups = IsNotNull.class)
+    private String phone;
+
     /**
      * Column nullable = false 数据字段不能为空
      */

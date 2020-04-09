@@ -6,8 +6,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,9 +27,9 @@ public class Orders extends BaseEntity {
 
     @CreatedDate
     private LocalDate orderTime;
-    @OneToOne
+    @ManyToOne
     private SysUser sysUser;
-    @OneToMany
+    @ManyToMany
     private List<Goods> goods;
 
     @Override

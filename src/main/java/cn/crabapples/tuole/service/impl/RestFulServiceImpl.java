@@ -1,13 +1,19 @@
 package cn.crabapples.tuole.service.impl;
 
 import cn.crabapples.tuole.config.ApplicationException;
-import cn.crabapples.tuole.dao.*;
+import cn.crabapples.tuole.config.SmsUtils;
+import cn.crabapples.tuole.dao.AudioFileRepository;
+import cn.crabapples.tuole.dao.GoodsRepository;
+import cn.crabapples.tuole.dao.MessageRepository;
+import cn.crabapples.tuole.dao.OrderRepository;
 import cn.crabapples.tuole.entity.*;
 import cn.crabapples.tuole.service.RestFulService;
 import cn.crabapples.tuole.utils.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,14 +31,17 @@ public class RestFulServiceImpl implements RestFulService {
     private final AudioFileRepository audioFileRepository;
     private final GoodsRepository goodsRepository;
     private final OrderRepository orderRepository;
-    private final SysUserRepository sysUserRepository;
     private final MessageRepository messageRepository;
+    private final SmsUtils smsUtils;
+    private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
-    public RestFulServiceImpl(AudioFileRepository audioFileRepository, GoodsRepository goodsRepository, OrderRepository orderRepository, SysUserRepository sysUserRepository, MessageRepository messageRepository) {
+    public RestFulServiceImpl(AudioFileRepository audioFileRepository,
+                              GoodsRepository goodsRepository, OrderRepository orderRepository,
+                              MessageRepository messageRepository, SmsUtils smsUtils) {
         this.audioFileRepository = audioFileRepository;
         this.goodsRepository = goodsRepository;
         this.orderRepository = orderRepository;
-        this.sysUserRepository = sysUserRepository;
+        this.smsUtils = smsUtils;
         this.messageRepository = messageRepository;
     }
 
@@ -155,18 +164,30 @@ public class RestFulServiceImpl implements RestFulService {
     @RequiresPermissions("login")
     public Orders submitOrder(String ticketsId) {
         Goods tickets = goodsRepository.findById(ticketsId).orElse(null);
+        if (tickets == null) {
+            throw new ApplicationException("商品信息异常");
+        }
         SysUser sysUser = getUser();
         Orders orders = new Orders();
         List<Goods> goods = new ArrayList<>();
         goods.add(tickets);
         orders.setGoods(goods);
         orders.setSysUser(sysUser);
-        Orders exist = orderRepository.findAllBySysUserAndOrderTime(sysUser, LocalDate.now()).orElse(null);
-        if (exist != null) {
+        List<Orders> exist = orderRepository.findAllBySysUserAndOrderTime(sysUser, LocalDate.now());
+        if (exist != null && exist.size() == 0 && tickets.getKeyWord().equals("tickets")) {
             throw new ApplicationException("每个用户每日只能购买一张门票");
         }
-        orderRepository.save(orders);
-        return orders;
+        try {
+            String title = "通知邮件";
+            String content = String.format("亲爱的 [%s] ,您的 [%s] 已经预约成功", sysUser.getName(), tickets.getName());
+//            MailUtils.sendMail(title, content, sysUser.getMail());
+//            smsUtils.sendNoticeMessage(sysUser.getPhone(), sysUser.getName(), tickets.getName());
+            orderRepository.save(orders);
+            return orders;
+        } catch (Exception e) {
+            logger.warn("出现异常:[{}]\n", e.getMessage(), e);
+            throw new ApplicationException("通知邮件发送异常");
+        }
     }
 
     @Override
@@ -195,7 +216,7 @@ public class RestFulServiceImpl implements RestFulService {
     @RequiresPermissions("manage")
     public void addMessage(Message message, String id) {
         Message parent = messageRepository.findById(id).orElse(null);
-        if(parent == null){
+        if (parent == null) {
             throw new ApplicationException("数据异常");
         }
         message.setUser(getUser().getName());
@@ -207,10 +228,9 @@ public class RestFulServiceImpl implements RestFulService {
         messageRepository.saveAndFlush(parent);
     }
 
-    private SysUser getUser(){
+    private SysUser getUser() {
         Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser) subject.getPrincipal();
-        return sysUser;
+        return (SysUser) subject.getPrincipal();
     }
 
 

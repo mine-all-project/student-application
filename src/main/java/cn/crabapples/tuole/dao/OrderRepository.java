@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * TODO 订单信息持久层
@@ -20,10 +20,5 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Orders, String> {
 
-    Optional<Orders> findAllBySysUser(SysUser sysUser);
-    Optional<Orders> findAllBySysUserNotAndOrderTimeNot(SysUser sysUser, LocalDate orderTime);
-
-    Optional<Orders> findAllByOrderTimeNot(LocalDate now);
-
-    Optional<Orders> findAllBySysUserAndOrderTime(SysUser sysUser, LocalDate now);
+    List<Orders> findAllBySysUserAndOrderTime(SysUser sysUser, LocalDate now);
 }
