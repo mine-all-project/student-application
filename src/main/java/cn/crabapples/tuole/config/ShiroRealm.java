@@ -15,9 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 /**
@@ -48,9 +46,10 @@ public class ShiroRealm extends AuthorizingRealm {
         SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
         Set<String> permissions = new HashSet<>();
         if (user != null) {
-            permissions.add("login");
             if (user.getIsAdmin() == 0) {
                 permissions.add("manage");
+            } else {
+                permissions.add("login");
             }
         }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();

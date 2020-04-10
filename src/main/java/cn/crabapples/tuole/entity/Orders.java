@@ -25,6 +25,7 @@ import java.util.List;
 @Entity
 public class Orders extends BaseEntity {
 
+    private String keyword;
     @CreatedDate
     private LocalDate orderTime;
     @ManyToOne

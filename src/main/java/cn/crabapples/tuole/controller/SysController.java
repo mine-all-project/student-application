@@ -63,7 +63,7 @@ public class SysController extends BaseController {
         logger.info("收到请求->用户注册[{}]", map);
         SysUser sysUser = sysService.registry(map);
         logger.info("注册验证结束->用户信息:[{}]", sysUser);
-        return ResponseDTO.returnSuccess("注册成功", sysUser);
+        return ResponseDTO.returnSuccess("注册成功，即将返回登录页面", sysUser);
     }
 
     /**

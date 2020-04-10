@@ -75,7 +75,6 @@ public class SysServiceImpl implements SysService {
         if (exist != null) {
             throw new ApplicationException("用户名已经存在");
         }
-
         String redisKey = CODE_KEY + map.get("phone");
         String code = redisTemplate.opsForValue().get(redisKey);
         if (StringUtils.isEmpty(code)) {
@@ -152,7 +151,7 @@ public class SysServiceImpl implements SysService {
             }
             String code = createCheckCode(phone);
             logger.info("本次验证码发送至:[{}],验证码为:[{}]", phone, code);
-//            smsUtils.sendCodeMessage(phone, code);
+            smsUtils.sendCodeMessage(phone, code);
             redisTemplate.opsForValue().set(redisKey, code, 60, TimeUnit.SECONDS);
         } catch (Exception e) {
             logger.warn("短信发送异常:[{}]", e.getMessage(), e);

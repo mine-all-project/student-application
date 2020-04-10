@@ -17,6 +17,7 @@
   <properties>
     <java.version>1.8</java.version>
     <mail.version>1.4.7</mail.version>
+    <bootNacosConfig.version>0.2.3</bootNacosConfig.version>
   </properties>
 
   <dependencies>

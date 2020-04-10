@@ -169,25 +169,25 @@ const app = new Vue({
             },
           ]
         },
-        {
-          id: '5',
-          name: '联系我们',
-          icon: 'el-icon-message',
-          children: [
-            {
-              id: '5-1',
-              name: '景区直通车',
-              icon: 'el-icon-message',
-              url: '/manage/traffic'
-            },
-            {
-              id: '5-2',
-              name: '旅游常识',
-              icon: '',
-              url: '/manage/common'
-            },
-          ]
-        },
+        // {
+        //   id: '5',
+        //   name: '联系我们',
+        //   icon: 'el-icon-message',
+        //   children: [
+        //     {
+        //       id: '5-1',
+        //       name: '景区直通车',
+        //       icon: 'el-icon-message',
+        //       url: '/manage/traffic'
+        //     },
+        //     {
+        //       id: '5-2',
+        //       name: '旅游常识',
+        //       icon: '',
+        //       url: '/manage/common'
+        //     },
+        //   ]
+        // },
       ],
       welcome: true
     }

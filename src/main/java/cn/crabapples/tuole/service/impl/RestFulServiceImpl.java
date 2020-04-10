@@ -165,27 +165,30 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     @RequiresPermissions("login")
-    public Orders submitOrder(String ticketsId) {
-        Goods tickets = goodsRepository.findById(ticketsId).orElse(null);
-        if (tickets == null) {
+    public Orders submitOrder(String goodsId) {
+        Goods goods = goodsRepository.findById(goodsId).orElse(null);
+        if (goods == null) {
             throw new ApplicationException("商品信息异常");
         }
         SysUser sysUser = getUser();
         Orders orders = new Orders();
-        List<Goods> goods = new ArrayList<>();
-        goods.add(tickets);
-        orders.setGoods(goods);
+        List<Goods> goodsList = new ArrayList<>();
+        goodsList.add(goods);
+        orders.setGoods(goodsList);
         orders.setSysUser(sysUser);
+        orders.setKeyword(goods.getKeyWord());
         List<Orders> exist = orderRepository.findAllBySysUserAndOrderTime(sysUser, LocalDate.now());
-        if (exist != null && exist.size() == 0 && tickets.getKeyWord().equals("tickets")) {
-            throw new ApplicationException("每个用户每日只能购买一张门票");
-        }
+        exist.forEach(e -> {
+            if ("tickets".equals(e.getKeyword())) {
+                throw new ApplicationException("每个用户每日只能购买一张门票");
+            }
+        });
         try {
             if (usePhone) {
-                smsUtils.sendNoticeMessage(sysUser.getPhone(), sysUser.getName(), tickets.getName());
+                smsUtils.sendNoticeMessage(sysUser.getPhone(), sysUser.getName(), goods.getName());
             } else {
                 String title = "通知邮件";
-                String content = String.format("亲爱的 [%s] ,您的 [%s] 已经预约成功", sysUser.getName(), tickets.getName());
+                String content = String.format("亲爱的 [%s] ,您的 [%s] 已经预约成功", sysUser.getName(), goods.getName());
                 MailUtils.sendMail(title, content, sysUser.getMail());
             }
             orderRepository.save(orders);

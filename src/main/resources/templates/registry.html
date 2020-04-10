@@ -27,8 +27,6 @@
     <input name="name" autocomplete="off" lay-verify="required" class="layui-input"
            placeholder="姓名" type="text" v-model="form.name">
     <hr class="hr15">
-    <input type="checkbox" name="sex" lay-skin="switch" lay-text="女|男" v-model="form.sex">
-    <hr class="hr15">
     <input name="phone" autocomplete="off" lay-verify="required" class="layui-input"
            placeholder="手机号" type="text" v-model="form.phone">
     <input style="width:100%;" type="button" value="获取验证码" @click="getCode">
@@ -41,10 +39,6 @@
     <hr class="hr15">
     <input lay-submit lay-filter="login" style="width:100%;" type="button" value="立即注册">
     <hr class="hr15">
-    <a href="/login">
-      <input style="width:100%;" type="button" value="返回登陆" @click="getCode">
-    </a>
-    <hr class="hr20">
   </form>
 </div>
 
@@ -56,14 +50,13 @@
     data() {
       return {
         form: {
-          username: '111',
-          password: '123',
-          rePassword: '123',
-          name: '测试 ',
-          sex: 'NO',
-          phone: '13111111111',
-          mail: '294046317@qq.com',
-          code: '1234',
+          username: '',
+          password: '',
+          rePassword: '',
+          name: ' ',
+          phone: '',
+          mail: '',
+          code: '',
         },
         check: true,
       }
@@ -84,17 +77,19 @@
         console.log(data)
         console.log(this.form)
         axios.post('/manage/registryCheck', data).then(response => {
-            const result = response.data
-            console.log('通过api获取到的数据:', result)
-            if (result.status !== 200) {
-                layer.msg(result.message)
-                return
-            }
+          const result = response.data
+          console.log('通过api获取到的数据:', result)
+          if (result.status !== 200) {
             layer.msg(result.message)
-            // window.location.href = '/index'
+            return
+          }
+          layer.msg(result.message)
+          setTimeout(() => {
+            window.location.href = '/index'
+          }, 3000)
         }).catch(exception => {
-            layer.msg('系统错误')
-            console.error('系统错误', exception)
+          layer.msg('系统错误')
+          console.error('系统错误', exception)
         })
       },
       ckeckPwd() {

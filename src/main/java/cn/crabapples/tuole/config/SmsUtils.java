@@ -8,6 +8,7 @@ import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.sms.v20190711.SmsClient;
 import com.tencentcloudapi.sms.v20190711.models.SendSmsRequest;
 import com.tencentcloudapi.sms.v20190711.models.SendSmsResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -23,13 +24,15 @@ import java.util.*;
  */
 @Component
 public class SmsUtils {
-    private static final String SECRET_ID = "AKIDpW26yaV5A0ggy46FOWNxhHeqUsmkwP35";
-    private static final String SECRET_KEY = "Wm04Q8jEh5TkJzuZ0iVrxpRkz9PTHp5L";
+    @Value("${sms.secretId}")
+    private String secretId;
+    @Value("${sms.secretKey}")
+    private String secretKey;
     private static final String SIGN = "枕竹知雨韵";
     private static final String APP_ID = "1400344819";
 
     public String sendNoticeMessage(String phone, String username, String goodsName) throws TencentCloudSDKException {
-        Credential cred = new Credential(SECRET_ID, SECRET_KEY);
+        Credential cred = new Credential(secretId, secretKey);
         HttpProfile httpProfile = new HttpProfile();
         httpProfile.setEndpoint("sms.tencentcloudapi.com");
         ClientProfile clientProfile = new ClientProfile();
@@ -43,7 +46,7 @@ public class SmsUtils {
     }
 
     public String sendCodeMessage(String phone, String code) throws TencentCloudSDKException {
-        Credential cred = new Credential(SECRET_ID, SECRET_KEY);
+        Credential cred = new Credential(secretId, secretKey);
         HttpProfile httpProfile = new HttpProfile();
         httpProfile.setEndpoint("sms.tencentcloudapi.com");
         ClientProfile clientProfile = new ClientProfile();
