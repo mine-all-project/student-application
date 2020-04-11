@@ -15,9 +15,15 @@
 <div class="clear"></div>
 <div class="detailbox" id="page-strategy">
   <div class="xq">
-    <h1>景区直通车</h1>
-    <div class="con" v-html="paper.url">正文</div>
-    <div id="container"></div>
+    <h1>下雨天，妥乐“银瀑”和你更配哦~</h1>
+    <!--    <div class="con" v-html="paper.url">正文</div>-->
+    <div class="con">
+      <p>这几日，妥乐一直下着绵绵小雨，撑一把伞，漫步雨中的妥乐，便多了几分“青箬笠,绿蓑衣,斜风细雨不须归”的悠然自得。
+
+        走进古银杏树林，一株株苍劲有力的古银杏树便映入眼帘，他们以各自独有的姿态生长着。
+        顺着银杏树群往里走去，便能听到很清亮的哗哗流水声。林荫中俯首而望，出现在眼前的便是水声的来源处——“银瀑”。</p>
+      <img src="https://mmbiz.qpic.cn/mmbiz_png/4AewcMaAOyFMicoYWlXSgVibicwYGMPJPMib62cVMbvcxPCkyabmkemtOwZ53tPYXhKsSZ9AbZ0nGbiaHEdjibt7E5Gw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="">
+    </div>
   </div>
 </div>
 <div class="clear"></div>
@@ -51,13 +57,6 @@
       },
     }
   })
-</script>
-<script type="text/javascript"
-        src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=9GqUhkWWAaaFRU0jW9vvU04ktc175dTh"/>
-<script>
-  var map = new BMapGL.Map("container");
-  var point = new BMapGL.Point(116.404, 39.915);
-  map.centerAndZoom(point, 15);
 </script>
 </body>
 </html>

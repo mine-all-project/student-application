@@ -88,37 +88,37 @@ const app = new Vue({
             },
           ]
         },
-        {
-          id: '2',
-          name: '妥乐资讯',
-          icon: 'el-icon-message',
-          children: [
-            {
-              id: '2-1',
-              name: '最新动态',
-              icon: 'el-icon-message',
-              url: '/manage/dynamic'
-            },
-            {
-              id: '2-2',
-              name: '旅游资讯',
-              icon: '',
-              url: '/manage/tourism'
-            },
-            {
-              id: '2-3',
-              name: '活动资讯',
-              icon: '',
-              url: '/manage/active'
-            },
-            {
-              id: '2-4',
-              name: '通知公告',
-              icon: '',
-              url: '/manage/notice'
-            },
-          ]
-        },
+        // {
+        //   id: '2',
+        //   name: '妥乐资讯',
+        //   icon: 'el-icon-message',
+        //   children: [
+        //     {
+        //       id: '2-1',
+        //       name: '最新动态',
+        //       icon: 'el-icon-message',
+        //       url: '/manage/dynamic'
+        //     },
+        //     {
+        //       id: '2-2',
+        //       name: '旅游资讯',
+        //       icon: '',
+        //       url: '/manage/tourism'
+        //     },
+        //     {
+        //       id: '2-3',
+        //       name: '活动资讯',
+        //       icon: '',
+        //       url: '/manage/active'
+        //     },
+        //     {
+        //       id: '2-4',
+        //       name: '通知公告',
+        //       icon: '',
+        //       url: '/manage/notice'
+        //     },
+        //   ]
+        // },
         {
           id: '3',
           name: '在线预约',

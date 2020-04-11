@@ -15,9 +15,14 @@
 <div class="clear"></div>
 <div class="detailbox" id="page-strategy">
   <div class="xq">
-    <h1>景区直通车</h1>
-    <div class="con" v-html="paper.url">正文</div>
-    <div id="container"></div>
+    <h1>“小桥流水”路萦纡</h1>
+    <!--    <div class="con" v-html="paper.url">正文</div>-->
+    <div class="con">
+      <p>提到小桥流水，大家自然就想到马致远《天净沙·秋思》里的诗句：
+
+        “枯藤老树昏鸦，小桥流水人家”。</p>
+      <img src="https://mmbiz.qpic.cn/mmbiz_png/4AewcMaAOyFMicoYWlXSgVibicwYGMPJPMib62cVMbvcxPCkyabmkemtOwZ53tPYXhKsSZ9AbZ0nGbiaHEdjibt7E5Gw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="">
+    </div>
   </div>
 </div>
 <div class="clear"></div>
@@ -51,13 +56,6 @@
       },
     }
   })
-</script>
-<script type="text/javascript"
-        src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=9GqUhkWWAaaFRU0jW9vvU04ktc175dTh"/>
-<script>
-  var map = new BMapGL.Map("container");
-  var point = new BMapGL.Point(116.404, 39.915);
-  map.centerAndZoom(point, 15);
 </script>
 </body>
 </html>

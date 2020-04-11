@@ -25,6 +25,9 @@
           <el-form-item label="价格" :label-width="formLabelWidth">
             <el-input v-model="drawer.form.sale" autocomplete="off" type="number"></el-input>
           </el-form-item>
+          <el-form-item label="店铺地址" :label-width="formLabelWidth">
+            <el-input v-model="drawer.form.link" autocomplete="off"></el-input>
+          </el-form-item>
           <el-form-item label="预览图">
             <el-upload class="avatar-uploader" :action="`/api/uploadShopFile/tickets`"
                        :show-file-list="false" ref="uploadFile" :on-success="uploadSuccess">
@@ -58,6 +61,7 @@
             keyword: '',
             name: '',
             sale: '',
+            linkL: '',
             url: '',
           },
         },

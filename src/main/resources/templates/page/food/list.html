@@ -17,17 +17,25 @@
 
 <div class="detailbox" id="page-tickets-info">
   <div class="xq">
-    <h1>特产列表</h1>
+    <h1>餐饮列表</h1>
     <div class="con" style="width: 400px;height: 500px;float: left;margin: 10px" v-for="item in goodsInfo">
       <div class="con" style="width: 400px;height: 300px">
         <img :src=`/file/${item.url}` alt="" style="width: 100%;height: 100%">
       </div>
       <div class="layui-row" style="font-size: 2em;">
+        <div class="layui-col-md12">
+          <span v-text="`${item.name}`"></span>
+        </div>
+      </div>
+      <div class="layui-row" style="font-size: 1.5em;">
         <div class="layui-col-md9">
           <span v-text="`价格: ￥${item.sale}元`"></span>
         </div>
         <div class="layui-col-md3">
-          <button class="layui-btn layui-btn-normal" size="small" @click="submit(item.id)">立即购买</button>
+          <!--          <button class="layui-btn layui-btn-normal" size="small" @click="submit(item.id)">立即购买</button>-->
+          <a :href="item.link" target="_blank">
+            <button class="layui-btn layui-btn-normal" size="small">点击查看详情</button>
+          </a>
         </div>
       </div>
     </div>
@@ -51,7 +59,7 @@
     methods: {
       getShop() {
         const _this = this;
-        axios.get(`/api/getGoodsList/specialty`).then(response => {
+        axios.get(`/api/getGoodsList/food`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {

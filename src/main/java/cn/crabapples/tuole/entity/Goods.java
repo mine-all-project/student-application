@@ -25,6 +25,8 @@ public class Goods extends BaseEntity {
     private BigDecimal sale;
     @Column(columnDefinition = "longtext")
     private String url;
+    @Column(columnDefinition = "longtext")
+    private String link;
     @Column(columnDefinition = "varchar(64)")
     private String keyWord;
     private Integer sort;

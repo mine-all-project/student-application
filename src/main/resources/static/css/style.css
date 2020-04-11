@@ -567,11 +567,21 @@ p {
     display: inline-block;
     float: left;
     width: 100px;
-    background: url(../images/navbg.png) no-repeat right;
+    /*background: url(../images/navbg.png) no-repeat right;*/
     text-align: center;
     line-height: 30px;
     font-size: 14px;
     color: #666;
+}
+
+.footer .foot .fnav span {
+    display: inline-block;
+    float: left;
+    width: 100px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+    color: #000;
 }
 
 .footer .foot .fot {
