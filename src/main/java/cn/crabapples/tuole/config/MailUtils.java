@@ -16,10 +16,10 @@ import java.util.UUID;
 /**
  * TODO SMTP发送邮件演示
  *
- * @author Mr.He
+ *
  * 2020/3/20 21:15
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
+ *
+ *
  * pc-name 29404
  */
 public class MailUtils {

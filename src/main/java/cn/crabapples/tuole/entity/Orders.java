@@ -14,10 +14,10 @@ import java.util.List;
 /**
  * TODO 订单模块实体类
  *
- * @author Mr.He
+ *
  * 2020/4/7 22:56
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
+ *
+ *
  * pc-name 29404
  */
 @Getter

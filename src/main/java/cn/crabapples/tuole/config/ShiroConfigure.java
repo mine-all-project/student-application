@@ -14,10 +14,10 @@ import java.util.Map;
 /**
  * TODO shiro配置类
  *
- * @author Mr.He
+ *
  * 2020/3/5 0:57
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
+ *
+ *
  * pc-name 29404
  */
 @Configuration

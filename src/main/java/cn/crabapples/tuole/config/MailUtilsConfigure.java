@@ -8,10 +8,10 @@ import lombok.Setter;
 /**
  * TODO 邮件配置类
  *
- * @author Mr.He
+ *
  * 2020/3/20 21:15
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
+ *
+ *
  * pc-name 29404
  */
 @Getter

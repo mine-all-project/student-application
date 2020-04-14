@@ -11,12 +11,6 @@ import javax.validation.constraints.Null;
 
 /**
  * TODO 用户信息提交Form
- *
- * @author Mr.He
- * 2020/1/27 11:26
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
  */
 @Data
 public class UserForm {
