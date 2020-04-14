@@ -18,7 +18,7 @@ public class IndexController extends BaseController {
     }
 
     private Logger logger = LoggerFactory.getLogger(IndexController.class);
-    private static final String PAGE = "page/";
+    private static final String PAGE = "portal/";
 
     @GetMapping("/page/{pageName}")
     public String page(@PathVariable("pageName") String pageName) {
