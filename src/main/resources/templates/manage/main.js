@@ -157,16 +157,16 @@ const app = new Vue({
           children: [
             {
               id: '4-1',
-              name: '主题1',
+              name: '评论管理',
               icon: 'el-icon-message',
               url: '/manage/area1'
             },
-            {
-              id: '4-2',
-              name: '主题2',
-              icon: '',
-              url: '/manage/area2'
-            },
+            // {
+            //   id: '4-2',
+            //   name: '主题2',
+            //   icon: '',
+            //   url: '/manage/area2'
+            // },
           ]
         },
         // {
