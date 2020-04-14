@@ -2,7 +2,6 @@ package org.example.yangjichang.controller;
 
 import org.example.yangjichang.dto.ResponseDTO;
 import org.example.yangjichang.entity.AudioFile;
-import org.example.yangjichang.entity.Goods;
 import org.example.yangjichang.entity.Message;
 import org.example.yangjichang.entity.Orders;
 import org.example.yangjichang.service.RestFulService;
@@ -90,13 +89,13 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @GetMapping("/getGoodsById/{id}")
-    public ResponseDTO getGoodsById(@PathVariable("id") String id) {
-        logger.info("收到请求->获取商品数据,id:[{}]", id);
-        Goods goods = restFulService.getGoodsById(id);
-        logger.info("返回结果->获取商品数据完成:[{}]", goods);
-        return ResponseDTO.returnSuccess("操作成功", goods);
-    }
+//    @GetMapping("/getGoodsById/{id}")
+//    public ResponseDTO getGoodsById(@PathVariable("id") String id) {
+//        logger.info("收到请求->获取商品数据,id:[{}]", id);
+//        Goods goods = restFulService.getGoodsById(id);
+//        logger.info("返回结果->获取商品数据完成:[{}]", goods);
+//        return ResponseDTO.returnSuccess("操作成功", goods);
+//    }
 
     @RequestMapping("/uploadShopFile/{keyword}")
     @ResponseBody
@@ -107,23 +106,23 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", path);
     }
 
-    @RequestMapping("/getGoodsList/{keyword}")
-    @ResponseBody
-    public ResponseDTO getGoodsList(@PathVariable("keyword") String keyword) {
-        logger.info("收到请求->获取商品信息:[{}]", keyword);
-        List<Goods> goods = restFulService.getGoodsList(keyword);
-        logger.info("返回结果->获取商品信息完成:[{}]", goods);
-        return ResponseDTO.returnSuccess("操作成功", goods);
-    }
+//    @RequestMapping("/getGoodsList/{keyword}")
+//    @ResponseBody
+//    public ResponseDTO getGoodsList(@PathVariable("keyword") String keyword) {
+//        logger.info("收到请求->获取商品信息:[{}]", keyword);
+//        List<Goods> goods = restFulService.getGoodsList(keyword);
+//        logger.info("返回结果->获取商品信息完成:[{}]", goods);
+//        return ResponseDTO.returnSuccess("操作成功", goods);
+//    }
 
-    @RequestMapping("/saveGoodsInfo")
-    @ResponseBody
-    public ResponseDTO saveGoodsInfo(@RequestBody Goods goods) {
-        logger.info("收到请求->保存商品信息:[{}]", goods);
-        goods = restFulService.saveGoodsInfo(goods);
-        logger.info("返回结果->保存商品信息完成:[{}]", goods);
-        return ResponseDTO.returnSuccess("操作成功", goods);
-    }
+//    @RequestMapping("/saveGoodsInfo")
+//    @ResponseBody
+//    public ResponseDTO saveGoodsInfo(@RequestBody Goods goods) {
+//        logger.info("收到请求->保存商品信息:[{}]", goods);
+//        goods = restFulService.saveGoodsInfo(goods);
+//        logger.info("返回结果->保存商品信息完成:[{}]", goods);
+//        return ResponseDTO.returnSuccess("操作成功", goods);
+//    }
 
     @RequestMapping("/submitOrder/{ticketsId}")
     @ResponseBody

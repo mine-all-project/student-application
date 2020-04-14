@@ -31,7 +31,7 @@ public class Orders extends BaseEntity {
     @ManyToOne
     private SysUser sysUser;
     @ManyToMany
-    private List<Goods> goods;
+    private List<Chicken> chickens;
 
     @Override
     public String toString() {

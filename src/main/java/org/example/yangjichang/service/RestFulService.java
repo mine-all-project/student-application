@@ -3,7 +3,6 @@ package org.example.yangjichang.service;
 import org.example.yangjichang.entity.AudioFile;
 import org.example.yangjichang.entity.Message;
 import org.example.yangjichang.entity.Orders;
-import org.example.yangjichang.entity.Goods;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -29,13 +28,13 @@ public interface RestFulService {
 
     Map<String, String> uploadShopFile(HttpServletRequest request);
 
-    List<Goods> getGoodsList(String keyword);
-
-    Goods saveGoodsInfo(Goods goods);
+//    List<Goods> getGoodsList(String keyword);
+//
+//    Goods saveGoodsInfo(Goods goods);
 
     Orders submitOrder(String shop);
 
-    Goods getGoodsById(String id);
+//    Goods getGoodsById(String id);
 
     Message submitMessage(Message message);
 

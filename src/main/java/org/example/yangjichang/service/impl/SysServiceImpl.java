@@ -92,7 +92,7 @@ public class SysServiceImpl implements SysService {
         sysUser.setPhone(map.get("phone"));
         sysUser.setMail(map.get("mail"));
         sysUser.setAge(18);
-        sysUser.setIsAdmin(0);
+        sysUser.setAdmin(false);
         sysUser.setStatus(0);
         return sysUserRepository.save(sysUser);
     }

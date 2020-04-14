@@ -24,18 +24,11 @@ import java.util.List;
  * qq 294046317
  * pc-name 29404
  *
- * Entity 表示这是一个和数据库表相关联的类
  */
 @Entity
 @Getter
 @Setter
 public class SysUser extends BaseEntity {
-    public SysUser() {}
-    public SysUser(String name, Integer age) {
-        this.name = name;
-        this.age = age;
-    }
-
     @Column(columnDefinition = "varchar(32) comment '用户名'",unique=true)
     @NotBlank(message = "用户名不能为空", groups = IsNotNull.class)
     private String username;
@@ -56,9 +49,6 @@ public class SysUser extends BaseEntity {
     @NotBlank(message = "手机号不能为空", groups = IsNotNull.class)
     private String phone;
 
-    /**
-     * Column nullable = false 数据字段不能为空
-     */
     @Column(columnDefinition = "int (3) default 0 not null comment '年龄'")
     @NotNull(message = "年龄不能为空", groups = IsNotNull.class)
     private Integer age;
@@ -75,8 +65,7 @@ public class SysUser extends BaseEntity {
     @NotBlank(message = "状态不能为空", groups = IsNotNull.class)
     private Integer status;
 
-    @Column(columnDefinition = "bit(1) default 1 not null comment '是否为超级管理员状态标记 0:是 1:否'")
-    private Integer isAdmin;
+    private boolean isAdmin;
 
     @Override
     public String toString() {
