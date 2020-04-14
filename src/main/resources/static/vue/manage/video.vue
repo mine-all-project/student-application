@@ -1,8 +1,8 @@
 <template>
   <el-row :gutter="20">
     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="text-align: center">
-      <video width="80%" height="100%" controls>
-        <source :src="video.url" type="video/mp4">
+      <video width="80%" height="100%" controls v-if="video.url">
+        <source :src=`/file/${video.url}` type="video/mp4">
       </video>
       <el-upload :show-file-list="false" :action="`/api/uploadFile/${video.id}`"
                  :on-success="uploadSuccess" :on-error="uploadError" style="text-align: right">

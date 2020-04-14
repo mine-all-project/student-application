@@ -8,7 +8,7 @@
     <version>2.1.4.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
-  <groupId>cn.crabapples</groupId>
+  <groupId>org.example</groupId>
   <artifactId>tuole</artifactId>
   <version>1.0</version>
   <name>student-project</name>
