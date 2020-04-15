@@ -5,15 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-/**
- * TODO
- *
- * @author Mr.He
- * 2020/4/3 1:12
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
- */
 @Configuration
 public class ResourceConfigure implements WebMvcConfigurer {
     @Value("${filePath}")

@@ -25,15 +25,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-/**
- * TODO 系统相关服务实现类
- *
- * @author Mr.He
- * 2020/1/28 23:23
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
- */
 @Service
 public class SysServiceImpl implements SysService {
     private static final String CODE_KEY = "CODE:";

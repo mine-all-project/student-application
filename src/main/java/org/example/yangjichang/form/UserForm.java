@@ -9,15 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
-/**
- * TODO 用户信息提交Form
- *
- * @author Mr.He
- * 2020/1/27 11:26
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
- */
 @Data
 public class UserForm {
     @NotBlank(message = "id不能为空", groups = IsEdit.class)

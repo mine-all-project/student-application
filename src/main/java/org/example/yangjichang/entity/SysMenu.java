@@ -9,15 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 import java.util.List;
 
-/**
- * TODO 系统菜单
- *
- * @author Mr.He
- * 3/1/20 11:58 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
- */
 @Setter
 @Getter
 @Entity

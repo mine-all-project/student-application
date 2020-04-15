@@ -10,15 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import java.util.List;
 
-/**
- * TODO 角色实体类
- *
- * @author Mr.He
- * 2020/3/7 1:30
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
- */
 @Entity
 @Getter
 @Setter
