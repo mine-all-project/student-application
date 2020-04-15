@@ -14,18 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-
-/**
- * TODO 用户实体类
- *
- *
- * 2019/7/4 14:51
- *
- *
- * pc-name 29404
- *
- * Entity 表示这是一个和数据库表相关联的类
- */
 @Entity
 @Getter
 @Setter

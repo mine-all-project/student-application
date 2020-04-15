@@ -8,13 +8,6 @@ import java.io.*;
 import java.util.Date;
 import java.util.UUID;
 
-/**
- * 2018年9月9日 下午4:43:47
- *
- * @author H
- * TODO 保存图片的工具
- * Admin
- */
 public class FileUtils {
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 

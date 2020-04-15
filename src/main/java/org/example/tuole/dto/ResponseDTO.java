@@ -3,15 +3,6 @@ package org.example.tuole.dto;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 
-/**
- * TODO 通用返回实体DTO
- *
- *
- * 2019/9/21 17:45
- *
- *
- * pc-name 29404
- */
 @Getter
 public class ResponseDTO {
     @Getter

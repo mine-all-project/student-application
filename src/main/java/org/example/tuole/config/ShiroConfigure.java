@@ -11,15 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * TODO shiro配置类
- *
- *
- * 2020/3/5 0:57
- *
- *
- * pc-name 29404
- */
 @Configuration
 public class ShiroConfigure {
     ShiroRealm shiroRealm;

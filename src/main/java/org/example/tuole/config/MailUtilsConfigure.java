@@ -5,15 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * TODO 邮件配置类
- *
- *
- * 2020/3/20 21:15
- *
- *
- * pc-name 29404
- */
 @Getter
 @Setter
 public class MailUtilsConfigure {

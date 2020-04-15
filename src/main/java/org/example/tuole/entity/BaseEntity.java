@@ -13,15 +13,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * TODO 实体类基础属性
- *
- *
- * 2019/9/21 17:47
- *
- *
- * pc-name 29404
- */
 @Getter
 @Setter
 @MappedSuperclass

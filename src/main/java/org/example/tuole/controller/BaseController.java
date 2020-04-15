@@ -13,15 +13,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Set;
 
-/**
- * TODO 基础Controller，其他controller请继承此类
- *
- *
- * 2019/9/21 18:28
- *
- *
- * pc-name 29404
- */
 public abstract class BaseController {
     private Logger logger = LoggerFactory.getLogger(BaseController.class);
     @Autowired

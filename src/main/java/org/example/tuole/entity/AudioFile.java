@@ -7,15 +7,6 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-/**
- * TODO
- *
- *
- * 2020/4/2 20:48
- *
- *
- * pc-name 29404
- */
 @Entity
 @Getter
 @Setter

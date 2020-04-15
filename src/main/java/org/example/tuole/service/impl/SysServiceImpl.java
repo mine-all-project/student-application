@@ -24,16 +24,6 @@ import org.springframework.util.StringUtils;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
-/**
- * TODO 系统相关服务实现类
- *
- *
- * 2020/1/28 23:23
- *
- *
- *
- */
 @Service
 public class SysServiceImpl implements SysService {
     private static final String CODE_KEY = "CODE:";

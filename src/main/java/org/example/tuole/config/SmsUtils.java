@@ -13,15 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-/**
- * TODO
- *
- *
- * 2020/4/9 21:18
- *
- *
- * pc-name 29404
- */
 @Component
 public class SmsUtils {
     @Value("${sms.secretId}")

@@ -18,15 +18,6 @@ import java.util.List;
 import java.util.Set;
 
 
-/**
- * TODO shiro配置
- *
- *
- * 2020/3/5 1:03
- *
- *
- * pc-name 29404
- */
 @Configuration
 public class ShiroRealm extends AuthorizingRealm {
     private static final Logger logger = LoggerFactory.getLogger(ShiroRealm.class);

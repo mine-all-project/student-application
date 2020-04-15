@@ -1,14 +1,5 @@
 package org.example.tuole.config;
 
-/**
- * TODO 应用异常类
- *
- *
- * 2019/9/21 20:54
- *
- *
- * pc-name 29404
- */
 public class ApplicationException extends RuntimeException{
     public ApplicationException() {
     }

@@ -11,15 +11,6 @@ import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * TODO 订单模块实体类
- *
- *
- * 2020/4/7 22:56
- *
- *
- * pc-name 29404
- */
 @Getter
 @Setter
 @Entity

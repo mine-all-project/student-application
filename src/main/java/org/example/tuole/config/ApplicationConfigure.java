@@ -6,15 +6,6 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-/**
- * TODO 应用配置类
- *
- *
- * 3/2/20 1:21 AM
- *
- *
- * pc-name root
- */
 @Component
 @ConfigurationProperties(prefix= "crabapples")
 @Getter

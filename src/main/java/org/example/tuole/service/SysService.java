@@ -7,15 +7,6 @@ import org.example.tuole.form.UserForm;
 
 import java.util.Map;
 
-/**
- * TODO 系统相关服务
- *
- *
- * 2020/1/28 23:22
- *
- *
- * pc-name 29404
- */
 public interface SysService {
     /**
      * 用户登录

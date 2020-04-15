@@ -10,15 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * TODO 系统用户持久层
- *
- *
- * 2019/7/4 1422:51
- *
- *
- * pc-name 29404
- */
 @Repository
 public interface SysUserRepository extends JpaRepository<SysUser, String> {
     /**

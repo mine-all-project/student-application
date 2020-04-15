@@ -13,10 +13,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * TODO 用户相关服务实现类
- * 2020/1/27 2:10
- */
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);

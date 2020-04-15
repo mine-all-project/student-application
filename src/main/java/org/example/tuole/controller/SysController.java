@@ -12,15 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-/**
- * TODO 系统相关接口
- *
- *
- * 2020/1/28 23:17
- *
- *
- * pc-name 29404
- */
 
 @Controller
 @RequestMapping("/manage")

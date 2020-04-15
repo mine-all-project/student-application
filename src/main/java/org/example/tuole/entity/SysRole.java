@@ -10,15 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import java.util.List;
 
-/**
- * TODO 角色实体类
- *
- *
- * 2020/3/7 1:30
- *
- *
- * pc-name 29404
- */
 @Entity
 @Getter
 @Setter

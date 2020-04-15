@@ -12,15 +12,6 @@ import org.springframework.core.annotation.Order;
 
 import java.lang.reflect.Method;
 
-/**
- * TODO service切面拦截
- *
- *
- * 2020/1/30 18:07
- *
- *
- *
- */
 @Aspect
 @Configuration
 @Order(50)

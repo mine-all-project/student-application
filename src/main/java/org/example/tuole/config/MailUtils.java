@@ -10,15 +10,6 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
 
-/**
- * TODO SMTP发送邮件演示
- *
- *
- * 2020/3/20 21:15
- *
- *
- * pc-name 29404
- */
 public class MailUtils {
     private static final Logger logger = LoggerFactory.getLogger(MailUtils.class);
 //    private static final String FILE_PATH = "d:/123.txt";

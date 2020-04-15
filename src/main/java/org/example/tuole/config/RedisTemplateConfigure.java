@@ -7,15 +7,6 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-/**
- * TODO redisTemplate配置
- *
- *
- * 2020/1/30 22:31
- *
- *
- * pc-name 29404
- */
 @Configuration
 public class RedisTemplateConfigure {
     @Bean
