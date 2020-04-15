@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -71,6 +72,16 @@ public class SysController extends BaseController {
         ResponseDTO responseDTO = sysService.login(form);
         logger.info("登录验证结束->用户信息:[{}]", responseDTO);
         return responseDTO;
+    }
+
+
+    @GetMapping("/getUserList")
+    @ResponseBody
+    public ResponseDTO getUserList() {
+        logger.info("收到请求->获取用户列表");
+        List<SysUser> sysUsers = sysService.getUserList();
+        logger.info("返回结果->获取用户列表:[{}]", sysUsers);
+        return ResponseDTO.returnSuccess("操作成功", sysUsers);
     }
 
 }

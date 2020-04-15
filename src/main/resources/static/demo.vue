@@ -1,68 +1,46 @@
 <template>
   <el-row>
-    <el-table :data="messages" style="width: 100%;margin-bottom: 20px;" row-key="id" border default-expand-all
-              :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column prop="user" label="姓名" sortable width="180"></el-table-column>
-      <el-table-column prop="createTime" label="日期" sortable width="220"></el-table-column>
-      <el-table-column prop="content" label="内容"></el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope" >
-          <el-button size="mini" @click="addMessage(scope.row)" v-if="scope.row.level === 1">回复</el-button>
-          <el-button size="mini" type="danger" @click="remove(scope)">删除</el-button>
+    <el-table :data="tableData" stripe style="width: 100%">
+      <el-table-column prop="username" label="用户名" width=""></el-table-column>
+      <el-table-column prop="name" label="姓名" width=""></el-table-column>
+      <el-table-column prop="age" label="年龄" width=""></el-table-column>
+      <el-table-column prop="mail" label="邮箱" width=""></el-table-column>
+      <el-table-column prop="phone" label="手机号" width=""></el-table-column>
+      <el-table-column label="状态" width="">
+        <template slot-scope="scope">
+          <el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
+          <el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="160">
+        <template slot-scope="scope">
+          <el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
+          <el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
+          <el-button type="primary" @click="remove(scope)" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
   </el-row>
-
 </template>
 
 <script>
   module.exports = {
     data() {
       return {
-        messages: [],
-        form: {
-          area: '1',
-          content: '',
-        },
+        tableData: [],
       };
     },
     mounted() {
-      this.getMessages()
+      this.getUserList()
     },
     methods: {
-      addMessage(row) {
-        const _this = this;
-        this.$prompt('请输入内容', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        }).then(({value}) => {
-          _this.form.content = value;
-          axios.post(`/api/addMessage/${row.id}`, _this.form).then(response => {
-            const result = response.data;
-            console.log('通过api获取到的数据:', result);
-            if (result.status !== 200) {
-              this.$message.error('数据加载失败');
-              return
-            }
-            _this.$message.success('操作成功');
-            window.location.reload();
-          }).catch(function (error) {
-            window.location.reload();
-            console.log('请求出现错误:', error);
-          });
-        }).catch(() => {
-          console.log('取消输入')
-        });
-      },
-
       remove(scope) {
         const _this = this;
         const id = scope.row.id;
         _this.$confirm('确认删除？').then(e => {
-          axios.delete(`/api/removeMessageById/${id}`).then(response => {
-            _this.getMessages();
+          _this.drawer.loading = true;
+          axios.delete(`/api/removePaperById/${id}`).then(response => {
+            _this.getPaperList();
             const result = response.data;
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
@@ -71,22 +49,41 @@
             }
             _this.$message.success('操作成功')
           }).catch(function (error) {
-            _this.getMessages();
+            _this.getPaperList();
             console.log('请求出现错误:', error);
           });
         });
       },
-
-      getMessages() {
-        const _this = this
-        axios.get('/api/getMessages/1').then(response => {
-          const result = response.data
-          console.log('通过api获取到的数据:', result)
+      changeStatus(scope) {
+        const _this = this;
+        const id = scope.row.id;
+        _this.$confirm('确认删除？').then(e => {
+          _this.drawer.loading = true;
+          axios.put(`/manage/changeStatus/${id}`).then(response => {
+            _this.getPaperList();
+            const result = response.data;
+            console.log('通过api获取到的数据:', result);
+            if (result.status !== 200) {
+              _this.$message.error('数据加载失败');
+              return
+            }
+            _this.$message.success('操作成功')
+          }).catch(function (error) {
+            _this.getPaperList();
+            console.log('请求出现错误:', error);
+          });
+        });
+      },
+      getUserList() {
+        const _this = this;
+        axios.get('/manage/getUserList').then(response => {
+          const result = response.data;
+          console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
-              _this.$message.error(`${result.message}`);
-            return
+            this.$message.error('数据加载失败');
+            return;
           }
-          _this.messages = result.data
+          _this.tableData = result.data;
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });

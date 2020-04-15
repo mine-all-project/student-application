@@ -5,6 +5,7 @@ import org.example.yangjichang.dto.ResponseDTO;
 import org.example.yangjichang.entity.SysUser;
 import org.example.yangjichang.form.UserForm;
 
+import java.util.List;
 import java.util.Map;
 
 public interface SysService {
@@ -19,4 +20,6 @@ public interface SysService {
     void sendCodeByPhone(String phone);
 
     SysUser registry(Map<String,String> map);
+
+    List<SysUser> getUserList();
 }

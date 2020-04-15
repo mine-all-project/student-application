@@ -15,12 +15,11 @@
     <el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
       <div class="demo-drawer__content">
         <el-form v-model="form">
-          <el-form-item label="通知标题" :label-width="formLabelWidth">
+          <el-form-item label="文章标题" :label-width="formLabelWidth">
             <el-input v-model="form.title" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="通知内容" :label-width="formLabelWidth">
-            <!--            <div id="editor"></div>-->
-            <el-input type="textarea" :rows="4" placeholder="请输入通知内容" v-model="form.content"></el-input>
+          <el-form-item label="文章正文" :label-width="formLabelWidth">
+            <div id="editor"></div>
           </el-form-item>
         </el-form>
         <div class="drawer-footer">
@@ -50,6 +49,18 @@
           show: false,
           loading: false,
         },
+        wangEditorOptions: [
+          'head',  // 标题
+          'bold',  // 粗体
+          'fontSize',  // 字号
+          'fontName',  // 字体
+          'italic',  // 斜体
+          'underline',  // 下划线
+          'strikeThrough',  // 删除线
+          'justify',  // 对齐方式
+          'image',  // 插入图片
+        ],
+        editor: null,
         formLabelWidth: '80px',
       };
     },
@@ -79,7 +90,7 @@
       },
       getPaperList() {
         const _this = this;
-        axios.get('/api/getPapersByKeyWord/notice').then(response => {
+        axios.get('/api/getPapersByKeyWord/news').then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
@@ -92,9 +103,15 @@
         });
       },
       drawerOpen(scope) {
+        this.drawer.show = true;
         this.$nextTick(() => {
-          this.getPaperById(scope ? scope.row.id : ' ');
-          this.drawer.show = true;
+          this.editor = new window.wangEditor('#editor');
+          this.editor.customConfig.uploadImgShowBase64 = true;
+          this.editor.customConfig.showLinkImg = false;
+          this.editor.customConfig.pasteIgnoreImg = true;
+          this.editor.customConfig.menus = this.wangEditorOptions;
+          this.editor.create();
+          this.getPaperById(scope ? scope.row.id : '');
         })
       },
       getPaperById(id) {
@@ -107,14 +124,16 @@
             return
           }
           _this.form = result.data;
+          _this.editor.txt.html(_this.form.content)
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });
       },
       savePaper() {
         const _this = this;
-        _this.drawer.loading = true;
-        _this.form.keyWord = 'notice';
+        _this.form.content = _this.editor.txt.html();
+        _this.loading = true;
+        _this.form.keyWord = 'news';
         axios.post(`/api/savePaper`, _this.form).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
@@ -122,6 +141,7 @@
             this.$message.error('数据加载失败');
             return
           }
+          _this.content = result.data;
           _this.$message.success('操作成功');
           _this.drawer.loading = false;
           _this.drawer.show = false;
