@@ -1,5 +1,4 @@
 <!DOCTYPE HTML>
-
 <html>
 
 <head>
@@ -12,40 +11,22 @@
 <div data-th-replace="/common/portal :: wrapper"></div>
 <div class="bread">
   <ul class="clearfix">
-    <li>
-      <a href="index.html">首页</a>&nbsp;>&nbsp;
-    </li>
-    <li>
-      <a href="introduction.html">新闻中心</a>
-    </li>
+    <li><a href="/">首页</a>&nbsp;>&nbsp;</li>
+    <li><a href="/page/notice.html">通知公告</a></li>
   </ul>
 </div>
 <div class="pg-main clearfix" id="data">
   <div class="pg-nav">
     <ul>
-      <li>
-        <a href="/page/notice.html">通知公告</a>
-      </li>
+      <li><a href="/page/notice.html">通知公告</a></li>
     </ul>
   </div>
   <div class="pg-con newspg">
     <ul class="clearfix">
       <li v-for="item in dataList">
-        <h3><a :href=`/page/notice-detail/${item.id}`>{{item.title}}</a></h3>
+        <h3><a :href=`/page/notice-detail?${item.id}`>{{item.title}}</a></h3>
         <p class="neptime">{{item.createTime}}</p>
       </li>
-      <li>
-        <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
-        <p class="neptime">2017-6-19</p>
-      </li>
-    </ul>
-  </div>
-  <div class="pager">
-    <ul class="clearfix">
-      <li><a href="">&lt;</a></li>
-      <li class="active"><a href="">1</a></li>
-      <li><a href="">2</a></li>
-      <li><a href="">&gt;</a></li>
     </ul>
   </div>
 </div>
@@ -98,5 +79,4 @@
   })
 </script>
 </body>
-
 </html>
