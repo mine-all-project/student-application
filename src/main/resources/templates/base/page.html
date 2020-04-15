@@ -1,80 +1,93 @@
 <th data-th-fragment="nav">
-  <div style="width: 155px;height: 80px;position: absolute;left: 30px">
-    <img data-th-src="@{/images/logo.png}" alt="" style="width: 100%;height: 100%">
+  <div style="position: relative;line-height: 80px;height: 80px;padding: 0">
+    <div style="width: 20%;height:100%;float: left">
+      <!--      <div style="width: 155px;height: 80px;position: absolute;left: 30px">-->
+      <!--        <img data-th-src="@{/images/logo.png}" alt="" style="width: 100%;height: 100%">-->
+      <!--      </div> -->
+      <div style="width: 155px;height: 80px;">
+        <img data-th-src="@{/images/logo.png}" alt="" style="width: 100%;height: 100%">
+      </div>
+    </div>
+    <div style="width: 60%;height:100%;line-height:80px;float: left">
+      <ul class="nav" style="height:100%;line-height:80px;">
+        <li style="height:100%;line-height:80px;">
+          <span><a href="/">首页</a></span>
+          <!--      <div class="navtwo">-->
+          <!--        <a href="/login">&nbsp;&nbsp;&nbsp;&nbsp;登录&nbsp;&nbsp;&nbsp;&nbsp;</a>-->
+          <!--        <a href="/registry">&nbsp;&nbsp;&nbsp;&nbsp;注册&nbsp;&nbsp;&nbsp;&nbsp;</a>-->
+          <!--      </div>-->
+        </li>
+        <li style="height:100%;line-height:80px;">
+          <span>走进妥乐</span>
+          <div class="navtwo">
+            <a href="/page/info.html">妥乐概况</a>
+            <a href="/page/location.html">&nbsp;&nbsp;&nbsp;&nbsp;地理&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <a href="/page/customs.html">&nbsp;&nbsp;&nbsp;&nbsp;风俗&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <a href="/page/history.html">历史文化</a>
+          </div>
+        </li>
+        <li style="height:100%;line-height:80px;">
+          <span>妥乐风情</span>
+          <div class="navtwo">
+            <a href="/page/four-seasons.html">四季银杏</a>
+            <a href="/page/asean.html">东盟会场</a>
+            <a href="/page/small-bridge.html">小桥流水</a>
+            <a href="/page/waterfall.html">树根瀑布</a>
+          </div>
+        </li>
+        <li style="height:100%;line-height:80px;">
+        <span>
+          <span>感知妥乐</span>
+        </span>
+          <div class="navtwo">
+            <a href="../piclist.html">&nbsp;&nbsp;&nbsp;主题1&nbsp;&nbsp;&nbsp;</a>
+            <a href="/page/picture.html">美景图库</a>
+            <a href="/page/videos.html">精彩视频</a>
+            <a href="/page/strategy.html">旅游攻略</a>
+            <a href="/page/civilization.html">文明旅游</a>
+          </div>
+        </li>
+        <li style="height:100%;line-height:80px;">
+          <span>妥乐资讯</span>
+          <div class="navtwo">
+            <a href="/page/dynamic/list.html">最新动态</a>
+            <a href="/page/tourism/list.html">旅游资讯</a>
+            <a href="/page/active/list.html">活动资讯</a>
+            <a href="/page/notice/list.html">通知公告</a>
+          </div>
+        </li>
+        <li style="height:100%;line-height:80px;">
+          <span>在线预约</span>
+          <div class="navtwo">
+            <a href="/page/tickets.html">门票预定</a>
+            <a href="/page/hotel/list.html">&nbsp;&nbsp;&nbsp;&nbsp;住宿&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <a href="/page/food/list.html">&nbsp;&nbsp;&nbsp;&nbsp;餐饮&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <a href="/page/specialty/list.html">&nbsp;&nbsp;&nbsp;&nbsp;特产&nbsp;&nbsp;&nbsp;&nbsp;</a>
+          </div>
+        </li>
+        <li style="height:100%;line-height:80px;">
+          <span><a href="/page/talk/area1.html">评论</a></span>
+          <!--      <div class="navtwo">-->
+          <!--        <a href="/page/talk/area1.html">&nbsp;&nbsp;&nbsp;主题1&nbsp;&nbsp;&nbsp;</a>-->
+          <!--        <a href="/page/talk/area2.html">&nbsp;&nbsp;&nbsp;主题2&nbsp;&nbsp;&nbsp;</a>-->
+          <!--      </div>-->
+        </li>
+        <li style="height:100%;line-height:80px;">
+          <span>联系我们</span>
+          <div class="navtwo">
+            <a href="/page/car.html">景区直通车</a>
+            <a href="/page/common.html">旅游常识</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div style="width: 20%;float: left">
+      <p style="text-align: right">
+        <span><a href="/login">登陆</a></span>
+        <span><a href="/registry">注册</a></span>
+      </p>
+    </div>
   </div>
-  <ul class="nav" style="background: red; width: 100%;margin: 0 auto">
-    <li style="background: red;opacity: 0.5">
-			<span>
-				<a href="/">首页</a>
-      </span>
-      <div class="navtwo">
-        <a href="/login">&nbsp;&nbsp;&nbsp;&nbsp;登录&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        <a href="/registry">&nbsp;&nbsp;&nbsp;&nbsp;注册&nbsp;&nbsp;&nbsp;&nbsp;</a>
-      </div>
-    </li>
-    <li>
-      <span>走进妥乐</span>
-      <div class="navtwo">
-        <a href="/page/info.html">妥乐概况</a>
-        <a href="/page/location.html">&nbsp;&nbsp;&nbsp;&nbsp;地理&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        <a href="/page/customs.html">&nbsp;&nbsp;&nbsp;&nbsp;风俗&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        <a href="/page/history.html">历史文化</a>
-      </div>
-    </li>
-    <li>
-      <span>妥乐风情</span>
-      <div class="navtwo">
-        <a href="/page/four-seasons.html">四季银杏</a>
-        <a href="/page/asean.html">东盟会场</a>
-        <a href="/page/small-bridge.html">小桥流水</a>
-        <a href="/page/waterfall.html">树根瀑布</a>
-      </div>
-    </li>
-    <li>
-			<span>
-        <span>感知妥乐</span>
-			</span>
-      <div class="navtwo">
-        <a href="../piclist.html">&nbsp;&nbsp;&nbsp;主题1&nbsp;&nbsp;&nbsp;</a>
-        <a href="/page/picture.html">美景图库</a>
-        <a href="/page/videos.html">精彩视频</a>
-        <a href="/page/strategy.html">旅游攻略</a>
-        <a href="/page/civilization.html">文明旅游</a>
-      </div>
-    </li>
-    <li>
-      <span>妥乐资讯</span>
-      <div class="navtwo">
-        <a href="/page/dynamic/list.html">最新动态</a>
-        <a href="/page/tourism/list.html">旅游资讯</a>
-        <a href="/page/active/list.html">活动资讯</a>
-        <a href="/page/notice/list.html">通知公告</a>
-      </div>
-    </li>
-    <li>
-      <span>在线预约</span>
-      <div class="navtwo">
-        <a href="/page/tickets.html">门票预定</a>
-        <a href="/page/hotel/list.html">&nbsp;&nbsp;&nbsp;&nbsp;住宿&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        <a href="/page/food/list.html">&nbsp;&nbsp;&nbsp;&nbsp;餐饮&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        <a href="/page/specialty/list.html">&nbsp;&nbsp;&nbsp;&nbsp;特产&nbsp;&nbsp;&nbsp;&nbsp;</a>
-      </div>
-    </li>
-    <li>
-      <span><a href="/page/talk/area1.html">评论</a></span>
-      <!--      <div class="navtwo">-->
-      <!--        <a href="/page/talk/area1.html">&nbsp;&nbsp;&nbsp;主题1&nbsp;&nbsp;&nbsp;</a>-->
-      <!--        <a href="/page/talk/area2.html">&nbsp;&nbsp;&nbsp;主题2&nbsp;&nbsp;&nbsp;</a>-->
-      <!--      </div>-->
-    </li>
-    <li>
-      <span>联系我们</span>
-      <div class="navtwo">
-        <a href="/page/car.html">景区直通车</a>
-        <a href="/page/common.html">旅游常识</a>
-      </div>
-    </li>
-  </ul>
 </th>
 
 <th data-th-fragment="meta">
@@ -89,11 +102,11 @@
   <script type="text/javascript" data-th-src="@{/js/jquery-1.8.2.min.js}"></script>
   <script type="text/javascript" data-th-src="@{/js/banner.js}"></script>
   <script type="text/javascript">
-    $(document).ready(function () {
-      $("ul.nav li").hover(function () {
-        $(this).find(".navtwo").toggle();
+      $(document).ready(function () {
+          $("ul.nav li").hover(function () {
+              $(this).find(".navtwo").toggle();
+          })
       })
-    })
   </script>
 </th>
 

@@ -102,16 +102,12 @@ p {
     z-index: 99999;
     top: 35px;
     margin: 0 auto;
-    background-color: #fff;
-    opacity: 0.5;
 }
 
 .header ul {
     width: 1000px;
     margin: 0 auto;
     text-align: center;
-    height: 2em;
-    line-height: 2em;
 }
 
 .header ul li {
@@ -121,8 +117,7 @@ p {
     line-height: 30px;
     background: url(../images/navbg.png) center right no-repeat;
     position: relative;
-    text-align: center;
-    font-size: 1.33em;
+    text-align: center
 }
 
 .header ul li > a {
@@ -143,15 +138,14 @@ p {
     z-index: 99999;
     background: #81a849;
     padding: 10px 0px;
-
 }
 
 .header ul li .navtwo a {
     display: inline-block;
     color: #fff;
+    font-size: 14px;
     height: 30px;
-    line-height: 30px;
-    font-size: 1.1em;
+    line-height: 30px
 }
 
 .header ul li .navtwo a:hover {
