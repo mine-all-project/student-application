@@ -3,7 +3,7 @@
     <el-table :data="tableData" stripe style="width: 100%">
       <el-table-column prop="createTime" label="日期" width="220"></el-table-column>
       <el-table-column prop="title" label="标题" width="180"></el-table-column>
-      <el-table-column prop="url" label="正文" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column prop="content" label="正文" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column label="操作" width="160">
         <template slot-scope="scope">
           <el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
@@ -14,16 +14,17 @@
     <el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
     <el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
       <div class="demo-drawer__content">
-        <el-form v-model="drawer.form">
-          <el-form-item label="文章标题" :label-width="formLabelWidth">
-            <el-input v-model="drawer.form.title" autocomplete="off"></el-input>
+        <el-form v-model="form">
+          <el-form-item label="通知标题" :label-width="formLabelWidth">
+            <el-input v-model="form.title" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="文章正文" :label-width="formLabelWidth">
-            <div id="editor"></div>
+          <el-form-item label="通知内容" :label-width="formLabelWidth">
+            <!--            <div id="editor"></div>-->
+            <el-input type="textarea" :rows="4" placeholder="请输入通知内容" v-model="form.content"></el-input>
           </el-form-item>
         </el-form>
         <div class="drawer-footer">
-          <el-button type="primary" @click="saveDrawer" :loading="drawer.loading">
+          <el-button type="primary" @click="savePaper" :loading="drawer.loading">
             {{ drawer.loading ? '提交中 ...' : '确定'}}
           </el-button>
           <el-button @click="drawerClose">取 消</el-button>
@@ -39,33 +40,21 @@
     data() {
       return {
         tableData: [],
-        audioFile: {},
+        form: {
+          id: '',
+          keyWord: '',
+          title: '',
+          content: '',
+        },
         drawer: {
           show: false,
           loading: false,
-          form: {
-            keyword: ''
-          },
         },
-        wangEditorOptions: [
-          'head',  // 标题
-          'bold',  // 粗体
-          'fontSize',  // 字号
-          'fontName',  // 字体
-          'italic',  // 斜体
-          'underline',  // 下划线
-          'strikeThrough',  // 删除线
-          'justify',  // 对齐方式
-          'image',  // 插入图片
-        ],
-        editor: null,
         formLabelWidth: '80px',
-        timer: null,
-
       };
     },
     mounted() {
-      this.getAudioFileList()
+      this.getPaperList()
     },
     methods: {
       remove(scope) {
@@ -73,8 +62,8 @@
         const id = scope.row.id;
         _this.$confirm('确认删除？').then(e => {
           _this.drawer.loading = true;
-          axios.delete(`/api/removeAudioFileById/${id}`).then(response => {
-            _this.getAudioFileList();
+          axios.delete(`/api/removePaperById/${id}`).then(response => {
+            _this.getPaperList();
             const result = response.data;
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
@@ -83,14 +72,14 @@
             }
             _this.$message.success('操作成功')
           }).catch(function (error) {
-            _this.getAudioFileList();
+            _this.getPaperList();
             console.log('请求出现错误:', error);
           });
         });
       },
-      getAudioFileList() {
+      getPaperList() {
         const _this = this;
-        axios.get('/api/getAudioFileList/notice').then(response => {
+        axios.get('/api/getPapersByKeyWord/notice').then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
@@ -103,56 +92,45 @@
         });
       },
       drawerOpen(scope) {
-        this.drawer.show = true;
         this.$nextTick(() => {
-          this.editor = new window.wangEditor('#editor');
-          this.editor.customConfig.uploadImgShowBase64 = true;
-          this.editor.customConfig.showLinkImg = false;
-          this.editor.customConfig.pasteIgnoreImg = true;
-          this.editor.customConfig.menus = this.wangEditorOptions;
-          this.editor.create();
-          this.getAudioFileById(scope ? scope.row.id : undefined);
+          this.getPaperById(scope ? scope.row.id : ' ');
+          this.drawer.show = true;
         })
       },
-      getAudioFileById(id) {
+      getPaperById(id) {
         const _this = this;
-        if (id !== undefined) {
-          axios.get(`/api/getAudioFileById/${id}`).then(response => {
-            const result = response.data;
-            console.log('通过api获取到的数据:', result);
-            if (result.status !== 200) {
-              this.$message.error('数据加载失败');
-              return
-            }
-            _this.drawer.form = result.data;
-            _this.editor.txt.html(_this.drawer.form.url)
-          }).catch(function (error) {
-            console.log('请求出现错误:', error);
-          });
-        }
-      },
-      drawerClose() {
-        this.drawer.loading = false;
-        this.drawer.show = false;
-        this.$refs.drawer.closeDrawer();
-        this.getAudioFileList();
-      },
-      saveDrawer() {
-        const _this = this;
-        const id = _this.drawer.form.id;
-        _this.drawer.form.url = _this.editor.txt.html();
-        _this.drawer.loading = true;
-        _this.drawer.form.keyword = 'notice';
-        axios.post(`/api/saveAudioFile/${id ? id : 'create'}`, _this.drawer.form).then(response => {
+        axios.get(`/api/getPaperById?id=${id}`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
             this.$message.error('数据加载失败');
             return
           }
-          _this.content = result.data;
+          _this.form = result.data;
+        }).catch(function (error) {
+          console.log('请求出现错误:', error);
+        });
+      },
+      drawerClose() {
+        this.drawer.loading = false;
+        this.drawer.show = false;
+        this.getPaperList();
+      },
+      savePaper() {
+        const _this = this;
+        _this.drawer.loading = true;
+        _this.form.keyWord = 'notice';
+        axios.post(`/api/savePaper`, _this.form).then(response => {
+          const result = response.data;
+          console.log('通过api获取到的数据:', result);
+          if (result.status !== 200) {
+            this.$message.error('数据加载失败');
+            return
+          }
           _this.$message.success('操作成功');
-          window.location.reload();
+          _this.drawer.loading = false;
+          _this.drawer.show = false;
+          _this.getPaperList()
         }).catch(function (error) {
           window.location.reload();
           console.log('请求出现错误:', error);

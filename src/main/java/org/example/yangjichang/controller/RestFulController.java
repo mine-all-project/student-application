@@ -1,10 +1,7 @@
 package org.example.yangjichang.controller;
 
 import org.example.yangjichang.dto.ResponseDTO;
-import org.example.yangjichang.entity.Animal;
-import org.example.yangjichang.entity.AudioFile;
-import org.example.yangjichang.entity.Message;
-import org.example.yangjichang.entity.Orders;
+import org.example.yangjichang.entity.*;
 import org.example.yangjichang.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +56,37 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", animal);
     }
 
+    @GetMapping("/getPapersByKeyWord/{keyWord}")
+    public ResponseDTO getPapersByKeyWord(@PathVariable String keyWord) {
+        logger.info("收到请求->获取文章列表,keyWord:[{}]", keyWord);
+        List<Paper> papers = restFulService.getPapersByKeyWord(keyWord);
+        logger.info("返回结果->获取文章列表完成:[{}]", papers);
+        return ResponseDTO.returnSuccess("操作成功", papers);
+    }
+    @PostMapping("/savePaper")
+    public ResponseDTO savePaper(@RequestBody Paper paper) {
+        logger.info("收到请求->保存文章数据:[{}]", paper);
+        restFulService.savePaper(paper);
+        logger.info("返回结果->保存文章数据完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+    @GetMapping("/getPaperById")
+    public ResponseDTO getPaperById(String id) {
+        logger.info("收到请求->获取文章信息,id:[{}]", id);
+        Paper paper = restFulService.getPaperById(id);
+        logger.info("返回结果->获取文章信息完成:[{}]", paper);
+        return ResponseDTO.returnSuccess("操作成功", paper);
+    }
+    @DeleteMapping("/removePaperById/{id}")
+    public ResponseDTO removePaperById(@PathVariable("id") String id) {
+        logger.info("收到请求->删除文章数据,id:[{}]", id);
+        restFulService.removePaperById(id);
+        logger.info("返回结果->删除文章数据完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+
+
     @RequestMapping("/uploadFile/{id}")
     @ResponseBody
     public ResponseDTO uploadFile(HttpServletRequest request, @PathVariable("id") String id) {
@@ -84,13 +112,7 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", audioFile);
     }
 
-    @DeleteMapping("/removeAudioFileById/{id}")
-    public ResponseDTO removeAudioFileById(@PathVariable("id") String id) {
-        logger.info("收到请求->删除媒体数据,id:[{}]", id);
-        restFulService.removeAudioFileById(id);
-        logger.info("返回结果->删除媒体数据完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
+
 
     @RequestMapping("/submitOrder/{ticketsId}")
     @ResponseBody
@@ -102,16 +124,6 @@ public class RestFulController extends BaseController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
     @RequestMapping("/uploadShopFile/{keyword}")
     @ResponseBody
     public ResponseDTO uploadShopFile(HttpServletRequest request, @PathVariable("keyword") String keyword) {
@@ -120,8 +132,6 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->商品图片上传完成:[{}]", path);
         return ResponseDTO.returnSuccess("操作成功", path);
     }
-
-
 
 
     @RequestMapping("/getMessages/{area}")

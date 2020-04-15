@@ -1,27 +1,22 @@
 package org.example.yangjichang.service.impl;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.yangjichang.config.ApplicationException;
 import org.example.yangjichang.config.SmsUtils;
-import org.example.yangjichang.dao.AnimalRepository;
-import org.example.yangjichang.dao.AudioFileRepository;
-import org.example.yangjichang.dao.MessageRepository;
-import org.example.yangjichang.dao.OrderRepository;
+import org.example.yangjichang.dao.*;
 import org.example.yangjichang.entity.*;
 import org.example.yangjichang.service.RestFulService;
-import org.example.yangjichang.utils.FileUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
@@ -31,20 +26,23 @@ public class RestFulServiceImpl implements RestFulService {
     private String filePath;
     private final AudioFileRepository audioFileRepository;
     private final AnimalRepository animalRepository;
-    private final OrderRepository orderRepository;
     private final MessageRepository messageRepository;
+    private final PaperRepository paperRepository;
+    private final OrderRepository orderRepository;
     private final SmsUtils smsUtils;
+
     private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
     public RestFulServiceImpl(AudioFileRepository audioFileRepository,
                               OrderRepository orderRepository,
                               MessageRepository messageRepository, SmsUtils smsUtils,
-                              AnimalRepository animalRepository) {
+                              AnimalRepository animalRepository, PaperRepository paperRepository) {
         this.audioFileRepository = audioFileRepository;
         this.orderRepository = orderRepository;
         this.smsUtils = smsUtils;
         this.messageRepository = messageRepository;
         this.animalRepository = animalRepository;
+        this.paperRepository = paperRepository;
     }
 
     @Override
@@ -76,7 +74,7 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     @RequiresPermissions("manage")
     public AudioFile uploadFile(HttpServletRequest request, String id) {
-        String path = getfilePath(request,filePath);
+        String path = getfilePath(request, filePath);
         AudioFile picture = audioFileRepository.findById(id).orElse(new AudioFile());
         picture.setUrl(path);
         return audioFileRepository.save(picture);
@@ -84,9 +82,44 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     @RequiresPermissions("manage")
+    public void removeAudioFileById(String id) {
+        audioFileRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Paper> getPapersByKeyWord(String keyWord) {
+        return paperRepository.findAllByKeyWord(keyWord);
+    }
+    @Override
+    public void savePaper(Paper paper) {
+        paperRepository.save(paper);
+    }
+    @Override
+    public Paper getPaperById(String id) {
+        return paperRepository.findById(id).orElse(new Paper());
+    }
+    @Override
+    public void removePaperById(String id) {
+        paperRepository.deleteById(id);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    @RequiresPermissions("manage")
     public AudioFile saveAudioFile(HttpServletRequest request, AudioFile audioFile, String id) {
         if (request instanceof MultipartHttpServletRequest) {
-            String path = getfilePath(request,filePath);
+            String path = getfilePath(request, filePath);
             AudioFile byId = audioFileRepository.findById(id).orElse(audioFile);
             if (null != byId) {
                 byId.setUrl(path);
@@ -98,21 +131,11 @@ public class RestFulServiceImpl implements RestFulService {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
     @Override
     @RequiresPermissions("manage")
     public Map<String, String> uploadShopFile(HttpServletRequest request) {
         Map<String, String> path = new HashMap<>(1);
-        path.put("path", getfilePath(request,filePath));
+        path.put("path", getfilePath(request, filePath));
         return path;
     }
 
@@ -130,20 +153,6 @@ public class RestFulServiceImpl implements RestFulService {
         }
         return audioFile;
     }
-
-    @Override
-    @RequiresPermissions("manage")
-    public void removeAudioFileById(String id) {
-        audioFileRepository.deleteById(id);
-    }
-
-
-//    @Override
-//    public List<Goods> getGoodsList(String keyword) {
-//        return goodsRepository.findAllByKeyWord(keyword);
-//    }
-//
-//
 //    @Override
 //    @RequiresPermissions("login")
 //    public Orders submitOrder(String goodsId) {

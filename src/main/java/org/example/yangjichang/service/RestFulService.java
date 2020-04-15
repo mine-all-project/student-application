@@ -25,7 +25,6 @@ public interface RestFulService {
         return (SysUser) subject.getPrincipal();
     }
 
-
     List<Animal> getAnimalList(String type);
 
     Animal getAnimalById(String id);
@@ -34,6 +33,21 @@ public interface RestFulService {
 
     void saveAnimalInfo(Animal animal);
 
+    List<Paper> getPapersByKeyWord(String keyWord);
+    void savePaper(Paper paper);
+    Paper getPaperById(String id);
+    void removePaperById(String id);
+
+
+
+
+
+
+
+
+
+
+
     AudioFile uploadFile(HttpServletRequest request, String id);
 
     AudioFile saveAudioFile(HttpServletRequest request, AudioFile audioFile, String id);
@@ -41,6 +55,8 @@ public interface RestFulService {
     AudioFile getAudioFileById(String id);
 
     void removeAudioFileById(String id);
+
+
 
     Orders submitOrder(String shop);
 
@@ -52,6 +68,8 @@ public interface RestFulService {
 
 
     Message submitMessage(Message message);
+
+
 
     List<Message> getMessages(Integer area);
 

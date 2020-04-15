@@ -59,94 +59,64 @@ const app = new Vue({
       menus: [
         {
           id: '1',
-          name: '感知妥乐',
+          name: '网站管理',
           icon: 'el-icon-message',
           children: [
             {
               id: '1-1',
-              name: '美景图库',
+              name: '公告管理',
               icon: 'el-icon-message',
-              url: '/manage/pictures'
+              url: '/manage/notice'
             },
             {
               id: '1-2',
-              name: '精彩视频',
+              name: '新闻管理',
               icon: '',
-              url: '/manage/video'
+              url: '/manage/news'
             },
             {
               id: '1-3',
-              name: '旅游攻略',
+              name: '企业文化',
               icon: '',
-              url: '/manage/strategy'
-            },
-            {
-              id: '1-4',
-              name: '文明旅游',
-              icon: '',
-              url: '/manage/civilization'
+              url: '/manage/culture'
             },
           ]
         },
-        // {
-        //   id: '2',
-        //   name: '妥乐资讯',
-        //   icon: 'el-icon-message',
-        //   children: [
-        //     {
-        //       id: '2-1',
-        //       name: '最新动态',
-        //       icon: 'el-icon-message',
-        //       url: '/manage/dynamic'
-        //     },
-        //     {
-        //       id: '2-2',
-        //       name: '旅游资讯',
-        //       icon: '',
-        //       url: '/manage/tourism'
-        //     },
-        //     {
-        //       id: '2-3',
-        //       name: '活动资讯',
-        //       icon: '',
-        //       url: '/manage/active'
-        //     },
-        //     {
-        //       id: '2-4',
-        //       name: '通知公告',
-        //       icon: '',
-        //       url: '/manage/notice'
-        //     },
-        //   ]
-        // },
+        {
+          id: '2',
+          name: '用户管理',
+          icon: 'el-icon-message',
+          children: [
+            {
+              id: '2-1',
+              name: '用户列表',
+              icon: 'el-icon-message',
+              url: '/manage/user-list'
+            },
+            {
+              id: '2-2',
+              name: '旅游资讯',
+              icon: '',
+              url: '/manage/tourism'
+            },
+            {
+              id: '2-4',
+              name: '通知公告',
+              icon: '',
+              url: '/manage/notice'
+            },
+          ]
+        },
         {
           id: '3',
-          name: '在线预约',
+          name: '订单管理',
           icon: 'el-icon-message',
           children: [
             {
               id: '3-1',
-              name: '门票预定',
+              name: '订单列表',
               icon: 'el-icon-message',
               url: '/manage/tickets'
-            },
-            {
-              id: '3-2',
-              name: '住宿',
-              icon: '',
-              url: '/manage/hotel'
-            },
-            {
-              id: '3-3',
-              name: '餐饮',
-              icon: '',
-              url: '/manage/food'
-            },
-            {
-              id: '3-4',
-              name: '特产',
-              icon: '',
-              url: '/manage/specialty'
             },
           ]
         },

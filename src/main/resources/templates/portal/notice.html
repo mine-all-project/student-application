@@ -20,47 +20,19 @@
     </li>
   </ul>
 </div>
-<div class="pg-main clearfix">
+<div class="pg-main clearfix" id="data">
   <div class="pg-nav">
     <ul>
       <li>
-        <a href="/page/new.html">公司新闻</a>
+        <a href="/page/notice.html">通知公告</a>
       </li>
     </ul>
   </div>
   <div class="pg-con newspg">
     <ul class="clearfix">
-      <li>
-        <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
-        <p class="neptime">2017-6-19</p>
-      </li>
-      <li>
-        <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
-        <p class="neptime">2017-6-19</p>
-      </li>
-      <li>
-        <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
-        <p class="neptime">2017-6-19</p>
-      </li>
-      <li>
-        <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
-        <p class="neptime">2017-6-19</p>
-      </li>
-      <li>
-        <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
-        <p class="neptime">2017-6-19</p>
-      </li>
-      <li>
-        <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
-        <p class="neptime">2017-6-19</p>
-      </li>
-      <li>
-        <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
-        <p class="neptime">2017-6-19</p>
-      </li>
-      <li>
-        <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
-        <p class="neptime">2017-6-19</p>
+      <li v-for="item in dataList">
+        <h3><a :href=`/page/notice-detail/${item.id}`>{{item.title}}</a></h3>
+        <p class="neptime">{{item.createTime}}</p>
       </li>
       <li>
         <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
@@ -83,6 +55,48 @@
 </footer>
 
 <div data-th-replace="/common/portal :: javascript"></div>
+<script data-th-src="@{/common/js/vue.js}"></script>
+<script data-th-src="@{/common/js/axios.min.js}"></script>
+<script>
+  let vue = new Vue({
+    el: '#data',
+    data() {
+      return {
+        dataList: [],
+        form: {
+          id: '',
+          keyWord: '',
+          title: '',
+          content: '',
+        },
+        drawer: {
+          show: false,
+          loading: false,
+        },
+        formLabelWidth: '80px',
+      }
+    },
+    mounted() {
+      this.getPaperList()
+    },
+    methods: {
+      getPaperList() {
+        const _this = this;
+        axios.get('/api/getPapersByKeyWord/notice').then(response => {
+          const result = response.data;
+          console.log('通过api获取到的数据:', result);
+          if (result.status !== 200) {
+            this.$message.error('数据加载失败');
+            return;
+          }
+          _this.dataList = result.data;
+        }).catch(function (error) {
+          console.log('请求出现错误:', error);
+        });
+      },
+    }
+  })
+</script>
 </body>
 
 </html>
