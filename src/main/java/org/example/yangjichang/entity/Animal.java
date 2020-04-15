@@ -6,17 +6,20 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Chicken extends BaseEntity {
-    private String name;
+public class Animal extends BaseEntity {
     private BigDecimal sale;
     private Integer remaining;
-    @Column(columnDefinition = "varchar(10) comment '1公鸡 2母鸡 3小鸡'")
     private String type;
+    private String keyWord;
+    @OneToMany
+    private List<AudioFile> audioFiles;
     @Override
     public String toString() {
         return JSONObject.toJSONString(this);

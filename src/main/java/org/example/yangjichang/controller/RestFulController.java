@@ -1,6 +1,7 @@
 package org.example.yangjichang.controller;
 
 import org.example.yangjichang.dto.ResponseDTO;
+import org.example.yangjichang.entity.Animal;
 import org.example.yangjichang.entity.AudioFile;
 import org.example.yangjichang.entity.Message;
 import org.example.yangjichang.entity.Orders;
@@ -24,6 +25,40 @@ public class RestFulController extends BaseController {
         this.restFulService = restFulService;
     }
 
+    @RequestMapping("/getAnimalList/{type}")
+    @ResponseBody
+    public ResponseDTO getAnimalList(@PathVariable("type") String type) {
+        logger.info("收到请求->获取商品信息:[{}]", type);
+        List<Animal> animals = restFulService.getAnimalList(type);
+        logger.info("返回结果->获取商品信息完成:[{}]", animals);
+        return ResponseDTO.returnSuccess("操作成功", animals);
+    }
+
+    @GetMapping("/getAnimalById/{id}")
+    public ResponseDTO getAnimalById(@PathVariable("id") String id) {
+        logger.info("收到请求->获取商品数据,id:[{}]", id);
+        Animal animal = restFulService.getAnimalById(id);
+        logger.info("返回结果->获取商品数据完成:[{}]", animal);
+        return ResponseDTO.returnSuccess("操作成功", animal);
+    }
+
+    @DeleteMapping("/removeAnimalById/{id}")
+    public ResponseDTO removeAnimalById(@PathVariable("id") String id) {
+        logger.info("收到请求->删除商品,id:[{}]", id);
+        restFulService.removeAnimalById(id);
+        logger.info("返回结果->删除商品完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/saveAnimalInfo")
+    @ResponseBody
+    public ResponseDTO saveAnimalInfo(@RequestBody Animal animal) {
+        logger.info("收到请求->保存商品信息:[{}]", animal);
+        restFulService.saveAnimalInfo(animal);
+        logger.info("返回结果->保存商品信息完成:[{}]", animal);
+        return ResponseDTO.returnSuccess("操作成功", animal);
+    }
+
     @RequestMapping("/uploadFile/{id}")
     @ResponseBody
     public ResponseDTO uploadFile(HttpServletRequest request, @PathVariable("id") String id) {
@@ -39,38 +74,6 @@ public class RestFulController extends BaseController {
         audioFile = restFulService.saveAudioFile(request, audioFile, id);
         logger.info("返回结果->保存媒体数据完成:[{}]", audioFile);
         return ResponseDTO.returnSuccess("操作成功", audioFile);
-    }
-
-    @GetMapping("/getPictures")
-    public ResponseDTO getPictures() {
-        logger.info("收到请求->获取美景图库图片");
-        List<AudioFile> pictures = restFulService.getPictures();
-        logger.info("返回结果->获取美景图库图片完成:[{}]", pictures);
-        return ResponseDTO.returnSuccess("操作成功", pictures);
-    }
-
-    @GetMapping("/getAudioFile/{keyWord}")
-    public ResponseDTO getAudioFileByKeyWord(@PathVariable("keyWord") String keyWord) {
-        logger.info("收到请求->获取媒体数据,keyWord:[{}]", keyWord);
-        AudioFile audioFile = restFulService.getAudioFileByKeyWord(keyWord);
-        logger.info("返回结果->获取媒体数据完成:[{}]", audioFile);
-        return ResponseDTO.returnSuccess("操作成功", audioFile);
-    }
-
-    @GetMapping("/getAudioFileList/{keyWord}")
-    public ResponseDTO getAudioFileListByKeyWord(@PathVariable("keyWord") String keyWord) {
-        logger.info("收到请求->获取媒体数据列表,keyWord:[{}]", keyWord);
-        List<AudioFile> audioFiles = restFulService.getAudioFileListByKeyWord(keyWord);
-        logger.info("返回结果->获取媒体数据列表完成:[{}]", audioFiles);
-        return ResponseDTO.returnSuccess("操作成功", audioFiles);
-    }
-
-    @GetMapping("/getAudioFileListNot/{keyWord}/{id}")
-    public ResponseDTO getAudioFileListNot(@PathVariable("keyWord") String keyWord, @PathVariable("id") String id) {
-        logger.info("收到请求->获取媒体数据列表,keyword:[{}],排除id:[{}]", keyWord, id);
-        List<AudioFile> audioFiles = restFulService.getAudioFileListNot(keyWord, id);
-        logger.info("返回结果->获取媒体数据列表完成:[{}]", audioFiles);
-        return ResponseDTO.returnSuccess("操作成功", audioFiles);
     }
 
     @GetMapping("/getAudioFileById/{id}")
@@ -89,13 +92,25 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-//    @GetMapping("/getGoodsById/{id}")
-//    public ResponseDTO getGoodsById(@PathVariable("id") String id) {
-//        logger.info("收到请求->获取商品数据,id:[{}]", id);
-//        Goods goods = restFulService.getGoodsById(id);
-//        logger.info("返回结果->获取商品数据完成:[{}]", goods);
-//        return ResponseDTO.returnSuccess("操作成功", goods);
-//    }
+    @RequestMapping("/submitOrder/{ticketsId}")
+    @ResponseBody
+    public ResponseDTO submitOrder(@PathVariable("ticketsId") String ticketsId) {
+        logger.info("收到请求->提交订单:[{}]", ticketsId);
+        Orders orders = restFulService.submitOrder(ticketsId);
+        logger.info("返回结果->提交订单完成:[{}]", orders);
+        return ResponseDTO.returnSuccess("操作成功", orders);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     @RequestMapping("/uploadShopFile/{keyword}")
     @ResponseBody
@@ -106,32 +121,8 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", path);
     }
 
-//    @RequestMapping("/getGoodsList/{keyword}")
-//    @ResponseBody
-//    public ResponseDTO getGoodsList(@PathVariable("keyword") String keyword) {
-//        logger.info("收到请求->获取商品信息:[{}]", keyword);
-//        List<Goods> goods = restFulService.getGoodsList(keyword);
-//        logger.info("返回结果->获取商品信息完成:[{}]", goods);
-//        return ResponseDTO.returnSuccess("操作成功", goods);
-//    }
 
-//    @RequestMapping("/saveGoodsInfo")
-//    @ResponseBody
-//    public ResponseDTO saveGoodsInfo(@RequestBody Goods goods) {
-//        logger.info("收到请求->保存商品信息:[{}]", goods);
-//        goods = restFulService.saveGoodsInfo(goods);
-//        logger.info("返回结果->保存商品信息完成:[{}]", goods);
-//        return ResponseDTO.returnSuccess("操作成功", goods);
-//    }
 
-    @RequestMapping("/submitOrder/{ticketsId}")
-    @ResponseBody
-    public ResponseDTO submitOrder(@PathVariable("ticketsId") String ticketsId) {
-        logger.info("收到请求->提交订单:[{}]", ticketsId);
-        Orders orders = restFulService.submitOrder(ticketsId);
-        logger.info("返回结果->提交订单完成:[{}]", orders);
-        return ResponseDTO.returnSuccess("操作成功", orders);
-    }
 
     @RequestMapping("/getMessages/{area}")
     @ResponseBody

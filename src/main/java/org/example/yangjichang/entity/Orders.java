@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,13 +17,14 @@ import java.util.List;
 @Entity
 public class Orders extends BaseEntity {
 
-    private String keyword;
+    private Integer count;
+    private BigDecimal sum;
     @CreatedDate
     private LocalDate orderTime;
     @ManyToOne
     private SysUser sysUser;
-    @ManyToMany
-    private List<Chicken> chickens;
+    @ManyToOne
+    private Animal animals;
 
     @Override
     public String toString() {
