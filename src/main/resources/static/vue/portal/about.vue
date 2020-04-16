@@ -4,10 +4,10 @@
       <div class="bread">
         <ul class="clearfix">
           <li>
-            <a href="/">首页</a>&nbsp;&nbsp;
+            <router-link to="/home">首页</router-link>&nbsp;>&nbsp;
           </li>
           <li>
-            <a href="/page/introduction.html">公司简介</a>
+            <router-link to="/about">关于我们</router-link>
           </li>
         </ul>
       </div>

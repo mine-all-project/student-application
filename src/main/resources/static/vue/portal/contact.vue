@@ -4,10 +4,10 @@
       <div class="bread">
         <ul class="clearfix">
           <li>
-            <a href="index.html">首页</a>&nbsp;>&nbsp;
+            <router-link to="/home">首页</router-link>&nbsp;>&nbsp;
           </li>
           <li>
-            <a href="introduction.html">联系我们</a>
+            <router-link to="/contact">联系我们</router-link>
           </li>
         </ul>
       </div>
@@ -15,7 +15,7 @@
         <div class="pg-nav">
           <ul>
             <li>
-              <a href="contact.html">联系我们</a>
+              <router-link to="/contact">联系我们</router-link>
             </li>
           </ul>
         </div>
