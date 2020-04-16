@@ -8,7 +8,7 @@
         <ul class="clearfix">
           <li>
             <a href="products.html">
-              <img src="/portal/images/products/pro1.jpg"/>
+              <img ：src="/portal/images/products/pro1.jpg"/>
               <h3>有机化工</h3>
               <p>醇醚类、羧酸类、酯类、含氮类、含卤类、含硫类、酚类、烃类、醛酮类、杂环类、元素类</p>
             </a>
