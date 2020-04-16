@@ -12,29 +12,16 @@ Vue.use(httpVueLoader);
 const routes = [
   {path: '/demo', component: httpVueLoader('/demo.vue')},
   {path: '/home', component: httpVueLoader('/vue/portal/home.vue')},
-  // {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
-  // {path: '/manage/news', component: httpVueLoader('/vue/manage/news.vue')},
+  {path: '/notice', component: httpVueLoader('/vue/portal/notice.vue')},
+  {path: '/news', component: httpVueLoader('/vue/portal/news.vue')},
 
-  // {path: '/manage/pictures', component: httpVueLoader('/vue/manage/pictures.vue')},
-  // {path: '/manage/video', component: httpVueLoader('/vue/manage/video.vue')},
-  // {path: '/manage/strategy', component: httpVueLoader('/vue/manage/strategy.vue')},
-  // {path: '/manage/civilization', component: httpVueLoader('/vue/manage/civilization.vue')},
-  //
-  // {path: '/manage/dynamic', component: httpVueLoader('/vue/manage/dynamic.vue')},
-  // {path: '/manage/tourism', component: httpVueLoader('/vue/manage/tourism.vue')},
-  // {path: '/manage/active', component: httpVueLoader('/vue/manage/active.vue')},
-  // {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
+  {path: '/about', component: httpVueLoader('/vue/portal/about.vue')},
 
-  // {path: '/manage/tickets', component: httpVueLoader('/vue/manage/tickets.vue')},
-  // {path: '/manage/hotel', component: httpVueLoader('/vue/manage/hotel.vue')},
-  // {path: '/manage/food', component: httpVueLoader('/vue/manage/food.vue')},
-  // {path: '/manage/specialty', component: httpVueLoader('/vue/manage/specialty.vue')},
-  //
-  // {path: '/manage/area1', component: httpVueLoader('/vue/manage/area1.vue')},
-  // {path: '/manage/area2', component: httpVueLoader('/vue/manage/area2.vue')},
-  //
-  // {path: '/manage/traffic', component: httpVueLoader('/vue/manage/traffic.vue')},
-  // {path: '/manage/common', component: httpVueLoader('/vue/manage/common.vue')},
+  {path: '/introduction', component: httpVueLoader('/vue/portal/introduction.vue')},
+  {path: '/culture', component: httpVueLoader('/vue/portal/culture.vue')},
+  {path: '/honor', component: httpVueLoader('/vue/portal/honor.vue')},
+  {path: '/friends', component: httpVueLoader('/vue/portal/friends.vue')},
+
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置
