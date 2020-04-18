@@ -1,24 +1,7 @@
 <template>
   <el-row>
     <el-col>
-      <div class="bread">
-        <ul class="clearfix">
-          <li>
-            <router-link to="/home">首页</router-link>&nbsp;>&nbsp;
-          </li>
-          <li>
-            <router-link to="/friends">合作伙伴</router-link>
-          </li>
-        </ul>
-      </div>
       <div class="pg-main clearfix">
-        <div class="pg-nav">
-          <ul>
-            <li>
-              <router-link to="/friends">合作伙伴</router-link>
-            </li>
-          </ul>
-        </div>
         <div class="partner">
           <ul class="clearfix">
             <li><img data-th-src="@{/portal/images/partner/pa1.jpg}"></li>

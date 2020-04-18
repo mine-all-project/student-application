@@ -16,7 +16,7 @@
         <div class="pg-nav">
           <ul>
             <li>
-              <router-link to="/introduction">公司简介</router-link>
+              <router-link to="/about">公司简介</router-link>
             </li>
             <li>
               <router-link to="/culture">企业文化</router-link>

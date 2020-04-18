@@ -4,11 +4,10 @@
       <div class="bread">
         <ul class="clearfix">
           <li>
-          <li>
             <router-link to="/home">首页</router-link>&nbsp;>&nbsp;
           </li>
           <li>
-            <router-link to="/culture">企业文化</router-link>
+            <router-link to="/notice">通知公告</router-link>
           </li>
         </ul>
       </div>
@@ -16,47 +15,50 @@
         <div class="pg-nav">
           <ul>
             <li>
-              <router-link to="/about">公司简介</router-link>
-            </li>
-            <li>
-              <router-link to="/culture">企业文化</router-link>
-            </li>
-            <li>
-              <router-link to="/honor">公司荣誉</router-link>
+              <router-link to="/notice">通知公告</router-link>
             </li>
           </ul>
         </div>
-        <div class="pg-con">
-          <p><span>2015年</span>获得国家某某奖项</p>
-          <p><span>2016年</span>获得国家某某奖项</p>
-          <p><span>2017年</span>获得国家某某奖项</p>
+        <div class="pg-con newdetail" id="data">
+          <h2>{{data.title}}</h2>
+          <p class="ntime">发布时间：{{data.createTime}}</p>
+          <div class="newdetailcon">
+            <p v-html="data.content"></p>
+          </div>
         </div>
       </div>
       <div class="space"></div>
     </el-col>
   </el-row>
+
 </template>
 <script>
   module.exports = {
     data() {
       return {
-        dataList: [],
+        data: {
+          id: '',
+          keyWord: '',
+          title: '',
+          content: '',
+        },
       };
     },
     mounted() {
-      this.getPaperList()
+      let id = this.$route.query.id;
+      this.getPaperById(id)
     },
     methods: {
-      getPaperList() {
+      getPaperById(id) {
         const _this = this;
-        axios.get('/api/getPapersByKeyWord/notice').then(response => {
+        axios.get(`/api/getPaperById?id=${id}`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
             this.$message.error('数据加载失败');
-            return;
+            return
           }
-          _this.dataList = result.data;
+          _this.data = result.data;
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });

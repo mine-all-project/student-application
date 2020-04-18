@@ -15,13 +15,13 @@
         <div class="pg-nav">
           <ul>
             <li>
-              <a href="/page/introduction.html">公司简介</a>
+              <router-link to="/about">关于我们</router-link>
             </li>
             <li>
-              <a href="ab-culture.html">企业文化</a>
+              <router-link to="/culture">企业文化</router-link>
             </li>
             <li>
-              <a href="ab-honor.html">企业荣誉</a>
+              <router-link to="/honor">企业荣誉</router-link>
             </li>
           </ul>
         </div>

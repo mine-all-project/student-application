@@ -8,14 +8,14 @@
         <ul class="clearfix">
           <li>
             <a href="products.html">
-              <img ：src="/portal/images/products/pro1.jpg"/>
+              <img src="/portal/images/products/pro1.jpg"/>
               <h3>有机化工</h3>
               <p>醇醚类、羧酸类、酯类、含氮类、含卤类、含硫类、酚类、烃类、醛酮类、杂环类、元素类</p>
             </a>
           </li>
           <li>
             <a href="products.html">
-              <img th:src="@{/portal/images/products/pro2.jpg}"/>
+              <img src="/portal/images/products/pro2.jpg"/>
               <h3>无机化工</h3>
               <p>硫化合物及硫酸盐、磷化合物及磷酸盐、氯化物和氯酸盐、氯化物和氯酸盐、氟化合物、
                 碳酸盐、硅化合物及硅酸盐、硼化合物、硝酸盐、钡化合物、铬化合物、氧化物和过氧化物、氢氧化物、其他无机化合物</p>
@@ -23,14 +23,14 @@
           </li>
           <li>
             <a href="products.html">
-              <img th:src="@{/portal/images/products/pro4.jpg}"/>
+              <img src="/portal/images/products/pro4.jpg}"/>
               <h3>表面活性剂</h3>
               <p>阴离子表面活性剂、非离子表面活性剂、阳离子表面活性剂、两性离子表面活性剂、复配表面活性剂</p>
             </a>
           </li>
           <li>
             <a href="products.html">
-              <img th:src="@{/portal/images/products/pro6.jpg}"/>
+              <img src="/portal/images/products/pro6.jpg}"/>
               <h3>医药中间体</h3>
               <p>胺类、咪唑类、吡唑类、吡啶类、嘧啶类、羧酸类、催化剂、苯衍生物、硼酸衍生物、五元杂环类、异吲哚啉酮类、其他</p>
             </a>
@@ -45,7 +45,7 @@
           <div class="news-list clearfix">
             <div>
               <div>
-                <img th:src="@{/portal/images/news/news1.jpg}"/>
+                <img src="/portal/images/news/news1.jpg"/>
                 <div class=""></div>
               </div>
             </div>
@@ -89,7 +89,7 @@
           <h2>关于我们</h2>
         </section>
         <div class="aboutli">
-          <img th:src="@{/portal/images/fg.jpg}"/>
+          <img src="/portal/images/fg.jpg"/>
           <div>
             <div>
               <h3>苏州天之信化工有限公司</h3>

@@ -20,7 +20,7 @@ a:hover,a:link,a:focus,a:visited{text-decoration: none; color: #2d2d2d;}
 .nav{margin:5px auto 0; width:1200px;}
 .nav ul li{float: left;}
 .nav ul li a{font-size: 16px; color: #000; padding:16px 35px;}
-.nav ul li.active>a{background-color: #1286B4; color: #FFFFFF;}
+/*.nav ul li.active>a{background-color: #1286B4; color: #FFFFFF;}*/
 #wrapper{width:100%;}
 #wrapper img{width:100%;}
 .title{padding:50px 0 0;}
@@ -87,8 +87,8 @@ footer p,footer p a{color: #83888F !important; text-align: center; font-size: 13
 .productspg li>div{padding:10px; height: 340px; margin:5px; border:solid 1px #eee; border-radius: 5px;}
 .productspg li h3{font-size: 18px;  margin:10px 0;overflow: hidden;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;}*/
 .productspg li p{width:33.33%; line-height: 40px; float: left; font-size: 14px; text-align: left;}
-.productspg li:first-child p{font-size: 16px; font-weight: bold;}
-.productspg li:nth-child(2n+1) p{background-color: #f1f1f1;}
+/*.productspg li:first-child p{font-size: 16px; font-weight: bold;}*/
+/*.productspg li:nth-child(2n+1) p{background-color: #f1f1f1;}*/
 .productspg li a:hover{color: #0887B9; font-weight: bold;}
 
 .pager{margin-top:30px; text-align: center}

@@ -12,14 +12,18 @@ Vue.use(httpVueLoader);
 const routes = [
   {path: '/demo', component: httpVueLoader('/demo.vue')},
   {path: '/home', component: httpVueLoader('/vue/portal/home.vue')},
-  {path: '/notice', component: httpVueLoader('/vue/portal/notice.vue')},
-  {path: '/news', component: httpVueLoader('/vue/portal/news.vue')},
 
   {path: '/about', component: httpVueLoader('/vue/portal/about.vue')},
-
-  {path: '/introduction', component: httpVueLoader('/vue/portal/introduction.vue')},
   {path: '/culture', component: httpVueLoader('/vue/portal/culture.vue')},
   {path: '/honor', component: httpVueLoader('/vue/portal/honor.vue')},
+
+  {path: '/notice', component: httpVueLoader('/vue/portal/notice.vue')},
+  {path: '/notice-detail', component: httpVueLoader('/vue/portal/notice-detail.vue')},
+  {path: '/news', component: httpVueLoader('/vue/portal/news.vue')},
+  {path: '/news-detail', component: httpVueLoader('/vue/portal/news-detail.vue')},
+
+  {path: '/products', component: httpVueLoader('/vue/portal/products.vue')},
+  {path: '/products-detail', component: httpVueLoader('/vue/portal/products-detail.vue')},
   {path: '/friends', component: httpVueLoader('/vue/portal/friends.vue')},
 
 ]

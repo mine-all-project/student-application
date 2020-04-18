@@ -1,22 +1,13 @@
 <template>
   <el-row>
     <el-col>
-      <div class="bread">
-        <ul class="clearfix">
-          <li><router-link to="/home">首页</router-link>&nbsp;>&nbsp;</li>
-          <li><router-link to="/notice">通知公告</router-link></li>
-        </ul>
-      </div>
       <div class="pg-main clearfix">
-        <div class="pg-nav">
-          <ul>
-            <li><router-link to="/notice">通知公告</router-link></li>
-          </ul>
-        </div>
         <div class="pg-con newspg">
           <ul class="clearfix">
             <li v-for="item in dataList">
-              <h3><a :href=`/page/notice-detail?${item.id}`>{{item.title}}</a></h3>
+              <h3>
+                <router-link :to="{path:'/notice-detail',query:{id:item.id}}">{{item.title}}</router-link>
+              </h3>
               <p class="neptime">{{item.createTime}}</p>
             </li>
           </ul>
@@ -55,7 +46,9 @@
     }
   }
 </script>
-<style>
-
+<style scoped>
+.pg-con{
+  margin: 0;
+}
 
 </style>
