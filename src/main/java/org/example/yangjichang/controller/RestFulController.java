@@ -22,17 +22,26 @@ public class RestFulController extends BaseController {
         this.restFulService = restFulService;
     }
 
-    @RequestMapping("/getAnimalList/{type}")
+    @RequestMapping("/getAnimalList")
     @ResponseBody
-    public ResponseDTO getAnimalList(@PathVariable("type") String type) {
-        logger.info("收到请求->获取商品信息:[{}]", type);
-        List<Animal> animals = restFulService.getAnimalList(type);
+    public ResponseDTO getAnimalList() {
+        logger.info("收到请求->获取商品列表");
+        List<Animal> animals = restFulService.getAnimalList();
         logger.info("返回结果->获取商品信息完成:[{}]", animals);
         return ResponseDTO.returnSuccess("操作成功", animals);
     }
 
-    @GetMapping("/getAnimalById/{id}")
-    public ResponseDTO getAnimalById(@PathVariable("id") String id) {
+    @RequestMapping("/getAnimalListByType/{type}")
+    @ResponseBody
+    public ResponseDTO getAnimalListByType(@PathVariable("type") String type) {
+        logger.info("收到请求->获取商品列表，type:[{}]", type);
+        List<Animal> animals = restFulService.getAnimalListByType(type);
+        logger.info("返回结果->获取商品列表完成:[{}]", animals);
+        return ResponseDTO.returnSuccess("操作成功", animals);
+    }
+
+    @GetMapping("/getAnimalById")
+    public ResponseDTO getAnimalById(String id) {
         logger.info("收到请求->获取商品数据,id:[{}]", id);
         Animal animal = restFulService.getAnimalById(id);
         logger.info("返回结果->获取商品数据完成:[{}]", animal);
@@ -50,6 +59,7 @@ public class RestFulController extends BaseController {
     @RequestMapping("/saveAnimalInfo")
     @ResponseBody
     public ResponseDTO saveAnimalInfo(@RequestBody Animal animal) {
+        System.err.println(animal);
         logger.info("收到请求->保存商品信息:[{}]", animal);
         restFulService.saveAnimalInfo(animal);
         logger.info("返回结果->保存商品信息完成:[{}]", animal);
@@ -63,6 +73,7 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->获取文章列表完成:[{}]", papers);
         return ResponseDTO.returnSuccess("操作成功", papers);
     }
+
     @PostMapping("/savePaper")
     public ResponseDTO savePaper(@RequestBody Paper paper) {
         logger.info("收到请求->保存文章数据:[{}]", paper);
@@ -70,6 +81,7 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->保存文章数据完成");
         return ResponseDTO.returnSuccess("操作成功");
     }
+
     @GetMapping("/getPaperById")
     public ResponseDTO getPaperById(String id) {
         logger.info("收到请求->获取文章信息,id:[{}]", id);
@@ -77,6 +89,7 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->获取文章信息完成:[{}]", paper);
         return ResponseDTO.returnSuccess("操作成功", paper);
     }
+
     @DeleteMapping("/removePaperById/{id}")
     public ResponseDTO removePaperById(@PathVariable("id") String id) {
         logger.info("收到请求->删除文章数据,id:[{}]", id);
@@ -84,8 +97,6 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->删除文章数据完成");
         return ResponseDTO.returnSuccess("操作成功");
     }
-
-
 
     @RequestMapping("/uploadFile/{id}")
     @ResponseBody
@@ -96,22 +107,37 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", audioFile);
     }
 
-    @PostMapping("/saveAudioFile/{id}")
-    public ResponseDTO saveAudioFile(HttpServletRequest request, @RequestBody AudioFile audioFile, @PathVariable("id") String id) {
-        logger.info("收到请求->保存媒体数据:[{}]", id);
-        audioFile = restFulService.saveAudioFile(request, audioFile, id);
-        logger.info("返回结果->保存媒体数据完成:[{}]", audioFile);
+    @PostMapping("/updateFile")
+    public ResponseDTO updateFile(HttpServletRequest request, @RequestBody AudioFile audioFile) {
+        logger.info("收到请求->更新文件数据");
+        audioFile = restFulService.updateFile(request, audioFile);
+        logger.info("返回结果->更新文件数据完成:[{}]", audioFile);
         return ResponseDTO.returnSuccess("操作成功", audioFile);
     }
 
-    @GetMapping("/getAudioFileById/{id}")
-    public ResponseDTO getAudioFileById(@PathVariable("id") String id) {
-        logger.info("收到请求->获取媒体数据,id:[{}]", id);
-        AudioFile audioFile = restFulService.getAudioFileById(id);
-        logger.info("返回结果->获取媒体数据完成:[{}]", audioFile);
-        return ResponseDTO.returnSuccess("操作成功", audioFile);
+    @GetMapping("/getFileListByKeyWord/{keyWord}")
+    public ResponseDTO getFileListByKeyWord(@PathVariable("keyWord") String keyWord) {
+        logger.info("收到请求->获取文件数据,keyWord:[{}]", keyWord);
+        List<AudioFile> audioFiles = restFulService.getFileListByKeyWord(keyWord);
+        logger.info("返回结果->获取文件数据完成:[{}]", audioFiles);
+        return ResponseDTO.returnSuccess("操作成功", audioFiles);
     }
 
+    @DeleteMapping("/removeFileById/{id}")
+    public ResponseDTO removeFileById(@PathVariable("id") String id) {
+        logger.info("收到请求->删除文件数据,id:[{}]", id);
+        restFulService.removeFileById(id);
+        logger.info("返回结果->删除文件数据完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @GetMapping("/getFileById/{id}")
+    public ResponseDTO getFileById(@PathVariable("id") String id) {
+        logger.info("收到请求->获取文件数据,id:[{}]", id);
+        AudioFile audioFile = restFulService.getFileById(id);
+        logger.info("返回结果->获取文件数据完成:[{}]", audioFile);
+        return ResponseDTO.returnSuccess("操作成功", audioFile);
+    }
 
 
     @RequestMapping("/submitOrder/{ticketsId}")
@@ -133,39 +159,4 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", path);
     }
 
-
-    @RequestMapping("/getMessages/{area}")
-    @ResponseBody
-    public ResponseDTO getMessages(@PathVariable Integer area) {
-        logger.info("收到请求->获取评论:[{}]", area);
-        List<Message> message = restFulService.getMessages(area);
-        logger.info("返回结果->获取评论完成:[{}]", message);
-        return ResponseDTO.returnSuccess("操作成功", message);
-    }
-
-    @RequestMapping("/submitMessage")
-    @ResponseBody
-    public ResponseDTO submitMessage(@RequestBody Message message) {
-        logger.info("收到请求->发布评论:[{}]", message);
-        message = restFulService.submitMessage(message);
-        logger.info("返回结果->发布评论完成:[{}]", message);
-        return ResponseDTO.returnSuccess("操作成功", message);
-    }
-
-    @DeleteMapping("/removeMessageById/{id}")
-    public ResponseDTO removeMessageById(@PathVariable("id") String id) {
-        logger.info("收到请求->删除评论,id:[{}]", id);
-        restFulService.removeMessageById(id);
-        logger.info("返回结果->删除评论完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
-    @RequestMapping("/addMessage/{id}")
-    @ResponseBody
-    public ResponseDTO addMessage(@RequestBody Message message, @PathVariable("id") String id) {
-        logger.info("收到请求->回复评论:[{}],id:[{}]", message, id);
-        restFulService.addMessage(message, id);
-        logger.info("返回结果->回复评论完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
 }

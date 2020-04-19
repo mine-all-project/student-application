@@ -25,14 +25,15 @@ const routes = [
   {path: '/products', component: httpVueLoader('/vue/portal/products.vue')},
   {path: '/products-detail', component: httpVueLoader('/vue/portal/products-detail.vue')},
   {path: '/friends', component: httpVueLoader('/vue/portal/friends.vue')},
+  {path: '/contact', component: httpVueLoader('/vue/portal/contact.vue')},
 
-]
+];
 
 // 3. 创建 router 实例，然后传 `routes` 配置
 // 你还可以传别的配置参数, 不过先这么简单着吧。
 const router = new VueRouter({
   routes // (缩写) 相当于 routes: routes
-})
+});
 
 
 // 4. 创建和挂载根实例。
@@ -134,25 +135,6 @@ const app = new Vue({
             },
           ]
         },
-        // {
-        //   id: '5',
-        //   name: '联系我们',
-        //   icon: 'el-icon-message',
-        //   children: [
-        //     {
-        //       id: '5-1',
-        //       name: '景区直通车',
-        //       icon: 'el-icon-message',
-        //       url: '/manage/traffic'
-        //     },
-        //     {
-        //       id: '5-2',
-        //       name: '旅游常识',
-        //       icon: '',
-        //       url: '/manage/common'
-        //     },
-        //   ]
-        // },
       ],
       welcome: true
     }
@@ -162,9 +144,9 @@ const app = new Vue({
   },
   methods: {
     clickMenu(url) {
-      this.welcome = false
-      router.push({path: url, params: {userId: 123}})
-      console.log(url)
+      this.welcome = false;
+      router.push({path: url, params: {userId: 123}});
+      console.log(url);
     }
   }
-})
+});

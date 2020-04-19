@@ -62,10 +62,11 @@
         ],
         editor: null,
         formLabelWidth: '80px',
+        keyWord: 'news',
       };
     },
     mounted() {
-      this.getPaperList()
+      this.getPaperList(this.keyWord)
     },
     methods: {
       remove(scope) {
@@ -74,7 +75,7 @@
         _this.$confirm('确认删除？').then(e => {
           _this.drawer.loading = true;
           axios.delete(`/api/removePaperById/${id}`).then(response => {
-            _this.getPaperList();
+            _this.getPaperList(_this.keyWord);
             const result = response.data;
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
@@ -83,14 +84,14 @@
             }
             _this.$message.success('操作成功')
           }).catch(function (error) {
-            _this.getPaperList();
+            _this.getPaperList(_this.keyWord);
             console.log('请求出现错误:', error);
           });
         });
       },
-      getPaperList() {
+      getPaperList(keyWord) {
         const _this = this;
-        axios.get('/api/getPapersByKeyWord/news').then(response => {
+        axios.get(`/api/getPapersByKeyWord/${keyWord}`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
@@ -133,7 +134,7 @@
         const _this = this;
         _this.form.content = _this.editor.txt.html();
         _this.loading = true;
-        _this.form.keyWord = 'news';
+        _this.form.keyWord = this.keyWord;
         axios.post(`/api/savePaper`, _this.form).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
@@ -145,7 +146,7 @@
           _this.$message.success('操作成功');
           _this.drawer.loading = false;
           _this.drawer.show = false;
-          _this.getPaperList()
+          _this.getPaperList(this.keyWord);
         }).catch(function (error) {
           window.location.reload();
           console.log('请求出现错误:', error);
@@ -154,7 +155,7 @@
       drawerClose() {
         this.drawer.loading = false;
         this.drawer.show = false;
-        this.getPaperList();
+        _this.getPaperList(this.keyWord);
       },
     }
   }

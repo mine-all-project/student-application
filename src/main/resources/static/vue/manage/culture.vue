@@ -1,7 +1,12 @@
 <template>
   <el-row :gutter="20">
     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="text-align: center">
+      <h2>{{title}}</h2>
+      <br>
+    </el-col>
+    <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" style="text-align: center">
       <div id="editor"></div>
+      <br>
       <el-button type="primary" @click="saveContent">立即发表</el-button>
     </el-col>
   </el-row>
@@ -23,30 +28,34 @@
           'image',  // 插入图片
         ],
         editor: null,
-        paper: {},
+        paper: {
+          content:''
+        },
+        keyWord: 'culture',
+        title: '企业文化'
       }
     },
     mounted() {
-      this.editor = new window.wangEditor('#editor')
-      this.editor.customConfig.uploadImgShowBase64 = true
-      this.editor.customConfig.showLinkImg = false
-      this.editor.customConfig.pasteIgnoreImg = true
-      this.editor.customConfig.menus = this.wangEditorOptions
-      this.editor.create()
-      this.getPaper()
+      this.editor = new window.wangEditor('#editor');
+      this.editor.customConfig.uploadImgShowBase64 = true;
+      this.editor.customConfig.showLinkImg = false;
+      this.editor.customConfig.pasteIgnoreImg = true;
+      this.editor.customConfig.menus = this.wangEditorOptions;
+      this.editor.create();
+      this.getPaper(this.keyWord)
     },
     methods: {
-      getPaper() {
-        const _this = this
-        axios.get('/api/getAudioFile/strategy').then(response => {
-          const result = response.data
+      getPaper(keyWord) {
+        const _this = this;
+        axios.get(`/api/getPapersByKeyWord/${keyWord}`).then(response => {
+          const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
             this.$message.error('数据加载失败');
             return
           }
-          _this.paper = result.data
-          _this.editor.txt.html(_this.paper.url)
+          _this.paper = result.data[0] ? result.data[0] : _this.paper;
+          _this.editor.txt.html(_this.paper.content)
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });
@@ -61,18 +70,18 @@
         this.getPictures()
       },
       saveContent() {
-        const _this = this
-        _this.paper.url = _this.editor.txt.html();
-        console.log(_this.paper)
-        // console.log(data)
-        axios.post(`/api/saveAudioFile/${this.paper.id}`, _this.paper).then(response => {
-          const result = response.data
-          console.log('通过api获取到的数据:', result)
+        const _this = this;
+        _this.paper.content = _this.editor.txt.html();
+        _this.paper.keyWord = this.keyWord;
+        axios.post(`/api/savePaper`, _this.paper).then(response => {
+          const result = response.data;
+          console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
             this.$message.error('数据加载失败');
             return
           }
-          _this.content = result.data
+          _this.content = result.data;
+          this.$message.success('编辑成功');
         }).catch(function (error) {
           // 请求失败处理
           console.log('请求出现错误:', error);

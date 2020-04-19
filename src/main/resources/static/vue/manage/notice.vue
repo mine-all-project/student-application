@@ -19,7 +19,6 @@
             <el-input v-model="form.title" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="通知内容" :label-width="formLabelWidth">
-            <!--            <div id="editor"></div>-->
             <el-input type="textarea" :rows="4" placeholder="请输入通知内容" v-model="form.content"></el-input>
           </el-form-item>
         </el-form>
@@ -51,10 +50,11 @@
           loading: false,
         },
         formLabelWidth: '80px',
+        keyWord: 'notice',
       };
     },
     mounted() {
-      this.getPaperList()
+      this.getPaperList(this.keyWord)
     },
     methods: {
       remove(scope) {
@@ -63,7 +63,7 @@
         _this.$confirm('确认删除？').then(e => {
           _this.drawer.loading = true;
           axios.delete(`/api/removePaperById/${id}`).then(response => {
-            _this.getPaperList();
+            _this.getPaperList(this.keyWord);
             const result = response.data;
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
@@ -72,14 +72,14 @@
             }
             _this.$message.success('操作成功')
           }).catch(function (error) {
-            _this.getPaperList();
+            _this.getPaperList(this.keyWord);
             console.log('请求出现错误:', error);
           });
         });
       },
-      getPaperList() {
+      getPaperList(keyWord) {
         const _this = this;
-        axios.get('/api/getPapersByKeyWord/notice').then(response => {
+        axios.get(`/api/getPapersByKeyWord/${keyWord}`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
@@ -114,7 +114,7 @@
       savePaper() {
         const _this = this;
         _this.drawer.loading = true;
-        _this.form.keyWord = 'notice';
+        _this.form.keyWord = this.keyWord;
         axios.post(`/api/savePaper`, _this.form).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
@@ -125,7 +125,7 @@
           _this.$message.success('操作成功');
           _this.drawer.loading = false;
           _this.drawer.show = false;
-          _this.getPaperList()
+          _this.getPaperList(this.keyWord)
         }).catch(function (error) {
           window.location.reload();
           console.log('请求出现错误:', error);
@@ -134,7 +134,7 @@
       drawerClose() {
         this.drawer.loading = false;
         this.drawer.show = false;
-        this.getPaperList();
+        this.getPaperList(this.keyWord);
       },
     }
   }

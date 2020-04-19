@@ -4,11 +4,10 @@
       <div class="bread">
         <ul class="clearfix">
           <li>
-          <li>
             <router-link to="/home">首页</router-link>&nbsp;>&nbsp;
           </li>
           <li>
-            <router-link to="/culture">企业文化</router-link>
+            <router-link to="/about">关于我们</router-link>
           </li>
         </ul>
       </div>
@@ -16,23 +15,26 @@
         <div class="pg-nav">
           <ul>
             <li>
-              <router-link to="/about">公司简介</router-link>
+              <router-link to="/about">关于我们</router-link>
             </li>
             <li>
               <router-link to="/culture">企业文化</router-link>
             </li>
             <li>
-              <router-link to="/honor">公司荣誉</router-link>
+              <router-link to="/honor">企业荣誉</router-link>
             </li>
           </ul>
         </div>
-        <div class="pg-con">
-          <div class="ab-culture">
-            <img src="/portal/images/cul.jpg"/>
-            <p>追求高品质、高工艺水平，使用户享受卫生、健康、舒适的生活是我们一贯追求的目标。</p>
-            <p>“合抱之木，生于毫末；九层之台，起于垒土；千里之行，始于足下。”我们锐意进取，努力打造优质、高效的产品供应链体系，秉承“科技引领市场、品质铸就品牌”的经营理念，为客户提供优质、周到的技术支持与服务。</p>
-            <p>“穷则独善其身，达则兼济天下。”我们务实，但从未停止追求卓越，我们尊重合作伙伴的感受，诚邀各界业内人士长期沟通，共谋发展、共创辉煌！</p>
-          </div>
+        <div class="pg-con" v-html="paper.content">
+          <h2>
+            苏州天之信化工有限公司
+          </h2>
+          <p>
+            经销批发的丙二醇、乙二醇、甘油、油酸、胺类、硬脂酸畅销消费者市场，在消费者当中享有较高的地位。
+          </p>
+          <p>
+            公司与多家零售商和代理商建立了长期稳定的合作关系。苏州天之信化工有限公司经销的丙二醇、乙二醇、甘油、油酸、胺类品种齐全、价格合理。苏州天之信化工有限公司实力雄厚，重信用、守合同、保证产品质量，以多品种经营特色和薄利多销的原则，赢得了广大客户的信任。
+          </p>
         </div>
       </div>
       <div class="space"></div>
@@ -43,23 +45,25 @@
   module.exports = {
     data() {
       return {
-        dataList: [],
+        paper: {},
+        keyWord:'culture'
       };
     },
     mounted() {
-      this.getPaperList()
+      this.getPaper(this.keyWord)
     },
     methods: {
-      getPaperList() {
+      getPaper(keyWord) {
         const _this = this;
-        axios.get('/api/getPapersByKeyWord/notice').then(response => {
+        axios.get(`/api/getPapersByKeyWord/${keyWord}`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
             this.$message.error('数据加载失败');
-            return;
+            return
           }
-          _this.dataList = result.data;
+          _this.paper = result.data[0];
+          _this.editor.txt.html(_this.paper.content)
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });

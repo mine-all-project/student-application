@@ -13,24 +13,21 @@ import java.util.Map;
 
 public interface RestFulService {
 
-    default String getfilePath(HttpServletRequest request,String filePath) {
+    default String getfilePath(HttpServletRequest request,String filePath,String virtualPath) {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile multipartFile = multipartRequest.getFile("file");
-        FileUtils fileUtils = new FileUtils(filePath);
+        FileUtils fileUtils = new FileUtils(filePath,virtualPath);
         return fileUtils.saveFile(multipartFile);
     }
-
     default SysUser getUser() {
         Subject subject = SecurityUtils.getSubject();
         return (SysUser) subject.getPrincipal();
     }
 
-    List<Animal> getAnimalList(String type);
-
+    List<Animal> getAnimalList();
+    List<Animal> getAnimalListByType(String type);
     Animal getAnimalById(String id);
-
     void removeAnimalById(String id);
-
     void saveAnimalInfo(Animal animal);
 
     List<Paper> getPapersByKeyWord(String keyWord);
@@ -38,31 +35,24 @@ public interface RestFulService {
     Paper getPaperById(String id);
     void removePaperById(String id);
 
-
-
-
-
-
-
-
-
-
-
     AudioFile uploadFile(HttpServletRequest request, String id);
+    AudioFile updateFile(HttpServletRequest request, AudioFile audioFile);
+    List<AudioFile> getFileListByKeyWord(String keyWord);
+    void removeFileById(String id);
+    AudioFile getFileById(String id);
 
-    AudioFile saveAudioFile(HttpServletRequest request, AudioFile audioFile, String id);
 
-    AudioFile getAudioFileById(String id);
 
-    void removeAudioFileById(String id);
+
+
+
+
+
+
 
 
 
     Orders submitOrder(String shop);
-
-
-
-
 
     Map<String, String> uploadShopFile(HttpServletRequest request);
 
@@ -76,7 +66,6 @@ public interface RestFulService {
     void removeMessageById(String id);
 
     void addMessage(Message message, String id);
-
 
 
 }

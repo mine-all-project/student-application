@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -24,6 +23,8 @@ public class RestFulServiceImpl implements RestFulService {
     private boolean usePhone;
     @Value("${filePath}")
     private String filePath;
+    @Value("${virtualPath}")
+    private String virtualPath;
     private final AudioFileRepository audioFileRepository;
     private final AnimalRepository animalRepository;
     private final MessageRepository messageRepository;
@@ -46,17 +47,18 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
-    public List<Animal> getAnimalList(String type) {
+    public List<Animal> getAnimalList() {
+        return animalRepository.findAll();
+    }
+
+    @Override
+    public List<Animal> getAnimalListByType(String type) {
         return animalRepository.findAllByType(type);
     }
 
     @Override
     public Animal getAnimalById(String id) {
-        Animal animal = animalRepository.findById(id).orElse(null);
-        if (animal == null) {
-            throw new ApplicationException("商品信息不存在");
-        }
-        return animal;
+        return animalRepository.findById(id).orElse(new Animal());
     }
 
     @Override
@@ -74,7 +76,7 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     @RequiresPermissions("manage")
     public AudioFile uploadFile(HttpServletRequest request, String id) {
-        String path = getfilePath(request, filePath);
+        String path = getfilePath(request, filePath, virtualPath);
         AudioFile picture = audioFileRepository.findById(id).orElse(new AudioFile());
         picture.setUrl(path);
         return audioFileRepository.save(picture);
@@ -82,60 +84,53 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     @RequiresPermissions("manage")
-    public void removeAudioFileById(String id) {
+    public AudioFile updateFile(HttpServletRequest request, AudioFile audioFile) {
+        return audioFileRepository.save(audioFile);
+    }
+
+    @Override
+    public List<AudioFile> getFileListByKeyWord(String keyWord) {
+        return audioFileRepository.findAllByKeyWord(keyWord);
+    }
+
+    @Override
+    @RequiresPermissions("manage")
+    public void removeFileById(String id) {
         audioFileRepository.deleteById(id);
+    }
+
+    @Override
+    @RequiresPermissions("manage")
+    public AudioFile getFileById(String id) {
+        return audioFileRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Paper> getPapersByKeyWord(String keyWord) {
         return paperRepository.findAllByKeyWord(keyWord);
     }
+
     @Override
     public void savePaper(Paper paper) {
         paperRepository.save(paper);
     }
+
     @Override
     public Paper getPaperById(String id) {
         return paperRepository.findById(id).orElse(new Paper());
     }
+
     @Override
     public void removePaperById(String id) {
         paperRepository.deleteById(id);
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    @RequiresPermissions("manage")
-    public AudioFile saveAudioFile(HttpServletRequest request, AudioFile audioFile, String id) {
-        if (request instanceof MultipartHttpServletRequest) {
-            String path = getfilePath(request, filePath);
-            AudioFile byId = audioFileRepository.findById(id).orElse(audioFile);
-            if (null != byId) {
-                byId.setUrl(path);
-                return audioFileRepository.save(byId);
-            }
-            throw new ApplicationException("文件上传失败");
-        } else {
-            return audioFileRepository.save(audioFile);
-        }
-    }
-
     @Override
     @RequiresPermissions("manage")
     public Map<String, String> uploadShopFile(HttpServletRequest request) {
         Map<String, String> path = new HashMap<>(1);
-        path.put("path", getfilePath(request, filePath));
+        path.put("path", getfilePath(request, filePath, virtualPath));
         return path;
     }
 
@@ -144,15 +139,6 @@ public class RestFulServiceImpl implements RestFulService {
         return null;
     }
 
-
-    @Override
-    public AudioFile getAudioFileById(String id) {
-        AudioFile audioFile = audioFileRepository.findById(id).orElse(null);
-        if (audioFile == null) {
-            throw new ApplicationException("数据获取失败");
-        }
-        return audioFile;
-    }
 //    @Override
 //    @RequiresPermissions("login")
 //    public Orders submitOrder(String goodsId) {

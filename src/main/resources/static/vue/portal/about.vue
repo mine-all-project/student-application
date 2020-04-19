@@ -25,7 +25,7 @@
             </li>
           </ul>
         </div>
-        <div class="pg-con">
+        <div class="pg-con" v-html="paper.content">
           <h2>
             苏州天之信化工有限公司
           </h2>
@@ -45,23 +45,25 @@
   module.exports = {
     data() {
       return {
-        dataList: [],
+        paper: {},
+        keyWord:'about'
       };
     },
     mounted() {
-      this.getPaperList()
+      this.getPaper(this.keyWord)
     },
     methods: {
-      getPaperList() {
+      getPaper(keyWord) {
         const _this = this;
-        axios.get('/api/getPapersByKeyWord/notice').then(response => {
+        axios.get(`/api/getPapersByKeyWord/${keyWord}`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
             this.$message.error('数据加载失败');
-            return;
+            return
           }
-          _this.dataList = result.data;
+          _this.paper = result.data[0];
+          _this.editor.txt.html(_this.paper.content)
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });

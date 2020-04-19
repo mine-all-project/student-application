@@ -11,7 +11,7 @@
 				<el-col :span="10">
 					<el-upload class="avatar-uploader" :action="`/api/uploadShopFile/tickets`"
 					           :show-file-list="false" ref="uploadFile" :on-success="successUpload">
-						<img v-if="item.url" :src=`/file/${item.url}` class="avatar">
+						<img v-if="item.url" :src=`${item.url}` class="avatar">
 						<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 					</el-upload>
 				</el-col>

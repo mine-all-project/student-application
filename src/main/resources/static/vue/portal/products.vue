@@ -5,37 +5,18 @@
         <div class="pg-con productspg clearfix">
 
           <ul class="clearfix">
-            <li class="products-list">
+            <li class="products-list" v-for="item in dataList">
               <div>
-                <router-link to="/products-detail">
-                  <img src="/portal/images/products/pro1.jpg" class="products-list-img"/>
-                  <h3 class="products-list-name"> 6501 </h3>
-                  <p class="products-list-text">
-                    主要用途：乳化剂，产品为淡黄色或珀色透明液体，具有较强的起泡力、浸透力、去污力、防锈力
-                  </p>
+                <router-link :to="{path:'/products-detail',query:{id:`${item.id}`}}">
+                  <img :src="item.audioFiles[0].url" class="products-list-img" v-if="item.audioFiles.length>0"/>
+                  <h3 class="products-list-name">
+                    <span style="display: inline-block;width: 40%">{{item.name}}</span>
+                    <span style="display: inline-block;width: 40%">￥{{item.price}}</span>
+                  </h3>
+                  <p class="products-list-text">{{item.content}}</p>
                 </router-link>
-
               </div>
             </li>
-            <li class="products-list">
-              <div>
-                <a href="products-detail.html">
-                  <img src="/portal/images/products/pro1.jpg" class="products-list-img"/>
-                  <h3 class="products-list-name"> 6501 </h3>
-                  <p class="products-list-text">
-                    主要用途：乳化剂，产品为淡黄色或珀色透明液体，具有较强的起泡力、浸透力、去污力、防锈力
-                  </p>
-                </a>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div class="pager">
-          <ul class="clearfix">
-            <li><a href="">&lt;</a></li>
-            <li class="active"><a href="">1</a></li>
-            <li><a href="">2</a></li>
-            <li><a href="">&gt;</a></li>
           </ul>
         </div>
       </div>
@@ -52,12 +33,12 @@
       };
     },
     mounted() {
-      this.getPaperList()
+      this.getAnimalList()
     },
     methods: {
-      getPaperList() {
+      getAnimalList() {
         const _this = this;
-        axios.get('/api/getPapersByKeyWord/notice').then(response => {
+        axios.get(`/api/getAnimalList`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {

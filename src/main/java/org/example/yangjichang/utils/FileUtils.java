@@ -12,12 +12,14 @@ public class FileUtils {
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     private String ROOT;
+    private String VIRTUAL_PATH;
 
     /**
      * @param root 文件保存路径
      */
-    public FileUtils(String root) {
+    public FileUtils(String root, String virtualPath) {
         this.ROOT = root;
+        this.VIRTUAL_PATH = virtualPath;
     }
 
     /**
@@ -29,6 +31,7 @@ public class FileUtils {
     public String saveFile(MultipartFile multipartFile) {
         Date date = new Date();
         String fullPath = ROOT;
+
         logger.info("保存文件,路径[{}]", fullPath);
         String fullName = UUID.randomUUID().toString().replace("-", "");
         logger.info("保存文件,文件名[{}]", fullName);
@@ -38,11 +41,11 @@ public class FileUtils {
                 logger.debug("目录不存在,创建目录[{}]", fold.getPath());
                 fold.mkdirs();
             }
-            fullName += date.getTime();
             String originalFilename = multipartFile.getOriginalFilename();
             int last = originalFilename.lastIndexOf(".");
             int length = originalFilename.length();
             fullName += originalFilename.substring(last, length);
+
             logger.debug("生成全文件名[{}]", fullName);
             File file = new File(fullPath + "/" + fullName);
             logger.info("准备写入文件");
@@ -53,8 +56,10 @@ public class FileUtils {
             logger.error("保存文件时出现错误[]", e);
             return null;
         }
+        String virtualPath = VIRTUAL_PATH + fullName;
         logger.info("文件保存完成,路径[{}]", fullPath);
-        return fullName;
+        logger.info("文件保存完成,虚拟路径[{}]", virtualPath);
+        return virtualPath;
     }
 
     /**

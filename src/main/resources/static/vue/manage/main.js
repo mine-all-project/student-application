@@ -10,30 +10,17 @@ Vue.use(httpVueLoader);
 // 或者，只是一个组件配置对象。
 // 我们晚点再讨论嵌套路由。
 const routes = [
-  {path: '/demo', component: httpVueLoader('/demo.vue')},
+  {path: '/demo', component: httpVueLoader('/demo-manage.vue')},
+  {path: '/manage/about', component: httpVueLoader('/vue/manage/about.vue')},
+  {path: '/manage/culture', component: httpVueLoader('/vue/manage/culture.vue')},
+  {path: '/manage/honor', component: httpVueLoader('/vue/manage/honor.vue')},
+
   {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
   {path: '/manage/news', component: httpVueLoader('/vue/manage/news.vue')},
+  {path: '/manage/friends', component: httpVueLoader('/vue/manage/friends.vue')},
+  {path: '/manage/products', component: httpVueLoader('/vue/manage/products.vue')},
+  {path: '/manage/contact', component: httpVueLoader('/vue/manage/contact.vue')},
 
-  // {path: '/manage/pictures', component: httpVueLoader('/vue/manage/pictures.vue')},
-  // {path: '/manage/video', component: httpVueLoader('/vue/manage/video.vue')},
-  // {path: '/manage/strategy', component: httpVueLoader('/vue/manage/strategy.vue')},
-  // {path: '/manage/civilization', component: httpVueLoader('/vue/manage/civilization.vue')},
-  //
-  // {path: '/manage/dynamic', component: httpVueLoader('/vue/manage/dynamic.vue')},
-  // {path: '/manage/tourism', component: httpVueLoader('/vue/manage/tourism.vue')},
-  // {path: '/manage/active', component: httpVueLoader('/vue/manage/active.vue')},
-  // {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
-
-  // {path: '/manage/tickets', component: httpVueLoader('/vue/manage/tickets.vue')},
-  // {path: '/manage/hotel', component: httpVueLoader('/vue/manage/hotel.vue')},
-  // {path: '/manage/food', component: httpVueLoader('/vue/manage/food.vue')},
-  // {path: '/manage/specialty', component: httpVueLoader('/vue/manage/specialty.vue')},
-  //
-  // {path: '/manage/area1', component: httpVueLoader('/vue/manage/area1.vue')},
-  // {path: '/manage/area2', component: httpVueLoader('/vue/manage/area2.vue')},
-  //
-  // {path: '/manage/traffic', component: httpVueLoader('/vue/manage/traffic.vue')},
-  // {path: '/manage/common', component: httpVueLoader('/vue/manage/common.vue')},
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置
@@ -62,105 +49,92 @@ const app = new Vue({
       menus: [
         {
           id: '1',
-          name: '网站管理',
+          name: '公司简介',
           icon: 'el-icon-message',
           children: [
             {
               id: '1-1',
-              name: '公告管理',
-              icon: 'el-icon-message',
-              url: '/manage/notice'
+              name: '关于我们',
+              icon: '',
+              url: '/manage/about'
             },
             {
               id: '1-2',
-              name: '新闻管理',
-              icon: '',
-              url: '/manage/news'
+              name: '企业文化',
+              icon: 'el-icon-message',
+              url: '/manage/culture'
             },
             {
               id: '1-3',
-              name: '企业文化',
+              name: '企业荣誉',
               icon: '',
-              url: '/manage/culture'
+              url: '/manage/honor'
             },
           ]
         },
         {
           id: '2',
-          name: '用户管理',
+          name: '网站管理',
           icon: 'el-icon-message',
           children: [
             {
               id: '2-1',
-              name: '用户列表',
-              icon: 'el-icon-message',
-              url: '/manage/user-list'
+              name: '通知管理',
+              icon: '',
+              url: '/manage/notice'
             },
             {
               id: '2-2',
-              name: '旅游资讯',
+              name: '新闻管理',
+              icon: 'el-icon-message',
+              url: '/manage/news'
+            },
+            {
+              id: '2-3',
+              name: '合作伙伴',
               icon: '',
-              url: '/manage/tourism'
+              url: '/manage/friends'
             },
             {
               id: '2-4',
-              name: '通知公告',
+              name: '产品管理',
               icon: '',
-              url: '/manage/notice'
+              url: '/manage/products'
+            },
+            {
+              id: '2-5',
+              name: '联系我们',
+              icon: '',
+              url: '/manage/contact'
             },
           ]
         },
         {
           id: '3',
-          name: '订单管理',
+          name: '用户管理',
           icon: 'el-icon-message',
           children: [
             {
               id: '3-1',
+              name: '用户列表',
+              icon: 'el-icon-message',
+              url: '/manage/user-list'
+            }
+          ]
+        },
+        {
+          id: '4',
+          name: '订单管理',
+          icon: 'el-icon-message',
+          children: [
+            {
+              id: '4-1',
               name: '订单列表',
               icon: 'el-icon-message',
               url: '/manage/tickets'
             },
           ]
         },
-        {
-          id: '4',
-          name: '评论',
-          icon: 'el-icon-message',
-          children: [
-            {
-              id: '4-1',
-              name: '主题1',
-              icon: 'el-icon-message',
-              url: '/manage/area1'
-            },
-            {
-              id: '4-2',
-              name: '主题2',
-              icon: '',
-              url: '/manage/area2'
-            },
-          ]
-        },
-        // {
-        //   id: '5',
-        //   name: '联系我们',
-        //   icon: 'el-icon-message',
-        //   children: [
-        //     {
-        //       id: '5-1',
-        //       name: '景区直通车',
-        //       icon: 'el-icon-message',
-        //       url: '/manage/traffic'
-        //     },
-        //     {
-        //       id: '5-2',
-        //       name: '旅游常识',
-        //       icon: '',
-        //       url: '/manage/common'
-        //     },
-        //   ]
-        // },
       ],
       welcome: true
     }
