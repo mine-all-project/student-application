@@ -19,16 +19,16 @@ public class IndexService {
         this.sysUserRepository = sysUserRepository;
     }
 
-    public boolean login(HttpServletRequest request, SysUser sysUser){
+    public boolean login(HttpServletRequest request, SysUser sysUser) {
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
                 .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.exact())
-                .withMatcher("password",ExampleMatcher.GenericPropertyMatchers.exact());
-        Example<SysUser> example = Example.of(sysUser,exampleMatcher);
+                .withMatcher("password", ExampleMatcher.GenericPropertyMatchers.exact());
+        Example<SysUser> example = Example.of(sysUser, exampleMatcher);
         Optional<SysUser> optional = sysUserRepository.findOne(example);
         System.out.println(sysUser);
-        if(optional.isPresent()){
+        if (optional.isPresent()) {
             System.err.println("登陆成功");
-            request.getSession().setAttribute("user",optional.get());
+            request.getSession().setAttribute("user", optional.get());
             return true;
         }
         System.err.println("登陆失败");
@@ -38,5 +38,10 @@ public class IndexService {
     public SysUser getUserInfo() {
         Subject subject = SecurityUtils.getSubject();
         return (SysUser) subject.getPrincipal();
+    }
+
+    public void logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
     }
 }
