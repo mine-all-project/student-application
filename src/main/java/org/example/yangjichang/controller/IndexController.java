@@ -74,4 +74,22 @@ public class IndexController extends BaseController {
         logger.info("返回结果->获取用户信息结束:[{}]", sysUser);
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
+
+    @RequestMapping("/mineInfo")
+    @ResponseBody
+    public ResponseDTO mineInfo() {
+        logger.info("收到请求->获取用户信息");
+        SysUser sysUser = indexService.getUserInfo();
+        logger.info("返回结果->获取用户信息结束:[{}]", sysUser);
+        return ResponseDTO.returnSuccess("操作成功", sysUser);
+    }
+
+    @RequestMapping("/loginOut")
+    @ResponseBody
+    public ResponseDTO loginOut() {
+        logger.info("收到请求->获取用户信息");
+        SysUser sysUser = indexService.getUserInfo();
+        logger.info("返回结果->获取用户信息结束:[{}]", sysUser);
+        return ResponseDTO.returnSuccess("操作成功", sysUser);
+    }
 }
