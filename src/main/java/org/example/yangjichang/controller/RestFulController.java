@@ -140,12 +140,12 @@ public class RestFulController extends BaseController {
     }
 
 
-    @RequestMapping("/submitOrder/{ticketsId}")
+    @RequestMapping("/createOrder")
     @ResponseBody
-    public ResponseDTO submitOrder(@PathVariable("ticketsId") String ticketsId) {
-        logger.info("收到请求->提交订单:[{}]", ticketsId);
-        Orders orders = restFulService.submitOrder(ticketsId);
-        logger.info("返回结果->提交订单完成:[{}]", orders);
+    public ResponseDTO createOrder(@RequestBody Orders orders) {
+        logger.info("收到请求->提交订单:[{}]", orders);
+        Orders newOrders = restFulService.createOrder(orders);
+        logger.info("返回结果->提交订单完成:[{}]", newOrders);
         return ResponseDTO.returnSuccess("操作成功", orders);
     }
 

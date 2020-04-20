@@ -41,31 +41,13 @@ public interface RestFulService {
     void removeFileById(String id);
     AudioFile getFileById(String id);
 
+    Orders createOrder(Orders orders);
 
 
 
 
-
-
-
-
-
-
-
-    Orders submitOrder(String shop);
 
     Map<String, String> uploadShopFile(HttpServletRequest request);
-
-
-    Message submitMessage(Message message);
-
-
-
-    List<Message> getMessages(Integer area);
-
-    void removeMessageById(String id);
-
-    void addMessage(Message message, String id);
 
 
 }

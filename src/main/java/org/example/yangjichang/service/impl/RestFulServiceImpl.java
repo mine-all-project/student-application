@@ -1,7 +1,6 @@
 package org.example.yangjichang.service.impl;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.example.yangjichang.config.ApplicationException;
 import org.example.yangjichang.config.SmsUtils;
 import org.example.yangjichang.dao.*;
 import org.example.yangjichang.entity.*;
@@ -12,10 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
@@ -135,82 +134,12 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
-    public Orders submitOrder(String shop) {
-        return null;
-    }
-
-//    @Override
-//    @RequiresPermissions("login")
-//    public Orders submitOrder(String goodsId) {
-//        Goods goods = goodsRepository.findById(goodsId).orElse(null);
-//        if (goods == null) {
-//            throw new ApplicationException("商品信息异常");
-//        }
-//        SysUser sysUser = getUser();
-//        Orders orders = new Orders();
-//        List<Goods> goodsList = new ArrayList<>();
-//        goodsList.add(goods);
-//        orders.setGoods(goodsList);
-//        orders.setSysUser(sysUser);
-//        orders.setKeyword(goods.getKeyWord());
-//        List<Orders> exist = orderRepository.findAllBySysUserAndOrderTime(sysUser, LocalDate.now());
-//        exist.forEach(e -> {
-//            if ("tickets".equals(e.getKeyword())) {
-//                throw new ApplicationException("每个用户每日只能购买一张门票");
-//            }
-//        });
-//        try {
-//            if (usePhone) {
-//                smsUtils.sendNoticeMessage(sysUser.getPhone(), sysUser.getName(), goods.getName());
-//            } else {
-//                String title = "通知邮件";
-//                String content = String.format("亲爱的 [%s] ,您的 [%s] 已经预约成功", sysUser.getName(), goods.getName());
-//                MailUtils.sendMail(title, content, sysUser.getMail());
-//            }
-//            orderRepository.save(orders);
-//            return orders;
-//        } catch (Exception e) {
-//            logger.warn("出现异常:[{}]\n", e.getMessage(), e);
-//            throw new ApplicationException("通知邮件发送异常");
-//        }
-//    }
-
-    @Override
-    public List<Message> getMessages(Integer area) {
-        return messageRepository.findAllByArea(area);
-    }
-
-    @Override
-    @RequiresPermissions("login")
-    public Message submitMessage(Message message) {
-        SysUser sysUser = getUser();
-        message.setUser(sysUser.getName());
-        message.setLevel(1);
-        return messageRepository.save(message);
-    }
-
-
-    @Override
-    @RequiresPermissions("manage")
-    public void removeMessageById(String id) {
-        messageRepository.deleteById(id);
-    }
-
-    @Override
-    @Transactional
-    @RequiresPermissions("manage")
-    public void addMessage(Message message, String id) {
-        Message parent = messageRepository.findById(id).orElse(null);
-        if (parent == null) {
-            throw new ApplicationException("数据异常");
-        }
-        message.setUser(getUser().getName());
-        message.setLevel(2);
-        List<Message> children = parent.getChildren();
-        children.add(message);
-        parent.setChildren(children);
-        messageRepository.saveAndFlush(message);
-        messageRepository.saveAndFlush(parent);
+    public Orders createOrder(Orders orders) {
+        orders.setSysUser(getUser());
+        String orderNumber = UUID.randomUUID().toString().replace("-","");
+        orders.setOrderNumber(orderNumber);
+        System.err.println(orders);
+        return orderRepository.save(orders);
     }
 
 

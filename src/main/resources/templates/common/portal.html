@@ -13,14 +13,14 @@
           <img data-th-src="@{/portal/images/logo.jpg}"/>
         </div>
         <div class="phone clearfix">
-          <img data-th-src="@{/portal/images/phone.jpg}"/>
-          <p>联系电话：18112651385</p>
-        </div>
-        <div class="search">
-          <form class="clearfix">
-            <input placeholder="输入搜索项"/>
-          </form>
-          <a class="btn" href="">搜索</a>
+          <p v-if="userInfo === null">
+            <a href="/login">登录</a>&nbsp;&nbsp;
+            <a href="/registry">注册</a>
+          </p>
+          <p v-else>
+            <a href="/mineInfo">个人中心</a>&nbsp;&nbsp;
+            <a href="/loginOut">退出登录</a>&nbsp;&nbsp;
+          </p>
         </div>
       </div>
     </div>
@@ -43,7 +43,6 @@
         </li>
         <li>
           <router-link to="/products">产品中心</router-link>
-<!--          <router-link to="/products">产品中心</router-link>-->
         </li>
         <li>
           <router-link to="/contact">联系我们</router-link>

@@ -1,5 +1,7 @@
 package org.example.yangjichang.service;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.example.yangjichang.dao.SysUserRepository;
 import org.example.yangjichang.entity.SysUser;
 import org.springframework.data.domain.Example;
@@ -31,5 +33,10 @@ public class IndexService {
         }
         System.err.println("登陆失败");
         return false;
+    }
+
+    public SysUser getUserInfo() {
+        Subject subject = SecurityUtils.getSubject();
+        return (SysUser) subject.getPrincipal();
     }
 }

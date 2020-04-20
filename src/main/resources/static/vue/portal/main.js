@@ -51,6 +51,7 @@ const app = new Vue({
       address: '贵州省六盘水市钟山区'
     };
     return {
+      userInfo: {},
       tableData: Array(20).fill(item),
       menus: [
         {
@@ -136,10 +137,11 @@ const app = new Vue({
           ]
         },
       ],
-      welcome: true
+      welcome: true,
     }
   },
-  mounted(){
+  mounted() {
+    this.getUserInfo()
     // router.push({path: '/home', params: {userId: 123}})
   },
   methods: {
@@ -147,6 +149,19 @@ const app = new Vue({
       this.welcome = false;
       router.push({path: url, params: {userId: 123}});
       console.log(url);
-    }
+    },
+    getUserInfo() {
+      axios.get(`/getUserInfo`).then(response => {
+        const result = response.data;
+        console.log('通过api获取到的数据:', result);
+        if (result.status !== 200) {
+          this.$message.error('数据加载失败');
+          return
+        }
+        this.userInfo = result.data ? result.data : null;
+      }).catch(function (error) {
+        console.log('请求出现错误:', error);
+      });
+    },
   }
 });

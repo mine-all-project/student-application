@@ -15,18 +15,17 @@
           <p class="goods-info">库存&nbsp;:&nbsp;{{animal.remaining}}</p>
           <p>简介&nbsp;:&nbsp;{{animal.content}}</p>
         </div>
-        <br>
-        <hr>
-        <br>
         <el-col :span="8" :offset="16">
           <div class="procon">
             <el-col :span="12">
+              <label>数量</label>
               <el-input-number v-model="form.counts" :min="0" :max="animal.remaining" label="数量" :step="1"
                                step-strictly :precision="0" @change="getSum"></el-input-number>
 
             </el-col>
             <el-col :span="12">
-              <el-input-number v-model="form.sum" :max="animal.remaining" label="总价" :controls="false"
+              <label>金额</label>
+              <el-input-number v-model="form.sum" label="总价" :controls="false"
                                :precision="2" :disabled="true"></el-input-number>
             </el-col>
           </div>
@@ -34,9 +33,11 @@
         <br>
         <hr>
         <br>
-        <el-col :span="6" :offset="18">
-          <el-button type="primary" @click="createOrder">立即购买</el-button>
-        </el-col>
+        <el-row>
+          <el-col :span="4" :offset="20">
+            <el-button type="primary" @click="createOrder">立即购买</el-button>
+          </el-col>
+        </el-row>
       </div>
     </el-col>
   </el-row>
@@ -56,6 +57,7 @@
           price: 0,
         },
         form: {
+          goodsId:'',
           counts: 1,
           sum: 0
         },
@@ -76,19 +78,28 @@
             return
           }
           _this.animal = result.data;
-          // _this.fileList = result.data.audioFiles;
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });
       },
       getSum(newValue, oldValue) {
-        // this.form.count = newValue
         this.form.sum = parseFloat(this.form.counts) * parseFloat(this.animal.price);
-        console.log(this.form)
-        console.log(this.animal)
       },
       createOrder() {
-        console.log()
+        const _this = this;
+        _this.form.goodsId = _this.animal.id;
+        console.log(_this.form);
+        axios.post(`/api/createOrder`,_this.form).then(response => {
+          const result = response.data;
+          console.log('通过api获取到的数据:', result);
+          if (result.status !== 200) {
+            this.$message.error('数据加载失败');
+            return
+          }
+          // _this.animal = result.data;
+        }).catch(function (error) {
+          console.log('请求出现错误:', error);
+        });
       }
     }
   }

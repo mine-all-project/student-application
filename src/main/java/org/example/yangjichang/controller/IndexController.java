@@ -1,20 +1,24 @@
 package org.example.yangjichang.controller;
 
+import org.example.yangjichang.config.groups.IsLogin;
+import org.example.yangjichang.dto.ResponseDTO;
+import org.example.yangjichang.entity.SysUser;
+import org.example.yangjichang.form.UserForm;
 import org.example.yangjichang.service.IndexService;
+import org.example.yangjichang.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class IndexController extends BaseController {
-    final
-    IndexService indexService;
+    private final IndexService indexService;
+    private final SysService sysService;
 
-    public IndexController(IndexService indexService) {
+    public IndexController(IndexService indexService, SysService sysService) {
         this.indexService = indexService;
+        this.sysService = sysService;
     }
 
     private Logger logger = LoggerFactory.getLogger(IndexController.class);
@@ -50,5 +54,24 @@ public class IndexController extends BaseController {
     @RequestMapping("/registry")
     public String registry() {
         return "registry";
+    }
+
+    @PostMapping("/loginCheck")
+    @ResponseBody
+    public ResponseDTO loginCheck(@RequestBody UserForm form) {
+        logger.info("收到请求->用户登陆验证:[{}]", form);
+        super.validator(form, IsLogin.class);
+        ResponseDTO responseDTO = sysService.login(form);
+        logger.info("登录验证结束->用户信息:[{}]", responseDTO);
+        return responseDTO;
+    }
+
+    @RequestMapping("/getUserInfo")
+    @ResponseBody
+    public ResponseDTO getUserInfo() {
+        logger.info("收到请求->获取用户信息");
+        SysUser sysUser = indexService.getUserInfo();
+        logger.info("返回结果->获取用户信息结束:[{}]", sysUser);
+        return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
 }

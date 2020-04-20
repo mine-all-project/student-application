@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>后台登录</title>
+  <title>用户登录</title>
   <link rel="stylesheet" type="text/css" data-th-href="@{/layui/css/layui.css}"/>
   <style type="text/css">
     * {
@@ -130,7 +130,7 @@
                     username: this.username,
                     password: this.password
                 };
-                axios.post('/manage/loginCheck', data).then(response => {
+                axios.post('/loginCheck', data).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result)
                     if (result.status !== 200) {
