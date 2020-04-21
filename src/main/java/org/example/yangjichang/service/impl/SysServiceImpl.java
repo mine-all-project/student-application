@@ -1,5 +1,11 @@
 package org.example.yangjichang.service.impl;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.subject.Subject;
 import org.example.yangjichang.config.ApplicationConfigure;
 import org.example.yangjichang.config.ApplicationException;
 import org.example.yangjichang.config.MailUtils;
@@ -9,12 +15,6 @@ import org.example.yangjichang.dto.ResponseDTO;
 import org.example.yangjichang.entity.SysUser;
 import org.example.yangjichang.form.UserForm;
 import org.example.yangjichang.service.SysService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -170,5 +170,24 @@ public class SysServiceImpl implements SysService {
     public List<SysUser> getUserList() {
         return sysUserRepository.findAll();
     }
-}
 
+    @Override
+//    @RequiresPermissions("manage")
+    public void changeStatus(String id) {
+        SysUser sysUser = sysUserRepository.findById(id).orElse(null);
+        assert sysUser != null;
+        sysUser.setStatus(Math.abs(sysUser.getStatus() - 1));
+        sysUserRepository.save(sysUser);
+    }
+
+    @Override
+//    @RequiresPermissions("manage")
+    public void removeUserById(String id) {
+        SysUser sysUser = sysUserRepository.findById(id).orElse(null);
+        assert sysUser != null;
+        if(sysUser.isAdmin()){
+            throw new ApplicationException("不能删除管理员");
+        }
+        sysUserRepository.delete(sysUser);
+    }
+}

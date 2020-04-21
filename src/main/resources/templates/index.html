@@ -11,6 +11,112 @@
   <div data-th-replace="/common/portal :: header"></div>
   <div data-th-replace="/common/portal :: wrapper"></div>
   <router-view></router-view>
+  <el-dialog title="个人信息" :visible.sync="show.mineInfo" v-if="userInfo !== null">
+    <el-row>
+      <el-row>
+        <el-col :span="6" style="text-align: right">
+          <span>用户名</span>
+        </el-col>
+        <el-col :span="10" :offset="1">
+          <el-input size="mini" :disabled="true" v-model="userInfo.username"></el-input>
+        </el-col>
+      </el-row>
+      <br>
+      <el-row>
+        <el-col :span="6" style="text-align: right">
+          <span>注册时间</span>
+        </el-col>
+        <el-col :span="10" :offset="1">
+          <el-input size="mini" :disabled="true" v-model="userInfo.createTime"></el-input>
+        </el-col>
+      </el-row>
+      <br>
+      <el-row>
+        <el-col :span="6" style="text-align: right">
+          <span>姓名</span>
+        </el-col>
+        <el-col :span="10" :offset="1">
+          <el-input size="mini" v-model="userInfo.name"></el-input>
+        </el-col>
+      </el-row>
+      <br>
+      <el-row>
+        <el-col :span="6" style="text-align: right">
+          <span>邮箱</span>
+        </el-col>
+        <el-col :span="10" :offset="1">
+          <el-input size="mini" v-model="userInfo.mail"></el-input>
+        </el-col>
+      </el-row>
+      <br>
+      <el-row>
+        <el-col :span="6" style="text-align: right">
+          <span>手机号</span>
+        </el-col>
+        <el-col :span="10" :offset="1">
+          <el-input size="mini" v-model="userInfo.phone"></el-input>
+        </el-col>
+      </el-row>
+      <br>
+      <el-row>
+        <el-col :span="6" style="text-align: right">
+          <span>我的订单</span>
+        </el-col>
+        <el-col :span="10" :offset="1">
+          <el-button @click="openOrderList" size="mini">点击查看</el-button>
+        </el-col>
+      </el-row>
+    </el-row>
+    <br>
+    <el-dialog width="30%" title="修改密码" :visible.sync="show.changePassword" append-to-body>
+      <el-row>
+        <el-col :span="6" style="text-align: right">
+          <span>原密码</span>
+        </el-col>
+        <el-col :span="10" :offset="1">
+          <el-input size="mini" v-model="userInfo.name"></el-input>
+        </el-col>
+      </el-row>
+      <br>
+      <el-row>
+        <el-col :span="6" style="text-align: right">
+          <span>新密码</span>
+        </el-col>
+        <el-col :span="10" :offset="1">
+          <el-input size="mini" v-model="userInfo.name"></el-input>
+        </el-col>
+      </el-row>
+      <br>
+      <el-row>
+        <el-col :span="6" style="text-align: right">
+          <span>确认密码</span>
+        </el-col>
+        <el-col :span="10" :offset="1">
+          <el-input size="mini" v-model="userInfo.name"></el-input>
+        </el-col>
+      </el-row>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="saveUserInfo">保 存</el-button>
+        <el-button @click="show.changePassword = false">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog width="80%" title="我的订单" :visible.sync="show.ordersList" append-to-body>
+      <el-table :data="tableData" style="width: 100%">
+        <el-table-column prop="date" label="日期" width="180">
+        </el-table-column>
+        <el-table-column prop="name" label="姓名" width="180">
+        </el-table-column>
+        <el-table-column prop="address" label="地址"></el-table-column>
+      </el-table>
+    </el-dialog>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="show.mineInfo = false">取 消</el-button>
+      <el-button @click="saveUserInfo">保 存</el-button>
+      <el-button type="primary" @click="show.changePassword = true">修改密码</el-button>
+    </div>
+  </el-dialog>
+  <!--  <el-button type="text" @click="show.changePassword = true">修改密码</el-button>-->
 </div>
 <footer>
   <p>Copyright ©2016-2017 版权所有 All Rights Reserved</p>

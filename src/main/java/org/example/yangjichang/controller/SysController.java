@@ -84,4 +84,21 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", sysUsers);
     }
 
+    @PutMapping("/changeStatus/{id}")
+    @ResponseBody
+    public ResponseDTO changeStatus(@PathVariable String id) {
+        logger.info("收到请求->修改用户状态");
+        sysService.changeStatus(id);
+        logger.info("返回结果->修改用户状态结束");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @DeleteMapping("/removeUserById/{id}")
+    @ResponseBody
+    public ResponseDTO removeUserById(@PathVariable String id) {
+        logger.info("收到请求->修改用户状态");
+        sysService.removeUserById(id);
+        logger.info("返回结果->修改用户状态结束");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
 }

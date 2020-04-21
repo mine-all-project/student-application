@@ -45,99 +45,18 @@ const app = new Vue({
   router,
   components: {},
   data() {
-    const item = {
-      date: '2020-04-01',
-      name: '全',
-      address: '贵州省六盘水市钟山区'
-    };
     return {
-      userInfo: {},
-      tableData: Array(20).fill(item),
-      menus: [
-        {
-          id: '1',
-          name: '网站管理',
-          icon: 'el-icon-message',
-          children: [
-            {
-              id: '1-1',
-              name: '公告管理',
-              icon: 'el-icon-message',
-              url: '/manage/notice'
-            },
-            {
-              id: '1-2',
-              name: '新闻管理',
-              icon: '',
-              url: '/manage/news'
-            },
-            {
-              id: '1-3',
-              name: '企业文化',
-              icon: '',
-              url: '/manage/culture'
-            },
-          ]
-        },
-        {
-          id: '2',
-          name: '用户管理',
-          icon: 'el-icon-message',
-          children: [
-            {
-              id: '2-1',
-              name: '用户列表',
-              icon: 'el-icon-message',
-              url: '/manage/user-list'
-            },
-            {
-              id: '2-2',
-              name: '旅游资讯',
-              icon: '',
-              url: '/manage/tourism'
-            },
-            {
-              id: '2-4',
-              name: '通知公告',
-              icon: '',
-              url: '/manage/notice'
-            },
-          ]
-        },
-        {
-          id: '3',
-          name: '订单管理',
-          icon: 'el-icon-message',
-          children: [
-            {
-              id: '3-1',
-              name: '订单列表',
-              icon: 'el-icon-message',
-              url: '/manage/tickets'
-            },
-          ]
-        },
-        {
-          id: '4',
-          name: '评论',
-          icon: 'el-icon-message',
-          children: [
-            {
-              id: '4-1',
-              name: '主题1',
-              icon: 'el-icon-message',
-              url: '/manage/area1'
-            },
-            {
-              id: '4-2',
-              name: '主题2',
-              icon: '',
-              url: '/manage/area2'
-            },
-          ]
-        },
-      ],
+      userInfo: {
+        username:'',
+      },
       welcome: true,
+      outerVisible: true,
+      innerVisible: false,
+      show: {
+        mineInfo: false,
+        changePassword: false,
+        ordersList: false,
+      }
     }
   },
   mounted() {
@@ -162,6 +81,29 @@ const app = new Vue({
       }).catch(function (error) {
         console.log('请求出现错误:', error);
       });
+    },
+    openOrderList() {
+      this.show.ordersList = true;
+      // this.$prompt('请输入邮箱', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+      //   inputErrorMessage: '邮箱格式不正确'
+      // }).then(({value}) => {
+      //   this.$message({
+      //     type: 'success',
+      //     message: '你的邮箱是: ' + value
+      //   });
+      // }).catch(() => {
+      //   this.$message({
+      //     type: 'info',
+      //     message: '取消输入'
+      //   });
+      // });
+    },
+    saveUserInfo() {
+      this.show.ordersList = true;
+
     },
   }
 });

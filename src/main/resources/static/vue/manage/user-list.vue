@@ -38,16 +38,18 @@
         const _this = this;
         const id = scope.row.id;
         _this.$confirm('确认删除？').then(e => {
-          axios.delete(`/manage/removeUserById/${id}`).then(response => {
+          _this.drawer.loading = true;
+          axios.delete(`/api/removePaperById/${id}`).then(response => {
+            _this.getPaperList();
             const result = response.data;
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
-              _this.$message.error(result.message);
+              _this.$message.error('数据加载失败');
               return
             }
             _this.$message.success('操作成功')
           }).catch(function (error) {
-            _this.getUserList();
+            _this.getPaperList();
             console.log('请求出现错误:', error);
           });
         });
@@ -55,18 +57,19 @@
       changeStatus(scope) {
         const _this = this;
         const id = scope.row.id;
-        _this.$confirm('确认？').then(e => {
+        _this.$confirm('确认删除？').then(e => {
+          _this.drawer.loading = true;
           axios.put(`/manage/changeStatus/${id}`).then(response => {
+            _this.getPaperList();
             const result = response.data;
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
               _this.$message.error('数据加载失败');
               return
             }
-            _this.getUserList();
             _this.$message.success('操作成功')
           }).catch(function (error) {
-            _this.getUserList();
+            _this.getPaperList();
             console.log('请求出现错误:', error);
           });
         });

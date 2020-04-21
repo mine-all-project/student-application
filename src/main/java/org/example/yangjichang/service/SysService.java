@@ -22,4 +22,8 @@ public interface SysService {
     SysUser registry(Map<String,String> map);
 
     List<SysUser> getUserList();
+
+    void changeStatus(String id);
+
+    void removeUserById(String id);
 }

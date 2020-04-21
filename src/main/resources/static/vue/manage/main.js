@@ -20,6 +20,7 @@ const routes = [
   {path: '/manage/friends', component: httpVueLoader('/vue/manage/friends.vue')},
   {path: '/manage/products', component: httpVueLoader('/vue/manage/products.vue')},
   {path: '/manage/contact', component: httpVueLoader('/vue/manage/contact.vue')},
+  {path: '/manage/user-list', component: httpVueLoader('/vue/manage/user-list.vue')},
 
 ]
 
@@ -39,13 +40,7 @@ const app = new Vue({
   router,
   components: {},
   data() {
-    const item = {
-      date: '2020-04-01',
-      name: '全',
-      address: '贵州省六盘水市钟山区'
-    };
     return {
-      tableData: Array(20).fill(item),
       menus: [
         {
           id: '1',

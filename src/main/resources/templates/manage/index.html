@@ -33,7 +33,7 @@
     </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-        <el-menu :default-openeds="['1']">
+        <el-menu :default-openeds="['2']">
           <el-submenu :index="`${pIndex}`" v-for="(item,pIndex) in menus" :key="item.id">
             <template slot="title">
               <i :class="item.icon"></i>{{item.name}}
