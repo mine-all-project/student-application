@@ -67,14 +67,14 @@ public class SysServiceImpl implements SysService {
         if (exist != null) {
             throw new ApplicationException("用户名已经存在");
         }
-        String redisKey = CODE_KEY + map.get("phone");
-        String code = redisTemplate.opsForValue().get(redisKey);
-        if (StringUtils.isEmpty(code)) {
-            throw new ApplicationException("验证码失效，请重新获取");
-        }
-        if (!code.equals(map.get("code"))) {
-            throw new ApplicationException("验证码错误");
-        }
+//        String redisKey = CODE_KEY + map.get("phone");
+//        String code = redisTemplate.opsForValue().get(redisKey);
+//        if (StringUtils.isEmpty(code)) {
+//            throw new ApplicationException("验证码失效，请重新获取");
+//        }
+//        if (!code.equals(map.get("code"))) {
+//            throw new ApplicationException("验证码错误");
+//        }
         String username = map.get("username");
         String password = new Md5Hash(map.get("password"), salt).toString();
         SysUser sysUser = new SysUser();

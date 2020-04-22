@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 public interface RestFulService {
 
@@ -43,4 +42,6 @@ public interface RestFulService {
 
     Orders createOrder(Orders orders);
     List<Orders> getOrdersList();
+    void removeOrdersById(String id);
+
 }

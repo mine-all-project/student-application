@@ -1,7 +1,10 @@
 package org.example.yangjichang.controller;
 
 import org.example.yangjichang.dto.ResponseDTO;
-import org.example.yangjichang.entity.*;
+import org.example.yangjichang.entity.Animal;
+import org.example.yangjichang.entity.AudioFile;
+import org.example.yangjichang.entity.Orders;
+import org.example.yangjichang.entity.Paper;
 import org.example.yangjichang.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -156,6 +158,15 @@ public class RestFulController extends BaseController {
         List<Orders> orders = restFulService.getOrdersList();
         logger.info("返回结果->获取订单信息结束:[{}]", orders);
         return ResponseDTO.returnSuccess("操作成功", orders);
+    }
+
+    @RequestMapping("/removeOrdersById/{id}")
+    @ResponseBody
+    public ResponseDTO removeOrdersById(@PathVariable String id) {
+        logger.info("收到请求->删除订单,id:[{}]", id);
+        restFulService.removeOrdersById(id);
+        logger.info("返回结果->删除订单结束");
+        return ResponseDTO.returnSuccess("操作成功");
     }
 
 }

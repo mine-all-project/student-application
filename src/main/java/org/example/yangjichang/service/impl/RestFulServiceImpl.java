@@ -131,12 +131,18 @@ public class RestFulServiceImpl implements RestFulService {
         String orderNumber = String.valueOf(System.currentTimeMillis());
         orders.setOrderNumber(orderNumber);
         orders.setAnimals(animalRepository.findById(orders.getGoodsId()).orElse(null));
-        System.err.println(orders);
         return orderRepository.save(orders);
     }
 
     @Override
+    @RequiresPermissions("manage")
     public List<Orders> getOrdersList() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    @RequiresPermissions("manage")
+    public void removeOrdersById(String id) {
+        orderRepository.deleteById(id);
     }
 }
