@@ -124,23 +124,18 @@ public class RestFulServiceImpl implements RestFulService {
         paperRepository.deleteById(id);
     }
 
-
-    @Override
-    @RequiresPermissions("manage")
-    public Map<String, String> uploadShopFile(HttpServletRequest request) {
-        Map<String, String> path = new HashMap<>(1);
-        path.put("path", getfilePath(request, filePath, virtualPath));
-        return path;
-    }
-
     @Override
     public Orders createOrder(Orders orders) {
         orders.setSysUser(getUser());
         String orderNumber = UUID.randomUUID().toString().replace("-","");
         orders.setOrderNumber(orderNumber);
+        orders.setAnimals(animalRepository.findById(orders.getGoodsId()).orElse(null));
         System.err.println(orders);
         return orderRepository.save(orders);
     }
 
-
+    @Override
+    public List<Orders> getOrdersList() {
+        return orderRepository.findAll();
+    }
 }

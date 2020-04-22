@@ -3,12 +3,14 @@ package org.example.yangjichang.service;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.example.yangjichang.dao.SysUserRepository;
+import org.example.yangjichang.entity.Orders;
 import org.example.yangjichang.entity.SysUser;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,4 +46,5 @@ public class IndexService {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
     }
+
 }

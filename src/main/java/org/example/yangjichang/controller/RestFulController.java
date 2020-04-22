@@ -149,14 +149,13 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", orders);
     }
 
-
-    @RequestMapping("/uploadShopFile/{keyword}")
+    @RequestMapping("/getOrdersList")
     @ResponseBody
-    public ResponseDTO uploadShopFile(HttpServletRequest request, @PathVariable("keyword") String keyword) {
-        logger.info("收到请求->上传商品图片:[{}]", keyword);
-        Map<String, String> path = restFulService.uploadShopFile(request);
-        logger.info("返回结果->商品图片上传完成:[{}]", path);
-        return ResponseDTO.returnSuccess("操作成功", path);
+    public ResponseDTO getOrdersList() {
+        logger.info("收到请求->获取订单信息");
+        List<Orders> orders = restFulService.getOrdersList();
+        logger.info("返回结果->获取订单信息结束:[{}]", orders);
+        return ResponseDTO.returnSuccess("操作成功", orders);
     }
 
 }

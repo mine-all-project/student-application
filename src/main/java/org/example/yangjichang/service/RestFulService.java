@@ -42,12 +42,5 @@ public interface RestFulService {
     AudioFile getFileById(String id);
 
     Orders createOrder(Orders orders);
-
-
-
-
-
-    Map<String, String> uploadShopFile(HttpServletRequest request);
-
-
+    List<Orders> getOrdersList();
 }
