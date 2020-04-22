@@ -1,12 +1,10 @@
 package org.example.yangjichang.service.impl;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.example.yangjichang.config.ApplicationException;
 import org.example.yangjichang.config.SmsUtils;
 import org.example.yangjichang.dao.*;
-import org.example.yangjichang.entity.Animal;
-import org.example.yangjichang.entity.AudioFile;
-import org.example.yangjichang.entity.Orders;
-import org.example.yangjichang.entity.Paper;
+import org.example.yangjichang.entity.*;
 import org.example.yangjichang.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
@@ -130,8 +129,17 @@ public class RestFulServiceImpl implements RestFulService {
         orders.setSysUser(getUser());
         String orderNumber = String.valueOf(System.currentTimeMillis());
         orders.setOrderNumber(orderNumber);
-        orders.setAnimals(animalRepository.findById(orders.getGoodsId()).orElse(null));
-        return orderRepository.save(orders);
+        Animal animal = animalRepository.findById(orders.getGoodsId()).orElse(null);
+        if (animal != null) {
+            int remaining = animal.getRemaining() - orders.getCounts();
+            if (remaining < 0) {
+                throw new ApplicationException("超过购买限制");
+            }
+            animal.setRemaining(remaining);
+            orders.setAnimals(animalRepository.save(animal));
+            return orderRepository.save(orders);
+        }
+        throw new ApplicationException("商品状态异常");
     }
 
     @Override
@@ -144,5 +152,12 @@ public class RestFulServiceImpl implements RestFulService {
     @RequiresPermissions("manage")
     public void removeOrdersById(String id) {
         orderRepository.deleteById(id);
+    }
+
+    @Override
+    @RequiresPermissions("login")
+    public List<Orders> getOrdersListByUser() {
+        SysUser sysUser = getUser();
+        return orderRepository.findAll().stream().filter(e -> sysUser.getId().equals(e.getSysUser().getId())).collect(Collectors.toList());
     }
 }

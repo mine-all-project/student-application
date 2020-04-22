@@ -160,6 +160,15 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", orders);
     }
 
+    @RequestMapping("/getOrdersListByUser")
+    @ResponseBody
+    public ResponseDTO getOrdersListByUser() {
+        logger.info("收到请求->获取订单信息");
+        List<Orders> orders = restFulService.getOrdersListByUser();
+        logger.info("返回结果->获取订单信息结束:[{}]", orders);
+        return ResponseDTO.returnSuccess("操作成功", orders);
+    }
+
     @RequestMapping("/removeOrdersById/{id}")
     @ResponseBody
     public ResponseDTO removeOrdersById(@PathVariable String id) {

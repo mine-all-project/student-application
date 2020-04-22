@@ -87,6 +87,10 @@
       },
       createOrder() {
         const _this = this;
+        if (_this.form.counts <= 0) {
+          this.$message.error('数量最低为1');
+          return;
+        }
         _this.form.goodsId = _this.animal.id;
         console.log(_this.form);
         axios.post(`/api/createOrder`, _this.form).then(response => {
@@ -94,11 +98,13 @@
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
             this.$message.error(result.message);
-            setTimeout(() => {
-              window.location.href = "/login"
-            }, 5000)
+            if (result.status !== 401) {
+              setTimeout(() => {
+                window.location.href = "/login"
+              }, 5000)
+            }
           }
-          // _this.animal = result.data;
+          this.$message.success(result.message);
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });

@@ -46,8 +46,9 @@ const app = new Vue({
   components: {},
   data() {
     return {
+      ordersList: [],
       userInfo: {
-        username:'',
+        username: '',
       },
       welcome: true,
       outerVisible: true,
@@ -84,22 +85,17 @@ const app = new Vue({
     },
     openOrderList() {
       this.show.ordersList = true;
-      // this.$prompt('请输入邮箱', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-      //   inputErrorMessage: '邮箱格式不正确'
-      // }).then(({value}) => {
-      //   this.$message({
-      //     type: 'success',
-      //     message: '你的邮箱是: ' + value
-      //   });
-      // }).catch(() => {
-      //   this.$message({
-      //     type: 'info',
-      //     message: '取消输入'
-      //   });
-      // });
+      axios.get(`/api/getOrdersListByUser`).then(response => {
+        const result = response.data;
+        console.log('通过api获取到的数据:', result);
+        if (result.status !== 200) {
+          this.$message.error('数据加载失败');
+          return
+        }
+        this.ordersList = result.data ? result.data : [];
+      }).catch(function (error) {
+        console.log('请求出现错误:', error);
+      });
     },
     saveUserInfo() {
       this.show.ordersList = true;

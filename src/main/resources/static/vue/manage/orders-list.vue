@@ -8,16 +8,8 @@
       <el-table-column prop="sysUser.phone" label="联系方式" width=""></el-table-column>
       <el-table-column prop="sysUser.name" label="姓名" width=""></el-table-column>
       <el-table-column prop="createTime" label="订单时间" width=""></el-table-column>
-      <!--      <el-table-column label="状态" width="">-->
-      <!--        <template slot-scope="scope">-->
-      <!--          <el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>-->
-      <!--          <el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
       <el-table-column label="操作" width="160">
         <template slot-scope="scope">
-          <!--          <el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>-->
-          <!--          <el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>-->
           <el-button type="primary" @click="remove(scope)" size="mini">删除</el-button>
         </template>
       </el-table-column>

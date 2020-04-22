@@ -43,5 +43,6 @@ public interface RestFulService {
     Orders createOrder(Orders orders);
     List<Orders> getOrdersList();
     void removeOrdersById(String id);
+    List<Orders> getOrdersListByUser();
 
 }
