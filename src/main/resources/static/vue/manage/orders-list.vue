@@ -1,23 +1,23 @@
 <template>
   <el-row>
     <el-table :data="tableData" stripe style="width: 100%">
-      <el-table-column prop="username" label="订单号" width=""></el-table-column>
-      <el-table-column prop="name" label="商品" width=""></el-table-column>
-      <el-table-column prop="age" label="数量" width=""></el-table-column>
-      <el-table-column prop="mail" label="金额" width=""></el-table-column>
+      <el-table-column prop="orderNumber" label="订单号" width=""></el-table-column>
+      <el-table-column prop="animals.name" label="商品" width=""></el-table-column>
+      <el-table-column prop="counts" label="数量" width=""></el-table-column>
+      <el-table-column prop="sum" label="金额" width=""></el-table-column>
       <el-table-column prop="phone" label="联系方式" width=""></el-table-column>
       <el-table-column prop="phone" label="姓名" width=""></el-table-column>
-      <el-table-column prop="phone" label="订单时间" width=""></el-table-column>
-      <el-table-column label="状态" width="">
-        <template slot-scope="scope">
-          <el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
-          <el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column prop="createTime" label="订单时间" width=""></el-table-column>
+<!--      <el-table-column label="状态" width="">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>-->
+<!--          <el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="操作" width="160">
         <template slot-scope="scope">
-          <el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
-          <el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
+<!--          <el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>-->
+<!--          <el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>-->
           <el-button type="primary" @click="remove(scope)" size="mini">删除</el-button>
         </template>
       </el-table-column>

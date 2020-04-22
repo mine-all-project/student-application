@@ -3,7 +3,10 @@ package org.example.yangjichang.service.impl;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.yangjichang.config.SmsUtils;
 import org.example.yangjichang.dao.*;
-import org.example.yangjichang.entity.*;
+import org.example.yangjichang.entity.Animal;
+import org.example.yangjichang.entity.AudioFile;
+import org.example.yangjichang.entity.Orders;
+import org.example.yangjichang.entity.Paper;
 import org.example.yangjichang.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
@@ -125,9 +125,10 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    @RequiresPermissions("login")
     public Orders createOrder(Orders orders) {
         orders.setSysUser(getUser());
-        String orderNumber = UUID.randomUUID().toString().replace("-","");
+        String orderNumber = String.valueOf(System.currentTimeMillis());
         orders.setOrderNumber(orderNumber);
         orders.setAnimals(animalRepository.findById(orders.getGoodsId()).orElse(null));
         System.err.println(orders);

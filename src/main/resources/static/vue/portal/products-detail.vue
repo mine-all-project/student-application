@@ -3,7 +3,7 @@
     <el-col>
       <div class="pg-con prodetail">
         <h1> {{animal.name}} </h1>
-        <div>
+        <el-row>
           <ul v-if="animal.audioFiles">
             <li v-for="item in animal.audioFiles" class="img-list">
               <img :src="item.url" style="width: 100%">
@@ -14,7 +14,7 @@
           <p class="goods-info">价格&nbsp;:&nbsp;{{animal.price}}</p>
           <p class="goods-info">库存&nbsp;:&nbsp;{{animal.remaining}}</p>
           <p>简介&nbsp;:&nbsp;{{animal.content}}</p>
-        </div>
+        </el-row>
         <el-col :span="8" :offset="16">
           <div class="procon">
             <el-col :span="12">
@@ -57,7 +57,7 @@
           price: 0,
         },
         form: {
-          goodsId:'',
+          goodsId: '',
           counts: 1,
           sum: 0
         },
@@ -89,12 +89,14 @@
         const _this = this;
         _this.form.goodsId = _this.animal.id;
         console.log(_this.form);
-        axios.post(`/api/createOrder`,_this.form).then(response => {
+        axios.post(`/api/createOrder`, _this.form).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
-            this.$message.error('数据加载失败');
-            return
+            this.$message.error(result.message);
+            setTimeout(() => {
+              window.location.href = "/login"
+            }, 5000)
           }
           // _this.animal = result.data;
         }).catch(function (error) {
