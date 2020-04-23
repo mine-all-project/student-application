@@ -101,4 +101,22 @@ public class SysController extends BaseController {
         logger.info("返回结果->修改用户状态结束");
         return ResponseDTO.returnSuccess("操作成功");
     }
+
+    @PostMapping("/saveUserInfo")
+    @ResponseBody
+    public ResponseDTO saveUserInfo(@RequestBody SysUser sysUser) {
+        logger.info("收到请求->修改用户信息");
+        sysService.saveUserInfo(sysUser);
+        logger.info("返回结果->修改用户信息结束");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @PostMapping("/savePassword")
+    @ResponseBody
+    public ResponseDTO savePassword(@RequestBody Map map) {
+        logger.info("收到请求->修改用户密码");
+        sysService.savePassword(map);
+        logger.info("返回结果->修改用户密码结束");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
 }

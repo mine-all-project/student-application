@@ -26,4 +26,8 @@ public interface SysService {
     void changeStatus(String id);
 
     void removeUserById(String id);
+
+    void saveUserInfo(SysUser sysUser);
+
+    void savePassword(Map map);
 }

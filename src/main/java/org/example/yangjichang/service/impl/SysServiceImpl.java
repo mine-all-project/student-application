@@ -190,4 +190,30 @@ public class SysServiceImpl implements SysService {
         }
         sysUserRepository.delete(sysUser);
     }
+
+    @Override
+    public void saveUserInfo(SysUser sysUser) {
+        sysUserRepository.save(sysUser);
+    }
+
+    @Override
+    public void savePassword(Map map) {
+        Subject subject = SecurityUtils.getSubject();
+        SysUser sysUser = (SysUser) subject.getPrincipal();
+        String password = sysUser.getPassword();
+        String oldPassword = new Md5Hash(map.get("password"), salt).toString();
+        String newPassword = new Md5Hash(map.get("newPassword"), salt).toString();
+        String rePassword = new Md5Hash(map.get("rePassword"), salt).toString();
+        System.err.println(password);
+        System.err.println(newPassword);
+        System.err.println(rePassword);
+        if(!newPassword.equals(rePassword)){
+            throw new ApplicationException("两次密码不相同");
+        }
+        if(!password.equals(oldPassword)){
+            throw new ApplicationException("原密码错误");
+        }
+        sysUser.setPassword(newPassword);
+        sysUserRepository.save(sysUser);
+    }
 }

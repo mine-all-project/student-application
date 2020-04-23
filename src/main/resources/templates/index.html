@@ -74,7 +74,7 @@
           <span>原密码</span>
         </el-col>
         <el-col :span="10" :offset="1">
-          <el-input size="mini" v-model="userInfo.name"></el-input>
+          <el-input size="mini" v-model="form.password"></el-input>
         </el-col>
       </el-row>
       <br>
@@ -83,7 +83,7 @@
           <span>新密码</span>
         </el-col>
         <el-col :span="10" :offset="1">
-          <el-input size="mini" v-model="userInfo.name"></el-input>
+          <el-input size="mini" v-model="form.newPassword"></el-input>
         </el-col>
       </el-row>
       <br>
@@ -92,11 +92,11 @@
           <span>确认密码</span>
         </el-col>
         <el-col :span="10" :offset="1">
-          <el-input size="mini" v-model="userInfo.name"></el-input>
+          <el-input size="mini" v-model="form.rePassword"></el-input>
         </el-col>
       </el-row>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="saveUserInfo">保 存</el-button>
+        <el-button @click="savePassword">保 存</el-button>
         <el-button @click="show.changePassword = false">取 消</el-button>
       </div>
     </el-dialog>
