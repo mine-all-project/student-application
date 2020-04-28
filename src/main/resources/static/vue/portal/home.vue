@@ -116,7 +116,7 @@
             };
         },
         mounted() {
-            this.getUserList()
+            // this.getUserList()
         },
         methods: {
             remove(scope) {
