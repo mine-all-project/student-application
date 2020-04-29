@@ -3,8 +3,8 @@
     <el-col>
       <div class="pg-main clearfix">
         <ul class="">
-          <li class="img-list">
-            <img :src="item.url" v-for="item in fileList" style="width: 100%;height: 100%"/>
+          <li class="img-list" v-for="item in fileList" >
+            <img :src="item.url" style="width: 100%;height: 100%"/>
           </li>
         </ul>
       </div>
@@ -45,7 +45,7 @@
 <style>
 
   .img-list {
-    width: 300px;
+    width: 24%;
     height: 200px;
     float: left;
     display: inline-block;

@@ -105,6 +105,7 @@
             }
           }
           this.$message.success(result.message);
+          this.$router.go(-1);
         }).catch(function (error) {
           console.log('请求出现错误:', error);
         });

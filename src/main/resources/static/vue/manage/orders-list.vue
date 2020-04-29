@@ -2,7 +2,7 @@
   <el-row>
     <el-table :data="tableData" stripe style="width: 100%">
       <el-table-column prop="orderNumber" label="订单号" width=""></el-table-column>
-      <el-table-column prop="animals.name" label="商品" width=""></el-table-column>
+      <el-table-column prop="goodsName" label="商品" width=""></el-table-column>
       <el-table-column prop="counts" label="数量" width=""></el-table-column>
       <el-table-column prop="sum" label="金额" width=""></el-table-column>
       <el-table-column prop="sysUser.phone" label="联系方式" width=""></el-table-column>

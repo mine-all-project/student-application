@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 public class Orders extends BaseEntity {
+    private String goodsName;
     private String goodsId;
     private String orderNumber;
     private Integer counts;

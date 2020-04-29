@@ -43,7 +43,11 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     router,
-    components: {},
+    components: {
+        home: httpVueLoader('/vue/portal/home.vue'),
+        // 'products': '/vue/portal/products.vue',
+        // products: httpVueLoader('/vue/portal/products.vue')
+    },
     data() {
         return {
             ordersList: [],

@@ -136,6 +136,7 @@ public class RestFulServiceImpl implements RestFulService {
                 throw new ApplicationException("超过购买限制");
             }
             animal.setRemaining(remaining);
+            orders.setGoodsName(animal.getName());
             orders.setAnimals(animalRepository.save(animal));
             return orderRepository.save(orders);
         }
