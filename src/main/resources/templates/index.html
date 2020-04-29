@@ -10,6 +10,7 @@
 <div id="app">
   <div data-th-replace="/common/portal :: header"></div>
   <div data-th-replace="/common/portal :: wrapper"></div>
+<!--  <home></home>-->
   <router-view></router-view>
   <el-dialog title="个人信息" :visible.sync="show.mineInfo" v-if="userInfo !== null">
     <el-row>
@@ -104,7 +105,7 @@
     <el-dialog width="80%" title="我的订单" :visible.sync="show.ordersList" append-to-body>
       <el-table :data="ordersList" stripe style="width: 100%">
         <el-table-column prop="orderNumber" label="订单号" width=""></el-table-column>
-        <el-table-column prop="animals.name" label="商品" width=""></el-table-column>
+        <el-table-column prop="goodsName" label="商品" width=""></el-table-column>
         <el-table-column prop="counts" label="数量" width=""></el-table-column>
         <el-table-column prop="sum" label="金额" width=""></el-table-column>
         <el-table-column prop="createTime" label="订单时间" width=""></el-table-column>
