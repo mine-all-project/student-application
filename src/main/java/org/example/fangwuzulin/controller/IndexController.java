@@ -22,7 +22,7 @@ public class IndexController extends BaseController {
     }
 
     private Logger logger = LoggerFactory.getLogger(IndexController.class);
-    private static final String PAGE = "portal/";
+    private static final String PAGE = "page/";
 
     @GetMapping("/page/{pageName}")
     public String page(@PathVariable("pageName") String pageName) {
@@ -38,7 +38,7 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/")
     public String index() {
-        return "index";
+        return "login";
     }
 
     @RequestMapping("/index")

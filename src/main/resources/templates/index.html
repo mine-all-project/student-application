@@ -1,129 +1,59 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-  <div data-th-replace="/common/portal :: meta"></div>
-  <div data-th-replace="/common/portal :: style"></div>
+  <title>后台管理</title>
   <div data-th-include="/base/vue :: style"></div>
-</head>
+  <style>
+    .el-header {
+      background-color: #B3C0D1;
+      color: #333;
+      line-height: 60px;
+    }
 
+    .el-aside {
+      color: #333;
+    }
+  </style>
+</head>
 <body>
 <div id="app">
-  <div data-th-replace="/common/portal :: header"></div>
-  <div data-th-replace="/common/portal :: wrapper"></div>
-  <router-view></router-view>
-  <el-dialog title="个人信息" :visible.sync="show.mineInfo" v-if="userInfo !== null">
-    <el-row>
-      <el-row>
-        <el-col :span="6" style="text-align: right">
-          <span>用户名</span>
-        </el-col>
-        <el-col :span="10" :offset="1">
-          <el-input size="mini" :disabled="true" v-model="userInfo.username"></el-input>
-        </el-col>
-      </el-row>
-      <br>
-      <el-row>
-        <el-col :span="6" style="text-align: right">
-          <span>注册时间</span>
-        </el-col>
-        <el-col :span="10" :offset="1">
-          <el-input size="mini" :disabled="true" v-model="userInfo.createTime"></el-input>
-        </el-col>
-      </el-row>
-      <br>
-      <el-row>
-        <el-col :span="6" style="text-align: right">
-          <span>姓名</span>
-        </el-col>
-        <el-col :span="10" :offset="1">
-          <el-input size="mini" v-model="userInfo.name"></el-input>
-        </el-col>
-      </el-row>
-      <br>
-      <el-row>
-        <el-col :span="6" style="text-align: right">
-          <span>邮箱</span>
-        </el-col>
-        <el-col :span="10" :offset="1">
-          <el-input size="mini" v-model="userInfo.mail"></el-input>
-        </el-col>
-      </el-row>
-      <br>
-      <el-row>
-        <el-col :span="6" style="text-align: right">
-          <span>手机号</span>
-        </el-col>
-        <el-col :span="10" :offset="1">
-          <el-input size="mini" v-model="userInfo.phone"></el-input>
-        </el-col>
-      </el-row>
-      <br>
-      <el-row>
-        <el-col :span="6" style="text-align: right">
-          <span>我的订单</span>
-        </el-col>
-        <el-col :span="10" :offset="1">
-          <el-button @click="openOrderList" size="mini">点击查看</el-button>
-        </el-col>
-      </el-row>
-    </el-row>
-    <br>
-    <el-dialog width="30%" title="修改密码" :visible.sync="show.changePassword" append-to-body>
-      <el-row>
-        <el-col :span="6" style="text-align: right">
-          <span>原密码</span>
-        </el-col>
-        <el-col :span="10" :offset="1">
-          <el-input size="mini" v-model="form.password"></el-input>
-        </el-col>
-      </el-row>
-      <br>
-      <el-row>
-        <el-col :span="6" style="text-align: right">
-          <span>新密码</span>
-        </el-col>
-        <el-col :span="10" :offset="1">
-          <el-input size="mini" v-model="form.newPassword"></el-input>
-        </el-col>
-      </el-row>
-      <br>
-      <el-row>
-        <el-col :span="6" style="text-align: right">
-          <span>确认密码</span>
-        </el-col>
-        <el-col :span="10" :offset="1">
-          <el-input size="mini" v-model="form.rePassword"></el-input>
-        </el-col>
-      </el-row>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="savePassword">保 存</el-button>
-        <el-button @click="show.changePassword = false">取 消</el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog width="80%" title="我的订单" :visible.sync="show.ordersList" append-to-body>
-      <el-table :data="ordersList" stripe style="width: 100%">
-        <el-table-column prop="orderNumber" label="订单号" width=""></el-table-column>
-        <el-table-column prop="animals.name" label="商品" width=""></el-table-column>
-        <el-table-column prop="counts" label="数量" width=""></el-table-column>
-        <el-table-column prop="sum" label="金额" width=""></el-table-column>
-        <el-table-column prop="createTime" label="订单时间" width=""></el-table-column>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="show.mineInfo = false">取 消</el-button>
-      <el-button @click="saveUserInfo">保 存</el-button>
-      <el-button type="primary" @click="show.changePassword = true">修改密码</el-button>
-    </div>
-  </el-dialog>
-  <!--  <el-button type="text" @click="show.changePassword = true">修改密码</el-button>-->
+  <el-container style=" border: 1px solid #eee">
+    <el-header width="100%" style="text-align: right; font-size: 12px">
+      <!--      <router-link to="/demo">Demo</router-link>-->
+      <h1>管理平台</h1>
+      <!--      <el-dropdown>-->
+      <!--        <i class="el-icon-setting" style="margin-right: 15px"></i>-->
+      <!--        <el-dropdown-menu slot="dropdown">-->
+      <!--          <el-dropdown-item>查看</el-dropdown-item>-->
+      <!--          <el-dropdown-item>新增</el-dropdown-item>-->
+      <!--          <el-dropdown-item>删除</el-dropdown-item>-->
+      <!--        </el-dropdown-menu>-->
+      <!--      </el-dropdown>-->
+      <!--      <span>王小虎</span>-->
+    </el-header>
+    <el-container>
+      <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+        <el-menu :default-openeds="['3']">
+          <el-submenu :index="`${pIndex}`" v-for="(item,pIndex) in menus" :key="item.id">
+            <template slot="title">
+              <i :class="item.icon"></i>{{item.name}}
+            </template>
+            <el-menu-item :index="`${pIndex}-${cIndex}`" v-for="(children,cIndex) in item.children"
+                          @click="clickMenu(children.url)" :key="children.id">
+              <i :class="item.icon"></i>{{children.name}}
+            </el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <p v-if="welcome">欢迎登录</p>
+        <router-view></router-view>
+      </el-main>
+    </el-container>
+  </el-container>
 </div>
-<footer>
-  <p>Copyright ©2016-2017 版权所有 All Rights Reserved</p>
-</footer>
-<div data-th-replace="/common/portal :: javascript"></div>
 <div data-th-include="/base/vue :: javascript"></div>
-<script data-th-src="@{/vue/portal/main.js}"></script>
+<script data-th-src="@{/vue/manage/main.js}"></script>
 </body>
 </html>
