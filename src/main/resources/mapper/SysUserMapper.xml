@@ -4,7 +4,11 @@
 <mapper namespace="org.example.fangwuzulin.mapping.SysUserMapping">
 
     <select id="findByUsernameAndPassword" resultType="org.example.fangwuzulin.entity.SysUser">
- 		select * from system_user
+ 		select * from sys_user
+ 	</select>
+
+	<select id="findByUsername" resultType="org.example.fangwuzulin.entity.SysUser">
+ 		select * from sys_user where username = #{username}
  	</select>
 
 </mapper>

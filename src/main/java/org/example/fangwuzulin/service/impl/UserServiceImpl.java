@@ -14,12 +14,13 @@ public class UserServiceImpl implements UserService {
     private SysUserMapping sysUserMapping;
 
     public UserServiceImpl(SysUserMapping sysUserMapping) {
+
         this.sysUserMapping = sysUserMapping;
     }
 
     @Override
     public SysUser findByUsername(String username) {
-        return null;
+        return sysUserMapping.findByUsername(username);
     }
 
     @Override
