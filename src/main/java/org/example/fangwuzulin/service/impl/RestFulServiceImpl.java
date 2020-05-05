@@ -2,7 +2,6 @@ package org.example.fangwuzulin.service.impl;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.fangwuzulin.config.ApplicationException;
-import org.example.fangwuzulin.config.SmsUtils;
 import org.example.fangwuzulin.dao.*;
 import org.example.fangwuzulin.entity.*;
 import org.example.fangwuzulin.service.RestFulService;
@@ -28,17 +27,15 @@ public class RestFulServiceImpl implements RestFulService {
     private final MessageRepository messageRepository;
     private final PaperRepository paperRepository;
     private final OrderRepository orderRepository;
-    private final SmsUtils smsUtils;
 
     private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
     public RestFulServiceImpl(AudioFileRepository audioFileRepository,
                               OrderRepository orderRepository,
-                              MessageRepository messageRepository, SmsUtils smsUtils,
+                              MessageRepository messageRepository,
                               AnimalRepository animalRepository, PaperRepository paperRepository) {
         this.audioFileRepository = audioFileRepository;
         this.orderRepository = orderRepository;
-        this.smsUtils = smsUtils;
         this.messageRepository = messageRepository;
         this.animalRepository = animalRepository;
         this.paperRepository = paperRepository;

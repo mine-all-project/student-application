@@ -1,4 +1,4 @@
-package org.example.yangjichang;
+package org.example.fangwuzulin;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

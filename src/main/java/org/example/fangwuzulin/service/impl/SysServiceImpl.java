@@ -8,8 +8,6 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.config.ApplicationConfigure;
 import org.example.fangwuzulin.config.ApplicationException;
-import org.example.fangwuzulin.config.MailUtils;
-import org.example.fangwuzulin.config.SmsUtils;
 import org.example.fangwuzulin.dao.SysUserRepository;
 import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.SysUser;
@@ -33,14 +31,12 @@ public class SysServiceImpl implements SysService {
     private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
     private String salt;
     private final StringRedisTemplate redisTemplate;
-    private final SmsUtils smsUtils;
     private final SysUserRepository sysUserRepository;
 
 
-    public SysServiceImpl(ApplicationConfigure applicationConfigure, StringRedisTemplate redisTemplate, SmsUtils smsUtils, SysUserRepository sysUserRepository) {
+    public SysServiceImpl(ApplicationConfigure applicationConfigure, StringRedisTemplate redisTemplate,  SysUserRepository sysUserRepository) {
         this.salt = applicationConfigure.SALT;
         this.redisTemplate = redisTemplate;
-        this.smsUtils = smsUtils;
         this.sysUserRepository = sysUserRepository;
     }
 
@@ -110,45 +106,6 @@ public class SysServiceImpl implements SysService {
             logger.warn("shiro认证失败", e);
         }
         return null;
-    }
-
-
-    @Override
-    public void sendCodeByMail(String mail) {
-        try {
-            String redisKey = CODE_TEMP + mail;
-            Long time = redisTemplate.opsForValue().getOperations().getExpire(redisKey);
-            if (time > 0) {
-                throw new ApplicationException("请" + time + "秒后再重新获取");
-            }
-            String code = createCheckCode(mail);
-            String title = "验证邮件";
-            String content = String.format("您的验证码为 [%s]", code);
-            logger.info("本次验证码发送至:[{}],验证码为:[{}]", mail, code);
-            MailUtils.sendMail(title, content, mail);
-            redisTemplate.opsForValue().set(redisKey, code, 60, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            logger.warn("邮件发送异常:[{}]", e.getMessage(), e);
-            throw new ApplicationException(e.getMessage());
-        }
-    }
-
-    @Override
-    public void sendCodeByPhone(String phone) {
-        try {
-            String redisKey = CODE_TEMP + phone;
-            Long time = redisTemplate.opsForValue().getOperations().getExpire(redisKey);
-            if (time > 0) {
-                throw new ApplicationException("请" + time + "秒后再重新获取");
-            }
-            String code = createCheckCode(phone);
-            logger.info("本次验证码发送至:[{}],验证码为:[{}]", phone, code);
-            smsUtils.sendCodeMessage(phone, code);
-            redisTemplate.opsForValue().set(redisKey, code, 60, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            logger.warn("短信发送异常:[{}]", e.getMessage(), e);
-            throw new ApplicationException(e.getMessage());
-        }
     }
 
     private String createCheckCode(String userKey) {

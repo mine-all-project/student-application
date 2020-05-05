@@ -32,21 +32,6 @@ public class SysController extends BaseController {
         return MANAGE + pageName;
     }
 
-    @GetMapping("/getCodeByMail/{mail}")
-    @ResponseBody
-    public ResponseDTO getCodeByMail(@PathVariable("mail") String mail) {
-        logger.info("收到请求->进入发送验证码[{}]", mail);
-        sysService.sendCodeByMail(mail);
-        return ResponseDTO.returnSuccess("验证码下发成功");
-    }
-
-    @GetMapping("/getCodeByPhone/{phone}")
-    @ResponseBody
-    public ResponseDTO getCodeByPhone(@PathVariable("phone") String phone) {
-        logger.info("收到请求->发送验证码[{}]", phone);
-        sysService.sendCodeByPhone(phone);
-        return ResponseDTO.returnSuccess("验证码下发成功");
-    }
 
     @PostMapping("/registryCheck")
     @ResponseBody

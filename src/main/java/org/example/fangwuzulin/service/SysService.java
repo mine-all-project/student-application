@@ -15,10 +15,6 @@ public interface SysService {
      */
     ResponseDTO login(UserForm form);
 
-    void sendCodeByMail(String mail);
-
-    void sendCodeByPhone(String phone);
-
     SysUser registry(Map<String,String> map);
 
     List<SysUser> getUserList();
