@@ -1,9 +1,7 @@
 package org.example.fangwuzulin.service.impl;
 
-import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.entity.SysUser;
-import org.example.fangwuzulin.form.UserForm;
-import org.example.fangwuzulin.mapper.SysUserMapper;
+import org.example.fangwuzulin.mapping.SysUserMapping;
 import org.example.fangwuzulin.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +11,10 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private SysUserMapper sysUserMapper;
+    private SysUserMapping sysUserMapping;
 
-    public UserServiceImpl(SysUserMapper sysUserMapper) {
-        this.sysUserMapper = sysUserMapper;
+    public UserServiceImpl(SysUserMapping sysUserMapping) {
+        this.sysUserMapping = sysUserMapping;
     }
 
     @Override

@@ -72,7 +72,7 @@ public class ShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = authenticationToken.getPrincipal().toString();
         logger.debug("开始对:[{}]执行shiro认证", username);
-        SysUser user = userService.findByUsername(username).orElse(null);
+        SysUser user = userService.findByUsername(username);
         if (null == user) {
             throw new UnknownAccountException("用户不存在");
         }

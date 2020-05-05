@@ -1,6 +1,5 @@
 package org.example.fangwuzulin.entity;
 
-import org.apache.ibatis.mapping.FetchType;
 import org.example.fangwuzulin.config.groups.IsNotNull;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
