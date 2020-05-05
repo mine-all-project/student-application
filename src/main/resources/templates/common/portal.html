@@ -1,87 +1,42 @@
 <th data-th-fragment="meta">
-  <title>首页</title>
-  <meta charset="utf-8"/>
-  <meta name="format-detection" content="telephone=no"/>
-  <meta name="viewport" content="width=1200,user-scalable=yes">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="Ansonika">
+	<title>Allaia | Bootstrap eCommerce Template - ThemeForest</title>
 </th>
 
-<th data-th-fragment="header">
-  <header class="main-header">
-    <div class="logo-bar clearfix">
-      <div class="clearfix">
-        <div class="logo">
-          <img data-th-src="@{/portal/images/logo.jpg}"/>
-        </div>
-        <div class="phone clearfix">
-          <p v-if="userInfo === null">
-            <a href="/login">登录</a>&nbsp;&nbsp;
-            <a href="/registry">注册</a>
-          </p>
-          <p v-else>
-            <a @click="show.mineInfo = true">个人信息</a>&nbsp;&nbsp;
-            <a href="/loginOut">退出登录</a>&nbsp;&nbsp;
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="nav">
-      <ul class="clearfix">
-        <li class="active">
-          <router-link to="/home">网站首页</router-link>
-        </li>
-        <li>
-          <router-link to="/about">公司简介</router-link>
-        </li>
-        <li>
-          <router-link to="/notice">通知公告</router-link>
-        </li>
-        <li>
-          <router-link to="/news">新闻中心</router-link>
-        </li>
-        <li>
-          <router-link to="/friends">合作伙伴</router-link>
-        </li>
-        <li>
-          <router-link to="/products">产品中心</router-link>
-        </li>
-        <li>
-          <router-link to="/contact">联系我们</router-link>
-        </li>
-      </ul>
-    </div>
-  </header>
-</th>
 
 <th data-th-fragment="style">
-  <link rel="stylesheet" type="text/css" data-th-href="@{/portal/css/banner-j.css}"/>
-  <link rel="stylesheet" type="text/css" data-th-href="@{/portal/css/main.css}"/>
-</th>
+	<!-- Favicons-->
+	<link rel="shortcut icon" href="/portal/img/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
+	<link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
+	<link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
+	<link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
 
-<th data-th-fragment="wrapper">
-  <div id="wrapper">
-    <div class="fullwidthbanner-container">
-      <div class="fullwidthbanner">
-        <ul>
-          <li data-transition="3dcurtain-horizontal" data-slotamount="15" data-masterspeed="300">
-            <img data-th-src="@{/portal/images/banner/banner2.jpg}" alt=""/>
-          </li>
-          <li data-transition="3dcurtain-vertical" data-slotamount="15" data-masterspeed="300" data-link="#">
-            <img data-th-src="@{/portal/images/banner/banner1.jpg}" alt=""/>
-          </li>
-          <li data-transition="papercut" data-slotamount="15" data-masterspeed="300" data-link="#">
-            <img data-th-src="@{/portal/images/banner/banner3.jpg}" alt=""/>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+	<!-- GOOGLE WEB FONT -->
+	<link rel="dns-prefetch" href="https://fonts.gstatic.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+	<link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" as="fetch" crossorigin="anonymous">
+
+	<!-- BASE CSS -->
+	<link href="/portal/css/bootstrap.custom.min.css" rel="stylesheet">
+	<link href="/portal/css/style.css" rel="stylesheet">
+
+	<!-- SPECIFIC CSS -->
+	<link href="/portal/css/home_1.css" rel="stylesheet">
 </th>
 
 <th data-th-fragment="javascript">
-  <script type="text/javascript" data-th-src="@{/portal/js/jquery-1.8.3.min.js}"></script>
-  <script type="text/javascript" data-th-src="@{/portal/js/jquery.banner.revolution.min.js}"></script>
-  <script type="text/javascript" data-th-src="@{/portal/js/banner.js}"></script>
-  <script type="text/javascript" data-th-src="@{/portal/js/main.js}"></script>
+	<script src="/portal/js/common_scripts.min.js"></script>
+	<script src="/portal/js/main.js"></script>
+	<script src="/portal/js/carousel-home.min.js"></script>
+	<script data-th-src="@{/common/js/vue.js}"></script>
+	<script data-th-src="@{/common/js/axios.min.js}"></script>
+	<script data-th-src="@{/common/js/httpVueLoader.js}"></script>
+	<script data-th-src="@{/common/js/vue-router.js}"></script>
 </th>
 
 <th data-th-fragment="footer">

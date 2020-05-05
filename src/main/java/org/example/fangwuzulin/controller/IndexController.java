@@ -22,7 +22,7 @@ public class IndexController extends BaseController {
     }
 
     private Logger logger = LoggerFactory.getLogger(IndexController.class);
-    private static final String PAGE = "page/";
+    private static final String PAGE = "portal/";
 
     @GetMapping("/page/{pageName}")
     public String page(@PathVariable("pageName") String pageName) {
@@ -38,7 +38,7 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/")
     public String index() {
-        return "login";
+        return toIndex();
     }
 
     @RequestMapping("/index")
@@ -85,6 +85,6 @@ public class IndexController extends BaseController {
         logger.info("收到请求->退出登录");
         indexService.logout();
         logger.info("返回结果->退出登录结束");
-        return "/index";
+        return "index-bak";
     }
 }

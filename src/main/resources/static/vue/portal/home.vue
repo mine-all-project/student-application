@@ -1,112 +1,174 @@
 <template>
-  <el-row>
-    <el-col>
-      <div class="products">
-        <section class="title">
-          <h2>产品系列</h2>
-        </section>
-        <ul class="clearfix">
-          <li>
-            <a href="products.html">
-              <img src="/portal/images/products/pro1.jpg"/>
-              <h3>有机化工</h3>
-              <p>醇醚类、羧酸类、酯类、含氮类、含卤类、含硫类、酚类、烃类、醛酮类、杂环类、元素类</p>
-            </a>
-          </li>
-          <li>
-            <a href="products.html">
-              <img src="/portal/images/products/pro2.jpg"/>
-              <h3>无机化工</h3>
-              <p>硫化合物及硫酸盐、磷化合物及磷酸盐、氯化物和氯酸盐、氯化物和氯酸盐、氟化合物、
-                碳酸盐、硅化合物及硅酸盐、硼化合物、硝酸盐、钡化合物、铬化合物、氧化物和过氧化物、氢氧化物、其他无机化合物</p>
-            </a>
-          </li>
-          <li>
-            <a href="products.html">
-              <img src="/portal/images/products/pro4.jpg"/>
-              <h3>表面活性剂</h3>
-              <p>阴离子表面活性剂、非离子表面活性剂、阳离子表面活性剂、两性离子表面活性剂、复配表面活性剂</p>
-            </a>
-          </li>
-          <li>
-            <a href="products.html">
-              <img src="/portal/images/products/pro6.jpg"/>
-              <h3>医药中间体</h3>
-              <p>胺类、咪唑类、吡唑类、吡啶类、嘧啶类、羧酸类、催化剂、苯衍生物、硼酸衍生物、五元杂环类、异吲哚啉酮类、其他</p>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="newsbg">
-        <div class="news">
-          <section class="title">
-            <h2>新闻中心</h2>
-          </section>
-          <div class="news-list clearfix">
-            <div>
-              <div>
-                <img src="/portal/images/news/news1.jpg"/>
-                <div class=""></div>
+  <div id="page">
+    <header class="version_1">
+      <div class="layer"></div><!-- Mobile menu overlay mask -->
+      <div class="main_header">
+        <div class="container">
+          <div class="row small-gutters">
+            <div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
+              <div id="logo">
+                <a href="index-bak.html">
+                  <img src="/portal/img/logo.svg" alt="" width="100" height="35">
+                </a>
               </div>
             </div>
-            <div>
-              <ul>
-                <li>
-                  <div class="news-time">
-                    <span>20</span>
-                    <p>2017-6</p>
+            <nav class="col-xl-6 col-lg-7">
+              <a class="open_close" href="javascript:void(0);">
+                <div class="hamburger hamburger--spin">
+                  <div class="hamburger-box">
+                    <div class="hamburger-inner"></div>
                   </div>
-                  <h3><a href="news-detail.html">澳大利亚反倾销理事会自7月1日起正式运作</a></h3>
+                </div>
+              </a>
+              <!-- Mobile menu button -->
+              <div class="main-menu">
+                <div id="header_menu">
+                  <a href="index-bak.html"><img src="/portal/img/logo_black.svg" alt="" width="100" height="35"></a>
+                  <a href="#" class="open_close" id="close_in"><i class="ti-close"></i></a>
+                </div>
+                <ul>
+                  <li>
+                    <a href="blog.html">Blog</a>
+                  </li>
+                </ul>
+              </div>
+              <!--/main-menu -->
+            </nav>
+            <div class="col-xl-3 col-lg-2 d-lg-flex align-items-center justify-content-end text-right">
+              <a class="phone_top" href="tel://9438843343"><strong><span>Need Help?</span>+94 423-23-221</strong></a>
+            </div>
+          </div>
+          <!-- /row -->
+        </div>
+      </div>
+      <!-- /main_header -->
+
+      <div class="main_nav Sticky">
+        <div class="container">
+          <div class="row small-gutters">
+            <div class="col-xl-3 col-lg-3 col-md-3"></div>
+            <div class="col-xl-6 col-lg-7 col-md-6 d-none d-md-block">
+              <div class="custom-search-input">
+                <input type="text" placeholder="Search over 10.000 products">
+                <button type="submit"><i class="header-icon_search_custom"></i></button>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-2 col-md-3">
+              <ul class="top_tools">
+                <li>
+                  <!-- /dropdown-cart-->
                 </li>
                 <li>
-                  <div class="news-time">
-                    <span>20</span>
-                    <p>2017-6</p>
+                  <div class="dropdown dropdown-access">
+                    <a href="account.html" class="access_link"><span>Account</span></a>
+                    <div class="dropdown-menu">
+                      <a href="account.html" class="btn_1">Sign In or Sign Up</a>
+                      <ul>
+                        <li>
+                          <a href="track-order.html"><i class="ti-truck"></i>Track your Order</a>
+                        </li>
+                        <li>
+                          <a href="account.html"><i class="ti-package"></i>My Orders</a>
+                        </li>
+                        <li>
+                          <a href="account.html"><i class="ti-user"></i>My Profile</a>
+                        </li>
+                        <li>
+                          <a href="help.html"><i class="ti-help-alt"></i>Help and Faq</a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                  <h3><a href="news-detail.html">全球化工并购“战略”味道渐浓</a></h3>
-                </li>
-                <li>
-                  <div class="news-time">
-                    <span>20</span>
-                    <p>2017-6</p>
-                  </div>
-                  <h3><a href="news-detail.html">专家支招化工行业绿色发展</a></h3>
-                </li>
-                <li>
-                  <div class="news-time">
-                    <span>20</span>
-                    <p>2017-6</p>
-                  </div>
-                  <h3><a href="news-detail.html">公司被评为第二季度省级优秀企业</a></h3>
+                  <!-- /dropdown-access-->
                 </li>
               </ul>
             </div>
           </div>
+          <!-- /row -->
         </div>
+        <!-- /search_mobile -->
       </div>
-      <div class="about">
-        <section class="title">
-          <h2>关于我们</h2>
-        </section>
-        <div class="aboutli">
-          <img src="/portal/images/fg.jpg"/>
-          <div>
-            <div>
-              <h3>苏州天之信化工有限公司</h3>
-              <p>
-                经销批发的丙二醇、乙二醇、甘油、油酸、胺类、硬脂酸畅销消费者市场，在消费者当中享有较高的地位。
-              </p>
-              <p>
-                天之信与多家零售商和代理商建立了长期稳定的合作关系。苏州天之信化工有限公司经销的丙二醇、乙二醇、甘油、油酸、胺类品种齐全、价格合理。苏州天之信化工有限公司实力雄厚，重信用、守合同、保证产品质量，以多品种经营特色和薄利多销的原则，赢得了广大客户的信任。
-              </p>
+      <!-- /main_nav -->
+    </header>
+    <!-- /header -->
+    <main>
+      <div class="container margin_60_35">
+        <div class="main_title">
+          <!--				<h2>Top Selling</h2>-->
+          <!--				<span>Products</span>-->
+          <!--				<p>Cum doctus civibus efficiantur in imperdiet deterruisset</p>-->
+        </div>
+        <div class="row small-gutters">
+          <div class="col-6 col-md-4 col-xl-3">
+            <div class="grid_item">
+              <figure>
+                <span class="ribbon off">-30%</span>
+                <a href="product-detail-1.html">
+                  <img class="img-fluid lazy" src="/portal/img/products/product_placeholder_square_medium.jpg"
+                       data-src="/portal/img/products/shoes/1.jpg" alt="">
+                  <img class="img-fluid lazy" src="/portal/img/products/product_placeholder_square_medium.jpg"
+                       data-src="/portal/img/products/shoes/1_b.jpg" alt="">
+                </a>
+                <div data-countdown="2020/03/15" class="countdown"></div>
+              </figure>
+              <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i
+                class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
+              <a href="product-detail-1.html">
+                <h3>Armor Air x Fear</h3>
+              </a>
+              <div class="price_box">
+                <span class="new_price">$48.00</span>
+                <span class="old_price">$60.00</span>
+              </div>
+              <ul>
+                <li>
+                  <a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to favorites">
+                    <i class="ti-heart"></i>
+                    <span>Add to favorites</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to compare">
+                    <i class="ti-control-shuffle"></i>
+                    <span>Add to compare</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#0" class="tooltip-1" data-toggle="tooltip" data-placement="left" title="Add to cart">
+                    <i class="ti-shopping-cart"></i>
+                    <span>Add to cart</span>
+                  </a>
+                </li>
+              </ul>
             </div>
+            <!-- /grid_item -->
           </div>
         </div>
       </div>
-      <div class="space"></div>
-    </el-col>
-  </el-row>
-
+    </main>
+    <footer class="revealed">
+      <div class="container">
+        <div class="row add_bottom_25">
+          <div class="col-lg-6">
+            <ul class="footer-selector clearfix">
+              <li>
+                123
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-6">
+            <ul class="additional_links">
+              <li><a href="#0">Terms and conditions</a></li>
+              <li><a href="#0">Privacy</a></li>
+              <li><span>© 2020 Allaia</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!--/footer-->
+  </div>
+	<div id="toTop"></div><!-- Back to top button -->
 </template>
 <script>
     module.exports = {

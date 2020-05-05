@@ -25,11 +25,12 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class SysServiceImpl implements SysService {
-//    private static final String CODE_KEY = "CODE:";
+    //    private static final String CODE_KEY = "CODE:";
 //    private static final String CODE_TEMP = "CODE:TEMP:";
     private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
     private final String salt;
-//    private final StringRedisTemplate redisTemplate;
+
+    //    private final StringRedisTemplate redisTemplate;
 //    private final SysUserRepository sysUserRepository;
 //
 //
@@ -41,7 +42,8 @@ public class SysServiceImpl implements SysService {
 //        this.redisTemplate = redisTemplate;
 //        this.sysUserRepository = sysUserRepository;
     }
-//
+
+
     @Override
     public ResponseDTO login(UserForm form) {
         try {
@@ -52,11 +54,11 @@ public class SysServiceImpl implements SysService {
             if (user == null) {
                 return ResponseDTO.returnError("用户名或密码错");
             }
+            return ResponseDTO.returnSuccess("登录成功", user);
         } catch (Exception e) {
             logger.warn("登录失败:[{}]", e.getMessage(), e);
             return ResponseDTO.returnError(e.getMessage());
         }
-        return ResponseDTO.returnSuccess("登录成功");
     }
 //
 //    @Override
@@ -87,6 +89,7 @@ public class SysServiceImpl implements SysService {
 //        return sysUserRepository.save(sysUser);
 //    }
 //
+
     /**
      * shiro认证
      *
