@@ -23,14 +23,14 @@
           </li>
           <li>
             <a href="products.html">
-              <img src="/portal/images/products/pro4.jpg}"/>
+              <img src="/portal/images/products/pro4.jpg"/>
               <h3>表面活性剂</h3>
               <p>阴离子表面活性剂、非离子表面活性剂、阳离子表面活性剂、两性离子表面活性剂、复配表面活性剂</p>
             </a>
           </li>
           <li>
             <a href="products.html">
-              <img src="/portal/images/products/pro6.jpg}"/>
+              <img src="/portal/images/products/pro6.jpg"/>
               <h3>医药中间体</h3>
               <p>胺类、咪唑类、吡唑类、吡啶类、嘧啶类、羧酸类、催化剂、苯衍生物、硼酸衍生物、五元杂环类、异吲哚啉酮类、其他</p>
             </a>

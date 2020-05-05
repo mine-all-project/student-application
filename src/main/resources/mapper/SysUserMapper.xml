@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.example.fangwuzulin.mapping.SysUserMapping">
+
+    <select id="findByUsernameAndPassword" resultType="org.example.fangwuzulin.entity.SysUser">
+ 		select * from system_user
+ 	</select>
+
+</mapper>
