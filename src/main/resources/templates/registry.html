@@ -29,10 +29,10 @@
     <hr class="hr15">
     <input name="phone" autocomplete="off" lay-verify="required" class="layui-input"
            placeholder="手机号" type="text" v-model="form.phone">
-    <input style="width:100%;" type="button" value="获取验证码" @click="getCode">
     <hr class="hr15">
     <input name="mail" autocomplete="off" lay-verify="required" class="layui-input"
            placeholder="邮箱" type="text" v-model="form.mail">
+    <input style="width:100%;" type="button" value="获取验证码" @click="getCode">
     <hr class="hr15">
     <input name="code" autocomplete="off" lay-verify="required" class="layui-input"
            placeholder="验证码" type="text" v-model="form.code">
@@ -96,7 +96,7 @@
         this.check = this.form.password === this.form.rePassword
       },
       getCode() {
-        axios.get(`/manage/getCodeByPhone/${this.form.phone}`).then(response => {
+        axios.get(`/manage/getCodeByMail/${this.form.mail}`).then(response => {
           const result = response.data
           console.log('通过api获取到的数据:', result)
           if (result.status !== 200) {

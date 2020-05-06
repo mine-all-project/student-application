@@ -131,24 +131,6 @@ public class SysServiceImpl implements SysService {
         }
     }
 
-    @Override
-    public void sendCodeByPhone(String phone) {
-        try {
-            String redisKey = CODE_TEMP + phone;
-            Long time = redisTemplate.opsForValue().getOperations().getExpire(redisKey);
-            if (time > 0) {
-                throw new ApplicationException("请" + time + "秒后再重新获取");
-            }
-            String code = createCheckCode(phone);
-            logger.info("本次验证码发送至:[{}],验证码为:[{}]", phone, code);
-            smsUtils.sendCodeMessage(phone, code);
-            redisTemplate.opsForValue().set(redisKey, code, 60, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            logger.warn("短信发送异常:[{}]", e.getMessage(), e);
-            throw new ApplicationException(e.getMessage());
-        }
-    }
-
     private String createCheckCode(String userKey) {
         String redisKey = CODE_KEY + userKey;
         String code = redisTemplate.opsForValue().get(redisKey);

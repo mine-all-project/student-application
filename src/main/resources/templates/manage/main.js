@@ -31,6 +31,9 @@ const routes = [
 
   {path: '/manage/traffic', component: httpVueLoader('/vue/manage/traffic.vue')},
   {path: '/manage/common', component: httpVueLoader('/vue/manage/common.vue')},
+
+  {path: '/manage/car', component: httpVueLoader('/vue/manage/car.vue')},
+  {path: '/manage/common', component: httpVueLoader('/vue/manage/common.vue')},
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置
@@ -169,25 +172,25 @@ const app = new Vue({
             // },
           ]
         },
-        // {
-        //   id: '5',
-        //   name: '联系我们',
-        //   icon: 'el-icon-message',
-        //   children: [
-        //     {
-        //       id: '5-1',
-        //       name: '景区直通车',
-        //       icon: 'el-icon-message',
-        //       url: '/manage/traffic'
-        //     },
-        //     {
-        //       id: '5-2',
-        //       name: '旅游常识',
-        //       icon: '',
-        //       url: '/manage/common'
-        //     },
-        //   ]
-        // },
+        {
+          id: '5',
+          name: '联系我们',
+          icon: 'el-icon-message',
+          children: [
+            {
+              id: '5-1',
+              name: '景区直通车',
+              icon: 'el-icon-message',
+              url: '/manage/car'
+            },
+            {
+              id: '5-2',
+              name: '旅游常识',
+              icon: '',
+              url: '/manage/common'
+            },
+          ]
+        },
       ],
       welcome: true
     }

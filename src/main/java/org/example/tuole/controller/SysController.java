@@ -39,14 +39,6 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess("验证码下发成功");
     }
 
-    @GetMapping("/getCodeByPhone/{phone}")
-    @ResponseBody
-    public ResponseDTO getCodeByPhone(@PathVariable("phone") String phone) {
-        logger.info("收到请求->发送验证码[{}]", phone);
-        sysService.sendCodeByPhone(phone);
-        return ResponseDTO.returnSuccess("验证码下发成功");
-    }
-
     @PostMapping("/registryCheck")
     @ResponseBody
     public ResponseDTO registryCheck(@RequestBody Map<String, String> map) {

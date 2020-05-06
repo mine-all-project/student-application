@@ -100,7 +100,7 @@ p {
     min-width: 1200px;
     position: absolute;
     z-index: 99999;
-    top: 35px;
+    /*top: 35px;*/
     margin: 0 auto;
     background-color: #fff;
     opacity: 0.5;

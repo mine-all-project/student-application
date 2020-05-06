@@ -16,7 +16,5 @@ public interface SysService {
 
     void sendCodeByMail(String mail);
 
-    void sendCodeByPhone(String phone);
-
     SysUser registry(Map<String,String> map);
 }
