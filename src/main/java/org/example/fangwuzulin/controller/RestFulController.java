@@ -1,68 +1,72 @@
-//package org.example.fangwuzulin.controller;
-//
-//import org.example.fangwuzulin.dto.ResponseDTO;
-//import org.example.fangwuzulin.service.RestFulService;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.web.bind.annotation.*;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/api")
-//public class RestFulController extends BaseController {
-//    private Logger logger = LoggerFactory.getLogger(RestFulController.class);
-//
-//    private final RestFulService restFulService;
-//
-//    public RestFulController(RestFulService restFulService) {
-//        this.restFulService = restFulService;
-//    }
-//
-//    @RequestMapping("/getAnimalList")
-//    @ResponseBody
-//    public ResponseDTO getAnimalList() {
-//        logger.info("收到请求->获取商品列表");
-//        List<Animal> animals = restFulService.getAnimalList();
-//        logger.info("返回结果->获取商品信息完成:[{}]", animals);
-//        return ResponseDTO.returnSuccess("操作成功", animals);
-//    }
-//
-//    @RequestMapping("/getAnimalListByType/{type}")
-//    @ResponseBody
-//    public ResponseDTO getAnimalListByType(@PathVariable("type") String type) {
-//        logger.info("收到请求->获取商品列表，type:[{}]", type);
-//        List<Animal> animals = restFulService.getAnimalListByType(type);
-//        logger.info("返回结果->获取商品列表完成:[{}]", animals);
-//        return ResponseDTO.returnSuccess("操作成功", animals);
-//    }
-//
-//    @GetMapping("/getAnimalById")
-//    public ResponseDTO getAnimalById(String id) {
-//        logger.info("收到请求->获取商品数据,id:[{}]", id);
-//        Animal animal = restFulService.getAnimalById(id);
-//        logger.info("返回结果->获取商品数据完成:[{}]", animal);
-//        return ResponseDTO.returnSuccess("操作成功", animal);
-//    }
-//
-//    @DeleteMapping("/removeAnimalById/{id}")
-//    public ResponseDTO removeAnimalById(@PathVariable("id") String id) {
-//        logger.info("收到请求->删除商品,id:[{}]", id);
-//        restFulService.removeAnimalById(id);
-//        logger.info("返回结果->删除商品完成");
-//        return ResponseDTO.returnSuccess("操作成功");
-//    }
-//
-//    @RequestMapping("/saveAnimalInfo")
-//    @ResponseBody
-//    public ResponseDTO saveAnimalInfo(@RequestBody Animal animal) {
-//        System.err.println(animal);
-//        logger.info("收到请求->保存商品信息:[{}]", animal);
-//        restFulService.saveAnimalInfo(animal);
-//        logger.info("返回结果->保存商品信息完成:[{}]", animal);
-//        return ResponseDTO.returnSuccess("操作成功", animal);
-//    }
+package org.example.fangwuzulin.controller;
+
+import org.example.fangwuzulin.config.groups.IsLogin;
+import org.example.fangwuzulin.config.groups.IsNotNull;
+import org.example.fangwuzulin.dto.ResponseDTO;
+import org.example.fangwuzulin.entity.Houses;
+import org.example.fangwuzulin.form.HousesForm;
+import org.example.fangwuzulin.service.RestFulService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api")
+public class RestFulController extends BaseController {
+    private final Logger logger = LoggerFactory.getLogger(RestFulController.class);
+
+    private final RestFulService restFulService;
+
+    public RestFulController(RestFulService restFulService) {
+        this.restFulService = restFulService;
+    }
+
+    @RequestMapping("/getHousesList")
+    @ResponseBody
+    public ResponseDTO getHousesList() {
+        logger.info("收到请求->获取房源列表");
+        List<Houses> houses = restFulService.getHousesList();
+        logger.info("返回结果->获取房源列表完成:[{}]", houses);
+        return ResponseDTO.returnSuccess("操作成功", houses);
+    }
+
+    @RequestMapping("/getHousesListByKeywords")
+    @ResponseBody
+    public ResponseDTO getHousesListByKeywords(String keywords) {
+        logger.info("收到请求->获取房源列表，keyword:[{}]", keywords);
+        List<Houses> houses = restFulService.getHousesListByKeywords(keywords);
+        logger.info("返回结果->获取房源列表完成:[{}]", houses);
+        return ResponseDTO.returnSuccess("操作成功", houses);
+    }
+
+    @RequestMapping("/getHousesById")
+    public ResponseDTO getHousesById(String id) {
+        logger.info("收到请求->获取房源数据,id:[{}]", id);
+        Houses houses = restFulService.getHousesById(id);
+        logger.info("返回结果->获取房源数据完成:[{}]", houses);
+        return ResponseDTO.returnSuccess("操作成功", houses);
+    }
+
+    @DeleteMapping("/removeHousesById/{id}")
+    public ResponseDTO removeHousesById(@PathVariable("id") String id) {
+        logger.info("收到请求->删除房源,id:[{}]", id);
+        restFulService.removeHousesById(id);
+        logger.info("返回结果->删除房源完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/saveHousesInfo")
+    @ResponseBody
+    public ResponseDTO saveHousesInfo(@RequestBody HousesForm form) {
+        logger.info("收到请求->保存房源信息:[{}]", form);
+        super.validator(form, IsNotNull.class);
+        restFulService.saveHousesInfo(form);
+        logger.info("返回结果->保存房源信息完成:[{}]", form);
+        return ResponseDTO.returnSuccess("操作成功", form);
+    }
 //
 //    @GetMapping("/getPapersByKeyWord/{keyWord}")
 //    public ResponseDTO getPapersByKeyWord(@PathVariable String keyWord) {
@@ -173,5 +177,5 @@
 //        logger.info("返回结果->删除订单结束");
 //        return ResponseDTO.returnSuccess("操作成功");
 //    }
-//
-//}
+
+}

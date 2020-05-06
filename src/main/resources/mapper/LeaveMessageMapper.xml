@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.example.fangwuzulin.mapping.SysUserMapping">
+    <resultMap id="message" type="LeaveMessage">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <insert id="insertMessage">
+		insert into leave_message
+		(id,user_id,houses_id,content,result_conuent)
+		values
+		(#{id},#{user_id},#{houses_id},#{content},#{result_conuent})
+	</insert>
+
+    <select id="findAll" resultMap="message">
+ 		select * from leave_message
+ 	</select>
+
+    <select id="findAllByUserId" resultMap="message">
+ 		select * from leave_message where user_id = #{user_id}
+ 	</select>
+
+    <select id="findAllByHousesId" resultMap="message">
+ 		select * from leave_message where houses_id = #{houses_id}
+ 	</select>
+
+    <select id="findAllById" resultMap="message">
+ 		select * from leave_message where id = #{id}
+ 	</select>
+
+    <delete id="removeById">
+ 		delete from leave_message where id = #{id}
+ 	</delete>
+
+</mapper>

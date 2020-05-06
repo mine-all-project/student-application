@@ -75,9 +75,12 @@ public class SysServiceImpl implements SysService {
         sysUser.setUsername(username);
         sysUser.setPassword(password);
         sysUser.setName(form.getName());
-        sysUser.setAdmin(false);
+        sysUser.set_admin(false);
         sysUser.setStatus(0);
-        sysUserMapping.addUser(sysUser);
+        Integer count = sysUserMapping.insertUser(sysUser);
+        if (count <= 0) {
+            throw new ApplicationException("操作失败");
+        }
         return sysUser;
     }
 

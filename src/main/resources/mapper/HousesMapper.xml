@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.example.fangwuzulin.mapping.HousesMapping">
+
+    <resultMap id="houses" type="Houses">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="houses">
+ 		select * from houses
+ 	</select>
+
+    <select id="findAllByKeywords" resultMap="houses">
+ 		select * from houses where key_words like "%"#{keyword}"%"
+ 	</select>
+
+    <select id="getHousesById" resultMap="houses">
+ 		select * from houses where id = #{id}
+ 	</select>
+
+    <delete id="removeHousesById">
+		delete from houses where id = #{id}
+	</delete>
+
+    <update id="updateHousesInfo">
+        update houses
+        <set>
+            <if test="address != null">address = #{address},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="key_words != null">key_words=#{key_words},</if>
+            <if test="note != null">note=#{note},</if>
+            <if test="img_src != null">img_src=#{img_src}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="insertHousesInfo">
+		insert into houses
+		(id,address,user_id,price,key_words,note,img_src)
+		values
+		(#{id},#{address},#{user_id},#{price},#{key_words},#{note},#{img_src})
+	</insert>
+</mapper>

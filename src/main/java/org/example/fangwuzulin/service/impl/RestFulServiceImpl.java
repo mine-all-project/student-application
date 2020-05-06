@@ -1,50 +1,92 @@
-//package org.example.fangwuzulin.service.impl;
-//
-//import org.apache.shiro.authz.annotation.RequiresPermissions;
-//import org.example.fangwuzulin.config.ApplicationException;
-//import org.example.fangwuzulin.entity.*;
-//import org.example.fangwuzulin.service.RestFulService;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.stereotype.Service;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-//@Service
-//public class RestFulServiceImpl implements RestFulService {
-//    @Value("${usePhone}")
-//    private boolean usePhone;
-//    @Value("${filePath}")
-//    private String filePath;
-//    @Value("${virtualPath}")
-//    private String virtualPath;
-//    private final AudioFileRepository audioFileRepository;
+package org.example.fangwuzulin.service.impl;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.example.fangwuzulin.config.ApplicationException;
+import org.example.fangwuzulin.entity.*;
+import org.example.fangwuzulin.form.HousesForm;
+import org.example.fangwuzulin.mapping.HousesMapping;
+import org.example.fangwuzulin.service.RestFulService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Service
+public class RestFulServiceImpl implements RestFulService {
+    @Value("${usePhone}")
+    private boolean usePhone;
+    @Value("${filePath}")
+    private String filePath;
+    @Value("${virtualPath}")
+    private String virtualPath;
+    private final HousesMapping housesMapping;
 //    private final AnimalRepository animalRepository;
 //    private final MessageRepository messageRepository;
 //    private final PaperRepository paperRepository;
 //    private final OrderRepository orderRepository;
-//
-//    private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
-//
-//    public RestFulServiceImpl(AudioFileRepository audioFileRepository,
+
+    private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
+
+    public RestFulServiceImpl(HousesMapping housesMapping
 //                              OrderRepository orderRepository,
 //                              MessageRepository messageRepository,
-//                              AnimalRepository animalRepository, PaperRepository paperRepository) {
-//        this.audioFileRepository = audioFileRepository;
+//                              AnimalRepository animalRepository, PaperRepository paperRepository
+    ) {
+        this.housesMapping = housesMapping;
 //        this.orderRepository = orderRepository;
 //        this.messageRepository = messageRepository;
 //        this.animalRepository = animalRepository;
 //        this.paperRepository = paperRepository;
-//    }
-//
-//    @Override
-//    public List<Animal> getAnimalList() {
-//        return animalRepository.findAll();
-//    }
-//
+    }
+
+    @Override
+    public List<Houses> getHousesList() {
+        return housesMapping.findAll();
+    }
+
+    @Override
+    public List<Houses> getHousesListByKeywords(String keywords) {
+        return housesMapping.findAllByKeywords(keywords);
+    }
+
+    @Override
+    public Houses getHousesById(String id) {
+        return housesMapping.getHousesById(id);
+    }
+
+    @Override
+    public void removeHousesById(String id) {
+        Integer count = housesMapping.removeHousesById(id);
+        if (count <= 0) {
+            throw new ApplicationException("操作失败");
+        }
+    }
+
+    @Override
+    public void saveHousesInfo(HousesForm form) {
+        Houses houses = form.toEntity();
+//        houses.setUser_id(getUser().getId());
+        houses.setUser_id("001");
+        if (houses.getId() == null) {
+            houses.setId(UUID.randomUUID().toString());
+            Integer count = housesMapping.insertHousesInfo(houses);
+            if (count <= 0) {
+                throw new ApplicationException("操作失败");
+            }
+        } else {
+            Integer count = housesMapping.updateHousesInfo(houses);
+            if (count <= 0) {
+                throw new ApplicationException("操作失败");
+            }
+        }
+    }
+
+    //
 //    @Override
 //    public List<Animal> getAnimalListByType(String type) {
 //        return animalRepository.findAllByType(type);
@@ -156,4 +198,4 @@
 //        SysUser sysUser = getUser();
 //        return orderRepository.findAll().stream().filter(e -> sysUser.getId().equals(e.getSysUser().getId())).collect(Collectors.toList());
 //    }
-//}
+}

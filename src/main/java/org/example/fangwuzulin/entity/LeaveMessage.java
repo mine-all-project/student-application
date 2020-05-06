@@ -3,16 +3,14 @@ package org.example.fangwuzulin.entity;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.mapping.FetchType;
-
-import java.util.List;
 
 @Getter
 @Setter
-public class SysRole extends BaseEntity {
-    private String name;
-
-    private List<SysMenu> sysMenus;
+public class LeaveMessage extends BaseEntity {
+    private String houses_id;
+    private String user_id;
+    private String content;
+    private String resultContent;
 
     @Override
     public String toString() {

@@ -9,5 +9,5 @@ public interface SysUserMapping {
 
     SysUser findByUsernameAndPassword(String username, String password);
 
-    void addUser(SysUser sysUser);
+    Integer insertUser(SysUser sysUser);
 }

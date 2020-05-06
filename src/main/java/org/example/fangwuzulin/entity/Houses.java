@@ -6,12 +6,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SysUser extends BaseEntity {
-    private String username;
-    private String password;
-    private String name;
-    private Integer status;
-    private boolean is_admin;
+public class Houses extends BaseEntity{
+    private String address;
+    private String user_id;
+    private String price;
+    private String key_words;
+    private String note;
+    private String img_src;
+    private String contract;
 
     @Override
     public String toString() {

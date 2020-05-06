@@ -1,6 +1,5 @@
 package org.example.fangwuzulin.config;
 
-import org.example.fangwuzulin.entity.SysMenu;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.service.SysService;
 import org.example.fangwuzulin.service.UserService;
@@ -37,7 +36,7 @@ public class ShiroRealm extends AuthorizingRealm {
         SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
         Set<String> permissions = new HashSet<>();
         if (user != null) {
-            if (user.isAdmin()) {
+            if (user.is_admin()) {
                 permissions.add("manage");
             } else {
                 permissions.add("login");
@@ -48,20 +47,20 @@ public class ShiroRealm extends AuthorizingRealm {
         return authorizationInfo;
     }
 
-    /**
-     * 获取用户权限
-     *
-     * @param menus 用户菜单列表
-     * @return 用户权限列表
-     */
-    private Set<String> getPermissions(List<SysMenu> menus) {
-        Set<String> permissions = new HashSet<>();
-        menus.forEach(e -> {
-            permissions.addAll(getPermissions(e.getChildren()));
-            permissions.add(e.getPermission());
-        });
-        return permissions;
-    }
+//    /**
+//     * 获取用户权限
+//     *
+//     * @param menus 用户菜单列表
+//     * @return 用户权限列表
+//     */
+//    private Set<String> getPermissions(List<SysMenu> menus) {
+//        Set<String> permissions = new HashSet<>();
+//        menus.forEach(e -> {
+//            permissions.addAll(getPermissions(e.getChildren()));
+//            permissions.add(e.getPermission());
+//        });
+//        return permissions;
+//    }
 
     /**
      * shiro认证调用的方法,认证失败时会抛出异常
