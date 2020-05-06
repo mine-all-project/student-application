@@ -25,11 +25,13 @@ public interface RestFulService {
     }
     List<Houses> getHousesList();
 
-    List<Houses> getHousesListByKeywords(String keywords);
+    List<Houses> getHousesListByName(String name);
 
     Houses getHousesById(String id);
 
     void removeHousesById(String id);
 
     void saveHousesInfo(HousesForm form);
+
+    AudioFiles uploadFile(HttpServletRequest request);
 }

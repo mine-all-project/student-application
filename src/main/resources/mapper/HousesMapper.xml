@@ -14,8 +14,8 @@
  		select * from houses
  	</select>
 
-    <select id="findAllByKeywords" resultMap="houses">
- 		select * from houses where key_words like "%"#{keyword}"%"
+    <select id="findAllByName" resultMap="houses">
+ 		select * from houses where name like "%"#{name}"%"
  	</select>
 
     <select id="getHousesById" resultMap="houses">
@@ -31,7 +31,6 @@
         <set>
             <if test="address != null">address = #{address},</if>
             <if test="price != null">price = #{price},</if>
-            <if test="key_words != null">key_words=#{key_words},</if>
             <if test="note != null">note=#{note},</if>
             <if test="img_src != null">img_src=#{img_src}</if>
         </set>

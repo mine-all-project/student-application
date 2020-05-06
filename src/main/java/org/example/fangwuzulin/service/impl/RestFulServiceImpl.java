@@ -1,9 +1,9 @@
 package org.example.fangwuzulin.service.impl;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.entity.*;
 import org.example.fangwuzulin.form.HousesForm;
+import org.example.fangwuzulin.mapping.AudioFilesMapping;
 import org.example.fangwuzulin.mapping.HousesMapping;
 import org.example.fangwuzulin.service.RestFulService;
 import org.slf4j.Logger;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
@@ -25,20 +24,20 @@ public class RestFulServiceImpl implements RestFulService {
     @Value("${virtualPath}")
     private String virtualPath;
     private final HousesMapping housesMapping;
-//    private final AnimalRepository animalRepository;
+    private final AudioFilesMapping audioFilesMapping;
 //    private final MessageRepository messageRepository;
 //    private final PaperRepository paperRepository;
 //    private final OrderRepository orderRepository;
 
     private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
-    public RestFulServiceImpl(HousesMapping housesMapping
-//                              OrderRepository orderRepository,
+    public RestFulServiceImpl(HousesMapping housesMapping,
+                              AudioFilesMapping audioFilesMapping
 //                              MessageRepository messageRepository,
 //                              AnimalRepository animalRepository, PaperRepository paperRepository
     ) {
         this.housesMapping = housesMapping;
-//        this.orderRepository = orderRepository;
+        this.audioFilesMapping = audioFilesMapping;
 //        this.messageRepository = messageRepository;
 //        this.animalRepository = animalRepository;
 //        this.paperRepository = paperRepository;
@@ -50,8 +49,8 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
-    public List<Houses> getHousesListByKeywords(String keywords) {
-        return housesMapping.findAllByKeywords(keywords);
+    public List<Houses> getHousesListByName(String name) {
+        return housesMapping.findAllByName(name);
     }
 
     @Override
@@ -86,6 +85,19 @@ public class RestFulServiceImpl implements RestFulService {
         }
     }
 
+    @Override
+    public AudioFiles uploadFile(HttpServletRequest request) {
+        String path = getFilePath(request, filePath, virtualPath);
+        AudioFiles audioFiles = new AudioFiles();
+        audioFiles.setId(UUID.randomUUID().toString());
+        audioFiles.setUrl(path);
+        Integer count = audioFilesMapping.insertAudioFiles(audioFiles);
+        if (count <= 0) {
+            throw new ApplicationException("操作失败");
+        }
+        return audioFiles;
+    }
+
     //
 //    @Override
 //    public List<Animal> getAnimalListByType(String type) {
@@ -109,14 +121,7 @@ public class RestFulServiceImpl implements RestFulService {
 //        animalRepository.saveAndFlush(animal);
 //    }
 //
-//    @Override
-//    @RequiresPermissions("manage")
-//    public AudioFile uploadFile(HttpServletRequest request, String id) {
-//        String path = getfilePath(request, filePath, virtualPath);
-//        AudioFile picture = audioFileRepository.findById(id).orElse(new AudioFile());
-//        picture.setUrl(path);
-//        return audioFileRepository.save(picture);
-//    }
+
 //
 //    @Override
 //    @RequiresPermissions("manage")

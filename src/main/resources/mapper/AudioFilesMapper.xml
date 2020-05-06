@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.example.fangwuzulin.mapping.AudioFilesMapping">
+    <resultMap id="file" type="AudioFiles">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <select id="findById" resultMap="file">
+ 		select * from audio_files where id = #{id}
+ 	</select>
+
+    <insert id="insertAudioFiles">
+ 		insert into audio_files (id,url) values (#{id},#{url})
+ 	</insert>
+
+    <insert id="insertUser">
+		insert into sys_user
+		(id,username,password,status,name,is_admin)
+		values
+		(#{id},#{username},#{password},#{status},#{name},#{is_admin})
+	</insert>
+</mapper>

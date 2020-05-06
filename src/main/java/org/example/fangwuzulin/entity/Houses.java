@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class Houses extends BaseEntity{
+    private String title;
     private String address;
     private String user_id;
-    private String price;
+    private BigDecimal price;
     private String key_words;
     private String note;
     private String img_src;

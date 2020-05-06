@@ -1,8 +1,8 @@
 package org.example.fangwuzulin.controller;
 
-import org.example.fangwuzulin.config.groups.IsLogin;
 import org.example.fangwuzulin.config.groups.IsNotNull;
 import org.example.fangwuzulin.dto.ResponseDTO;
+import org.example.fangwuzulin.entity.AudioFiles;
 import org.example.fangwuzulin.entity.Houses;
 import org.example.fangwuzulin.form.HousesForm;
 import org.example.fangwuzulin.service.RestFulService;
@@ -35,9 +35,9 @@ public class RestFulController extends BaseController {
 
     @RequestMapping("/getHousesListByKeywords")
     @ResponseBody
-    public ResponseDTO getHousesListByKeywords(String keywords) {
-        logger.info("收到请求->获取房源列表，keyword:[{}]", keywords);
-        List<Houses> houses = restFulService.getHousesListByKeywords(keywords);
+    public ResponseDTO getHousesListByName(String name) {
+        logger.info("收到请求->获取房源列表，keyword:[{}]", name);
+        List<Houses> houses = restFulService.getHousesListByName(name);
         logger.info("返回结果->获取房源列表完成:[{}]", houses);
         return ResponseDTO.returnSuccess("操作成功", houses);
     }
@@ -67,47 +67,15 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->保存房源信息完成:[{}]", form);
         return ResponseDTO.returnSuccess("操作成功", form);
     }
-//
-//    @GetMapping("/getPapersByKeyWord/{keyWord}")
-//    public ResponseDTO getPapersByKeyWord(@PathVariable String keyWord) {
-//        logger.info("收到请求->获取文章列表,keyWord:[{}]", keyWord);
-//        List<Paper> papers = restFulService.getPapersByKeyWord(keyWord);
-//        logger.info("返回结果->获取文章列表完成:[{}]", papers);
-//        return ResponseDTO.returnSuccess("操作成功", papers);
-//    }
-//
-//    @PostMapping("/savePaper")
-//    public ResponseDTO savePaper(@RequestBody Paper paper) {
-//        logger.info("收到请求->保存文章数据:[{}]", paper);
-//        restFulService.savePaper(paper);
-//        logger.info("返回结果->保存文章数据完成");
-//        return ResponseDTO.returnSuccess("操作成功");
-//    }
-//
-//    @GetMapping("/getPaperById")
-//    public ResponseDTO getPaperById(String id) {
-//        logger.info("收到请求->获取文章信息,id:[{}]", id);
-//        Paper paper = restFulService.getPaperById(id);
-//        logger.info("返回结果->获取文章信息完成:[{}]", paper);
-//        return ResponseDTO.returnSuccess("操作成功", paper);
-//    }
-//
-//    @DeleteMapping("/removePaperById/{id}")
-//    public ResponseDTO removePaperById(@PathVariable("id") String id) {
-//        logger.info("收到请求->删除文章数据,id:[{}]", id);
-//        restFulService.removePaperById(id);
-//        logger.info("返回结果->删除文章数据完成");
-//        return ResponseDTO.returnSuccess("操作成功");
-//    }
-//
-//    @RequestMapping("/uploadFile/{id}")
-//    @ResponseBody
-//    public ResponseDTO uploadFile(HttpServletRequest request, @PathVariable("id") String id) {
-//        logger.info("收到请求->上传文件:[{}]", id);
-//        AudioFile audioFile = restFulService.uploadFile(request, id);
-//        logger.info("文件上传完成:[{}]", audioFile);
-//        return ResponseDTO.returnSuccess("操作成功", audioFile);
-//    }
+
+    @RequestMapping("/uploadFile")
+    @ResponseBody
+    public ResponseDTO uploadFile(HttpServletRequest request) {
+        logger.info("收到请求->上传文件");
+        AudioFiles audioFiles = restFulService.uploadFile(request);
+        logger.info("文件上传完成:[{}]", audioFiles);
+        return ResponseDTO.returnSuccess("操作成功", audioFiles);
+    }
 //
 //    @PostMapping("/updateFile")
 //    public ResponseDTO updateFile(HttpServletRequest request, @RequestBody AudioFile audioFile) {

@@ -7,7 +7,9 @@ import org.example.fangwuzulin.entity.SysUser;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.math.BigDecimal;
 
 @Data
 public class HousesForm {
@@ -16,8 +18,8 @@ public class HousesForm {
     @NotBlank(message = "地址不能为空", groups = {IsNotNull.class})
     private String address;
 
-    @NotBlank(message = "价格不能为空", groups = {IsNotNull.class})
-    private String price;
+    @NotNull(message = "价格不能为空", groups = {IsNotNull.class})
+    private BigDecimal price;
 
     private String key_words;
 
