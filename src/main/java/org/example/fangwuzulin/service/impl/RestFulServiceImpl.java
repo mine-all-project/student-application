@@ -49,8 +49,8 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
-    public List<Houses> getHousesListByName(String name) {
-        return housesMapping.findAllByName(name);
+    public List<Houses> getHousesListByTitle(String title) {
+        return housesMapping.findAllByTitle(title);
     }
 
     @Override

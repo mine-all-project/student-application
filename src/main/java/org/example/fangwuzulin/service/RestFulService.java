@@ -25,7 +25,7 @@ public interface RestFulService {
     }
     List<Houses> getHousesList();
 
-    List<Houses> getHousesListByName(String name);
+    List<Houses> getHousesListByTitle(String title);
 
     Houses getHousesById(String id);
 

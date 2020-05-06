@@ -33,11 +33,11 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", houses);
     }
 
-    @RequestMapping("/getHousesListByKeywords")
+    @RequestMapping("/getHousesListByTitle")
     @ResponseBody
-    public ResponseDTO getHousesListByName(String name) {
-        logger.info("收到请求->获取房源列表，keyword:[{}]", name);
-        List<Houses> houses = restFulService.getHousesListByName(name);
+    public ResponseDTO getHousesListByTitle(String title) {
+        logger.info("收到请求->获取房源列表，title:[{}]", title);
+        List<Houses> houses = restFulService.getHousesListByTitle(title);
         logger.info("返回结果->获取房源列表完成:[{}]", houses);
         return ResponseDTO.returnSuccess("操作成功", houses);
     }

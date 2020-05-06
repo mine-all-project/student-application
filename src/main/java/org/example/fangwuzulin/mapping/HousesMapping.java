@@ -9,7 +9,7 @@ import java.util.List;
 public interface HousesMapping {
     List<Houses> findAll();
 
-    List<Houses> findAllByName(String name);
+    List<Houses> findAllByTitle(String title);
 
     Houses getHousesById(String id);
 
