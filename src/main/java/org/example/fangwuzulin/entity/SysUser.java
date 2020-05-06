@@ -9,6 +9,8 @@ import lombok.Setter;
 public class SysUser extends BaseEntity {
     private String username;
     private String password;
+    private String phone;
+    private String mail;
     private String name;
     private Integer status;
     private boolean is_admin;

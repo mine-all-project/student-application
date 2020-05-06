@@ -19,8 +19,19 @@
 
     <insert id="insertUser">
 		insert into sys_user
-		(id,username,password,status,name,is_admin)
+		(id,username,password,status,name,is_admin,phone,mail)
 		values
-		(#{id},#{username},#{password},#{status},#{name},#{is_admin})
+		(#{id},#{username},#{password},#{status},#{name},#{is_admin},#{phone},#{mail})
 	</insert>
+
+	<update id="updateUserInfo">
+		update sys_user
+		<set>
+			<if test="password != null">password = #{password},</if>
+			<if test="phone != null">phone = #{phone},</if>
+			<if test="mail != null">mail=#{mail},</if>
+			<if test="name != null">name=#{name}</if>
+		</set>
+		where id = #{id}
+	</update>
 </mapper>

@@ -1,5 +1,6 @@
 package org.example.fangwuzulin.controller;
 
+import org.example.fangwuzulin.config.groups.IsEdit;
 import org.example.fangwuzulin.config.groups.IsLogin;
 import org.example.fangwuzulin.config.groups.IsRegister;
 import org.example.fangwuzulin.dto.ResponseDTO;
@@ -88,7 +89,17 @@ public class IndexController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
 
-//
+    @PostMapping("/saveUserInfo")
+    @ResponseBody
+    public ResponseDTO saveUserInfo(@RequestBody UserForm form) {
+        logger.info("收到请求->修改用户信息");
+        super.validator(form, IsEdit.class);
+        sysService.saveUserInfo(form);
+        logger.info("返回结果->修改用户信息结束");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    //
 //    @RequestMapping("/mineInfo")
 //    public String mineInfo() {
 //        return "/mineInfo";

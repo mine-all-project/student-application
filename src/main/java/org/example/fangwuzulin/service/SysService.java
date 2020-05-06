@@ -16,6 +16,8 @@ public interface SysService {
     ResponseDTO login(UserForm form);
 
     SysUser registry(UserForm form);
+
+    Integer saveUserInfo(UserForm form);
 //
 //    List<SysUser> getUserList();
 //

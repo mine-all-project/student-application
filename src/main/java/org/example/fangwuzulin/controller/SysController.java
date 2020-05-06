@@ -1,5 +1,7 @@
 package org.example.fangwuzulin.controller;
 
+import org.example.fangwuzulin.dto.ResponseDTO;
+import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,6 @@ public class SysController extends BaseController {
         logger.info("收到请求->进入页面[{}]", MANAGE + pageName);
         return MANAGE + pageName;
     }
-
 
 //
 //    /**
@@ -70,14 +71,7 @@ public class SysController extends BaseController {
 //        return ResponseDTO.returnSuccess("操作成功");
 //    }
 //
-//    @PostMapping("/saveUserInfo")
-//    @ResponseBody
-//    public ResponseDTO saveUserInfo(@RequestBody SysUser sysUser) {
-//        logger.info("收到请求->修改用户信息");
-//        sysService.saveUserInfo(sysUser);
-//        logger.info("返回结果->修改用户信息结束");
-//        return ResponseDTO.returnSuccess("操作成功");
-//    }
+
 //
 //    @PostMapping("/savePassword")
 //    @ResponseBody

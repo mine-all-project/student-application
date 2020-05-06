@@ -10,4 +10,6 @@ public interface SysUserMapping {
     SysUser findByUsernameAndPassword(String username, String password);
 
     Integer insertUser(SysUser sysUser);
+
+    Integer updateUserInfo(SysUser sysUser);
 }

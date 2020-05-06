@@ -34,7 +34,6 @@ public class SysServiceImpl implements SysService {
     private final SysUserMapping sysUserMapping;
 
     //
-//
     public SysServiceImpl(ApplicationConfigure applicationConfigure,
 //                          StringRedisTemplate redisTemplate
                           SysUserMapping sysUserMapping
@@ -75,6 +74,8 @@ public class SysServiceImpl implements SysService {
         sysUser.setUsername(username);
         sysUser.setPassword(password);
         sysUser.setName(form.getName());
+        sysUser.setPhone(form.getPhone());
+        sysUser.setMail(form.getMail());
         sysUser.set_admin(false);
         sysUser.setStatus(0);
         Integer count = sysUserMapping.insertUser(sysUser);
@@ -82,6 +83,15 @@ public class SysServiceImpl implements SysService {
             throw new ApplicationException("操作失败");
         }
         return sysUser;
+    }
+
+    @Override
+    public void saveUserInfo(UserForm userForm) {
+        SysUser sysUser = userForm.toEntity();
+        Integer count = sysUserMapping.updateUserInfo(sysUser);
+        if (count <= 0) {
+            throw new ApplicationException("操作失败");
+        }
     }
 
     /**
@@ -106,6 +116,7 @@ public class SysServiceImpl implements SysService {
         }
         return null;
     }
+
 
 //
 //    private String createCheckCode(String userKey) {
@@ -148,10 +159,6 @@ public class SysServiceImpl implements SysService {
 //        sysUserRepository.delete(sysUser);
 //    }
 //
-//    @Override
-//    public void saveUserInfo(SysUser sysUser) {
-//        sysUserRepository.save(sysUser);
-//    }
 //
 //    @Override
 //    public void savePassword(Map map) {
