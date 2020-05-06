@@ -16,19 +16,19 @@ public class UserForm {
     @Null(message = "id必须为空", groups = IsAdd.class)
     private String id;
 
-    @Length(max = 32 ,message = "长度错误",groups = {IsCheckLength.class, IsLogin.class})
-    @NotBlank(message = "用户名不能为空", groups = {IsNotNull.class, IsLogin.class})
+    @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
+    @NotBlank(message = "用户名不能为空", groups = {IsNotNull.class, IsLogin.class, IsRegister.class})
     private String username;
 
-    @Length(max = 32 ,message = "长度错误",groups = {IsCheckLength.class, IsLogin.class})
-    @NotBlank(message = "密码不能为空", groups = {IsNotNull.class, IsLogin.class})
+    @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
+    @NotBlank(message = "密码不能为空", groups = {IsNotNull.class, IsLogin.class, IsRegister.class})
     private String password;
 
     @Length(max = 32)
-    @NotBlank(message = "姓名不能为空", groups = {IsAdd.class,IsEdit.class})
+    @NotBlank(message = "姓名不能为空", groups = {IsAdd.class, IsEdit.class, IsRegister.class})
     private String name;
 
-    public SysUser toEntity(){
+    public SysUser toEntity() {
         SysUser user = new SysUser();
         user.setId(this.id);
         user.setName(this.name);

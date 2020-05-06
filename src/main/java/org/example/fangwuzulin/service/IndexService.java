@@ -17,14 +17,11 @@ public class IndexService {
     }
 
     public boolean login(HttpServletRequest request, SysUser sysUser) {
-        SysUser sysUser1 = sysUserMapping.findByUsernameAndPassword(sysUser.getUsername(), sysUser.getPassword());
-        System.out.println(sysUser);
-        if (sysUser1 != null) {
-            System.err.println("登陆成功");
-            request.getSession().setAttribute("user", sysUser1);
+        SysUser exist = sysUserMapping.findByUsernameAndPassword(sysUser.getUsername(), sysUser.getPassword());
+        if (exist != null) {
+            request.getSession().setAttribute("user", exist);
             return true;
         }
-        System.err.println("登陆失败");
         return false;
     }
 

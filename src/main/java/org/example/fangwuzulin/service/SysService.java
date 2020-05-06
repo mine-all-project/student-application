@@ -14,8 +14,8 @@ public interface SysService {
      * @return 登录成功后返回的登录信息
      */
     ResponseDTO login(UserForm form);
-//
-//    SysUser registry(Map<String,String> map);
+
+    SysUser registry(UserForm form);
 //
 //    List<SysUser> getUserList();
 //

@@ -2,10 +2,6 @@ package org.example.fangwuzulin.service;
 
 
 import org.example.fangwuzulin.entity.SysUser;
-import org.example.fangwuzulin.form.UserForm;
-
-import java.util.List;
-import java.util.Optional;
 
 
 public interface UserService {
@@ -18,7 +14,7 @@ public interface UserService {
      */
     SysUser findByUsername(String username);
 
-    SysUser findByUsernameAndPassword(String username);
+    SysUser findByUsernameAndPassword(String username, String password);
 
 //    /**
 //     * 添加用户

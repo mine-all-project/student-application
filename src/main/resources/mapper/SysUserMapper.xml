@@ -2,18 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="org.example.fangwuzulin.mapping.SysUserMapping">
-	<resultMap id="userResultMap" type="SysUser">
-		<result property="admin" column="is_admin"/>
-	</resultMap>
+    <resultMap id="userResultMap" type="SysUser">
+        <result property="admin" column="is_admin"/>
+    </resultMap>
 
-    <select id="findByUsernameAndPassword" resultMap="userResultMap">
- 		select * from sys_user;
- 	</select>
-
-	<select id="findByUsername" resultMap="userResultMap">
+    <select id="findByUsername" resultMap="userResultMap">
  		select * from sys_user where username = #{username}
  	</select>
 
+    <select id="findByUsernameAndPassword" resultMap="userResultMap">
+ 		select * from sys_user where username = #{username} and password = #{password}
+ 	</select>
 
-
+    <insert id="addUser">
+		insert into sys_user
+		(id,username,password,status,name,is_admin)
+		values
+		(#{id},#{username},#{password},#{status},#{name},#{isAdmin})
+	</insert>
 </mapper>

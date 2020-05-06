@@ -11,6 +11,7 @@ import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.form.UserForm;
+import org.example.fangwuzulin.mapping.SysUserMapping;
 import org.example.fangwuzulin.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -29,16 +31,17 @@ public class SysServiceImpl implements SysService {
     private final String salt;
 
     //    private final StringRedisTemplate redisTemplate;
-//    private final SysUserRepository sysUserRepository;
+    private final SysUserMapping sysUserMapping;
+
+    //
 //
-//
-    public SysServiceImpl(ApplicationConfigure applicationConfigure
+    public SysServiceImpl(ApplicationConfigure applicationConfigure,
 //                          StringRedisTemplate redisTemplate
-//                          SysUserRepository sysUserRepository
+                          SysUserMapping sysUserMapping
     ) {
         this.salt = applicationConfigure.SALT;
 //        this.redisTemplate = redisTemplate;
-//        this.sysUserRepository = sysUserRepository;
+        this.sysUserMapping = sysUserMapping;
     }
 
 
@@ -58,35 +61,25 @@ public class SysServiceImpl implements SysService {
             return ResponseDTO.returnError(e.getMessage());
         }
     }
-//
-//    @Override
-//    public SysUser registry(Map<String, String> map) {
-//        SysUser exist = sysUserRepository.findByUsername(map.get("username")).orElse(null);
-//        if (exist != null) {
-//            throw new ApplicationException("用户名已经存在");
-//        }
-////        String redisKey = CODE_KEY + map.get("phone");
-////        String code = redisTemplate.opsForValue().get(redisKey);
-////        if (StringUtils.isEmpty(code)) {
-////            throw new ApplicationException("验证码失效，请重新获取");
-////        }
-////        if (!code.equals(map.get("code"))) {
-////            throw new ApplicationException("验证码错误");
-////        }
-//        String username = map.get("username");
-//        String password = new Md5Hash(map.get("password"), salt).toString();
-//        SysUser sysUser = new SysUser();
-//        sysUser.setUsername(username);
-//        sysUser.setPassword(password);
-//        sysUser.setName(map.get("name"));
-//        sysUser.setPhone(map.get("phone"));
-//        sysUser.setMail(map.get("mail"));
-//        sysUser.setAge(18);
-//        sysUser.setAdmin(false);
-//        sysUser.setStatus(0);
-//        return sysUserRepository.save(sysUser);
-//    }
-//
+
+    @Override
+    public SysUser registry(UserForm form) {
+        SysUser exist = sysUserMapping.findByUsername(form.getUsername());
+        if (exist != null) {
+            throw new ApplicationException("用户名已经存在");
+        }
+        String username = form.getUsername();
+        String password = new Md5Hash(form.getPassword(), salt).toString();
+        SysUser sysUser = new SysUser();
+        sysUser.setId(UUID.randomUUID().toString());
+        sysUser.setUsername(username);
+        sysUser.setPassword(password);
+        sysUser.setName(form.getName());
+        sysUser.setAdmin(false);
+        sysUser.setStatus(0);
+        sysUserMapping.addUser(sysUser);
+        return sysUser;
+    }
 
     /**
      * shiro认证

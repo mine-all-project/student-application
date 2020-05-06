@@ -20,12 +20,6 @@ public class SysUser extends BaseEntity {
     @NotBlank(message = "姓名不能为空", groups = IsNotNull.class)
     private String name;
 
-    @NotBlank(message = "邮箱不能为空", groups = IsNotNull.class)
-    private String mail;
-
-    @NotBlank(message = "手机号不能为空", groups = IsNotNull.class)
-    private String phone;
-
     @NotBlank(message = "状态不能为空", groups = IsNotNull.class)
     private Integer status;
 

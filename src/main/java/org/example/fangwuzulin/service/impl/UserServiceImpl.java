@@ -14,7 +14,6 @@ public class UserServiceImpl implements UserService {
     private SysUserMapping sysUserMapping;
 
     public UserServiceImpl(SysUserMapping sysUserMapping) {
-
         this.sysUserMapping = sysUserMapping;
     }
 
@@ -24,8 +23,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SysUser findByUsernameAndPassword(String username) {
-        return null;
+    public SysUser findByUsernameAndPassword(String username, String password) {
+        return sysUserMapping.findByUsernameAndPassword(username, password);
     }
 
     //    /**

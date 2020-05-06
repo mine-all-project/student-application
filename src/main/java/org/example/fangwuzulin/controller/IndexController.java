@@ -1,6 +1,7 @@
 package org.example.fangwuzulin.controller;
 
 import org.example.fangwuzulin.config.groups.IsLogin;
+import org.example.fangwuzulin.config.groups.IsRegister;
 import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.form.UserForm;
@@ -10,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Controller
 public class IndexController extends BaseController {
@@ -66,6 +69,16 @@ public class IndexController extends BaseController {
         return responseDTO;
     }
 
+    @PostMapping("/registryCheck")
+    @ResponseBody
+    public ResponseDTO registryCheck(@RequestBody UserForm form) {
+        logger.info("收到请求->用户注册[{}]", form);
+        super.validator(form, IsRegister.class);
+        SysUser sysUser = sysService.registry(form);
+        logger.info("注册验证结束->用户信息:[{}]", sysUser);
+        return ResponseDTO.returnSuccess("注册成功，即将返回登录页面", sysUser);
+    }
+
     @RequestMapping("/getUserInfo")
     @ResponseBody
     public ResponseDTO getUserInfo() {
@@ -75,11 +88,12 @@ public class IndexController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
 
-    @RequestMapping("/mineInfo")
-    public String mineInfo() {
-        return "/mineInfo";
-    }
-
+//
+//    @RequestMapping("/mineInfo")
+//    public String mineInfo() {
+//        return "/mineInfo";
+//    }
+//
     @RequestMapping("/loginOut")
     public String loginOut() {
         logger.info("收到请求->退出登录");
