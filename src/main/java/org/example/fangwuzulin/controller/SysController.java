@@ -23,6 +23,8 @@ public class SysController extends BaseController {
         logger.info("收到请求->进入页面[{}]", MANAGE + pageName);
         return MANAGE + pageName;
     }
+
+
 //
 //
 //    @PostMapping("/registryCheck")
