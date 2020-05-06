@@ -2,12 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="org.example.fangwuzulin.mapping.SysUserMapping">
+	<resultMap id="userResultMap" type="SysUser">
+		<result property="admin" column="is_admin"/>
+	</resultMap>
 
-    <select id="findByUsernameAndPassword" resultType="org.example.fangwuzulin.entity.SysUser">
- 		select * from sys_user
+    <select id="findByUsernameAndPassword" resultMap="userResultMap">
+ 		select * from sys_user;
  	</select>
 
-	<select id="findByUsername" resultType="org.example.fangwuzulin.entity.SysUser">
+	<select id="findByUsername" resultMap="userResultMap">
  		select * from sys_user where username = #{username}
  	</select>
 

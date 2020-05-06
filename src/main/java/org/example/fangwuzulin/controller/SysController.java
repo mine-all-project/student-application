@@ -1,36 +1,28 @@
-//package org.example.fangwuzulin.controller;
-//
-//import org.example.fangwuzulin.config.groups.IsLogin;
-//import org.example.fangwuzulin.dto.ResponseDTO;
-//import org.example.fangwuzulin.entity.SysUser;
-//import org.example.fangwuzulin.form.UserForm;
-//import org.example.fangwuzulin.service.SysService;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//import java.util.Map;
-//
-//
-//@Controller
-//@RequestMapping("/manage")
-//public class SysController extends BaseController {
-//
-//    private Logger logger = LoggerFactory.getLogger(SysController.class);
-//    private SysService sysService;
-//    private static final String MANAGE = "manage/";
-//
-//    public SysController(SysService sysService) {
-//        this.sysService = sysService;
-//    }
-//
-//    @GetMapping("/{pageName}")
-//    public String page(@PathVariable("pageName") String pageName) {
-//        logger.info("收到请求->进入页面[{}]", MANAGE + pageName);
-//        return MANAGE + pageName;
-//    }
+package org.example.fangwuzulin.controller;
+
+import org.example.fangwuzulin.service.SysService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping("/manage")
+public class SysController extends BaseController {
+
+    private Logger logger = LoggerFactory.getLogger(SysController.class);
+    private SysService sysService;
+    private static final String MANAGE = "manage/";
+
+    public SysController(SysService sysService) {
+        this.sysService = sysService;
+    }
+
+    @GetMapping("/{pageName}")
+    public String page(@PathVariable("pageName") String pageName) {
+        logger.info("收到请求->进入页面[{}]", MANAGE + pageName);
+        return MANAGE + pageName;
+    }
 //
 //
 //    @PostMapping("/registryCheck")
@@ -104,4 +96,4 @@
 //        logger.info("返回结果->修改用户密码结束");
 //        return ResponseDTO.returnSuccess("操作成功");
 //    }
-//}
+}

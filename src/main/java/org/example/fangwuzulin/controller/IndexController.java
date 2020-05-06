@@ -21,7 +21,7 @@ public class IndexController extends BaseController {
         this.sysService = sysService;
     }
 
-    private Logger logger = LoggerFactory.getLogger(IndexController.class);
+    private final Logger logger = LoggerFactory.getLogger(IndexController.class);
     private static final String PAGE = "portal/";
 
     @GetMapping("/page/{pageName}")

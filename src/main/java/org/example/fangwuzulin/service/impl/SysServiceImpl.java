@@ -14,9 +14,7 @@ import org.example.fangwuzulin.form.UserForm;
 import org.example.fangwuzulin.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -34,8 +32,8 @@ public class SysServiceImpl implements SysService {
 //    private final SysUserRepository sysUserRepository;
 //
 //
-    public SysServiceImpl(ApplicationConfigure applicationConfigure,
-                          StringRedisTemplate redisTemplate
+    public SysServiceImpl(ApplicationConfigure applicationConfigure
+//                          StringRedisTemplate redisTemplate
 //                          SysUserRepository sysUserRepository
     ) {
         this.salt = applicationConfigure.SALT;

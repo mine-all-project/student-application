@@ -28,15 +28,10 @@ public class UserForm {
     @NotBlank(message = "姓名不能为空", groups = {IsAdd.class,IsEdit.class})
     private String name;
 
-    @Length(max = 3)
-    @NotNull(message = "年龄不能为空", groups = {IsAdd.class,IsEdit.class})
-    private Integer age;
-
     public SysUser toEntity(){
         SysUser user = new SysUser();
         user.setId(this.id);
         user.setName(this.name);
-        user.setAge(this.age);
         user.setUsername(this.username);
         user.setPassword(this.password);
         return user;

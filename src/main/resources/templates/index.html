@@ -1,10 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
 	<div data-th-include="/common/portal :: meta"></div>
-
-
 	<script>
      !function (e, n, t) {
          "use strict";
@@ -37,14 +34,12 @@
          }).then(f).catch(a)) : a()
      }(window, document, localStorage);
 	</script>
-
 	<div data-th-include="/common/portal :: style"></div>
 </head>
-
 <body>
-<div id="app"></div>
-<!-- page -->
-
+<div id="app">
+	<router-view></router-view>
+</div>
 <div data-th-include="/common/portal :: javascript"></div>
 <script src="/vue/portal/main.js"></script>
 </body>
