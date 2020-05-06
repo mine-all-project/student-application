@@ -6,11 +6,12 @@ import lombok.Getter;
 @Getter
 public class ResponseDTO {
     @Getter
-    enum Status{
+    enum Status {
         SUCCESS(200),
         AUTH_FAIL(401),
         ERROR(500);
         int code;
+
         Status(int code) {
             this.code = code;
         }
@@ -30,6 +31,7 @@ public class ResponseDTO {
         this.data = data;
         this.time = System.currentTimeMillis();
     }
+
     private ResponseDTO(int code, String message, Object data) {
         this.status = code;
         this.message = message;
@@ -37,30 +39,38 @@ public class ResponseDTO {
         this.time = System.currentTimeMillis();
     }
 
-    public static ResponseDTO returnSuccess(String message, Object data){
-        return new ResponseDTO(Status.SUCCESS,message,data);
-    }
-    public static ResponseDTO returnSuccess(String message){
-        return new ResponseDTO(Status.SUCCESS,message,null);
+    public static ResponseDTO returnSuccess(String message, Object data) {
+        return new ResponseDTO(Status.SUCCESS, message, data);
     }
 
-    public static ResponseDTO returnError(String message){
-        return new ResponseDTO(Status.ERROR,message,null);
-    }
-    public static ResponseDTO returnError(String message, Object data){
-        return new ResponseDTO(Status.ERROR,message,data);
+    public static ResponseDTO returnSuccess(String message) {
+        return new ResponseDTO(Status.SUCCESS, message, null);
     }
 
-    public static ResponseDTO returnAuthFail(String message){
-        return new ResponseDTO(Status.AUTH_FAIL,message,null);
-    }
-    public static ResponseDTO returnAuthFail(String message, Object data){
-        return new ResponseDTO(Status.AUTH_FAIL,message,data);
+    public static ResponseDTO returnError(String message) {
+        return new ResponseDTO(Status.ERROR, message, null);
     }
 
-    public static ResponseDTO returnCustom(int status, String message, Object data){
-        return new ResponseDTO(status,message,data);
+    public static ResponseDTO returnError(String message, Object data) {
+        return new ResponseDTO(Status.ERROR, message, data);
     }
+
+    public static ResponseDTO returnAuthFail(String message) {
+        return new ResponseDTO(Status.AUTH_FAIL, message, null);
+    }
+
+    public static ResponseDTO returnAuthFail(String message, Object data) {
+        return new ResponseDTO(Status.AUTH_FAIL, message, data);
+    }
+
+    public static ResponseDTO returnCustom(int status, String message, Object data) {
+        return new ResponseDTO(status, message, data);
+    }
+
+    public boolean isSuccess() {
+        return 200 == this.status;
+    }
+
     @Override
     public String toString() {
         return JSONObject.toJSONString(this);
