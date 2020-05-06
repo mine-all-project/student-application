@@ -98,7 +98,7 @@ p {
 .header {
     width: 100%;
     min-width: 1200px;
-    position: absolute;
+    position: fixed;
     z-index: 99999;
     /*top: 35px;*/
     margin: 0 auto;
@@ -152,6 +152,7 @@ p {
     height: 30px;
     line-height: 30px;
     font-size: 1.1em;
+    margin-top: 5px;
 }
 
 .header ul li .navtwo a:hover {
@@ -715,7 +716,9 @@ ul.piclistul li p:hover {
 .header0 {
     width: 100%;
     min-width: 1200px;
-    padding-top: 30px
+    padding-top: 30px;
+    background-color: #fff;
+    opacity: 0.5;
 }
 
 .header0 ul {
