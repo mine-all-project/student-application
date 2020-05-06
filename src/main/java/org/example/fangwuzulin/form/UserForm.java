@@ -21,8 +21,12 @@ public class UserForm {
     private String username;
 
     @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
-    @NotBlank(message = "密码不能为空", groups = {IsNotNull.class, IsLogin.class, IsEdit.class, IsRegister.class})
+    @NotBlank(message = "旧密码不能为空", groups = {IsNotNull.class, IsLogin.class, IsEdit.class, IsRegister.class})
     private String password;
+
+    @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
+    @NotBlank(message = "新密码不能为空", groups = {IsNotNull.class, IsLogin.class, IsEdit.class, IsRegister.class})
+    private String newPassword;
 
     @Length(max = 32)
     @NotBlank(message = "姓名不能为空", groups = {IsAdd.class, IsEdit.class, IsRegister.class})
