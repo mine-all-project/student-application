@@ -1,5 +1,6 @@
 package org.example.gongjiao.service.impl;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.gongjiao.dao.LinesDAO;
 import org.example.gongjiao.dao.StandsDAO;
 import org.example.gongjiao.dao.jpa.MessageRepository;
@@ -45,22 +46,23 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    @RequiresPermissions("manage")
     public void saveLinesInfo(LineesForm form) {
         linesDAO.saveLines(form);
     }
+
+    @Override
+    @RequiresPermissions("manage")
+    public void removeLinesById(String id) {
+        linesDAO.removeLinesById(id);
+    }
+
 
     @Override
     public List<Stands> getStandsList() {
         return standsDAO.findAll();
     }
 
-
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void removeAnimalById(String id) {
-//        animalRepository.deleteById(id);
-//    }
 //
 //    @Override
 //    @RequiresPermissions("manage")

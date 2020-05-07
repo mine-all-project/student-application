@@ -79,7 +79,7 @@
                 const id = scope.row.id;
                 _this.$confirm('确认删除？').then(e => {
                     _this.drawer.loading = true;
-                    axios.delete(`/api/removePaperById/${id}`).then(response => {
+                    axios.delete(`/api/removeLinesById/${id}`).then(response => {
                         _this.getTableDataList();
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);

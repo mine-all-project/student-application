@@ -27,8 +27,11 @@ public interface RestFulService {
     List<Linees> getLinesList();
     Linees getLinesById(String id);
     void saveLinesInfo(LineesForm form);
+    void removeLinesById(String id);
+
 
     List<Stands> getStandsList();
+
 
 //    void removeAnimalById(String id);
 //    void saveAnimalInfo(Animal animal);

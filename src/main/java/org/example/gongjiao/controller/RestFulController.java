@@ -49,6 +49,14 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", form);
     }
 
+    @DeleteMapping("/removeLinesById/{id}")
+    public ResponseDTO removeLinesById(@PathVariable("id") String id) {
+        logger.info("收到请求->删除线路,id:[{}]", id);
+        restFulService.removeLinesById(id);
+        logger.info("返回结果->删除线路完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
     @RequestMapping("/getStandsList")
     @ResponseBody
     public ResponseDTO getStandsList() {
@@ -58,16 +66,6 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", stands);
     }
 
-
-//
-//    @DeleteMapping("/removeAnimalById/{id}")
-//    public ResponseDTO removeAnimalById(@PathVariable("id") String id) {
-//        logger.info("收到请求->删除商品,id:[{}]", id);
-//        restFulService.removeAnimalById(id);
-//        logger.info("返回结果->删除商品完成");
-//        return ResponseDTO.returnSuccess("操作成功");
-//    }
-//
 
 //
 //    @GetMapping("/getPapersByKeyWord/{keyWord}")

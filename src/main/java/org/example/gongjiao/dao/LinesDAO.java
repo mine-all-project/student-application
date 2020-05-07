@@ -29,4 +29,8 @@ public class LinesDAO {
     public void saveLines(LineesForm form) {
         linesRepository.saveAndFlush(form.toEntity());
     }
+
+    public void removeLinesById(String id) {
+        linesRepository.deleteById(id);
+    }
 }
