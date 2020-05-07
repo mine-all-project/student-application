@@ -88,7 +88,8 @@ public class IndexServiceImpl implements IndexService {
         if (user == null) {
             throw new ApplicationException("用户尚未登陆");
         }
-        String id = user.getId();
+        form.setId(user.getId());
+        user = sysUserMapping.findById(user.getId());
         if (form.getPassword() != null) {
             String password = new Md5Hash(form.getPassword(), salt).toString();
             if (!user.getPassword().equals(password)) {
@@ -97,15 +98,12 @@ public class IndexServiceImpl implements IndexService {
             SysUser sysUser = form.toEntity();
             String newPassword = new Md5Hash(form.getNewPassword(), salt).toString();
             sysUser.setPassword(newPassword);
-            sysUser.setId(id);
             Integer count = sysUserMapping.updateUserInfo(sysUser);
             if (count <= 0) {
                 throw new ApplicationException("操作失败");
             }
         } else {
-            SysUser sysUser = form.toEntity();
-            sysUser.setId(user.getId());
-            Integer count = sysUserMapping.updateUserInfo(sysUser);
+            Integer count = sysUserMapping.updateUserInfo(form.toEntity());
             if (count <= 0) {
                 throw new ApplicationException("操作失败");
             }

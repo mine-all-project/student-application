@@ -24,11 +24,11 @@ public class HousesForm {
     @NotNull(message = "价格不能为空", groups = {IsNotNull.class})
     private BigDecimal price;
 
-    private String key_words;
-
     private String note;
 
     private String img_src;
+
+    private String contract;
 
     public Houses toEntity() {
         Houses houses = new Houses();
@@ -36,7 +36,6 @@ public class HousesForm {
         houses.setTitle(this.title);
         houses.setAddress(this.address);
         houses.setPrice(this.price);
-        houses.setKey_words(this.key_words);
         houses.setNote(this.note);
         houses.setImg_src(this.img_src);
         return houses;

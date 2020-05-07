@@ -13,7 +13,6 @@ public class Houses extends BaseEntity{
     private String address;
     private String user_id;
     private BigDecimal price;
-    private String key_words;
     private String note;
     private String img_src;
     private String contract;
