@@ -15,6 +15,9 @@ import java.math.BigDecimal;
 public class HousesForm {
     private String id;
 
+    @NotBlank(message = "标题不能为空", groups = {IsNotNull.class})
+    private String title;
+
     @NotBlank(message = "地址不能为空", groups = {IsNotNull.class})
     private String address;
 
@@ -30,6 +33,7 @@ public class HousesForm {
     public Houses toEntity() {
         Houses houses = new Houses();
         houses.setId(this.id);
+        houses.setTitle(this.title);
         houses.setAddress(this.address);
         houses.setPrice(this.price);
         houses.setKey_words(this.key_words);
