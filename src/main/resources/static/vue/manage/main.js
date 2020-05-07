@@ -4,10 +4,9 @@ const routes = [
     {path: '/manage/lines', component: httpVueLoader('/vue/manage/lines.vue')},
     {path: '/manage/stands', component: httpVueLoader('/vue/manage/stands.vue')},
 
+    {path: '/manage/dynamic', component: httpVueLoader('/vue/manage/dynamic.vue')},
 
-    {path: '/manage/honor', component: httpVueLoader('/vue/manage/honor.vue')},
     {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
-    {path: '/manage/news', component: httpVueLoader('/vue/manage/news.vue')},
     {path: '/manage/friends', component: httpVueLoader('/vue/manage/friends.vue')},
     {path: '/manage/products', component: httpVueLoader('/vue/manage/products.vue')},
     {path: '/manage/contact', component: httpVueLoader('/vue/manage/contact.vue')},
@@ -43,36 +42,24 @@ const app = new Vue({
                             icon: 'el-icon-message',
                             url: '/manage/stands'
                         },
-                        {
-                            id: '1-3',
-                            name: '公交动态管理',
-                            icon: 'el-icon-message',
-                            url: '/manage/dynamic'
-                        },
-                        {
-                            id: '1-4',
-                            name: '富文本',
-                            icon: 'el-icon-message',
-                            url: '/manage/culture'
-                        },
                     ]
                 },
                 {
                     id: '2',
-                    name: '公告管理',
+                    name: '信息管理',
                     icon: 'el-icon-message',
                     children: [
                         {
                             id: '2-1',
-                            name: '公告列表',
+                            name: '公交动态管理',
                             icon: '',
-                            url: '/manage/notice'
+                            url: '/manage/dynamic'
                         },
                         {
                             id: '2-2',
-                            name: '新闻管理',
+                            name: '公告管理',
                             icon: 'el-icon-message',
-                            url: '/manage/news'
+                            url: '/manage/notice'
                         },
                         {
                             id: '2-3',

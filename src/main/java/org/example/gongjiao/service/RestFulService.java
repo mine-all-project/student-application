@@ -4,6 +4,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.example.gongjiao.entity.*;
 import org.example.gongjiao.form.LinesForm;
+import org.example.gongjiao.form.PapersForm;
 import org.example.gongjiao.form.StandsForm;
 import org.example.gongjiao.utils.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,21 +37,11 @@ public interface RestFulService {
     void saveStandsInfo(StandsForm form);
     void removeStandsById(String id);
 
+    List<Papers> getPapersByKeyWords(String keyWords);
+    Papers getPapersById(String id);
+    void savePapers(PapersForm form);
+    void removePapersById(String id);
 
-//    void removeAnimalById(String id);
-//    void saveAnimalInfo(Animal animal);
-//
-//    List<Paper> getPapersByKeyWord(String keyWord);
-//    void savePaper(Paper paper);
-//    Paper getPaperById(String id);
-//    void removePaperById(String id);
-//
-//    AudioFile uploadFile(HttpServletRequest request, String id);
-//    AudioFile updateFile(HttpServletRequest request, AudioFile audioFile);
-//    List<AudioFile> getFileListByKeyWord(String keyWord);
-//    void removeFileById(String id);
-//    AudioFile getFileById(String id);
-//
 //    Orders createOrder(Orders orders);
 //    List<Orders> getOrdersList();
 //    void removeOrdersById(String id);

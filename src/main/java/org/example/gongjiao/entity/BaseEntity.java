@@ -26,7 +26,7 @@ public abstract class BaseEntity implements Serializable {
     @Column(length = 64)
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    private String id;
+    protected String id;
 
     /**
      * 创建时间
@@ -34,8 +34,8 @@ public abstract class BaseEntity implements Serializable {
      */
     @Column(columnDefinition = "timestamp default current_timestamp comment '创建时间'")
     @CreatedDate
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss E")
-    private LocalDateTime createTime;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    protected LocalDateTime createTime;
 
     /**
      * 更新时间
@@ -43,14 +43,14 @@ public abstract class BaseEntity implements Serializable {
      */
     @Column(columnDefinition = "timestamp default current_timestamp on update current_timestamp comment '修改时间'")
     @LastModifiedDate
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss E")
-    private LocalDateTime updateTime;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    protected LocalDateTime updateTime;
 
     /**
      * 删除标记 (0:正常 1:删除)
      */
     @Column(columnDefinition = "bit(1) default 0 not null comment '删除标记'")
-    private int delFlag;
+    protected int delFlag;
 
     @Override
     public String toString() {

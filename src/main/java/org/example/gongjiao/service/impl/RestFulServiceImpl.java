@@ -2,10 +2,12 @@ package org.example.gongjiao.service.impl;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.gongjiao.dao.LinesDAO;
+import org.example.gongjiao.dao.PapersDAO;
 import org.example.gongjiao.dao.StandsDAO;
 import org.example.gongjiao.dao.jpa.MessageRepository;
 import org.example.gongjiao.entity.*;
 import org.example.gongjiao.form.LinesForm;
+import org.example.gongjiao.form.PapersForm;
 import org.example.gongjiao.form.StandsForm;
 import org.example.gongjiao.service.RestFulService;
 import org.slf4j.Logger;
@@ -23,16 +25,18 @@ public class RestFulServiceImpl implements RestFulService {
     private String virtualPath;
     private final StandsDAO standsDAO;
     private final LinesDAO linesDAO;
+    private final PapersDAO papersDAO;
     private final MessageRepository messageRepository;
 
     private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
-    public RestFulServiceImpl(StandsDAO standsDAO,
-                              MessageRepository messageRepository,
-                              LinesDAO linesDAO) {
+    public RestFulServiceImpl(StandsDAO standsDAO, LinesDAO linesDAO, PapersDAO papersDAO,
+                              MessageRepository messageRepository
+    ) {
         this.standsDAO = standsDAO;
-        this.messageRepository = messageRepository;
         this.linesDAO = linesDAO;
+        this.papersDAO = papersDAO;
+        this.messageRepository = messageRepository;
     }
 
     @Override
@@ -78,64 +82,27 @@ public class RestFulServiceImpl implements RestFulService {
     public void removeStandsById(String id) {
         standsDAO.removeStandsById(id);
     }
-    //
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void saveAnimalInfo(Animal animal) {
-//        animalRepository.saveAndFlush(animal);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public AudioFile uploadFile(HttpServletRequest request, String id) {
-//        String path = getfilePath(request, filePath, virtualPath);
-//        AudioFile picture = audioFileRepository.findById(id).orElse(new AudioFile());
-//        picture.setUrl(path);
-//        return audioFileRepository.save(picture);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public AudioFile updateFile(HttpServletRequest request, AudioFile audioFile) {
-//        return audioFileRepository.save(audioFile);
-//    }
-//
-//    @Override
-//    public List<AudioFile> getFileListByKeyWord(String keyWord) {
-//        return audioFileRepository.findAllByKeyWord(keyWord);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void removeFileById(String id) {
-//        audioFileRepository.deleteById(id);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public AudioFile getFileById(String id) {
-//        return audioFileRepository.findById(id).orElse(null);
-//    }
-//
-//    @Override
-//    public List<Paper> getPapersByKeyWord(String keyWord) {
-//        return paperRepository.findAllByKeyWord(keyWord);
-//    }
-//
-//    @Override
-//    public void savePaper(Paper paper) {
-//        paperRepository.save(paper);
-//    }
-//
-//    @Override
-//    public Paper getPaperById(String id) {
-//        return paperRepository.findById(id).orElse(new Paper());
-//    }
-//
-//    @Override
-//    public void removePaperById(String id) {
-//        paperRepository.deleteById(id);
-//    }
+
+    @Override
+    public List<Papers> getPapersByKeyWords(String keyWord) {
+        return papersDAO.findAllByKeyWords(keyWord);
+    }
+
+    @Override
+    public Papers getPapersById(String id) {
+        return papersDAO.findById(id);
+    }
+
+
+    @Override
+    public void savePapers(PapersForm form) {
+        papersDAO.savePapers(form);
+    }
+
+    @Override
+    public void removePapersById(String id) {
+        papersDAO.removePapersById(id);
+    }
 //
 //    @Override
 //    @RequiresPermissions("login")

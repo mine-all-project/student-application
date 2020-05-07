@@ -1,22 +1,26 @@
 package org.example.gongjiao.form;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.example.gongjiao.config.groups.*;
 import org.example.gongjiao.entity.SysUser;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
+import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 public class UserForm {
     @NotBlank(message = "id不能为空", groups = IsEdit.class)
     @NotBlank(message = "id不能为空", groups = IsStatusChange.class)
     @Null(message = "id必须为空", groups = IsAdd.class)
     private String id;
+    private LocalDateTime createTime;
 
     @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
-    @NotBlank(message = "用户名不能为空", groups = {IsAdd.class,IsLogin.class})
+    @NotBlank(message = "用户名不能为空", groups = {IsAdd.class, IsLogin.class})
     private String username;
 
     @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
@@ -40,13 +44,14 @@ public class UserForm {
     private String mail;
 
     public SysUser toEntity() {
-        SysUser user = new SysUser();
-        user.setId(this.id);
-        user.setName(this.name);
-        user.setPhone(this.phone);
-        user.setMail(this.mail);
-        user.setUsername(this.username);
-        user.setPassword(this.password);
-        return user;
+        SysUser entity = new SysUser();
+        entity.setId(this.id);
+        entity.setCreateTime(this.createTime);
+        entity.setName(this.name);
+        entity.setPhone(this.phone);
+        entity.setMail(this.mail);
+        entity.setUsername(this.username);
+        entity.setPassword(this.password);
+        return entity;
     }
 }
