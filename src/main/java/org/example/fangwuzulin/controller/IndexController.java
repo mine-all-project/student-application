@@ -1,6 +1,5 @@
 package org.example.fangwuzulin.controller;
 
-import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import org.apache.shiro.SecurityUtils;
 import org.example.fangwuzulin.config.groups.IsAdd;
@@ -13,28 +12,25 @@ import org.example.fangwuzulin.form.UserForm;
 import org.example.fangwuzulin.service.IndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 @Controller
 public class IndexController extends BaseController {
     private final IndexService indexService;
+    private final Producer producer;
 
-    public IndexController(IndexService indexService) {
+    public IndexController(IndexService indexService, Producer producer) {
         this.indexService = indexService;
+        this.producer = producer;
     }
 
     private final Logger logger = LoggerFactory.getLogger(IndexController.class);
-
-    @Autowired
-    private Producer producer;
 
     @RequestMapping("/")
     public String index() {
@@ -104,11 +100,11 @@ public class IndexController extends BaseController {
     }
 
     @GetMapping("/randomCode")
-    public void captcha(HttpServletResponse response) throws IOException {
+    public void randomCode(HttpServletResponse response) throws IOException {
         logger.info("收到请求->生成图片验证码");
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
-        RandomCode randomCode = createRandomCode();
+        RandomCode randomCode = indexService.createRandomCode(producer);
         SecurityUtils.getSubject().getSession().setAttribute("randomCode", randomCode.getCode());
         ServletOutputStream out = response.getOutputStream();
         ImageIO.write(randomCode.getImage(), "jpg", out);

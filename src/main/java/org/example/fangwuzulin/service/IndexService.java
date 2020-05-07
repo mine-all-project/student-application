@@ -1,14 +1,14 @@
 package org.example.fangwuzulin.service;
 
+import com.google.code.kaptcha.Producer;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.example.fangwuzulin.dto.ResponseDTO;
+import org.example.fangwuzulin.dto.RandomCode;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.form.UserForm;
-import org.example.fangwuzulin.mapping.SysUserMapping;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 
 public interface IndexService {
 
@@ -20,6 +20,12 @@ public interface IndexService {
     default void logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
+    }
+
+    default RandomCode createRandomCode(Producer producer) {
+        String code = producer.createText();
+        BufferedImage image = producer.createImage(code);
+        return new RandomCode(code, image);
     }
 
     boolean login(HttpServletRequest request, SysUser sysUser);
