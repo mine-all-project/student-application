@@ -1,8 +1,5 @@
 package org.example.fangwuzulin.controller;
 
-import org.example.fangwuzulin.dto.ResponseDTO;
-import org.example.fangwuzulin.entity.SysUser;
-import org.example.fangwuzulin.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -10,15 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/manage")
-public class SysController extends BaseController {
+public class ManageController extends BaseController {
 
-    private Logger logger = LoggerFactory.getLogger(SysController.class);
-    private SysService sysService;
+    private Logger logger = LoggerFactory.getLogger(ManageController.class);
     private static final String MANAGE = "manage/";
 
-    public SysController(SysService sysService) {
-        this.sysService = sysService;
-    }
 
     @GetMapping("/{pageName}")
     public String page(@PathVariable("pageName") String pageName) {

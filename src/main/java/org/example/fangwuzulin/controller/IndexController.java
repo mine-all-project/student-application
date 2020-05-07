@@ -1,28 +1,23 @@
 package org.example.fangwuzulin.controller;
 
+import org.example.fangwuzulin.config.groups.IsAdd;
 import org.example.fangwuzulin.config.groups.IsEdit;
 import org.example.fangwuzulin.config.groups.IsLogin;
-import org.example.fangwuzulin.config.groups.IsRegister;
 import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.form.UserForm;
 import org.example.fangwuzulin.service.IndexService;
-import org.example.fangwuzulin.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @Controller
 public class IndexController extends BaseController {
     private final IndexService indexService;
-    private final SysService sysService;
 
-    public IndexController(IndexService indexService, SysService sysService) {
+    public IndexController(IndexService indexService) {
         this.indexService = indexService;
-        this.sysService = sysService;
     }
 
     private final Logger logger = LoggerFactory.getLogger(IndexController.class);
@@ -65,17 +60,17 @@ public class IndexController extends BaseController {
     public ResponseDTO loginCheck(@RequestBody UserForm form) {
         logger.info("收到请求->用户登陆验证:[{}]", form);
         super.validator(form, IsLogin.class);
-        ResponseDTO responseDTO = sysService.login(form);
-        logger.info("登录验证结束->用户信息:[{}]", responseDTO);
-        return responseDTO;
+        SysUser sysUser = indexService.loginOnShiro(form);
+        logger.info("登录验证结束->用户信息:[{}]", sysUser);
+        return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
 
     @PostMapping("/registryCheck")
     @ResponseBody
     public ResponseDTO registryCheck(@RequestBody UserForm form) {
         logger.info("收到请求->用户注册[{}]", form);
-        super.validator(form, IsRegister.class);
-        SysUser sysUser = sysService.registry(form);
+        super.validator(form, IsAdd.class);
+        SysUser sysUser = indexService.registry(form);
         logger.info("注册验证结束->用户信息:[{}]", sysUser);
         return ResponseDTO.returnSuccess("注册成功，即将返回登录页面", sysUser);
     }
@@ -94,22 +89,16 @@ public class IndexController extends BaseController {
     public ResponseDTO saveUserInfo(@RequestBody UserForm form) {
         logger.info("收到请求->修改用户信息");
         super.validator(form, IsEdit.class);
-        sysService.saveUserInfo(form);
+        indexService.updateUserInfo(form);
         logger.info("返回结果->修改用户信息结束");
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    //
-//    @RequestMapping("/mineInfo")
-//    public String mineInfo() {
-//        return "/mineInfo";
-//    }
-//
     @RequestMapping("/loginOut")
     public String loginOut() {
         logger.info("收到请求->退出登录");
         indexService.logout();
         logger.info("返回结果->退出登录结束");
-        return "index-bak";
+        return "index";
     }
 }

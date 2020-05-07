@@ -24,14 +24,18 @@
 		(#{id},#{username},#{password},#{status},#{name},#{is_admin},#{phone},#{mail})
 	</insert>
 
-	<update id="updateUserInfo">
-		update sys_user
-		<set>
-			<if test="password != null">password = #{password},</if>
-			<if test="phone != null">phone = #{phone},</if>
-			<if test="mail != null">mail=#{mail},</if>
-			<if test="name != null">name=#{name}</if>
-		</set>
-		where id = #{id}
-	</update>
+    <update id="updateUserInfo">
+        update sys_user
+        <set>
+            <if test="password != null">password = #{password},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="mail != null">mail=#{mail},</if>
+            <if test="name != null">name=#{name}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="user">
+ 		select * from sys_user where id = #{id}
+ 	</select>
 </mapper>

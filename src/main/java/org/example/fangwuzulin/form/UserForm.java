@@ -17,27 +17,27 @@ public class UserForm {
     private String id;
 
     @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
-    @NotBlank(message = "用户名不能为空", groups = {IsNotNull.class, IsLogin.class, IsRegister.class})
+    @NotBlank(message = "用户名不能为空", groups = {IsAdd.class,IsLogin.class})
     private String username;
 
     @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
-    @NotBlank(message = "旧密码不能为空", groups = {IsNotNull.class, IsLogin.class, IsEdit.class, IsRegister.class})
+    @NotBlank(message = "旧密码不能为空", groups = {IsLogin.class, IsEdit.class})
     private String password;
 
     @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
-    @NotBlank(message = "新密码不能为空", groups = {IsNotNull.class, IsLogin.class, IsEdit.class, IsRegister.class})
+    @NotBlank(message = "新密码不能为空", groups = {IsNotNull.class, IsEdit.class})
     private String newPassword;
 
     @Length(max = 32)
-    @NotBlank(message = "姓名不能为空", groups = {IsAdd.class, IsEdit.class, IsRegister.class})
+    @NotBlank(message = "姓名不能为空", groups = {IsAdd.class, IsEdit.class})
     private String name;
 
     @Length(max = 32)
-    @NotBlank(message = "电话不能为空", groups = {IsAdd.class, IsEdit.class, IsRegister.class})
+    @NotBlank(message = "电话不能为空", groups = {IsAdd.class, IsEdit.class})
     private String phone;
 
     @Length(max = 32)
-    @NotBlank(message = "邮箱不能为空", groups = {IsAdd.class, IsEdit.class, IsRegister.class})
+    @NotBlank(message = "邮箱不能为空", groups = {IsAdd.class, IsEdit.class})
     private String mail;
 
     public SysUser toEntity() {

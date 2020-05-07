@@ -12,4 +12,6 @@ public interface SysUserMapping {
     Integer insertUser(SysUser sysUser);
 
     Integer updateUserInfo(SysUser sysUser);
+
+    SysUser findById(String id);
 }

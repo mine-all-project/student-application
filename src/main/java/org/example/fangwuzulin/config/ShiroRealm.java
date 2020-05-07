@@ -1,7 +1,6 @@
 package org.example.fangwuzulin.config;
 
 import org.example.fangwuzulin.entity.SysUser;
-import org.example.fangwuzulin.service.SysService;
 import org.example.fangwuzulin.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -21,11 +19,9 @@ import java.util.Set;
 public class ShiroRealm extends AuthorizingRealm {
     private static final Logger logger = LoggerFactory.getLogger(ShiroRealm.class);
     private UserService userService;
-    private final SysService sysService;
 
-    public ShiroRealm(UserService userService, SysService sysService) {
+    public ShiroRealm(UserService userService) {
         this.userService = userService;
-        this.sysService = sysService;
     }
 
     /**
