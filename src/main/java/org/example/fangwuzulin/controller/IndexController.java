@@ -1,5 +1,6 @@
 package org.example.fangwuzulin.controller;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.fangwuzulin.config.groups.IsAdd;
 import org.example.fangwuzulin.config.groups.IsEdit;
 import org.example.fangwuzulin.config.groups.IsLogin;
@@ -77,6 +78,7 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/getUserInfo")
     @ResponseBody
+    @RequiresPermissions("login")
     public ResponseDTO getUserInfo() {
         logger.info("收到请求->获取用户信息");
         SysUser sysUser = indexService.getUserInfo();
@@ -86,6 +88,7 @@ public class IndexController extends BaseController {
 
     @PostMapping("/saveUserInfo")
     @ResponseBody
+    @RequiresPermissions("login")
     public ResponseDTO saveUserInfo(@RequestBody UserForm form) {
         logger.info("收到请求->修改用户信息");
         super.validator(form, IsEdit.class);

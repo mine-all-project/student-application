@@ -4,6 +4,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.config.ApplicationConfigure;
@@ -25,7 +26,6 @@ public class IndexServiceImpl implements IndexService {
     private final SysUserMapping sysUserMapping;
     private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
     private final String salt;
-
 
     public IndexServiceImpl(ApplicationConfigure applicationConfigure, SysUserMapping sysUserMapping) {
         this.sysUserMapping = sysUserMapping;

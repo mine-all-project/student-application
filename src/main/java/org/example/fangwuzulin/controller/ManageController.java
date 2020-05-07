@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/manage")
 public class ManageController extends BaseController {
 
-    private Logger logger = LoggerFactory.getLogger(ManageController.class);
+    private final Logger logger = LoggerFactory.getLogger(ManageController.class);
     private static final String MANAGE = "manage/";
 
 
@@ -19,24 +19,6 @@ public class ManageController extends BaseController {
         return MANAGE + pageName;
     }
 
-//
-//    /**
-//     * 发起登录请求
-//     *
-//     * @param form 用户名和密码
-//     * @return 登录成功返回token
-//     */
-//    @PostMapping("/loginCheck")
-//    @ResponseBody
-//    public ResponseDTO loginCheck(@RequestBody UserForm form) {
-//        logger.info("收到请求->用户登陆验证:[{}]", form);
-//        super.validator(form, IsLogin.class);
-//        ResponseDTO responseDTO = sysService.login(form);
-//        logger.info("登录验证结束->用户信息:[{}]", responseDTO);
-//        return responseDTO;
-//    }
-//
-//
 //    @GetMapping("/getUserList")
 //    @ResponseBody
 //    public ResponseDTO getUserList() {
@@ -64,7 +46,6 @@ public class ManageController extends BaseController {
 //        return ResponseDTO.returnSuccess("操作成功");
 //    }
 //
-
 //
 //    @PostMapping("/savePassword")
 //    @ResponseBody
