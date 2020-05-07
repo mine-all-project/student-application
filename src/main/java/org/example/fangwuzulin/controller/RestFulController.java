@@ -59,6 +59,15 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
+    @RequestMapping("/getHousesByUser")
+    @RequiresPermissions("login")
+    public ResponseDTO getHousesByUser() {
+        logger.info("收到请求->获取我的房源列表");
+        List<Houses> houses = restFulService.getHousesByUser();
+        logger.info("返回结果->获取我的房源列表完成:[{}]", houses);
+        return ResponseDTO.returnSuccess("操作成功", houses);
+    }
+
     @RequestMapping("/saveHousesInfo")
     @RequiresPermissions("login")
     public ResponseDTO saveHousesInfo(@RequestBody HousesForm form) {

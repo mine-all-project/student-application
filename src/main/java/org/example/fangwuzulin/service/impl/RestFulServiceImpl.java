@@ -107,4 +107,10 @@ public class RestFulServiceImpl implements RestFulService {
             throw new ApplicationException("操作失败");
         }
     }
+
+    @Override
+    public List<Houses> getHousesByUser() {
+        SysUser sysUser = getUser();
+        return housesMapping.findAllByUser(sysUser.getId());
+    }
 }

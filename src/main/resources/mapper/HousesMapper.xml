@@ -45,4 +45,8 @@
 		values
 		(#{id},#{address},#{user_id},#{price},#{note},#{img_src},#{title},#{contract})
 	</insert>
+
+    <select id="findAllByUser" resultMap="houses">
+ 		select * from houses where user_id = #{userId}
+ 	</select>
 </mapper>

@@ -18,4 +18,6 @@ public interface HousesMapping {
     Integer updateHousesInfo(Houses houses);
 
     Integer insertHousesInfo(Houses houses);
+
+    List<Houses> findAllByUser(String userId);
 }

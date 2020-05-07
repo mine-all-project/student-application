@@ -37,4 +37,6 @@ public interface RestFulService {
     AudioFiles uploadFile(HttpServletRequest request);
 
     void saveLeaveMessage(LeaveMessageForm form);
+
+    List<Houses> getHousesByUser();
 }
