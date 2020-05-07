@@ -16,6 +16,13 @@
 		<hr class="hr15">
 		<input autocomplete="off" placeholder="密码" type="password" v-model="password">
 		<hr class="hr15">
+		<input autocomplete="off" placeholder="验证码" type="text" v-model="captcha">
+		<hr class="hr15">
+		<div class="captcha" @click="refreshCode">
+			<img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" style="vertical-align: middle;">
+			<a href="javascript:;" style="margin-left: 1em; color: #3c8dbc;">点击刷新</a>
+		</div>
+		<hr class="hr15">
 		<input style="width:100%;" type="button" value="立即登录" @click="login">
 		<hr class="hr15">
 	</form>
@@ -27,15 +34,21 @@
         data() {
             return {
                 username: '',
-                password: ''
+                password: '',
+				captcha: '',
+				src: 'captcha.jpg'
             }
         },
         methods: {
+			refreshCode () {
+				this.src = "captcha.jpg?t=" + new Date().getTime();
+			},
             login() {
                 console.log()
                 let data = {
                     username: this.username,
-                    password: this.password
+                    password: this.password,
+					captcha: this.captcha
                 };
                 axios.post('/loginCheck', data).then(response => {
                     const result = response.data;
