@@ -3,6 +3,7 @@ package org.example.gongjiao.controller;
 import org.example.gongjiao.dto.ResponseDTO;
 import org.example.gongjiao.entity.Linees;
 import org.example.gongjiao.entity.Stands;
+import org.example.gongjiao.form.LineesForm;
 import org.example.gongjiao.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,13 +23,30 @@ public class RestFulController extends BaseController {
         this.restFulService = restFulService;
     }
 
-    @RequestMapping("/getLineesList")
+    @RequestMapping("/getLinesList")
     @ResponseBody
-    public ResponseDTO getLineesList() {
+    public ResponseDTO getLinesList() {
         logger.info("收到请求->获取线路列表");
-        List<Linees> linees = restFulService.getLineesList();
-        logger.info("返回结果->获取线路信息完成:[{}]", linees);
-        return ResponseDTO.returnSuccess("操作成功", linees);
+        List<Linees> lines = restFulService.getLinesList();
+        logger.info("返回结果->获取线路信息完成:[{}]", lines);
+        return ResponseDTO.returnSuccess("操作成功", lines);
+    }
+
+    @GetMapping("/getLinesById")
+    public ResponseDTO getLinesById(String id) {
+        logger.info("收到请求->获取线路数据,id:[{}]", id);
+        Linees lines = restFulService.getLinesById(id);
+        logger.info("返回结果->获取线路数据完成:[{}]", lines);
+        return ResponseDTO.returnSuccess("操作成功", lines);
+    }
+
+    @RequestMapping("/saveLinesInfo")
+    @ResponseBody
+    public ResponseDTO saveLinesInfo(@RequestBody LineesForm form) {
+        logger.info("收到请求->保存线路信息:[{}]", form);
+        restFulService.saveLinesInfo(form);
+        logger.info("返回结果->保存线路信息完成:[{}]", form);
+        return ResponseDTO.returnSuccess("操作成功", form);
     }
 
     @RequestMapping("/getStandsList")
@@ -40,13 +58,7 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", stands);
     }
 
-    @GetMapping("/getLineesById")
-    public ResponseDTO getLineesById(String id) {
-        logger.info("收到请求->获取线路数据,id:[{}]", id);
-        Linees linees = restFulService.getLineesById(id);
-        logger.info("返回结果->获取线路数据完成:[{}]", linees);
-        return ResponseDTO.returnSuccess("操作成功", linees);
-    }
+
 //
 //    @DeleteMapping("/removeAnimalById/{id}")
 //    public ResponseDTO removeAnimalById(@PathVariable("id") String id) {
@@ -56,15 +68,7 @@ public class RestFulController extends BaseController {
 //        return ResponseDTO.returnSuccess("操作成功");
 //    }
 //
-//    @RequestMapping("/saveAnimalInfo")
-//    @ResponseBody
-//    public ResponseDTO saveAnimalInfo(@RequestBody Animal animal) {
-//        System.err.println(animal);
-//        logger.info("收到请求->保存商品信息:[{}]", animal);
-//        restFulService.saveAnimalInfo(animal);
-//        logger.info("返回结果->保存商品信息完成:[{}]", animal);
-//        return ResponseDTO.returnSuccess("操作成功", animal);
-//    }
+
 //
 //    @GetMapping("/getPapersByKeyWord/{keyWord}")
 //    public ResponseDTO getPapersByKeyWord(@PathVariable String keyWord) {

@@ -1,17 +1,7 @@
-// 0. 如果使用模块化机制编程，导入Vue和VueRouter，要调用 Vue.use(VueRouter)
-
-// 1. 定义 (路由) 组件。
-// 可以从其他文件 import 进来
 Vue.use(httpVueLoader);
-
-// 2. 定义路由
-// 每个路由应该映射一个组件。 其中"component" 可以是
-// 通过 Vue.extend() 创建的组件构造器，
-// 或者，只是一个组件配置对象。
-// 我们晚点再讨论嵌套路由。
 const routes = [
     {path: '/demo', component: httpVueLoader('/demo-manage.vue')},
-    {path: '/manage/about', component: httpVueLoader('/vue/manage/about.vue')},
+    {path: '/manage/lines', component: httpVueLoader('/vue/manage/lines.vue')},
     {path: '/manage/culture', component: httpVueLoader('/vue/manage/culture.vue')},
     {path: '/manage/honor', component: httpVueLoader('/vue/manage/honor.vue')},
 
@@ -25,17 +15,9 @@ const routes = [
 
 ]
 
-// 3. 创建 router 实例，然后传 `routes` 配置
-// 你还可以传别的配置参数, 不过先这么简单着吧。
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes
 })
-
-
-// 4. 创建和挂载根实例。
-// 记得要通过 router 配置参数注入路由，
-// 从而让整个应用都有路由功能
-
 const app = new Vue({
     el: '#app',
     router,
@@ -45,37 +27,37 @@ const app = new Vue({
             menus: [
                 {
                     id: '1',
-                    name: '公司简介',
+                    name: '公交管理',
                     icon: 'el-icon-message',
                     children: [
                         {
                             id: '1-1',
-                            name: '关于我们',
+                            name: '公交线路管理',
                             icon: '',
-                            url: '/manage/about'
+                            url: '/manage/lines'
                         },
                         {
                             id: '1-2',
-                            name: '企业文化',
+                            name: '公交动态管理',
                             icon: 'el-icon-message',
-                            url: '/manage/culture'
+                            url: '/manage/dynamic'
                         },
                         {
                             id: '1-3',
-                            name: '企业荣誉',
-                            icon: '',
-                            url: '/manage/honor'
+                            name: '富文本',
+                            icon: 'el-icon-message',
+                            url: '/manage/culture'
                         },
                     ]
                 },
                 {
                     id: '2',
-                    name: '网站管理',
+                    name: '公告管理',
                     icon: 'el-icon-message',
                     children: [
                         {
                             id: '2-1',
-                            name: '通知管理',
+                            name: '公告列表',
                             icon: '',
                             url: '/manage/notice'
                         },
@@ -116,19 +98,6 @@ const app = new Vue({
                             icon: 'el-icon-message',
                             url: '/manage/user-list'
                         }
-                    ]
-                },
-                {
-                    id: '4',
-                    name: '订单管理',
-                    icon: 'el-icon-message',
-                    children: [
-                        {
-                            id: '4-1',
-                            name: '订单列表',
-                            icon: 'el-icon-message',
-                            url: '/manage/orders-list'
-                        },
                     ]
                 },
             ],

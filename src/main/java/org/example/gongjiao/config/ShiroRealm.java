@@ -49,21 +49,6 @@ public class ShiroRealm extends AuthorizingRealm {
     }
 
     /**
-     * 获取用户权限
-     *
-     * @param menus 用户菜单列表
-     * @return 用户权限列表
-     */
-    private Set<String> getPermissions(List<SysMenu> menus) {
-        Set<String> permissions = new HashSet<>();
-        menus.forEach(e -> {
-            permissions.addAll(getPermissions(e.getChildren()));
-            permissions.add(e.getPermission());
-        });
-        return permissions;
-    }
-
-    /**
      * shiro认证调用的方法,认证失败时会抛出异常
      * IncorrectCredentialsException密码错误
      * UnknownAccountException用户名错误

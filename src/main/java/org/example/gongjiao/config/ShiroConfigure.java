@@ -64,7 +64,7 @@ public class ShiroConfigure {
 //        filterMap.put("/index","perms[]");
 
         shiroFilterFactory.setFilterChainDefinitionMap(filterMap);
-        shiroFilterFactory.setLoginUrl("/manage/login");
+        shiroFilterFactory.setLoginUrl("/login");
         /*
          * ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
          * 认证失败跳转的页面
@@ -72,7 +72,7 @@ public class ShiroConfigure {
          * 授权失败跳转的页面
          * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
          */
-//        shiroFilterFactory.setUnauthorizedUrl("/manage/login");
+//        shiroFilterFactory.setUnauthorizedUrl("/login");
         return shiroFilterFactory;
     }
 

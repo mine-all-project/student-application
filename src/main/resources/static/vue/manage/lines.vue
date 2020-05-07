@@ -4,6 +4,7 @@
 			<el-table-column prop="number" label="线路"></el-table-column>
 			<el-table-column prop="startTime" label="首班时间"></el-table-column>
 			<el-table-column prop="endTime" label="末班时间"></el-table-column>
+			<el-table-column prop="offset" label="间隔时间"></el-table-column>
 			<el-table-column label="操作" width="160">
 				<template slot-scope="scope">
 					<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
@@ -24,8 +25,14 @@
 					<el-form-item label="末班时间" :label-width="formLabelWidth">
 						<el-time-picker v-model="form.endTime" placeholder="首班时间"></el-time-picker>
 					</el-form-item>
+					<el-form-item label="发车间隔" :label-width="formLabelWidth">
+						<el-input v-model="form.offset" autocomplete="off" style="width: 30%"></el-input>
+					</el-form-item>
 					<el-form-item label="站点" :label-width="formLabelWidth">
-						<el-transfer v-model="form.stands" :data="stands"></el-transfer>
+						<el-transfer v-model="form.standsList" :data="stands"
+						             :titles="['所有站点', '途经站点']"
+						             :button-texts="['移除', '添加']">
+						</el-transfer>
 					</el-form-item>
 				</el-form>
 				<div class="drawer-footer">
@@ -45,14 +52,15 @@
         data() {
             return {
                 stands: [],
-                active: 0,
+                standsData: [],
                 tableData: [],
                 form: {
                     id: '',
                     number: '',
                     startTime: '',
                     endTime: '',
-                    stands: [],
+                    offset: '',
+                    standsList: [],
                 },
                 drawer: {
                     show: false,
@@ -88,7 +96,7 @@
             },
             getTableDataList() {
                 const _this = this;
-                axios.get(`/api/getLineesList`).then(response => {
+                axios.get(`/api/getLinesList`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
@@ -113,6 +121,7 @@
                         this.$message.error('数据加载失败');
                         return;
                     }
+                    _this.standsData = result.data
                     _this.stands = result.data.map(e => {
                         return {
                             key: e.id,
@@ -131,45 +140,56 @@
             },
             getDataById(id) {
                 const _this = this;
-                axios.get(`/api/getLineesById?id=${id}`).then(response => {
+                axios.get(`/api/getLinesById?id=${id}`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
                         this.$message.error('数据加载失败');
                         return
                     }
+                    _this.form = result.data;
                     _this.form.startTime = new Date(result.data.startTime)
                     _this.form.endTime = new Date(result.data.endTime)
-                    _this.form = result.data;
+                    _this.form.standsList = result.data.standsList.map(e => {
+                        return e.id
+                    })
+                    console.log(_this.form.standsList)
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });
             },
             saveDrawer() {
                 const _this = this;
-
-                console.log(_this.form)
-                // _this.drawer.loading = true;
-                // axios.post(`/api/saveLinees`, _this.form).then(response => {
-                //     const result = response.data;
-                //     console.log('通过api获取到的数据:', result);
-                //     if (result.status !== 200) {
-                //         this.$message.error('数据加载失败');
-                //         return
-                //     }
-                //     _this.$message.success('操作成功');
-                //     _this.drawer.loading = false;
-                //     _this.drawer.show = false;
-                //     _this.getTableDataList()
-                // }).catch(function (error) {
-                //     window.location.reload();
-                //     console.log('请求出现错误:', error);
-                // });
+                let array = []
+                _this.form.standsList.forEach(e => {
+                    _this.standsData.forEach(t => {
+                        if (e === t.id) {
+                            array.push(t)
+                        }
+                    })
+                })
+                _this.form.standsList = array
+                _this.drawer.loading = true;
+                axios.post(`/api/saveLinesInfo`, _this.form).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    _this.$message.success('操作成功');
+                    _this.drawer.loading = false;
+                    _this.drawer.show = false;
+                    _this.getTableDataList()
+                }).catch(function (error) {
+                    window.location.reload();
+                    console.log('请求出现错误:', error);
+                });
             },
             drawerClose() {
                 this.drawer.loading = false;
                 this.drawer.show = false;
-                this.getLineesList();
+                this.getTableDataList();
             },
         }
     }

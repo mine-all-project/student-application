@@ -20,6 +20,7 @@ public class Linees extends BaseEntity {
     private LocalDateTime startTime;
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
+    private Integer offset;
     @ManyToMany
     private List<Stands> standsList;
     @Override

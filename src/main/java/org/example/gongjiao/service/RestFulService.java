@@ -3,6 +3,7 @@ package org.example.gongjiao.service;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.example.gongjiao.entity.*;
+import org.example.gongjiao.form.LineesForm;
 import org.example.gongjiao.utils.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -23,9 +24,12 @@ public interface RestFulService {
         return (SysUser) subject.getPrincipal();
     }
 
-    List<Linees> getLineesList();
+    List<Linees> getLinesList();
+    Linees getLinesById(String id);
+    void saveLinesInfo(LineesForm form);
+
     List<Stands> getStandsList();
-    Linees getLineesById(String id);
+
 //    void removeAnimalById(String id);
 //    void saveAnimalInfo(Animal animal);
 //

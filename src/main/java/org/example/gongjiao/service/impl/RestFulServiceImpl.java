@@ -1,9 +1,11 @@
 package org.example.gongjiao.service.impl;
 
-import org.example.gongjiao.dao.jpa.LineesRepository;
+import org.example.gongjiao.dao.LinesDAO;
+import org.example.gongjiao.dao.StandsDAO;
 import org.example.gongjiao.dao.jpa.MessageRepository;
 import org.example.gongjiao.dao.jpa.StandsRepository;
 import org.example.gongjiao.entity.*;
+import org.example.gongjiao.form.LineesForm;
 import org.example.gongjiao.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,34 +20,41 @@ public class RestFulServiceImpl implements RestFulService {
     private String filePath;
     @Value("${virtualPath}")
     private String virtualPath;
-    private final StandsRepository standsRepository;
-    private final LineesRepository linesRepository;
+    private final StandsDAO standsDAO;
+    private final LinesDAO linesDAO;
     private final MessageRepository messageRepository;
 
     private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
-    public RestFulServiceImpl(StandsRepository standsRepository,
+    public RestFulServiceImpl(StandsDAO standsDAO,
                               MessageRepository messageRepository,
-                              LineesRepository linesRepository) {
-        this.standsRepository = standsRepository;
+                              LinesDAO linesDAO) {
+        this.standsDAO = standsDAO;
         this.messageRepository = messageRepository;
-        this.linesRepository = linesRepository;
+        this.linesDAO = linesDAO;
     }
 
     @Override
-    public List<Linees> getLineesList() {
-        return linesRepository.findAll();
+    public List<Linees> getLinesList() {
+        return linesDAO.findAll();
+    }
+
+    @Override
+    public Linees getLinesById(String id) {
+        return linesDAO.findById(id);
+    }
+
+    @Override
+    public void saveLinesInfo(LineesForm form) {
+        linesDAO.saveLines(form);
     }
 
     @Override
     public List<Stands> getStandsList() {
-        return standsRepository.findAll();
+        return standsDAO.findAll();
     }
 
-    @Override
-    public Linees getLineesById(String id) {
-        return linesRepository.findById(id).orElse(new Linees());
-    }
+
 //
 //    @Override
 //    @RequiresPermissions("manage")
