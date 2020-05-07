@@ -10,7 +10,8 @@ public class LeaveMessage extends BaseEntity {
     private String houses_id;
     private String user_id;
     private String content;
-    private String resultContent;
+    private String result_content;
+    private String parent_id;
 
     @Override
     public String toString() {

@@ -4,6 +4,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.entity.*;
 import org.example.fangwuzulin.form.HousesForm;
+import org.example.fangwuzulin.form.LeaveMessageForm;
 import org.example.fangwuzulin.utils.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -34,4 +35,6 @@ public interface RestFulService {
     void saveHousesInfo(HousesForm form);
 
     AudioFiles uploadFile(HttpServletRequest request);
+
+    void saveLeaveMessage(LeaveMessageForm form);
 }

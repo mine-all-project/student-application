@@ -30,7 +30,8 @@
             <if test="password != null">password = #{password},</if>
             <if test="phone != null">phone = #{phone},</if>
             <if test="mail != null">mail=#{mail},</if>
-            <if test="name != null">name=#{name}</if>
+            <if test="name != null">name=#{name},</if>
+            <if test="status != status">status=#{status}</if>
         </set>
         where id = #{id}
     </update>
@@ -38,4 +39,12 @@
     <select id="findById" resultMap="user">
  		select * from sys_user where id = #{id}
  	</select>
+
+    <select id="findAllUser" resultMap="user">
+ 		select * from sys_user
+ 	</select>
+
+    <delete id="removeUserById">
+		delete from sys_user where id = #{id}
+	</delete>
 </mapper>

@@ -1,7 +1,10 @@
 package org.example.fangwuzulin.mapping;
 
+import org.apache.ibatis.annotations.Select;
 import org.example.fangwuzulin.entity.SysUser;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface SysUserMapping {
@@ -13,8 +16,9 @@ public interface SysUserMapping {
 
     Integer updateUserInfo(SysUser sysUser);
 
-//    Integer updatePassword(SysUser sysUser);
-
     SysUser findById(String id);
 
+    List<SysUser> findAllUser();
+
+    Integer removeUserById(String id);
 }

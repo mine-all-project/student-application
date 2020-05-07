@@ -11,9 +11,9 @@
 
     <insert id="insertMessage">
 		insert into leave_message
-		(id,user_id,houses_id,content,result_conuent)
+		(id,user_id,houses_id,content,result_conuent,parent_id)
 		values
-		(#{id},#{user_id},#{houses_id},#{content},#{result_conuent})
+		(#{id},#{user_id},#{houses_id},#{content},#{result_conuent},#{parent_id})
 	</insert>
 
     <select id="findAll" resultMap="message">
@@ -35,5 +35,9 @@
     <delete id="removeById">
  		delete from leave_message where id = #{id}
  	</delete>
+
+	<select id="findAllByParentId" resultMap="message">
+ 		select * from leave_message where id = #{id}
+ 	</select>
 
 </mapper>

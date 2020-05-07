@@ -5,6 +5,7 @@ import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.AudioFiles;
 import org.example.fangwuzulin.entity.Houses;
 import org.example.fangwuzulin.form.HousesForm;
+import org.example.fangwuzulin.form.LeaveMessageForm;
 import org.example.fangwuzulin.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +76,16 @@ public class RestFulController extends BaseController {
         AudioFiles audioFiles = restFulService.uploadFile(request);
         logger.info("文件上传完成:[{}]", audioFiles);
         return ResponseDTO.returnSuccess("操作成功", audioFiles);
+    }
+
+    @RequestMapping("/saveLeaveMessage")
+    @ResponseBody
+    public ResponseDTO saveLeaveMessage(@RequestBody LeaveMessageForm form) {
+        logger.info("收到请求->保存评论信息:[{}]", form);
+        super.validator(form, IsNotNull.class);
+        restFulService.saveLeaveMessage(form);
+        logger.info("返回结果->保存评论信息完成:[{}]", form);
+        return ResponseDTO.returnSuccess("操作成功", form);
     }
 
 //

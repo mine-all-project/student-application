@@ -3,8 +3,10 @@ package org.example.fangwuzulin.service.impl;
 import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.entity.*;
 import org.example.fangwuzulin.form.HousesForm;
+import org.example.fangwuzulin.form.LeaveMessageForm;
 import org.example.fangwuzulin.mapping.AudioFilesMapping;
 import org.example.fangwuzulin.mapping.HousesMapping;
+import org.example.fangwuzulin.mapping.LeaveMessageMapping;
 import org.example.fangwuzulin.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,20 +27,20 @@ public class RestFulServiceImpl implements RestFulService {
     private String virtualPath;
     private final HousesMapping housesMapping;
     private final AudioFilesMapping audioFilesMapping;
-//    private final MessageRepository messageRepository;
+    private final LeaveMessageMapping leaveMessageMapping;
 //    private final PaperRepository paperRepository;
 //    private final OrderRepository orderRepository;
 
     private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
     public RestFulServiceImpl(HousesMapping housesMapping,
-                              AudioFilesMapping audioFilesMapping
-//                              MessageRepository messageRepository,
+                              AudioFilesMapping audioFilesMapping,
+                              LeaveMessageMapping leaveMessageMapping
 //                              AnimalRepository animalRepository, PaperRepository paperRepository
     ) {
         this.housesMapping = housesMapping;
         this.audioFilesMapping = audioFilesMapping;
-//        this.messageRepository = messageRepository;
+        this.leaveMessageMapping = leaveMessageMapping;
 //        this.animalRepository = animalRepository;
 //        this.paperRepository = paperRepository;
     }
@@ -98,109 +100,11 @@ public class RestFulServiceImpl implements RestFulService {
         return audioFiles;
     }
 
-    //
-//    @Override
-//    public List<Animal> getAnimalListByType(String type) {
-//        return animalRepository.findAllByType(type);
-//    }
-//
-//    @Override
-//    public Animal getAnimalById(String id) {
-//        return animalRepository.findById(id).orElse(new Animal());
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void removeAnimalById(String id) {
-//        animalRepository.deleteById(id);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void saveAnimalInfo(Animal animal) {
-//        animalRepository.saveAndFlush(animal);
-//    }
-//
-
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public AudioFile updateFile(HttpServletRequest request, AudioFile audioFile) {
-//        return audioFileRepository.save(audioFile);
-//    }
-//
-//    @Override
-//    public List<AudioFile> getFileListByKeyWord(String keyWord) {
-//        return audioFileRepository.findAllByKeyWord(keyWord);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void removeFileById(String id) {
-//        audioFileRepository.deleteById(id);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public AudioFile getFileById(String id) {
-//        return audioFileRepository.findById(id).orElse(null);
-//    }
-//
-//    @Override
-//    public List<Paper> getPapersByKeyWord(String keyWord) {
-//        return paperRepository.findAllByKeyWord(keyWord);
-//    }
-//
-//    @Override
-//    public void savePaper(Paper paper) {
-//        paperRepository.save(paper);
-//    }
-//
-//    @Override
-//    public Paper getPaperById(String id) {
-//        return paperRepository.findById(id).orElse(new Paper());
-//    }
-//
-//    @Override
-//    public void removePaperById(String id) {
-//        paperRepository.deleteById(id);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("login")
-//    public Orders createOrder(Orders orders) {
-//        orders.setSysUser(getUser());
-//        String orderNumber = String.valueOf(System.currentTimeMillis());
-//        orders.setOrderNumber(orderNumber);
-//        Animal animal = animalRepository.findById(orders.getGoodsId()).orElse(null);
-//        if (animal != null) {
-//            int remaining = animal.getRemaining() - orders.getCounts();
-//            if (remaining < 0) {
-//                throw new ApplicationException("超过购买限制");
-//            }
-//            animal.setRemaining(remaining);
-//            orders.setAnimals(animalRepository.save(animal));
-//            return orderRepository.save(orders);
-//        }
-//        throw new ApplicationException("商品状态异常");
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public List<Orders> getOrdersList() {
-//        return orderRepository.findAll();
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void removeOrdersById(String id) {
-//        orderRepository.deleteById(id);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("login")
-//    public List<Orders> getOrdersListByUser() {
-//        SysUser sysUser = getUser();
-//        return orderRepository.findAll().stream().filter(e -> sysUser.getId().equals(e.getSysUser().getId())).collect(Collectors.toList());
-//    }
+    @Override
+    public void saveLeaveMessage(LeaveMessageForm form) {
+        Integer count = leaveMessageMapping.insertMessage(form.toEntity());
+        if (count <= 0) {
+            throw new ApplicationException("操作失败");
+        }
+    }
 }
