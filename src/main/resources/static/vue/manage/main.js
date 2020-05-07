@@ -5,18 +5,16 @@ const routes = [
     {path: '/manage/stands', component: httpVueLoader('/vue/manage/stands.vue')},
 
     {path: '/manage/dynamic', component: httpVueLoader('/vue/manage/dynamic.vue')},
-
     {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
-    {path: '/manage/friends', component: httpVueLoader('/vue/manage/friends.vue')},
-    {path: '/manage/products', component: httpVueLoader('/vue/manage/products.vue')},
-    {path: '/manage/contact', component: httpVueLoader('/vue/manage/contact.vue')},
+
     {path: '/manage/user-list', component: httpVueLoader('/vue/manage/user-list.vue')},
-    {path: '/manage/orders-list', component: httpVueLoader('/vue/manage/orders-list.vue')},
 
 
     {path: '/demo/demo1', component: httpVueLoader('/vue/demo/demo1.vue')},
     {path: '/demo/demo2', component: httpVueLoader('/vue/demo/demo2.vue')},
     {path: '/demo/demo3', component: httpVueLoader('/vue/demo/demo3.vue')},
+    {path: '/demo/demo4', component: httpVueLoader('/vue/demo/demo4.vue')},
+    {path: '/demo/demo5', component: httpVueLoader('/vue/demo/demo5.vue')},
 
 ]
 
@@ -124,15 +122,15 @@ const app = new Vue({
                         },
                         {
                             id: 'demo-4',
-                            name: '用户列表',
+                            name: '富文本页面',
                             icon: 'el-icon-message',
-                            url: '/demo/user-list'
+                            url: '/demo/demo4'
                         },
                         {
                             id: 'demo-5',
-                            name: '用户列表',
+                            name: '表格列表(带图片)',
                             icon: 'el-icon-message',
-                            url: '/demo/user-list'
+                            url: '/demo/demo5'
                         }
                     ]
                 },
