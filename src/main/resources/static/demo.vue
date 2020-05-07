@@ -204,7 +204,8 @@
           newPassword: '',
           confirm: ''
         },
-        housesList: []
+        housesList: [],
+        userInfo: {}
       };
     },
     mounted () {
@@ -270,14 +271,12 @@
       getUserInfo () {
         axios.get('/getUserInfo').then(({data: res}) => {
           if (res.success && res.data) {
-            this.form = res.data;
+            this.userInfo = res.data;
+            for (let k of Object.keys(this.form)) {
+              this.form[k] = res.data[k]
+            }
           } else {
-            this.form = {
-              username: '',
-              name: '',
-              phone: '',
-              mail: ''
-            };
+            this.userInfo = {};
           }
         });
       },
