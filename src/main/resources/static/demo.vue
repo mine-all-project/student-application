@@ -177,11 +177,13 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<input autocomplete="off" placeholder="合同" type="text" class="form-control"
-										       v-model="houseForm.contract">
+										<div id="editor" style="width: 100%;"></div>
+										<!--										<input autocomplete="off" placeholder="合同" type="text" class="form-control"-->
+										<!--										       v-model="houseForm.contract">-->
 									</div>
-									<div class="text-center"><input @click="submitHouseForm" type="submit" value="发布"
-									                                class="btn_1 full-width"></div>
+									<div class="text-center">
+										<input @click="submitHouseForm" type="submit" value="发布" class="btn_1 full-width">
+									</div>
 								</div>
 								<!-- /form_container -->
 							</div>
@@ -238,8 +240,20 @@
     module.exports = {
         data() {
             return {
+                wangEditorOptions: [
+                    'head',  // 标题
+                    'bold',  // 粗体
+                    'fontSize',  // 字号
+                    'fontName',  // 字体
+                    'italic',  // 斜体
+                    'underline',  // 下划线
+                    'strikeThrough',  // 删除线
+                    'justify',  // 对齐方式
+                    'image',  // 插入图片
+                ],
+                editor: null,
                 tableData: [],
-                type: 0, //0信息展示 1用户资料管理 2发布房源
+                type: 2, //0信息展示 1用户资料管理 2发布房源
                 editPwd: false,
                 keywords: '',
                 form: {
@@ -271,8 +285,19 @@
             // this.getUserList()
             this.getUserInfo();
             this.getHousesList();
+            this.initEditor();
         },
         methods: {
+            initEditor() {
+                this.editor = new window.wangEditor('#editor');
+                this.editor.customConfig.uploadImgShowBase64 = true;
+                this.editor.customConfig.showLinkImg = false;
+                this.editor.customConfig.pasteIgnoreImg = true;
+                this.editor.customConfig.menus = this.wangEditorOptions;
+                this.editor.create();
+                this.editor.txt.html("这是一段测试文字")
+                console.log(this.editor.txt.html())
+            },
             removeImg(index) {
                 let arr = this.houseForm.img_src.split(',');
                 arr.splice(index, 1);
@@ -295,6 +320,7 @@
                         user_id: this.userInfo.id
                     };
                     this.type = 2;
+
                     if (!this.uploadInst) {
                         this.$nextTick(() => {
                             this.uploadInst = layui.upload.render({
@@ -346,6 +372,7 @@
                 return true;
             },
             submitHouseForm() {
+                this.houseForm.contract = this.editor.txt.html();
                 if (this.checkForm(this.houseForm)) {
                     axios.post('/api/saveHousesInfo', this.houseForm).then(({data: res}) => {
                         if (res.success) {
@@ -405,6 +432,7 @@
                     }
                 });
             },
+
             remove(scope) {
                 const _this = this;
                 const id = scope.row.id;
