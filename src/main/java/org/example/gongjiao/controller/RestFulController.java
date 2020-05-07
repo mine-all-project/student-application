@@ -3,7 +3,8 @@ package org.example.gongjiao.controller;
 import org.example.gongjiao.dto.ResponseDTO;
 import org.example.gongjiao.entity.Linees;
 import org.example.gongjiao.entity.Stands;
-import org.example.gongjiao.form.LineesForm;
+import org.example.gongjiao.form.LinesForm;
+import org.example.gongjiao.form.StandsForm;
 import org.example.gongjiao.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class RestFulController extends BaseController {
-    private Logger logger = LoggerFactory.getLogger(RestFulController.class);
+    private final Logger logger = LoggerFactory.getLogger(RestFulController.class);
 
     private final RestFulService restFulService;
 
@@ -42,7 +43,7 @@ public class RestFulController extends BaseController {
 
     @RequestMapping("/saveLinesInfo")
     @ResponseBody
-    public ResponseDTO saveLinesInfo(@RequestBody LineesForm form) {
+    public ResponseDTO saveLinesInfo(@RequestBody LinesForm form) {
         logger.info("收到请求->保存线路信息:[{}]", form);
         restFulService.saveLinesInfo(form);
         logger.info("返回结果->保存线路信息完成:[{}]", form);
@@ -66,7 +67,30 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", stands);
     }
 
+    @GetMapping("/getStandsById")
+    public ResponseDTO getStandsById(String id) {
+        logger.info("收到请求->获取站点数据,id:[{}]", id);
+        Stands stands = restFulService.getStandsById(id);
+        logger.info("返回结果->获取站点数据完成:[{}]", stands);
+        return ResponseDTO.returnSuccess("操作成功", stands);
+    }
 
+    @RequestMapping("/saveStandsInfo")
+    @ResponseBody
+    public ResponseDTO saveStandsInfo(@RequestBody StandsForm form) {
+        logger.info("收到请求->保存站点信息:[{}]", form);
+        restFulService.saveStandsInfo(form);
+        logger.info("返回结果->保存站点信息完成:[{}]", form);
+        return ResponseDTO.returnSuccess("操作成功", form);
+    }
+
+    @DeleteMapping("/removeStandsById/{id}")
+    public ResponseDTO removeStandsById(@PathVariable("id") String id) {
+        logger.info("收到请求->删除线路,id:[{}]", id);
+        restFulService.removeStandsById(id);
+        logger.info("返回结果->删除线路完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
 //
 //    @GetMapping("/getPapersByKeyWord/{keyWord}")
 //    public ResponseDTO getPapersByKeyWord(@PathVariable String keyWord) {

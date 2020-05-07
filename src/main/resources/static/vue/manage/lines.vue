@@ -29,7 +29,7 @@
 						<el-input v-model="form.offset" autocomplete="off" style="width: 30%"></el-input>
 					</el-form-item>
 					<el-form-item label="站点" :label-width="formLabelWidth">
-						<el-transfer v-model="form.standsList" :data="stands"
+						<el-transfer v-model="form.standsList" :data="stands" target-order="push"
 						             :titles="['所有站点', '途经站点']"
 						             :button-texts="['移除', '添加']">
 						</el-transfer>
@@ -153,7 +153,6 @@
                     _this.form.standsList = result.data.standsList.map(e => {
                         return e.id
                     })
-                    console.log(_this.form.standsList)
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });

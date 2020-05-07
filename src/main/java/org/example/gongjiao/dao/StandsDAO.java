@@ -2,6 +2,8 @@ package org.example.gongjiao.dao;
 
 import org.example.gongjiao.dao.jpa.StandsRepository;
 import org.example.gongjiao.entity.Stands;
+import org.example.gongjiao.form.StandsForm;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,6 +18,19 @@ public class StandsDAO {
     }
 
     public List<Stands> findAll() {
-        return standsRepository.findAll();
+        Sort sort = new Sort(Sort.Direction.ASC, "createTime");
+        return standsRepository.findAll(sort);
+    }
+
+    public Stands findById(String id) {
+        return standsRepository.findById(id).orElse(new Stands());
+    }
+
+    public void saveStands(StandsForm form) {
+        standsRepository.saveAndFlush(form.toEntity());
+    }
+
+    public void removeStandsById(String id) {
+        standsRepository.deleteById(id);
     }
 }

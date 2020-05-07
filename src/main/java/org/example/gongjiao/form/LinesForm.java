@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class LineesForm {
+public class LinesForm {
     private String id;
 
     @NotBlank(message = "线路不能为空", groups = {IsAdd.class, IsEdit.class})

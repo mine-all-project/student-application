@@ -2,9 +2,10 @@ Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', component: httpVueLoader('/demo-manage.vue')},
     {path: '/manage/lines', component: httpVueLoader('/vue/manage/lines.vue')},
-    {path: '/manage/culture', component: httpVueLoader('/vue/manage/culture.vue')},
-    {path: '/manage/honor', component: httpVueLoader('/vue/manage/honor.vue')},
+    {path: '/manage/stands', component: httpVueLoader('/vue/manage/stands.vue')},
 
+
+    {path: '/manage/honor', component: httpVueLoader('/vue/manage/honor.vue')},
     {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
     {path: '/manage/news', component: httpVueLoader('/vue/manage/news.vue')},
     {path: '/manage/friends', component: httpVueLoader('/vue/manage/friends.vue')},
@@ -38,12 +39,18 @@ const app = new Vue({
                         },
                         {
                             id: '1-2',
+                            name: '公交站点管理',
+                            icon: 'el-icon-message',
+                            url: '/manage/stands'
+                        },
+                        {
+                            id: '1-3',
                             name: '公交动态管理',
                             icon: 'el-icon-message',
                             url: '/manage/dynamic'
                         },
                         {
-                            id: '1-3',
+                            id: '1-4',
                             name: '富文本',
                             icon: 'el-icon-message',
                             url: '/manage/culture'

@@ -4,9 +4,9 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.gongjiao.dao.LinesDAO;
 import org.example.gongjiao.dao.StandsDAO;
 import org.example.gongjiao.dao.jpa.MessageRepository;
-import org.example.gongjiao.dao.jpa.StandsRepository;
 import org.example.gongjiao.entity.*;
-import org.example.gongjiao.form.LineesForm;
+import org.example.gongjiao.form.LinesForm;
+import org.example.gongjiao.form.StandsForm;
 import org.example.gongjiao.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     @RequiresPermissions("manage")
-    public void saveLinesInfo(LineesForm form) {
+    public void saveLinesInfo(LinesForm form) {
         linesDAO.saveLines(form);
     }
 
@@ -63,7 +63,22 @@ public class RestFulServiceImpl implements RestFulService {
         return standsDAO.findAll();
     }
 
-//
+    @Override
+    public Stands getStandsById(String id) {
+        return standsDAO.findById(id);
+    }
+
+    @Override
+    public void saveStandsInfo(StandsForm form) {
+        standsDAO.saveStands(form);
+    }
+
+    @Override
+    @RequiresPermissions("manage")
+    public void removeStandsById(String id) {
+        standsDAO.removeStandsById(id);
+    }
+    //
 //    @Override
 //    @RequiresPermissions("manage")
 //    public void saveAnimalInfo(Animal animal) {
