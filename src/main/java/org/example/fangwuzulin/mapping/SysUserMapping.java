@@ -13,5 +13,8 @@ public interface SysUserMapping {
 
     Integer updateUserInfo(SysUser sysUser);
 
+//    Integer updatePassword(SysUser sysUser);
+
     SysUser findById(String id);
+
 }
