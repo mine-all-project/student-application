@@ -41,7 +41,7 @@
         tableData: [],
         form: {
           id: '',
-          keyWord: '',
+          keyWords: '',
           title: '',
           content: '',
         },
@@ -50,11 +50,11 @@
           loading: false,
         },
         formLabelWidth: '80px',
-        keyWord: 'notice',
+        keyWords: 'notice',
       };
     },
     mounted() {
-      this.getPaperList(this.keyWord)
+      this.getTableDataList(this.keyWord)
     },
     methods: {
       remove(scope) {
@@ -62,8 +62,8 @@
         const id = scope.row.id;
         _this.$confirm('确认删除？').then(e => {
           _this.drawer.loading = true;
-          axios.delete(`/api/removePaperById/${id}`).then(response => {
-            _this.getPaperList(this.keyWord);
+          axios.delete(`/api/removePapersById/${id}`).then(response => {
+            _this.getTableDataList(this.keyWords);
             const result = response.data;
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
@@ -72,14 +72,14 @@
             }
             _this.$message.success('操作成功')
           }).catch(function (error) {
-            _this.getPaperList(this.keyWord);
+            _this.getTableDataList(_this.keyWords);
             console.log('请求出现错误:', error);
           });
         });
       },
-      getPaperList(keyWord) {
+      getTableDataList(keyWord) {
         const _this = this;
-        axios.get(`/api/getPapersByKeyWord/${keyWord}`).then(response => {
+        axios.get(`/api/getPapersByKeyWords/${keyWord}`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
@@ -99,7 +99,7 @@
       },
       getPaperById(id) {
         const _this = this;
-        axios.get(`/api/getPaperById?id=${id}`).then(response => {
+        axios.get(`/api/getPapersById?id=${id}`).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
@@ -114,8 +114,8 @@
       savePaper() {
         const _this = this;
         _this.drawer.loading = true;
-        _this.form.keyWord = this.keyWord;
-        axios.post(`/api/savePaper`, _this.form).then(response => {
+        _this.form.keyWords = this.keyWords;
+        axios.post(`/api/savePapers`, _this.form).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
           if (result.status !== 200) {
@@ -125,7 +125,7 @@
           _this.$message.success('操作成功');
           _this.drawer.loading = false;
           _this.drawer.show = false;
-          _this.getPaperList(this.keyWord)
+          _this.getTableDataList(this.keyWords)
         }).catch(function (error) {
           window.location.reload();
           console.log('请求出现错误:', error);
@@ -134,7 +134,7 @@
       drawerClose() {
         this.drawer.loading = false;
         this.drawer.show = false;
-        this.getPaperList(this.keyWord);
+        this.getTableDataList(this.keyWords);
       },
     }
   }

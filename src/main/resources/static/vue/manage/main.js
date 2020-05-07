@@ -13,6 +13,11 @@ const routes = [
     {path: '/manage/user-list', component: httpVueLoader('/vue/manage/user-list.vue')},
     {path: '/manage/orders-list', component: httpVueLoader('/vue/manage/orders-list.vue')},
 
+
+    {path: '/demo/demo1', component: httpVueLoader('/vue/demo/demo1.vue')},
+    {path: '/demo/demo2', component: httpVueLoader('/vue/demo/demo2.vue')},
+    {path: '/demo/demo3', component: httpVueLoader('/vue/demo/demo3.vue')},
+
 ]
 
 const router = new VueRouter({
@@ -91,6 +96,43 @@ const app = new Vue({
                             name: '用户列表',
                             icon: 'el-icon-message',
                             url: '/manage/user-list'
+                        }
+                    ]
+                },
+                {
+                    id: 'demo',
+                    name: '测试菜单',
+                    icon: 'el-icon-message',
+                    children: [
+                        {
+                            id: 'demo-1',
+                            name: '表格列表(富文本)',
+                            icon: 'el-icon-message',
+                            url: '/demo/demo1'
+                        },
+                        {
+                            id: 'demo-2',
+                            name: '表格列表(文本域)',
+                            icon: 'el-icon-message',
+                            url: '/demo/demo2'
+                        },
+                        {
+                            id: 'demo-3',
+                            name: '照片墙',
+                            icon: 'el-icon-message',
+                            url: '/demo/demo3'
+                        },
+                        {
+                            id: 'demo-4',
+                            name: '用户列表',
+                            icon: 'el-icon-message',
+                            url: '/demo/user-list'
+                        },
+                        {
+                            id: 'demo-5',
+                            name: '用户列表',
+                            icon: 'el-icon-message',
+                            url: '/demo/user-list'
                         }
                     ]
                 },
