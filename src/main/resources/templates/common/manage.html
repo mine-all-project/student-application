@@ -1,37 +1,22 @@
 <th data-th-fragment="meta">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="renderer" content="webkit"/>
+	<meta name="force-rendering" content="webkit"/>
 </th>
-
-
 <th data-th-fragment="style">
-	<!-- Favicons-->
-	<link rel="shortcut icon" href="/portal/img/favicon.ico" type="image/x-icon">
-	<link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
-	<link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
-	<link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
-	<link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
-
-	<!-- GOOGLE WEB FONT -->
-	<link rel="dns-prefetch" href="https://fonts.gstatic.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-	<link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" as="fetch" crossorigin="anonymous">
-
-	<!-- BASE CSS -->
-	<link href="/portal/css/bootstrap.custom.min.css" rel="stylesheet">
-	<link href="/portal/css/style.css" rel="stylesheet">
-
-	<!-- SPECIFIC CSS -->
-	<link href="/portal/css/home_1.css" rel="stylesheet">
+	<link rel="stylesheet" data-th-href="@{/common/css/element-ui.css}">
+	<link rel="stylesheet" data-th-href="@{/common/css/quill.snow.css}">
 </th>
 
 <th data-th-fragment="javascript">
-	<script src="/portal/js/common_scripts.min.js"></script>
-	<script src="/portal/js/main.js"></script>
-	<script src="/portal/js/carousel-home.min.js"></script>
 	<script data-th-src="@{/common/js/vue.js}"></script>
+	<script data-th-src="@{/common/js/moment.js}"></script>
 	<script data-th-src="@{/common/js/axios.min.js}"></script>
 	<script data-th-src="@{/common/js/httpVueLoader.js}"></script>
 	<script data-th-src="@{/common/js/vue-router.js}"></script>
-	<script data-th-src="@{/layui/layui.all.js}"></script>
+	<script data-th-src="@{/common/js/element-ui.js}"></script>
+	<script data-th-src="@{/common/js/quill.js}"></script>
+	<script data-th-src="@{/common/js/wangEditor.min.js}"></script>
 </th>
 
 <th data-th-fragment="footer">
