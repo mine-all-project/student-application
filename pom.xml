@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>gongjiao</artifactId>
+    <artifactId>wechat</artifactId>
     <version>1.0</version>
 
     <properties>
