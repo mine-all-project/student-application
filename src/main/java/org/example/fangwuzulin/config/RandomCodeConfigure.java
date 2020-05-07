@@ -12,7 +12,7 @@ import java.util.Properties;
  * 生成验证码配置
  */
 @Configuration
-public class KaptchaConfig {
+public class RandomCodeConfigure {
 
     @Bean
     public DefaultKaptcha producer() {

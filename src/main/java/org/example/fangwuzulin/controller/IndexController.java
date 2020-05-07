@@ -6,6 +6,7 @@ import org.apache.shiro.SecurityUtils;
 import org.example.fangwuzulin.config.groups.IsAdd;
 import org.example.fangwuzulin.config.groups.IsEdit;
 import org.example.fangwuzulin.config.groups.IsLogin;
+import org.example.fangwuzulin.dto.RandomCode;
 import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.form.UserForm;
@@ -102,20 +103,15 @@ public class IndexController extends BaseController {
         return "index";
     }
 
-    @GetMapping("captcha.jpg")
+    @GetMapping("/randomCode")
     public void captcha(HttpServletResponse response) throws IOException {
+        logger.info("收到请求->生成图片验证码");
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
-
-        //生成文字验证码
-        String text = producer.createText();
-        //生成图片验证码
-        BufferedImage image = producer.createImage(text);
-        logger.info("captcha.jpg---------------->text--------->" + text);
-        //保存到shiro session
-        SecurityUtils.getSubject().getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, text);
-
+        RandomCode randomCode = createRandomCode();
+        SecurityUtils.getSubject().getSession().setAttribute("randomCode", randomCode.getCode());
         ServletOutputStream out = response.getOutputStream();
-        ImageIO.write(image, "jpg", out);
+        ImageIO.write(randomCode.getImage(), "jpg", out);
+        logger.info("返回结果->图片验证码生成完毕，code:[{}]", randomCode.getCode());
     }
 }

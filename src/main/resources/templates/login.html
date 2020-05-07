@@ -35,20 +35,20 @@
             return {
                 username: '',
                 password: '',
-				captcha: '',
-				src: 'captcha.jpg'
+                captcha: '',
+                src: '/randomCode'
             }
         },
         methods: {
-			refreshCode () {
-				this.src = "captcha.jpg?t=" + new Date().getTime();
-			},
+            refreshCode() {
+                this.src = "/randomCode?t=" + new Date().getTime();
+            },
             login() {
                 console.log()
                 let data = {
                     username: this.username,
                     password: this.password,
-					captcha: this.captcha
+                    captcha: this.captcha
                 };
                 axios.post('/loginCheck', data).then(response => {
                     const result = response.data;
