@@ -1,5 +1,6 @@
 package org.example.fangwuzulin.controller;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.fangwuzulin.config.groups.IsNotNull;
 import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.AudioFiles;
@@ -26,7 +27,6 @@ public class RestFulController extends BaseController {
     }
 
     @RequestMapping("/getHousesList")
-    @ResponseBody
     public ResponseDTO getHousesList() {
         logger.info("收到请求->获取房源列表");
         List<Houses> houses = restFulService.getHousesList();
@@ -35,7 +35,6 @@ public class RestFulController extends BaseController {
     }
 
     @RequestMapping("/getHousesListByTitle")
-    @ResponseBody
     public ResponseDTO getHousesListByTitle(String title) {
         logger.info("收到请求->获取房源列表，title:[{}]", title);
         List<Houses> houses = restFulService.getHousesListByTitle(title);
@@ -52,6 +51,7 @@ public class RestFulController extends BaseController {
     }
 
     @DeleteMapping("/removeHousesById/{id}")
+    @RequiresPermissions("login")
     public ResponseDTO removeHousesById(@PathVariable("id") String id) {
         logger.info("收到请求->删除房源,id:[{}]", id);
         restFulService.removeHousesById(id);
@@ -60,7 +60,7 @@ public class RestFulController extends BaseController {
     }
 
     @RequestMapping("/saveHousesInfo")
-    @ResponseBody
+    @RequiresPermissions("login")
     public ResponseDTO saveHousesInfo(@RequestBody HousesForm form) {
         logger.info("收到请求->保存房源信息:[{}]", form);
         super.validator(form, IsNotNull.class);
@@ -70,7 +70,7 @@ public class RestFulController extends BaseController {
     }
 
     @RequestMapping("/uploadFile")
-    @ResponseBody
+    @RequiresPermissions("login")
     public ResponseDTO uploadFile(HttpServletRequest request) {
         logger.info("收到请求->上传文件");
         AudioFiles audioFiles = restFulService.uploadFile(request);
@@ -79,7 +79,7 @@ public class RestFulController extends BaseController {
     }
 
     @RequestMapping("/saveLeaveMessage")
-    @ResponseBody
+    @RequiresPermissions("login")
     public ResponseDTO saveLeaveMessage(@RequestBody LeaveMessageForm form) {
         logger.info("收到请求->保存评论信息:[{}]", form);
         super.validator(form, IsNotNull.class);

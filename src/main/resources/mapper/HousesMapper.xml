@@ -29,18 +29,20 @@
     <update id="updateHousesInfo">
         update houses
         <set>
+            <if test="title != null">title = #{title},</if>
             <if test="address != null">address = #{address},</if>
             <if test="price != null">price = #{price},</if>
-            <if test="note != null">note=#{note},</if>
-            <if test="img_src != null">img_src=#{img_src}</if>
+            <if test="note != null">note = #{note},</if>
+            <if test="contract != null">contract = #{contract},</if>
+            <if test="img_src != null">img_src = #{img_src}</if>
         </set>
         where id = #{id}
     </update>
 
     <insert id="insertHousesInfo">
 		insert into houses
-		(id,address,user_id,price,key_words,note,img_src)
+		(id,address,user_id,price,note,img_src,title,contract)
 		values
-		(#{id},#{address},#{user_id},#{price},#{key_words},#{note},#{img_src})
+		(#{id},#{address},#{user_id},#{price},#{note},#{img_src},#{title},#{contract})
 	</insert>
 </mapper>
