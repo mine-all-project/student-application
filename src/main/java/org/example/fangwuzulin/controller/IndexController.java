@@ -31,22 +31,9 @@ public class IndexController extends BaseController {
     }
 
     private final Logger logger = LoggerFactory.getLogger(IndexController.class);
-    private static final String PAGE = "portal/";
 
     @Autowired
     private Producer producer;
-
-    @GetMapping("/page/{pageName}")
-    public String page(@PathVariable("pageName") String pageName) {
-        logger.info("收到请求->进入页面[{}]", PAGE + pageName);
-        return PAGE + pageName;
-    }
-
-    @GetMapping("/page/{dir}/{pageName}")
-    public String dirPage(@PathVariable("dir") String dir, @PathVariable("pageName") String pageName) {
-        logger.info("收到请求->进入二级页面[{}]", PAGE + dir + "/" + pageName);
-        return PAGE + dir + "/" + pageName;
-    }
 
     @RequestMapping("/")
     public String index() {
