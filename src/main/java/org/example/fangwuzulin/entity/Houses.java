@@ -16,6 +16,7 @@ public class Houses extends BaseEntity{
     private String note;
     private String img_src;
     private String contract;
+    private SysUser user;
 
     @Override
     public String toString() {

@@ -7,15 +7,18 @@ import org.example.fangwuzulin.form.LeaveMessageForm;
 import org.example.fangwuzulin.mapping.AudioFilesMapping;
 import org.example.fangwuzulin.mapping.HousesMapping;
 import org.example.fangwuzulin.mapping.LeaveMessageMapping;
+import org.example.fangwuzulin.mapping.SysUserMapping;
 import org.example.fangwuzulin.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
@@ -28,36 +31,38 @@ public class RestFulServiceImpl implements RestFulService {
     private final HousesMapping housesMapping;
     private final AudioFilesMapping audioFilesMapping;
     private final LeaveMessageMapping leaveMessageMapping;
-//    private final PaperRepository paperRepository;
-//    private final OrderRepository orderRepository;
+    private final SysUserMapping sysUserMapping;
 
     private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
     public RestFulServiceImpl(HousesMapping housesMapping,
                               AudioFilesMapping audioFilesMapping,
-                              LeaveMessageMapping leaveMessageMapping
-//                              AnimalRepository animalRepository, PaperRepository paperRepository
-    ) {
+                              LeaveMessageMapping leaveMessageMapping,
+                              SysUserMapping sysUserMapping) {
         this.housesMapping = housesMapping;
         this.audioFilesMapping = audioFilesMapping;
         this.leaveMessageMapping = leaveMessageMapping;
-//        this.animalRepository = animalRepository;
-//        this.paperRepository = paperRepository;
+        this.sysUserMapping = sysUserMapping;
     }
 
     @Override
     public List<Houses> getHousesList() {
-        return housesMapping.findAll();
+        return housesMapping.findAll().stream().map(this::setUserInfo).collect(Collectors.toList());
+    }
+
+    private Houses setUserInfo(Houses houses) {
+        houses.setUser(sysUserMapping.findById(houses.getUser_id()));
+        return houses;
     }
 
     @Override
     public List<Houses> getHousesListByTitle(String title) {
-        return housesMapping.findAllByTitle(title);
+        return housesMapping.findAllByTitle(title).stream().map(this::setUserInfo).collect(Collectors.toList());
     }
 
     @Override
     public Houses getHousesById(String id) {
-        return housesMapping.getHousesById(id);
+        return setUserInfo(housesMapping.getHousesById(id));
     }
 
     @Override
@@ -71,11 +76,11 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public void saveHousesInfo(HousesForm form) {
         Houses houses = form.toEntity();
-//        houses.setUser_id(getUser().getId());
-        houses.setUser_id("001");
+        houses.setUser_id(getUser().getId());
         if (houses.getId() == null) {
             houses.setId(UUID.randomUUID().toString());
             Integer count = housesMapping.insertHousesInfo(houses);
+
             if (count <= 0) {
                 throw new ApplicationException("操作失败");
             }
@@ -111,6 +116,6 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public List<Houses> getHousesByUser() {
         SysUser sysUser = getUser();
-        return housesMapping.findAllByUser(sysUser.getId());
+        return housesMapping.findAllByUser(sysUser.getId()).stream().map(this::setUserInfo).collect(Collectors.toList());
     }
 }
