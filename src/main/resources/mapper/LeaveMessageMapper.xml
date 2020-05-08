@@ -28,7 +28,7 @@
  		select * from leave_message where houses_id = #{houses_id}
  	</select>
 
-    <select id="findAllById" resultMap="message">
+    <select id="findById" resultMap="message">
  		select * from leave_message where id = #{id}
  	</select>
 
@@ -36,8 +36,8 @@
  		delete from leave_message where id = #{id}
  	</delete>
 
-	<select id="findAllByParentId" resultMap="message">
- 		select * from leave_message where id = #{id}
+	<select id="findByParentId" resultMap="message">
+ 		select * from leave_message where parent_id = #{parent_id}
  	</select>
 
 </mapper>

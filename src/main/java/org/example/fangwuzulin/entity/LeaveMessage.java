@@ -11,6 +11,8 @@ public class LeaveMessage extends BaseEntity {
     private String user_id;
     private String content;
     private String parent_id;
+    private SysUser user;
+    private LeaveMessage returnMessage;
 
     @Override
     public String toString() {

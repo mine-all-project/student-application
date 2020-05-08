@@ -11,4 +11,8 @@ public interface LeaveMessageMapping {
     Integer insertMessage(LeaveMessage message);
 
     List<LeaveMessage> findAllByHousesId(String houses_id);
+
+    List<LeaveMessage> findById(String id);
+
+    LeaveMessage findByParentId(String id);
 }
