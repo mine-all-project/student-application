@@ -15,6 +15,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/manage")
+@RequiresPermissions("manage")
 public class ManageController extends BaseController {
 
     private final ManageService manageService;
@@ -43,7 +44,6 @@ public class ManageController extends BaseController {
 
     @PutMapping("/changeStatus/{id}")
     @ResponseBody
-    @RequiresPermissions("manage")
     public ResponseDTO changeStatus(@PathVariable String id) {
         logger.info("收到请求->修改用户状态");
         manageService.changeStatus(id);
@@ -53,7 +53,6 @@ public class ManageController extends BaseController {
 
     @DeleteMapping("/removeUserById/{id}")
     @ResponseBody
-    @RequiresPermissions("manage")
     public ResponseDTO removeUserById(@PathVariable String id) {
         logger.info("收到请求->修改用户状态");
         manageService.removeUserById(id);
