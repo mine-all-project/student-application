@@ -12,15 +12,17 @@ public class UserForm {
     private String name;
     private String phone;
     private String mail;
+    private String randomCode;
 
     public SysUser toEntity() {
-        SysUser user = new SysUser();
-        user.setId(this.id);
-        user.setName(this.name);
-        user.setPhone(this.phone);
-        user.setMail(this.mail);
-        user.setUsername(this.username);
-        user.setPassword(this.password);
-        return user;
+        SysUser entity = new SysUser();
+        entity.setId(this.id);
+        entity.setName(this.name);
+        entity.setPhone(this.phone);
+        entity.setMail(this.mail);
+        entity.setUsername(this.username);
+        entity.setPassword(this.password);
+        entity.setRandomCode(this.randomCode);
+        return entity;
     }
 }

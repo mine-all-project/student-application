@@ -12,6 +12,7 @@ public class SysUser extends BaseEntity {
     private String phone;
     private String mail;
     private String name;
+    private String randomCode;
     private Integer status;
     private boolean is_admin;
 

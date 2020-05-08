@@ -18,7 +18,7 @@ import java.util.Set;
 @Configuration
 public class ShiroRealm extends AuthorizingRealm {
     private static final Logger logger = LoggerFactory.getLogger(ShiroRealm.class);
-    private UserService userService;
+    private final UserService userService;
 
     public ShiroRealm(UserService userService) {
         this.userService = userService;
