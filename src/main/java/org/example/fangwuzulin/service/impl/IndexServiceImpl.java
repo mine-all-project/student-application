@@ -6,13 +6,11 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
-import org.example.fangwuzulin.config.ApplicationConfigure;
 import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.form.UserForm;
 import org.example.fangwuzulin.mapping.SysUserMapping;
 import org.example.fangwuzulin.service.IndexService;
-import org.example.fangwuzulin.utils.PasswordUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,9 +20,9 @@ import java.util.UUID;
 
 @Service
 public class IndexServiceImpl implements IndexService {
+    private static final String SALT = "ceabapples";
     private final SysUserMapping sysUserMapping;
     private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
-    private static final PasswordUtils passwordUtils = new PasswordUtils();
 
     public IndexServiceImpl(SysUserMapping sysUserMapping) {
         this.sysUserMapping = sysUserMapping;
@@ -43,7 +41,7 @@ public class IndexServiceImpl implements IndexService {
     public SysUser loginOnShiro(UserForm form) {
         try {
             String username = form.getUsername();
-            String password = new PasswordUtils().md5Hash(form.getPassword());
+            String password = new Md5Hash(form.getPassword(), SALT).toString();
             logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
             SysUser user = shiroCheckLogin(username, password, form.getRandomCode());
             if (user == null) {
@@ -63,7 +61,7 @@ public class IndexServiceImpl implements IndexService {
             throw new ApplicationException("用户名已经存在");
         }
         String username = form.getUsername();
-        String password = passwordUtils.md5Hash(form.getPassword());
+        String password = new Md5Hash(form.getPassword(), SALT).toString();
         SysUser sysUser = new SysUser();
         sysUser.setId(UUID.randomUUID().toString());
         sysUser.setUsername(username);
@@ -89,12 +87,12 @@ public class IndexServiceImpl implements IndexService {
         form.setId(user.getId());
         user = sysUserMapping.findById(user.getId());
         if (form.getPassword() != null) {
-            String password = passwordUtils.md5Hash(form.getPassword());
+            String password = new Md5Hash(form.getPassword(), SALT).toString();
             if (!user.getPassword().equals(password)) {
                 throw new ApplicationException("原密码错误");
             }
             SysUser sysUser = form.toEntity();
-            String newPassword = passwordUtils.md5Hash(form.getNewPassword());
+            String newPassword = new Md5Hash(form.getNewPassword(), SALT).toString();
             sysUser.setPassword(newPassword);
             Integer count = sysUserMapping.updateUserInfo(sysUser);
             if (count <= 0) {
@@ -120,8 +118,9 @@ public class IndexServiceImpl implements IndexService {
             Subject subject = SecurityUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             String code = SecurityUtils.getSubject().getSession().getAttribute("randomCode").toString();
-            System.err.println(code);
-            System.err.println(randomCode);
+            if (!code.equals(randomCode)) {
+//                throw new ApplicationException("验证码错误");
+            }
             subject.login(token);
             return (SysUser) subject.getPrincipal();
         } catch (IncorrectCredentialsException e) {

@@ -10,6 +10,7 @@ import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.form.UserForm;
 import org.example.fangwuzulin.service.IndexService;
+import org.example.fangwuzulin.utils.RandomCodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -104,7 +105,7 @@ public class IndexController extends BaseController {
         logger.info("收到请求->生成图片验证码");
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
-        RandomCode randomCode = indexService.createRandomCode(producer);
+        RandomCode randomCode = new RandomCodeUtils().createRandomCode(producer);
         SecurityUtils.getSubject().getSession().setAttribute("randomCode", randomCode.getCode());
         ServletOutputStream out = response.getOutputStream();
         ImageIO.write(randomCode.getImage(), "jpg", out);

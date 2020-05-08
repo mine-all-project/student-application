@@ -22,12 +22,6 @@ public interface IndexService {
         subject.logout();
     }
 
-    default RandomCode createRandomCode(Producer producer) {
-        String code = producer.createText();
-        BufferedImage image = producer.createImage(code);
-        return new RandomCode(code, image);
-    }
-
     boolean login(HttpServletRequest request, SysUser sysUser);
 
     SysUser loginOnShiro(UserForm form);

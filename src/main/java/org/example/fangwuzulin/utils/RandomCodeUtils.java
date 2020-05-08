@@ -1,13 +1,14 @@
 package org.example.fangwuzulin.utils;
 
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.springframework.beans.factory.annotation.Value;
+import com.google.code.kaptcha.Producer;
+import org.example.fangwuzulin.dto.RandomCode;
+
+import java.awt.image.BufferedImage;
 
 public class RandomCodeUtils {
-    @Value("${crabapples.salt}")
-    private String salt;
-
-    public String md5Hash(String str) {
-        return new Md5Hash(str, salt).toString();
+    public RandomCode createRandomCode(Producer producer) {
+        String code = producer.createText();
+        BufferedImage image = producer.createImage(code);
+        return new RandomCode(code, image);
     }
 }
