@@ -202,10 +202,10 @@
 									<figure>
 										<template v-if="houses.img_src">
 											<img class="img-fluid lazy" v-for="src in houses.img_src.split(',').slice(0, 2)" :src="src"
-												 :alt="houses.title">
+											     :alt="houses.title">
 										</template>
 										<img v-else class="img-fluid lazy"
-											 src="/portal/img/products/product_placeholder_square_medium.jpg" alt="img">
+										     src="/portal/img/products/product_placeholder_square_medium.jpg" alt="img">
 									</figure>
 									<h3>{{houses.title}}</h3>
 									<div class="price_box">
@@ -262,9 +262,9 @@
                     'justify',  // 对齐方式
                     'image',  // 插入图片
                 ],
-				showMyHouse: false,
+                showMyHouse: false,
                 editor: null,
-				uploadInst: null,
+                uploadInst: null,
                 tableData: [],
                 type: 0, //0信息展示 1用户资料管理 2发布房源
                 editPwd: false,
@@ -299,52 +299,52 @@
             this.getHousesList();
         },
         methods: {
-			editHouses (house) {
-				this.houseForm = house;
-				this.type = 2;
+            editHouses(house) {
+                this.houseForm = house;
+                this.type = 2;
 
-				if (!this.uploadInst) {
-					this.$nextTick(this.initUpload)
-				}
+                if (!this.uploadInst) {
+                    this.$nextTick(this.initUpload)
+                }
 
-				if (!this.editor) {
-					this.$nextTick(this.initEditor)
-				}
-			},
-			removeHouses (id) {
-				layer.confirm('确定删除该房源吗？', {icon: 3, title:'删除确认'}, index => {
-					layer.close(index);
-					axios.delete(`/api/removeHousesById/${id}`).then(({data: res}) => {
-						if (res.success) {
-							layer.msg(res.message, {icon: 6});
-							this.getMyHousesList();
-						} else {
-							layer.msg(res.message, {icon: 5});
-						}
-					})
-				});
-			},
-			myHouse () {
-				this.getMyHousesList()
-			},
-			initUpload () {
-				this.uploadInst = layui.upload.render({
-					elem: '.btn-upload' //绑定元素
-					, url: '/api/uploadFile' //上传接口
-					, acceptMime: 'image/*'
-					, done: res => {
-						//上传完毕回调
-						if (res.success) {
-							let src = this.houseForm.img_src;
-							this.houseForm.img_src = src ? `${src},${res.data.url}` : res.data.url;
-						}
-					}
-					, error: function () {
-						//请求异常回调
-						console.error('上传失败');
-					}
-				});
-			},
+                // if (!this.editor) {
+                this.$nextTick(this.initEditor)
+                // }
+            },
+            removeHouses(id) {
+                layer.confirm('确定删除该房源吗？', {icon: 3, title: '删除确认'}, index => {
+                    layer.close(index);
+                    axios.delete(`/api/removeHousesById/${id}`).then(({data: res}) => {
+                        if (res.success) {
+                            layer.msg(res.message, {icon: 6});
+                            this.getMyHousesList();
+                        } else {
+                            layer.msg(res.message, {icon: 5});
+                        }
+                    })
+                });
+            },
+            myHouse() {
+                this.getMyHousesList()
+            },
+            initUpload() {
+                this.uploadInst = layui.upload.render({
+                    elem: '.btn-upload' //绑定元素
+                    , url: '/api/uploadFile' //上传接口
+                    , acceptMime: 'image/*'
+                    , done: res => {
+                        //上传完毕回调
+                        if (res.success) {
+                            let src = this.houseForm.img_src;
+                            this.houseForm.img_src = src ? `${src},${res.data.url}` : res.data.url;
+                        }
+                    }
+                    , error: function () {
+                        //请求异常回调
+                        console.error('上传失败');
+                    }
+                });
+            },
             initEditor() {
                 this.editor = new window.wangEditor('#editor');
                 this.editor.customConfig.uploadImgShowBase64 = true;
@@ -388,8 +388,8 @@
             },
             search() {
                 if (this.keywords) {
-					this.type = 0;
-					this.showMyHouse = false;
+                    this.type = 0;
+                    this.showMyHouse = false;
                     axios.get('/api/getHousesListByTitle?title=' + this.keywords).then(({data: res}) => {
                         if (res.success) {
                             this.housesList = res.data;
@@ -398,12 +398,12 @@
                         }
                     });
                 } else {
-                	this.getHousesList()
-				}
+                    this.getHousesList()
+                }
             },
             checkForm(form) {
-                for (let v of Object.values(form)) {
-                    if (v.trim() === '') {
+                for (let value of Object.values(form)) {
+                    if (value === '') {
                         alert('请完整填写信息');
                         return false;
                     }
@@ -450,20 +450,20 @@
                     });
                 }
             },
-			getMyHousesList() {
-				this.type = 0;
-				this.showMyHouse = true;
-				axios.get('/api/getHousesByUser').then(({data: res}) => {
-					if (res.success) {
-						this.housesList = res.data;
-					} else {
-						this.housesList = [];
-					}
-				});
-			},
+            getMyHousesList() {
+                this.type = 0;
+                this.showMyHouse = true;
+                axios.get('/api/getHousesByUser').then(({data: res}) => {
+                    if (res.success) {
+                        this.housesList = res.data;
+                    } else {
+                        this.housesList = [];
+                    }
+                });
+            },
             getHousesList() {
-				this.type = 0;
-				this.showMyHouse = false;
+                this.type = 0;
+                this.showMyHouse = false;
                 axios.get('/api/getHousesList').then(({data: res}) => {
                     if (res.success) {
                         this.housesList = res.data;

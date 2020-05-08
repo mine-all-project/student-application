@@ -38,6 +38,7 @@ public class HousesForm {
         houses.setPrice(this.price);
         houses.setNote(this.note);
         houses.setImg_src(this.img_src);
+        houses.setContract(this.contract);
         return houses;
     }
 }

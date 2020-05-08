@@ -80,7 +80,6 @@ public class RestFulServiceImpl implements RestFulService {
         if (houses.getId() == null) {
             houses.setId(UUID.randomUUID().toString());
             Integer count = housesMapping.insertHousesInfo(houses);
-
             if (count <= 0) {
                 throw new ApplicationException("操作失败");
             }
