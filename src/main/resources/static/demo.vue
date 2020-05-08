@@ -67,16 +67,21 @@
 										<div class="dropdown dropdown-access">
 											<a href="#" class="access_link"><span>Account</span></a>
 											<div class="dropdown-menu">
-												<a v-if="userInfo.username" href="/loginOut" class="btn_1">退出登录</a>
-												<a v-else href="/login" class="btn_1">登录</a>
-												<ul>
-													<li>
-														<a @click="editInfo"><i class="ti-user"></i>用户资料管理</a>
-													</li>
-													<li>
-														<a @click="publish"><i class="ti-package"></i>发布房源</a>
-													</li>
-												</ul>
+												<a v-if="!userInfo.username" href="/login" class="btn_1">登录</a>
+												<template v-else>
+													<a href="/loginOut" class="btn_1">退出登录</a>
+													<ul>
+														<li>
+															<a @click="editInfo"><i class="ti-user"></i>用户资料管理</a>
+														</li>
+														<li>
+															<a @click="publish"><i class="ti-package"></i>发布房源</a>
+														</li>
+														<li>
+															<a @click="myHouse"><i class="ti-package"></i>我的房源</a>
+														</li>
+													</ul>
+												</template>
 											</div>
 										</div>
 									</li>
@@ -144,7 +149,7 @@
 					<div v-else-if="type === 2" class="row justify-content-center">
 						<div class="col-xl-6 col-lg-6 col-md-8">
 							<div class="box_account">
-								<h3 class="new_client">发布房源</h3>
+								<h3 class="new_client">{{houseForm.title?'修改':'发布'}}房源</h3>
 								<div class="form_container">
 									<div class="form-group">
 										<input autocomplete="off" placeholder="标题" type="text" class="form-control"
@@ -192,18 +197,24 @@
 					</div>
 					<div v-else class="row small-gutters">
 						<div class="col-6 col-md-4 col-xl-3" v-for="houses in housesList">
-							<router-link class="grid_item" tag="div" :to="'house?id='+houses.id">
-								<figure>
-									<template v-if="houses.img_src">
-										<img class="img-fluid lazy" v-for="src in houses.img_src.split(',')" :src="src"
-										     :alt="houses.title">
-									</template>
-									<img v-else class="img-fluid lazy"
-									     src="/portal/img/products/product_placeholder_square_medium.jpg" alt="img">
-								</figure>
-								<h3>{{houses.title}}</h3>
-								<div class="price_box">
-									<span class="new_price">￥{{houses.price}}</span>
+							<router-link :to="'house?id='+houses.id">
+								<div class="grid_item house-item">
+									<figure>
+										<template v-if="houses.img_src">
+											<img class="img-fluid lazy" v-for="src in houses.img_src.split(',').slice(0, 2)" :src="src"
+												 :alt="houses.title">
+										</template>
+										<img v-else class="img-fluid lazy"
+											 src="/portal/img/products/product_placeholder_square_medium.jpg" alt="img">
+									</figure>
+									<h3>{{houses.title}}</h3>
+									<div class="price_box">
+										<span class="new_price">￥{{houses.price}}</span>
+									</div>
+									<ul v-show="showMyHouse">
+										<li><a @click.prevent="removeHouses(houses.id)"><i class="ti-trash"></i><span>删除</span></a></li>
+										<li><a @click.prevent="editHouses(houses)"><i class="ti-pencil"></i><span>修改</span></a></li>
+									</ul>
 								</div>
 							</router-link>
 							<!-- /grid_item -->
@@ -251,9 +262,11 @@
                     'justify',  // 对齐方式
                     'image',  // 插入图片
                 ],
+				showMyHouse: false,
                 editor: null,
+				uploadInst: null,
                 tableData: [],
-                type: 2, //0信息展示 1用户资料管理 2发布房源
+                type: 0, //0信息展示 1用户资料管理 2发布房源
                 editPwd: false,
                 keywords: '',
                 form: {
@@ -271,7 +284,6 @@
                     title: '',
                     user_id: ''
                 },
-                uploadInst: null,
                 pwd: {
                     password: '',
                     newPassword: '',
@@ -285,9 +297,54 @@
             // this.getUserList()
             this.getUserInfo();
             this.getHousesList();
-            this.initEditor();
         },
         methods: {
+			editHouses (house) {
+				this.houseForm = house;
+				this.type = 2;
+
+				if (!this.uploadInst) {
+					this.$nextTick(this.initUpload)
+				}
+
+				if (!this.editor) {
+					this.$nextTick(this.initEditor)
+				}
+			},
+			removeHouses (id) {
+				layer.confirm('确定删除该房源吗？', {icon: 3, title:'删除确认'}, index => {
+					layer.close(index);
+					axios.delete(`/api/removeHousesById/${id}`).then(({data: res}) => {
+						if (res.success) {
+							layer.msg(res.message, {icon: 6});
+							this.getMyHousesList();
+						} else {
+							layer.msg(res.message, {icon: 5});
+						}
+					})
+				});
+			},
+			myHouse () {
+				this.getMyHousesList()
+			},
+			initUpload () {
+				this.uploadInst = layui.upload.render({
+					elem: '.btn-upload' //绑定元素
+					, url: '/api/uploadFile' //上传接口
+					, acceptMime: 'image/*'
+					, done: res => {
+						//上传完毕回调
+						if (res.success) {
+							let src = this.houseForm.img_src;
+							this.houseForm.img_src = src ? `${src},${res.data.url}` : res.data.url;
+						}
+					}
+					, error: function () {
+						//请求异常回调
+						console.error('上传失败');
+					}
+				});
+			},
             initEditor() {
                 this.editor = new window.wangEditor('#editor');
                 this.editor.customConfig.uploadImgShowBase64 = true;
@@ -295,8 +352,7 @@
                 this.editor.customConfig.pasteIgnoreImg = true;
                 this.editor.customConfig.menus = this.wangEditorOptions;
                 this.editor.create();
-                this.editor.txt.html("这是一段测试文字")
-                console.log(this.editor.txt.html())
+                this.editor.txt.html(this.houseForm.contract);
             },
             removeImg(index) {
                 let arr = this.houseForm.img_src.split(',');
@@ -310,7 +366,7 @@
                         layer.close(index);
                     });
                 } else {
-                    this.houseForm = {
+                    let house = {
                         address: '',
                         contract: '',
                         img_src: '',
@@ -319,28 +375,7 @@
                         title: '',
                         user_id: this.userInfo.id
                     };
-                    this.type = 2;
-
-                    if (!this.uploadInst) {
-                        this.$nextTick(() => {
-                            this.uploadInst = layui.upload.render({
-                                elem: '.btn-upload' //绑定元素
-                                , url: '/api/uploadFile' //上传接口
-                                , acceptMime: 'image/*'
-                                , done: res => {
-                                    //上传完毕回调
-                                    if (res.success) {
-                                        let src = this.houseForm.img_src;
-                                        this.houseForm.img_src = src ? `${src},${res.data.url}` : res.data.url;
-                                    }
-                                }
-                                , error: function () {
-                                    //请求异常回调
-                                    console.error('上传失败');
-                                }
-                            });
-                        });
-                    }
+                    this.editHouses(house);
                 }
             },
             editInfo() {
@@ -353,6 +388,8 @@
             },
             search() {
                 if (this.keywords) {
+					this.type = 0;
+					this.showMyHouse = false;
                     axios.get('/api/getHousesListByTitle?title=' + this.keywords).then(({data: res}) => {
                         if (res.success) {
                             this.housesList = res.data;
@@ -360,7 +397,9 @@
                             this.housesList = [];
                         }
                     });
-                }
+                } else {
+                	this.getHousesList()
+				}
             },
             checkForm(form) {
                 for (let v of Object.values(form)) {
@@ -411,7 +450,20 @@
                     });
                 }
             },
+			getMyHousesList() {
+				this.type = 0;
+				this.showMyHouse = true;
+				axios.get('/api/getHousesByUser').then(({data: res}) => {
+					if (res.success) {
+						this.housesList = res.data;
+					} else {
+						this.housesList = [];
+					}
+				});
+			},
             getHousesList() {
+				this.type = 0;
+				this.showMyHouse = false;
                 axios.get('/api/getHousesList').then(({data: res}) => {
                     if (res.success) {
                         this.housesList = res.data;
