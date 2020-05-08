@@ -28,17 +28,17 @@ public class HousesForm {
 
     private String img_src;
 
-    private String contract;
+    private String contract_id;
 
     public Houses toEntity() {
-        Houses houses = new Houses();
-        houses.setId(this.id);
-        houses.setTitle(this.title);
-        houses.setAddress(this.address);
-        houses.setPrice(this.price);
-        houses.setNote(this.note);
-        houses.setImg_src(this.img_src);
-        houses.setContract(this.contract);
-        return houses;
+        Houses entity = new Houses();
+        entity.setId(this.id);
+        entity.setTitle(this.title);
+        entity.setAddress(this.address);
+        entity.setPrice(this.price);
+        entity.setNote(this.note);
+        entity.setImg_src(this.img_src);
+        entity.setContract_id(this.contract_id);
+        return entity;
     }
 }

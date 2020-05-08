@@ -7,7 +7,7 @@
 			<el-table-column prop="price" label="金额" width=""></el-table-column>
 			<el-table-column prop="note" label="备注" width=""></el-table-column>
 			<el-table-column prop="sysUser.name" label="图片" width=""></el-table-column>
-			<el-table-column prop="contract" label="合同" width=""></el-table-column>
+			<el-table-column prop="contracts" label="合同" width=""></el-table-column>
 			<el-table-column label="操作" width="160">
 				<template slot-scope="scope">
 					<el-button type="primary" @click="remove(scope)" size="mini">删除</el-button>

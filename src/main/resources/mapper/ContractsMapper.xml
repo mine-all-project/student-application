@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.example.fangwuzulin.mapping.ContractsMapping">
+    <resultMap id="contracts" type="Contracts">
+        <id property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <insert id="insertContracts">
+		insert into contracts (id,content,title) values (#{id},#{content},#{title})
+	</insert>
+
+    <update id="updateContracts">
+        update contracts content = #{content} ,title = #{title} where id = #{id}
+    </update>
+
+    <select id="findById" resultMap="contracts">
+ 		select * from contracts where id = #{id}
+ 	</select>
+
+    <select id="findAllContracts" resultMap="contracts">
+ 		select * from contracts
+ 	</select>
+
+    <delete id="removeContractsById">
+		delete from contracts where id = #{id}
+	</delete>
+
+</mapper>

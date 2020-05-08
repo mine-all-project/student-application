@@ -2,12 +2,10 @@ package org.example.fangwuzulin.service.impl;
 
 import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.entity.*;
+import org.example.fangwuzulin.form.ContractForm;
 import org.example.fangwuzulin.form.HousesForm;
 import org.example.fangwuzulin.form.LeaveMessageForm;
-import org.example.fangwuzulin.mapping.AudioFilesMapping;
-import org.example.fangwuzulin.mapping.HousesMapping;
-import org.example.fangwuzulin.mapping.LeaveMessageMapping;
-import org.example.fangwuzulin.mapping.SysUserMapping;
+import org.example.fangwuzulin.mapping.*;
 import org.example.fangwuzulin.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,22 +30,19 @@ public class RestFulServiceImpl implements RestFulService {
     private final AudioFilesMapping audioFilesMapping;
     private final LeaveMessageMapping leaveMessageMapping;
     private final SysUserMapping sysUserMapping;
+    private final ContractsMapping contractsMapping;
 
     private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
     public RestFulServiceImpl(HousesMapping housesMapping,
                               AudioFilesMapping audioFilesMapping,
                               LeaveMessageMapping leaveMessageMapping,
-                              SysUserMapping sysUserMapping) {
+                              SysUserMapping sysUserMapping, ContractsMapping contractsMapping) {
         this.housesMapping = housesMapping;
         this.audioFilesMapping = audioFilesMapping;
         this.leaveMessageMapping = leaveMessageMapping;
         this.sysUserMapping = sysUserMapping;
-    }
-
-    @Override
-    public List<Houses> getHousesList() {
-        return housesMapping.findAll().stream().map(this::setUserInfo).collect(Collectors.toList());
+        this.contractsMapping = contractsMapping;
     }
 
     private Houses setUserInfo(Houses houses) {
@@ -55,14 +50,52 @@ public class RestFulServiceImpl implements RestFulService {
         return houses;
     }
 
+    private Houses setContractInfo(Houses houses) {
+        houses.setContracts(contractsMapping.findById(houses.getContract_id()));
+        return houses;
+    }
+
+    private Houses setLeaveMessagesInfo(Houses houses) {
+        houses.setMessages(leaveMessageMapping.findAllByHousesId(houses.getId()));
+        return houses;
+    }
+
+    @Override
+    public List<Houses> getHousesList() {
+        return housesMapping.findAll().stream().peek(e -> {
+            setUserInfo(e);
+            setContractInfo(e);
+            setLeaveMessagesInfo(e);
+        }).collect(Collectors.toList());
+    }
+
+
     @Override
     public List<Houses> getHousesListByTitle(String title) {
-        return housesMapping.findAllByTitle(title).stream().map(this::setUserInfo).collect(Collectors.toList());
+        return housesMapping.findAllByTitle(title).stream().peek(e -> {
+            setUserInfo(e);
+            setContractInfo(e);
+            setLeaveMessagesInfo(e);
+        }).collect(Collectors.toList());
     }
 
     @Override
     public Houses getHousesById(String id) {
-        return setUserInfo(housesMapping.getHousesById(id));
+        Houses houses = housesMapping.getHousesById(id);
+        setUserInfo(houses);
+        setContractInfo(houses);
+        setLeaveMessagesInfo(houses);
+        return houses;
+    }
+
+    @Override
+    public List<Houses> getHousesByUser() {
+        SysUser sysUser = getUser();
+        return housesMapping.findAllByUser(sysUser.getId()).stream().peek(e -> {
+            setUserInfo(e);
+            setContractInfo(e);
+            setLeaveMessagesInfo(e);
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -92,6 +125,41 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    public List<Contracts> getContractsList() {
+        return contractsMapping.findAllContracts();
+    }
+
+    @Override
+    public Contracts getContractsById(String id) {
+        return contractsMapping.findById(id);
+    }
+
+    @Override
+    public void removeContractsById(String id) {
+        Integer count = contractsMapping.removeContractsById(id);
+        if (count <= 0) {
+            throw new ApplicationException("操作失败");
+        }
+    }
+
+    @Override
+    public void saveContractInfo(ContractForm form) {
+        Contracts entity = form.toEntity();
+        if (entity.getId() == null) {
+            entity.setId(UUID.randomUUID().toString());
+            Integer count = contractsMapping.insertContracts(entity);
+            if (count <= 0) {
+                throw new ApplicationException("操作失败");
+            }
+        } else {
+            Integer count = contractsMapping.updateContracts(entity);
+            if (count <= 0) {
+                throw new ApplicationException("操作失败");
+            }
+        }
+    }
+
+    @Override
     public AudioFiles uploadFile(HttpServletRequest request) {
         String path = getFilePath(request, filePath, virtualPath);
         AudioFiles audioFiles = new AudioFiles();
@@ -112,9 +180,5 @@ public class RestFulServiceImpl implements RestFulService {
         }
     }
 
-    @Override
-    public List<Houses> getHousesByUser() {
-        SysUser sysUser = getUser();
-        return housesMapping.findAllByUser(sysUser.getId()).stream().map(this::setUserInfo).collect(Collectors.toList());
-    }
+
 }

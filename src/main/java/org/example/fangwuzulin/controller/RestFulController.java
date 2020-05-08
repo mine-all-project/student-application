@@ -4,7 +4,9 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.fangwuzulin.config.groups.IsNotNull;
 import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.AudioFiles;
+import org.example.fangwuzulin.entity.Contracts;
 import org.example.fangwuzulin.entity.Houses;
+import org.example.fangwuzulin.form.ContractForm;
 import org.example.fangwuzulin.form.HousesForm;
 import org.example.fangwuzulin.form.LeaveMessageForm;
 import org.example.fangwuzulin.service.RestFulService;
@@ -78,6 +80,41 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", form);
     }
 
+    @RequestMapping("/getContractsList")
+    public ResponseDTO getContractsList() {
+        logger.info("收到请求->获取合同列表");
+        List<Contracts> contracts = restFulService.getContractsList();
+        logger.info("返回结果->获取合同列表完成:[{}]", contracts);
+        return ResponseDTO.returnSuccess("操作成功", contracts);
+    }
+
+    @RequestMapping("/getContractsById")
+    public ResponseDTO getContractsById(String id) {
+        logger.info("收到请求->获取合同数据,id:[{}]", id);
+        Contracts contracts = restFulService.getContractsById(id);
+        logger.info("返回结果->获取合同数据完成:[{}]", contracts);
+        return ResponseDTO.returnSuccess("操作成功", contracts);
+    }
+
+    @DeleteMapping("/removeContractsById/{id}")
+    @RequiresPermissions("manage")
+    public ResponseDTO removeContractsById(@PathVariable("id") String id) {
+        logger.info("收到请求->删除合同,id:[{}]", id);
+        restFulService.removeContractsById(id);
+        logger.info("返回结果->删除合同完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/saveContractInfo")
+    @RequiresPermissions("manage")
+    public ResponseDTO saveContractInfo(@RequestBody ContractForm form) {
+        logger.info("收到请求->保存合同信息:[{}]", form);
+        super.validator(form, IsNotNull.class);
+        restFulService.saveContractInfo(form);
+        logger.info("返回结果->保存合同信息完成:[{}]", form);
+        return ResponseDTO.returnSuccess("操作成功", form);
+    }
+
     @RequestMapping("/uploadFile")
     @RequiresPermissions("login")
     public ResponseDTO uploadFile(HttpServletRequest request) {
@@ -96,75 +133,5 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->保存评论信息完成:[{}]", form);
         return ResponseDTO.returnSuccess("操作成功", form);
     }
-
-//
-//    @PostMapping("/updateFile")
-//    public ResponseDTO updateFile(HttpServletRequest request, @RequestBody AudioFile audioFile) {
-//        logger.info("收到请求->更新文件数据");
-//        audioFile = restFulService.updateFile(request, audioFile);
-//        logger.info("返回结果->更新文件数据完成:[{}]", audioFile);
-//        return ResponseDTO.returnSuccess("操作成功", audioFile);
-//    }
-//
-//    @GetMapping("/getFileListByKeyWord/{keyWord}")
-//    public ResponseDTO getFileListByKeyWord(@PathVariable("keyWord") String keyWord) {
-//        logger.info("收到请求->获取文件数据,keyWord:[{}]", keyWord);
-//        List<AudioFile> audioFiles = restFulService.getFileListByKeyWord(keyWord);
-//        logger.info("返回结果->获取文件数据完成:[{}]", audioFiles);
-//        return ResponseDTO.returnSuccess("操作成功", audioFiles);
-//    }
-//
-//    @DeleteMapping("/removeFileById/{id}")
-//    public ResponseDTO removeFileById(@PathVariable("id") String id) {
-//        logger.info("收到请求->删除文件数据,id:[{}]", id);
-//        restFulService.removeFileById(id);
-//        logger.info("返回结果->删除文件数据完成");
-//        return ResponseDTO.returnSuccess("操作成功");
-//    }
-//
-//    @GetMapping("/getFileById/{id}")
-//    public ResponseDTO getFileById(@PathVariable("id") String id) {
-//        logger.info("收到请求->获取文件数据,id:[{}]", id);
-//        AudioFile audioFile = restFulService.getFileById(id);
-//        logger.info("返回结果->获取文件数据完成:[{}]", audioFile);
-//        return ResponseDTO.returnSuccess("操作成功", audioFile);
-//    }
-//
-//
-//    @RequestMapping("/createOrder")
-//    @ResponseBody
-//    public ResponseDTO createOrder(@RequestBody Orders orders) {
-//        logger.info("收到请求->提交订单:[{}]", orders);
-//        Orders newOrders = restFulService.createOrder(orders);
-//        logger.info("返回结果->提交订单完成:[{}]", newOrders);
-//        return ResponseDTO.returnSuccess("操作成功", orders);
-//    }
-//
-//    @RequestMapping("/getOrdersList")
-//    @ResponseBody
-//    public ResponseDTO getOrdersList() {
-//        logger.info("收到请求->获取订单信息");
-//        List<Orders> orders = restFulService.getOrdersList();
-//        logger.info("返回结果->获取订单信息结束:[{}]", orders);
-//        return ResponseDTO.returnSuccess("操作成功", orders);
-//    }
-//
-//    @RequestMapping("/getOrdersListByUser")
-//    @ResponseBody
-//    public ResponseDTO getOrdersListByUser() {
-//        logger.info("收到请求->获取订单信息");
-//        List<Orders> orders = restFulService.getOrdersListByUser();
-//        logger.info("返回结果->获取订单信息结束:[{}]", orders);
-//        return ResponseDTO.returnSuccess("操作成功", orders);
-//    }
-//
-//    @RequestMapping("/removeOrdersById/{id}")
-//    @ResponseBody
-//    public ResponseDTO removeOrdersById(@PathVariable String id) {
-//        logger.info("收到请求->删除订单,id:[{}]", id);
-//        restFulService.removeOrdersById(id);
-//        logger.info("返回结果->删除订单结束");
-//        return ResponseDTO.returnSuccess("操作成功");
-//    }
 
 }

@@ -11,7 +11,7 @@
 					<el-button type="primary" @click="showImages(scope)" size="mini">点击查看</el-button>
 				</template>
 			</el-table-column>
-			<el-table-column prop="contract" label="合同" width="">
+			<el-table-column prop="contracts" label="合同" width="">
 				<template slot-scope="scope">
 					<el-button type="primary" @click="showContract(scope)" size="mini">点击查看</el-button>
 				</template>

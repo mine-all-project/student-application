@@ -184,7 +184,7 @@
 									<div class="form-group">
 										<div id="editor" style="width: 100%;"></div>
 										<!--										<input autocomplete="off" placeholder="合同" type="text" class="form-control"-->
-										<!--										       v-model="houseForm.contract">-->
+										<!--										       v-model="houseForm.contracts">-->
 									</div>
 									<div class="text-center">
 										<input @click="submitHouseForm" type="submit" value="发布" class="btn_1 full-width">
@@ -277,7 +277,7 @@
                 },
                 houseForm: {
                     address: '',
-                    contract: '',
+                    contracts: '',
                     img_src: '',
                     note: '',
                     price: '',
@@ -352,7 +352,7 @@
                 this.editor.customConfig.pasteIgnoreImg = true;
                 this.editor.customConfig.menus = this.wangEditorOptions;
                 this.editor.create();
-                this.editor.txt.html(this.houseForm.contract);
+                this.editor.txt.html(this.houseForm.contracts);
             },
             removeImg(index) {
                 let arr = this.houseForm.img_src.split(',');
@@ -368,7 +368,7 @@
                 } else {
                     let house = {
                         address: '',
-                        contract: '',
+                        contracts: '',
                         img_src: '',
                         note: '',
                         price: '',
@@ -411,7 +411,7 @@
                 return true;
             },
             submitHouseForm() {
-                this.houseForm.contract = this.editor.txt.html();
+                this.houseForm.contracts = this.editor.txt.html();
                 if (this.checkForm(this.houseForm)) {
                     axios.post('/api/saveHousesInfo', this.houseForm).then(({data: res}) => {
                         if (res.success) {
