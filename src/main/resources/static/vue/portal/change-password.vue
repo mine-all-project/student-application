@@ -20,7 +20,6 @@
 		<el-col :span="8" :offset="2" class="col-line">
 			<el-button type="primary" round class="button" @click="savePassword" size="mini">确认修改</el-button>
 		</el-col>
-
 		<el-col :span="8" :offset="4" class="col-line">
 			<el-button round class="button" @click="$router.back(-1)" size="mini">返回</el-button>
 		</el-col>
