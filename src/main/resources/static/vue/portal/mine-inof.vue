@@ -1,35 +1,7 @@
 <template>
 	<div class="body-parent">
-		<el-row style="font-size: 1em">
-			<el-col :span="24">
-				<el-autocomplete placeholder="请输入内容" v-model="form.name" class="input-with-select"
-				                 :trigger-on-focus="false" :fetch-suggestions="search" @select="select">
-					<el-select v-model="form.type" slot="prepend" placeholder="请选择">
-						<el-option label="线路" value="1"></el-option>
-						<el-option label="站台" value="2"></el-option>
-					</el-select>
-				</el-autocomplete>
-			</el-col>
-			<el-col class="col-steps">
-				<el-col :span="24" class="col-line" v-if="this.number !== '' ">
-					<span>{{number}}</span>
-					<span>路公交线路图</span>
-				</el-col>
-				<el-col :span="24" style="text-align: center;" class="col-line">
-					<el-steps direction="vertical" :space="100" :align-center="true">
-						<el-step :title="item.name" status="finish" :key="item.id" v-for="item in standsList"></el-step>
-					</el-steps>
-				</el-col>
-			</el-col>
-			<el-col :span="24" class="col-line">
-				<el-button type="primary" round style="width: 100%;padding: 16px">发布信息</el-button>
-			</el-col>
-			<el-col :span="24" class="col-line">
-				<router-link to="/mine-info">
-					<el-button type="primary" plain style="width: 100%;padding: 16px">个人中心</el-button>
-				</router-link>
-			</el-col>
-		</el-row>
+		<p>123</p>
+
 	</div>
 </template>
 <script>
@@ -40,7 +12,6 @@
                     type: '1',
                     name: '',
                 },
-                number: '',
                 linesList: [],
                 standsList: [],
             };
@@ -77,7 +48,6 @@
             },
             select(item) {
                 this.standsList = item.data.standsList
-                this.number = item.data.number
             },
         }
     }

@@ -33,4 +33,8 @@ public class LinesDAO {
     public void removeLinesById(String id) {
         linesRepository.deleteById(id);
     }
+
+    public List<Linees> findByNumber(String number) {
+        return linesRepository.findByNumberLike("%" + number + "%");
+    }
 }

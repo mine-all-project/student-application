@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
@@ -28,7 +30,7 @@ public class RestFulServiceImpl implements RestFulService {
     private final PapersDAO papersDAO;
     private final MessageRepository messageRepository;
 
-    private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
     public RestFulServiceImpl(StandsDAO standsDAO, LinesDAO linesDAO, PapersDAO papersDAO,
                               MessageRepository messageRepository
@@ -82,6 +84,28 @@ public class RestFulServiceImpl implements RestFulService {
     public void removeStandsById(String id) {
         standsDAO.removeStandsById(id);
     }
+
+    @Override
+    public List<Linees> searchLinesByNumber(String name) {
+        return linesDAO.findByNumber(name);
+    }
+
+    @Override
+    public List<Linees> searchLinesByStands(String name) {
+        List<Linees> source = linesDAO.findAll();
+        List<Linees> target = new ArrayList<>();
+        List<List<Boolean>> exists = linesDAO.findAll().stream().map(e -> e.getStandsList().stream().map(t -> t.getName().contains(name)).collect(Collectors.toList())).collect(Collectors.toList());
+        for (int i = 0; i < exists.size(); i++) {
+            for (int j = 0; j < exists.get(i).size(); j++) {
+                if (exists.get(i).get(j)) {
+                    target.add(source.get(i));
+                    break;
+                }
+            }
+        }
+        return target;
+    }
+
 
     @Override
     public List<Papers> getPapersByKeyWords(String keyWord) {

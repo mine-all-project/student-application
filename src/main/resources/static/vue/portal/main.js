@@ -2,6 +2,7 @@ Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', component: httpVueLoader('/demo.vue')},
     {path: '/home', component: httpVueLoader('/vue/portal/home.vue')},
+    {path: '/mine-info', component: httpVueLoader('/vue/portal/mine-info.vue')},
 ];
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes

@@ -36,11 +36,18 @@ public interface RestFulService {
     Stands getStandsById(String id);
     void saveStandsInfo(StandsForm form);
     void removeStandsById(String id);
+    List<Linees> searchLinesByNumber(String name);
+    List<Linees> searchLinesByStands(String name);
+
+
+
 
     List<Papers> getPapersByKeyWords(String keyWords);
     Papers getPapersById(String id);
     void savePapers(PapersForm form);
     void removePapersById(String id);
+
+
 
 //    Orders createOrder(Orders orders);
 //    List<Orders> getOrdersList();

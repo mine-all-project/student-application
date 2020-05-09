@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -84,6 +85,24 @@ public class RestFulController extends BaseController {
         restFulService.saveStandsInfo(form);
         logger.info("返回结果->保存站点信息完成:[{}]", form);
         return ResponseDTO.returnSuccess("操作成功", form);
+    }
+
+    @RequestMapping("/searchLinesByNumber")
+    @ResponseBody
+    public ResponseDTO searchLinesByNumber(@NotBlank String name) {
+        logger.info("收到请求->搜索线路,name:[{}]", name);
+        List<Linees> lines = restFulService.searchLinesByNumber(name);
+        logger.info("返回结果->搜索线路完成:[{}]", lines);
+        return ResponseDTO.returnSuccess("操作成功", lines);
+    }
+
+    @RequestMapping("/searchLinesByStands")
+    @ResponseBody
+    public ResponseDTO searchLinesByStands(@NotBlank String name) {
+        logger.info("收到请求->搜索站台,name:[{}]", name);
+        List<Linees> linees = restFulService.searchLinesByStands(name);
+        logger.info("返回结果->搜索站台完成:[{}]", linees);
+        return ResponseDTO.returnSuccess("操作成功", linees);
     }
 
     @DeleteMapping("/removeStandsById/{id}")

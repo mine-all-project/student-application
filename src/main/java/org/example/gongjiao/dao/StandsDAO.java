@@ -33,4 +33,8 @@ public class StandsDAO {
     public void removeStandsById(String id) {
         standsRepository.deleteById(id);
     }
+
+    public Stands findByName(String name) {
+        return standsRepository.findByName(name).orElse(new Stands());
+    }
 }

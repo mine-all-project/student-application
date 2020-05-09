@@ -95,11 +95,6 @@ public class IndexController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @RequestMapping("/mineInfo")
-    public String mineInfo() {
-        return "/mineInfo";
-    }
-
     @RequestMapping("/loginOut")
     public String loginOut() {
         logger.info("收到请求->退出登录");
