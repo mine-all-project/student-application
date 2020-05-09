@@ -64,24 +64,6 @@ const app = new Vue({
                             icon: 'el-icon-message',
                             url: '/manage/notice'
                         },
-                        {
-                            id: '2-3',
-                            name: '合作伙伴',
-                            icon: '',
-                            url: '/manage/friends'
-                        },
-                        {
-                            id: '2-4',
-                            name: '产品管理',
-                            icon: '',
-                            url: '/manage/products'
-                        },
-                        {
-                            id: '2-5',
-                            name: '联系我们',
-                            icon: '',
-                            url: '/manage/contact'
-                        },
                     ]
                 },
                 {
