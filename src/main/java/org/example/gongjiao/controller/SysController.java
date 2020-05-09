@@ -1,5 +1,6 @@
 package org.example.gongjiao.controller;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.gongjiao.config.groups.IsLogin;
 import org.example.gongjiao.dto.ResponseDTO;
 import org.example.gongjiao.entity.SysUser;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/manage")
+@RequiresPermissions("manage")
 public class SysController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(SysController.class);
