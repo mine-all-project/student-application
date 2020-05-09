@@ -68,6 +68,15 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", sysUsers);
     }
 
+    @GetMapping("/getUsersById")
+    @ResponseBody
+    public ResponseDTO getUsersById(String id) {
+        logger.info("收到请求->获取用户信息，id:[{}]", id);
+        SysUser sysUsers = sysService.getUsersById(id);
+        logger.info("返回结果->获取用户信息:[{}]", sysUsers);
+        return ResponseDTO.returnSuccess("操作成功", sysUsers);
+    }
+
     @PutMapping("/changeStatus/{id}")
     @ResponseBody
     public ResponseDTO changeStatus(@PathVariable String id) {

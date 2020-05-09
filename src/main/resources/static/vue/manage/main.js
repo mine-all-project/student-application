@@ -79,43 +79,43 @@ const app = new Vue({
                         }
                     ]
                 },
-                {
-                    id: 'demo',
-                    name: '测试菜单',
-                    icon: 'el-icon-message',
-                    children: [
-                        {
-                            id: 'demo-1',
-                            name: '表格列表(富文本)',
-                            icon: 'el-icon-message',
-                            url: '/demo/demo1'
-                        },
-                        {
-                            id: 'demo-2',
-                            name: '表格列表(文本域)',
-                            icon: 'el-icon-message',
-                            url: '/demo/demo2'
-                        },
-                        {
-                            id: 'demo-3',
-                            name: '照片墙',
-                            icon: 'el-icon-message',
-                            url: '/demo/demo3'
-                        },
-                        {
-                            id: 'demo-4',
-                            name: '富文本页面',
-                            icon: 'el-icon-message',
-                            url: '/demo/demo4'
-                        },
-                        {
-                            id: 'demo-5',
-                            name: '表格列表(带图片)',
-                            icon: 'el-icon-message',
-                            url: '/demo/demo5'
-                        }
-                    ]
-                },
+                // {
+                //     id: 'demo',
+                //     name: '测试菜单',
+                //     icon: 'el-icon-message',
+                //     children: [
+                //         {
+                //             id: 'demo-1',
+                //             name: '表格列表(富文本)',
+                //             icon: 'el-icon-message',
+                //             url: '/demo/demo1'
+                //         },
+                //         {
+                //             id: 'demo-2',
+                //             name: '表格列表(文本域)',
+                //             icon: 'el-icon-message',
+                //             url: '/demo/demo2'
+                //         },
+                //         {
+                //             id: 'demo-3',
+                //             name: '照片墙',
+                //             icon: 'el-icon-message',
+                //             url: '/demo/demo3'
+                //         },
+                //         {
+                //             id: 'demo-4',
+                //             name: '富文本页面',
+                //             icon: 'el-icon-message',
+                //             url: '/demo/demo4'
+                //         },
+                //         {
+                //             id: 'demo-5',
+                //             name: '表格列表(带图片)',
+                //             icon: 'el-icon-message',
+                //             url: '/demo/demo5'
+                //         }
+                //     ]
+                // },
             ],
             welcome: true
         }

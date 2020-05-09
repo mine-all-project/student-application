@@ -129,7 +129,7 @@ public class SysServiceImpl implements SysService {
 
     @Override
     public void saveUserInfo(SysUser sysUser) {
-        sysUserRepository.save(sysUser);
+        sysUserRepository.saveAndFlush(sysUser);
     }
 
     @Override
@@ -151,5 +151,10 @@ public class SysServiceImpl implements SysService {
         }
         sysUser.setPassword(newPassword);
         sysUserRepository.save(sysUser);
+    }
+
+    @Override
+    public SysUser getUsersById(String id) {
+        return sysUserRepository.findById(id).orElse(new SysUser());
     }
 }
