@@ -1,34 +1,12 @@
 <template>
 	<div class="body-parent">
 		<el-row style="font-size: 1em">
-			<el-col :span="24">
-				<el-autocomplete placeholder="请输入内容" v-model="form.name" class="input-with-select"
-				                 :trigger-on-focus="false" :fetch-suggestions="search" @select="select">
-					<el-select v-model="form.type" slot="prepend" placeholder="请选择">
-						<el-option label="线路" value="1"></el-option>
-						<el-option label="站台" value="2"></el-option>
-					</el-select>
-				</el-autocomplete>
+			<el-col :span="12">用户名:</el-col>
+			<el-col :span="12">{{userInfo.username}}</el-col>
+			<el-col :span="12" v-if="this.isEdit">
+				<el-input v-model="userInfo.username"></el-input>
 			</el-col>
-			<el-col class="col-steps">
-				<el-col :span="24" class="col-line" v-if="this.number !== '' ">
-					<span>{{number}}</span>
-					<span>路公交线路图</span>
-				</el-col>
-				<el-col :span="24" style="text-align: center;" class="col-line">
-					<el-steps direction="vertical" :space="100" :align-center="true">
-						<el-step :title="item.name" status="finish" :key="item.id" v-for="item in standsList"></el-step>
-					</el-steps>
-				</el-col>
-			</el-col>
-			<el-col :span="24" class="col-line">
-				<el-button type="primary" round style="width: 100%;padding: 16px">发布信息</el-button>
-			</el-col>
-			<el-col :span="24" class="col-line">
-				<router-link to="/mine-info">
-					<el-button type="primary" plain style="width: 100%;padding: 16px">个人中心</el-button>
-				</router-link>
-			</el-col>
+
 		</el-row>
 	</div>
 </template>
@@ -36,49 +14,64 @@
     module.exports = {
         data() {
             return {
-                form: {
-                    type: '1',
-                    name: '',
+                isEdit: false,
+                userInfo: {
+                    username: '',
                 },
-                number: '',
-                linesList: [],
-                standsList: [],
+                form: {
+                    password: '',
+                    newPassword: '',
+                    rePassword: '',
+                }
             };
         },
         mounted() {
+            this.getUserInfo()
         },
         methods: {
-            search(name, cb) {
-                const _this = this;
-                let url = ''
-                if (_this.form.type === '1') {
-                    url = `/api/searchLinesByNumber?name=${_this.form.name}`
-                } else if (_this.form.type === '2') {
-                    url = `/api/searchLinesByStands?name=${_this.form.name}`
-                }
-                console.log(_this.form)
-                axios.get(url).then(response => {
+            getUserInfo() {
+                axios.get(`/getUserInfo`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
-                        _this.$message.error('数据加载失败');
+                        this.$message.error('数据加载失败');
                         return
                     }
-                    _this.linesList = result.data.map(e => {
-                        return {
-                            value: e.number,
-                            data: e
-                        }
-                    });
-                    cb(_this.linesList)
+                    if(result.data === null){
+                        router.push({path: '/login'})
+                    }
+                    this.userInfo = result.data ? result.data : null;
+                    console.log(this.userInfo)
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });
             },
-            select(item) {
-                this.standsList = item.data.standsList
-                this.number = item.data.number
+            saveUserInfo() {
+                axios.post(`/manage/saveUserInfo`, this.userInfo).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    this.$message.success(result.message);
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
             },
+            savePassword() {
+                axios.post(`/manage/savePassword`, this.form).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return
+                    }
+                    this.$message.success(result.message);
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            }
         }
     }
 </script>

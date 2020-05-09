@@ -31,6 +31,11 @@ public class IndexServiceImpl implements IndexService {
         this.salt = applicationConfigure.SALT;
     }
 
+    @Override
+    public SysUser getUserInfo() {
+        return sysUserDAO.findByUsername("user");
+    }
+
     public boolean login(HttpServletRequest request, SysUser sysUser) {
         SysUser exist = sysUserDAO.findByUsernameAndPassword(sysUser.getUsername(), sysUser.getPassword());
         if (exist != null) {

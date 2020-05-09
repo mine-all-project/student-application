@@ -2,7 +2,8 @@ Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', component: httpVueLoader('/demo.vue')},
     {path: '/home', component: httpVueLoader('/vue/portal/home.vue')},
-    {path: '/mine-info', component: httpVueLoader('/vue/portal/mine-info.vue')},
+    {path: '/login', component: httpVueLoader('/vue/portal/login.vue')},
+    {path: '/registry', component: httpVueLoader('/vue/portal/registry.vue')},
 ];
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes
@@ -39,11 +40,6 @@ const app = new Vue({
         console.log(123)
     },
     methods: {
-        clickMenu(url) {
-            this.welcome = false;
-            router.push({path: url, params: {userId: 123}});
-            console.log(url);
-        },
         getUserInfo() {
             axios.get(`/getUserInfo`).then(response => {
                 const result = response.data;
@@ -53,20 +49,6 @@ const app = new Vue({
                     return
                 }
                 this.userInfo = result.data ? result.data : null;
-            }).catch(function (error) {
-                console.log('请求出现错误:', error);
-            });
-        },
-        openOrderList() {
-            this.show.ordersList = true;
-            axios.get(`/api/getOrdersListByUser`).then(response => {
-                const result = response.data;
-                console.log('通过api获取到的数据:', result);
-                if (result.status !== 200) {
-                    this.$message.error('数据加载失败');
-                    return
-                }
-                this.ordersList = result.data ? result.data : [];
             }).catch(function (error) {
                 console.log('请求出现错误:', error);
             });
