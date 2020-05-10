@@ -12,8 +12,6 @@ import java.util.Properties;
 
 public class MailUtils {
     private static final Logger logger = LoggerFactory.getLogger(MailUtils.class);
-//    private static final String FILE_PATH = "d:/123.txt";
-//    private static final String FILE_NAME = "喜欢你D D .txt";
 
     /**
      * 初始化session
