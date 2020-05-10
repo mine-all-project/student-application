@@ -1,22 +1,19 @@
 <template>
 	<div class="body-parent">
 		<el-row style="font-size: 1em">
-			<h1>公告列表</h1>
-
-			<el-col :span="24" class="col-line" v-for="item in dataList" :key="item.id">
+			<h1>发布公告</h1>
+			<el-col :span="24" class="col-line">
 				<el-card class="box-card">
 					<div slot="header" class="clearfix">
-						<el-input style="width: 80%" v-if="isEdit" v-model="form.title"></el-input>
-						<span v-else>{{item.title}}</span>
+						<el-input style="width: 80%" v-model="form.title"></el-input>
 					</div>
-					<div class="text item" v-if="isEdit">
+					<div class="text item">
 						<el-input type="textarea" v-model="form.content"></el-input>
 					</div>
-					<div class="text item" v-else>{{item.content}}</div>
 				</el-card>
 			</el-col>
 			<el-col :span="24" class="col-line">
-				<el-button type="primary" round class="button" @click="add" v-if="!isEdit">发布公告</el-button>
+				<el-button type="primary" round class="button" @click="publish">立即发布</el-button>
 			</el-col>
 		</el-row>
 	</div>
@@ -25,7 +22,6 @@
     module.exports = {
         data() {
             return {
-                isEdit: false,
                 form: {
                     id: '',
                     keyWords: '',
@@ -33,33 +29,12 @@
                     content: '',
                 },
                 keyWords: 'notice',
-                dataList: []
             };
         },
         mounted() {
-            this.getTableDataList(this.keyWords)
         },
         methods: {
-            getTableDataList(keyWord) {
-                const _this = this;
-                axios.get(`/api/getPapersByKeyWords/${keyWord}`).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return;
-                    }
-                    _this.dataList = result.data;
-                }).catch(function (error) {
-                    console.log('请求出现错误:', error);
-                });
-            },
-            edit(item) {
-                const _this = this;
-                _this.isEdit = true
-                _this.form = item;
-            },
-            save() {
+            publish() {
                 const _this = this;
                 _this.form.keyWords = this.keyWords;
                 axios.post(`/api/savePapers`, _this.form).then(response => {
@@ -70,16 +45,12 @@
                         return
                     }
                     _this.$message.success('操作成功');
-                    _this.isEdit = false
-                    _this.getTableDataList(this.keyWords)
+                    this.$router.back(-1)
                 }).catch(function (error) {
                     window.location.reload();
                     console.log('请求出现错误:', error);
                 });
-            },
-            add() {
-                router.push({path: '/add-notices'})
-            },
+            }
         }
     }
 </script>

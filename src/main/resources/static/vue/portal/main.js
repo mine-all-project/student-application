@@ -3,14 +3,13 @@ const routes = [
     {path: '/demo', component: httpVueLoader('/demo.vue')},
     {path: '/home', component: httpVueLoader('/vue/portal/home.vue')},
     {path: '/mine-info', component: httpVueLoader('/vue/portal/mine-info.vue')},
-
-
     {path: '/change-password', component: httpVueLoader('/vue/portal/change-password.vue')},
     {path: '/notices-list', component: httpVueLoader('/vue/portal/notices-list.vue')},
     {path: '/mine-notices', component: httpVueLoader('/vue/portal/mine-notices.vue')},
     {path: '/add-notices', component: httpVueLoader('/vue/portal/add-notices.vue')},
-
+    {path: '/edit-notices', component: httpVueLoader('/vue/portal/add-notices.vue')},
     {path: '/login', component: httpVueLoader('/vue/portal/login.vue')},
+
     {path: '/registry', component: httpVueLoader('/vue/portal/registry.vue')},
 ];
 const router = new VueRouter({

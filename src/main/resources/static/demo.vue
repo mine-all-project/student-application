@@ -1,7 +1,7 @@
 <template>
 	<div class="body-parent">
 		<el-row style="font-size: 1em">
-			<h1>公告列表</h1>
+			<h1>我发布的</h1>
 
 			<el-col :span="24" class="col-line" v-for="item in dataList" :key="item.id">
 				<el-card class="box-card">

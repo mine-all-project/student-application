@@ -4,17 +4,17 @@
 		<p>&nbsp;</p>
 		<el-col :span="6">原密码:</el-col>
 		<el-col :span="18">
-			<el-input v-model="form.password" size="mini"></el-input>
+			<el-input v-model="form.password" size="mini" type="password"></el-input>
 		</el-col>
 		<p>&nbsp;</p>
 		<el-col :span="6">新密码:</el-col>
 		<el-col :span="18">
-			<el-input v-model="form.password" size="mini"></el-input>
+			<el-input v-model="form.newPassword" size="mini" type="password"></el-input>
 		</el-col>
 		<p>&nbsp;</p>
 		<el-col :span="6">重复密码:</el-col>
 		<el-col :span="18">
-			<el-input v-model="form.password" size="mini"></el-input>
+			<el-input v-model="form.rePassword" size="mini" type="password"></el-input>
 		</el-col>
 		<p>&nbsp;</p>
 		<el-col :span="8" :offset="2" class="col-line">
@@ -48,6 +48,7 @@
                         return
                     }
                     this.$message.success(result.message);
+                    router.push({path: '/mine-info'})
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });

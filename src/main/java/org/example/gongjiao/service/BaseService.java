@@ -10,10 +10,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 public interface BaseService {
-    default SysUser getUserInfo() {
-        Subject subject = SecurityUtils.getSubject();
-        return (SysUser) subject.getPrincipal();
-    }
+//    default SysUser getUserInfo() {
+//        Subject subject = SecurityUtils.getSubject();
+//        return (SysUser) subject.getPrincipal();
+//    }
+    SysUser getUserInfo();
 
     default void logout() {
         Subject subject = SecurityUtils.getSubject();
@@ -23,7 +24,7 @@ public interface BaseService {
     default String getFilePath(HttpServletRequest request, String filePath, String virtualPath) {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile multipartFile = multipartRequest.getFile("file");
-        FileUtils fileUtils = new FileUtils(filePath,virtualPath);
+        FileUtils fileUtils = new FileUtils(filePath, virtualPath);
         return fileUtils.saveFile(multipartFile);
     }
 }

@@ -25,14 +25,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
-    @Override
     public SysUser getUserInfo() {
-        if (isDebug) {
-            return sysUserDAO.findByUsername("user");
-        } else {
-            Subject subject = SecurityUtils.getSubject();
-            return (SysUser) subject.getPrincipal();
-        }
+        Subject subject = SecurityUtils.getSubject();
+        SysUser user = (SysUser) subject.getPrincipal();
+        String username = isDebug ? "user" : user.getUsername();
+        return sysUserDAO.findByUsername(username);
     }
 
     @Value("${isDebug}")
