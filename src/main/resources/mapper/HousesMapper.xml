@@ -34,6 +34,9 @@
             <if test="price != null">price = #{price},</if>
             <if test="note != null">note = #{note},</if>
             <if test="contract_id != null">contract_id = #{contract_id},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="area != null">area = #{area},</if>
             <if test="img_src != null">img_src = #{img_src}</if>
         </set>
         where id = #{id}
@@ -41,9 +44,9 @@
 
     <insert id="insertHousesInfo">
 		insert into houses
-		(id,address,user_id,price,note,img_src,title,contract_id)
+		(id,address,user_id,price,note,img_src,title,contract_id,province,city,area)
 		values
-		(#{id},#{address},#{user_id},#{price},#{note},#{img_src},#{title},#{contract_id})
+		(#{id},#{address},#{user_id},#{price},#{note},#{img_src},#{title},#{contract_id},#{province},#{city},#{area})
 	</insert>
 
     <select id="findAllByUser" resultMap="houses">

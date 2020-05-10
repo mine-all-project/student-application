@@ -30,6 +30,12 @@ public class HousesForm {
 
     private String contract_id;
 
+    private String province;
+
+    private String city;
+
+    private String area;
+
     public Houses toEntity() {
         Houses entity = new Houses();
         entity.setId(this.id);
@@ -38,6 +44,9 @@ public class HousesForm {
         entity.setPrice(this.price);
         entity.setNote(this.note);
         entity.setImg_src(this.img_src);
+        entity.setProvince(this.province);
+        entity.setCity(this.city);
+        entity.setArea(this.area);
         entity.setContract_id(this.contract_id);
         return entity;
     }

@@ -91,7 +91,7 @@
 					<div class="row justify-content-center">
 						<div class="col-xl-6 col-lg-6 col-md-8">
 							<div class="box_account">
-								<h3 class="new_client">发布房源</h3>
+								<h3 class="new_client">编辑房源</h3>
 								<div class="form_container">
 									<div class="form-group">
 										<input autocomplete="off" placeholder="标题" type="text" class="form-control"
@@ -215,10 +215,20 @@
             };
         },
         mounted() {
-            this.getContractsList()
-            this.getProvincesList()
+            console.log(this.$route.query.id)
+            this.getHousesById(this.$route.query.id)
         },
         methods: {
+            getHousesById(id) {
+                axios.get('/api/getHousesById?id=' + id).then(({data: res}) => {
+                    if (res.success) {
+                        this.form = res.data;
+                        this.getProvincesList()
+                        this.getCitiesList()
+                        this.getAreasList()
+                    }
+                });
+            },
             getContractsList() {
                 const _this = this
                 axios.get('/api/getContractsList').then(response => {
@@ -246,7 +256,6 @@
             },
             submit() {
                 const _this = this
-
                 if (_this.checkForm(_this.form)) {
                     let province = _this.provincesList.filter(e => {
                         return e.provinceid === _this.form.province

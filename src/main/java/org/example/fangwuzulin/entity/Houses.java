@@ -18,6 +18,9 @@ public class Houses extends BaseEntity {
     private String img_src;
     private String contract_id;
     private Contracts contracts;
+    private String province;
+    private String city;
+    private String area;
     private SysUser user;
     private List<LeaveMessage> messages;
 
