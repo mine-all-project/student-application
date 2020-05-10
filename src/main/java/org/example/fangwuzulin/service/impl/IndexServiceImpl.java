@@ -1,5 +1,6 @@
 package org.example.fangwuzulin.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -9,14 +10,18 @@ import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.form.UserForm;
+import org.example.fangwuzulin.mapping.SysAddressMapping;
 import org.example.fangwuzulin.mapping.SysUserMapping;
 import org.example.fangwuzulin.service.IndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -34,10 +39,28 @@ public class IndexServiceImpl implements IndexService {
 
     private static final String SALT = "ceabapples";
     private final SysUserMapping sysUserMapping;
+    private final SysAddressMapping addressMapping;
     private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
 
-    public IndexServiceImpl(SysUserMapping sysUserMapping) {
+    public IndexServiceImpl(SysUserMapping sysUserMapping, SysAddressMapping addressMapping) {
         this.sysUserMapping = sysUserMapping;
+        this.addressMapping = addressMapping;
+    }
+
+    @Override
+    public List<Map<String, Object>> getProvincesList() {
+        return addressMapping.findAllProvinces();
+    }
+
+    @Override
+    public List<Map<String, Object>> getCitiesList(String pid) {
+        return addressMapping.findCitiesByProvincesId(pid);
+    }
+
+    @Override
+    public List<Map<String, Object>> getAreasList(String pid) {
+        return addressMapping.findAreasByProvincesId(pid);
+
     }
 
     public boolean login(HttpServletRequest request, SysUser sysUser) {

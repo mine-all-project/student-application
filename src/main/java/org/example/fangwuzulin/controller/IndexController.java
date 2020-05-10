@@ -1,5 +1,6 @@
 package org.example.fangwuzulin.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.code.kaptcha.Producer;
 import org.apache.shiro.SecurityUtils;
 import org.example.fangwuzulin.config.groups.IsAdd;
@@ -20,6 +21,8 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class IndexController extends BaseController {
@@ -110,5 +113,32 @@ public class IndexController extends BaseController {
         ServletOutputStream out = response.getOutputStream();
         ImageIO.write(randomCode.getImage(), "jpg", out);
         logger.info("返回结果->图片验证码生成完毕，code:[{}]", randomCode.getCode());
+    }
+
+    @GetMapping("/getProvincesList")
+    @ResponseBody
+    public ResponseDTO getProvincesList() {
+        logger.info("收到请求->获取省份数据");
+        List<Map<String, Object>> provincesList = indexService.getProvincesList();
+        logger.info("返回结果->获取省份数据完成，code:[{}]", provincesList);
+        return ResponseDTO.returnSuccess("操作成功", provincesList);
+    }
+
+    @GetMapping("/getCitiesList/{pid}")
+    @ResponseBody
+    public ResponseDTO getCitiesList(@PathVariable String pid) {
+        logger.info("收到请求->获取城市数据");
+        List<Map<String, Object>> citiesList = indexService.getCitiesList(pid);
+        logger.info("返回结果->获取城市数据完成，code:[{}]", citiesList);
+        return ResponseDTO.returnSuccess("操作成功", citiesList);
+    }
+
+    @GetMapping("/getAreasList/{pid}")
+    @ResponseBody
+    public ResponseDTO getAreasList(@PathVariable String pid) {
+        logger.info("收到请求->获取区县数据");
+        List<Map<String, Object>> citiesList = indexService.getAreasList(pid);
+        logger.info("返回结果->获取区县数据完成，code:[{}]", citiesList);
+        return ResponseDTO.returnSuccess("操作成功", citiesList);
     }
 }
