@@ -16,9 +16,9 @@
 		}
 	</style>
 </head>
-<body>
+<body style="margin: 0">
 <div id="app">
-	<el-container style=" border: 1px solid #eee">
+	<el-container style="min-height: 100vh">
 		<el-header width="100%" style="text-align: right; font-size: 12px">
 			<router-link to="/demo">Demo</router-link>
 			<h1>管理平台</h1>
@@ -33,8 +33,8 @@
 			<!--      <span>王小虎</span>-->
 		</el-header>
 		<el-container>
-			<el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-				<el-menu :default-openeds="['3']">
+			<el-aside width="200px" style="border-right: solid 1px #e6e6e6;">
+				<el-menu style="border: none">
 					<el-submenu :index="`${pIndex}`" v-for="(item,pIndex) in menus" :key="item.id">
 						<template slot="title">
 							<i :class="item.icon"></i>{{item.name}}

@@ -5,6 +5,7 @@ import org.example.fangwuzulin.config.groups.IsNotNull;
 import org.example.fangwuzulin.entity.LeaveMessage;
 
 import javax.validation.constraints.NotBlank;
+import java.util.UUID;
 
 @Data
 public class LeaveMessageForm {
@@ -16,6 +17,7 @@ public class LeaveMessageForm {
 
     public LeaveMessage toEntity() {
         LeaveMessage entity = new LeaveMessage();
+        entity.setId(UUID.randomUUID().toString());
         entity.setHouses_id(this.houses_id);
         entity.setContent(this.content);
         entity.setParent_id(this.parent_id);

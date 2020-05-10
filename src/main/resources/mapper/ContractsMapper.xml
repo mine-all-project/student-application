@@ -14,7 +14,7 @@
 	</insert>
 
     <update id="updateContracts">
-        update contracts content = #{content} ,title = #{title} where id = #{id}
+        update contracts set content = #{content}, title = #{title} where id = #{id}
     </update>
 
     <select id="findById" resultMap="contracts">

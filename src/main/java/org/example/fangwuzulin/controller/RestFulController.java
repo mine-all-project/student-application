@@ -126,7 +126,7 @@ public class RestFulController extends BaseController {
     }
 
     @RequestMapping("/saveLeaveMessage")
-    @RequiresPermissions("login")
+    @RequiresPermissions("manage")
     public ResponseDTO saveLeaveMessage(@RequestBody LeaveMessageForm form) {
         logger.info("收到请求->保存评论信息:[{}]", form);
         super.validator(form, IsNotNull.class);

@@ -1,5 +1,6 @@
 package org.example.fangwuzulin.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.config.ApplicationException;
@@ -11,12 +12,13 @@ import org.example.fangwuzulin.mapping.*;
 import org.example.fangwuzulin.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -192,7 +194,9 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     public void saveLeaveMessage(LeaveMessageForm form) {
-        Integer count = leaveMessageMapping.insertMessage(form.toEntity());
+        LeaveMessage leaveMessage = form.toEntity();
+        leaveMessage.setUser_id(getUserInfo().getId());
+        Integer count = leaveMessageMapping.insertMessage(leaveMessage);
         if (count <= 0) {
             throw new ApplicationException("操作失败");
         }
@@ -200,7 +204,22 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     public List<LeaveMessage> getLeaveMessage() {
-        return leaveMessageMapping.findAll();
+        List<LeaveMessage> list = leaveMessageMapping.findAll();
+        Map<String, String> userMap = sysUserMapping.findAllUser().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName));
+        Map<String, String> houseMap = housesMapping.findAll().stream().collect(Collectors.toMap(Houses::getId, Houses::getTitle));
+        List<LeaveMessage> removeList = new ArrayList<>();
+        list.forEach(message -> {
+            message.setUserName(userMap.get(message.getUser_id()));
+            message.setHouses(houseMap.get(message.getHouses_id()));
+            list.forEach(msg -> {
+                if (StringUtils.equals(msg.getParent_id(), message.getId())) {
+                    removeList.add(msg);
+                    message.setReturnMessage(msg);
+                }
+            });
+        });
+        list.removeAll(removeList);
+        return list;
     }
 
     @Override
