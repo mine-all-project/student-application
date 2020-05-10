@@ -1,7 +1,7 @@
 <template>
 	<div class="body-parent">
 		<el-row style="font-size: 1em">
-			<h1>发布公告</h1>
+			<h1>编辑公告</h1>
 			<el-col :span="24" class="col-line">
 				<el-card class="box-card">
 					<div slot="header" class="clearfix">
@@ -14,6 +14,9 @@
 			</el-col>
 			<el-col :span="24" class="col-line">
 				<el-button type="primary" round class="button" @click="publish">立即发布</el-button>
+			</el-col>
+			<el-col :span="24" class="col-line">
+				<el-button type="danger" round class="button" @click="remove">删除</el-button>
 			</el-col>
 		</el-row>
 	</div>
@@ -32,8 +35,41 @@
             };
         },
         mounted() {
+            this.getDataById(this.$route.query.id)
         },
         methods: {
+            remove() {
+                const _this = this;
+                const id = this.$route.query.id;
+                _this.$confirm('确认删除？').then(e => {
+                    axios.delete(`/api/removePapersById/${id}`).then(response => {
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            _this.$message.error('数据加载失败');
+                            return
+                        }
+                        _this.$message.success('操作成功')
+                        _this.$router.back(-1)
+                    }).catch(function (error) {
+                        console.log('请求出现错误:', error);
+                    });
+                });
+            },
+            getDataById(id) {
+                const _this = this;
+                axios.get(`/api/getPapersById?id=${id}`).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    _this.form = result.data;
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            },
             publish() {
                 const _this = this;
                 _this.form.keyWords = this.keyWords;

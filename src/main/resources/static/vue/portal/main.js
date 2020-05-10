@@ -7,7 +7,7 @@ const routes = [
     {path: '/notices-list', component: httpVueLoader('/vue/portal/notices-list.vue')},
     {path: '/mine-notices', component: httpVueLoader('/vue/portal/mine-notices.vue')},
     {path: '/add-notices', component: httpVueLoader('/vue/portal/add-notices.vue')},
-    {path: '/edit-notices', component: httpVueLoader('/vue/portal/add-notices.vue')},
+    {path: '/edit-notices', component: httpVueLoader('/vue/portal/edit-notices.vue')},
     {path: '/login', component: httpVueLoader('/vue/portal/login.vue')},
 
     {path: '/registry', component: httpVueLoader('/vue/portal/registry.vue')},

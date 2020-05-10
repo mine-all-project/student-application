@@ -123,7 +123,7 @@ const app = new Vue({
     methods: {
         clickMenu(url) {
             this.welcome = false
-            router.push({path: url, params: {userId: 123}})
+            router.push({path: url, query: {userId: 123}})
             console.log(url)
         }
     }

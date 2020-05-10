@@ -6,19 +6,14 @@
 			<el-col :span="24" class="col-line" v-for="item in dataList" :key="item.id">
 				<el-card class="box-card">
 					<div slot="header" class="clearfix">
-						<el-input style="width: 80%" v-if="isEdit" v-model="form.title"></el-input>
-						<span v-else>{{item.title}}</span>
-						<el-button style="float: right; padding: 3px 0" type="text" @click="save()" v-if="isEdit">保存</el-button>
-						<el-button style="float: right; padding: 3px 0" type="text" @click="edit(item)" v-else>编辑</el-button>
+						<span>{{item.title}}</span>
+						<el-button style="float: right; padding: 3px 0" type="text" @click="edit(item)">编辑</el-button>
 					</div>
-					<div class="text item" v-if="isEdit">
-						<el-input type="textarea" v-model="form.content"></el-input>
-					</div>
-					<div class="text item" v-else>{{item.content}}</div>
+					<div class="text item">{{item.content}}</div>
 				</el-card>
 			</el-col>
 			<el-col :span="24" class="col-line">
-				<el-button type="primary" round class="button" @click="add" v-if="!isEdit">发布公告</el-button>
+				<el-button type="primary" round class="button" @click="add">发布公告</el-button>
 			</el-col>
 		</el-row>
 	</div>
@@ -27,7 +22,6 @@
     module.exports = {
         data() {
             return {
-                isEdit: false,
                 form: {
                     id: '',
                     keyWords: '',
@@ -57,27 +51,7 @@
                 });
             },
             edit(item) {
-                const _this = this;
-                _this.isEdit = true
-                _this.form = item;
-            },
-            save() {
-                const _this = this;
-                _this.form.keyWords = this.keyWords;
-                axios.post(`/api/savePapers`, _this.form).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return
-                    }
-                    _this.$message.success('操作成功');
-                    _this.isEdit = false
-                    _this.getTableDataList(this.keyWords)
-                }).catch(function (error) {
-                    window.location.reload();
-                    console.log('请求出现错误:', error);
-                });
+                router.push({path: '/edit-notices', query: {id: item.id}})
             },
             add() {
                 router.push({path: '/add-notices'})
