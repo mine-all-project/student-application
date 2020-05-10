@@ -4,7 +4,7 @@ package org.example.fangwuzulin.service;
 import org.example.fangwuzulin.entity.SysUser;
 
 
-public interface UserService {
+public interface UserService extends BaseService {
 
     /**
      * 根据 [用户名] 查询用户

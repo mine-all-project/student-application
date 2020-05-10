@@ -5,7 +5,7 @@ import org.example.fangwuzulin.entity.SysUser;
 import java.util.List;
 import java.util.Map;
 
-public interface ManageService {
+public interface ManageService extends BaseService{
     List<SysUser> getUserList();
 
     void changeStatus(String id);

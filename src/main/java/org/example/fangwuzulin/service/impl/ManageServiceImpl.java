@@ -11,6 +11,7 @@ import org.example.fangwuzulin.service.ManageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,17 @@ import java.util.Map;
 
 @Service
 public class ManageServiceImpl implements ManageService {
+    @Value("${isDebug}")
+    private boolean isDebug;
+
+    @Override
+    public SysUser getUserInfo() {
+        Subject subject = SecurityUtils.getSubject();
+        SysUser user = (SysUser) subject.getPrincipal();
+        String username = isDebug ? "user" : user.getUsername();
+        return sysUserMapping.findByUsername(username);
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(ManageServiceImpl.class);
     private final String salt;
 

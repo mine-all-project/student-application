@@ -1,14 +1,27 @@
 package org.example.fangwuzulin.service.impl;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.mapping.SysUserMapping;
 import org.example.fangwuzulin.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
+    @Value("${isDebug}")
+    private boolean isDebug;
+
+    @Override
+    public SysUser getUserInfo() {
+        Subject subject = SecurityUtils.getSubject();
+        SysUser user = (SysUser) subject.getPrincipal();
+        String username = isDebug ? "user" : user.getUsername();
+        return sysUserMapping.findByUsername(username);
+    }
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private SysUserMapping sysUserMapping;

@@ -13,6 +13,7 @@ import org.example.fangwuzulin.mapping.SysUserMapping;
 import org.example.fangwuzulin.service.IndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,17 @@ import java.util.UUID;
 
 @Service
 public class IndexServiceImpl implements IndexService {
+    @Value("${isDebug}")
+    private boolean isDebug;
+
+    @Override
+    public SysUser getUserInfo() {
+        Subject subject = SecurityUtils.getSubject();
+        SysUser user = (SysUser) subject.getPrincipal();
+        String username = isDebug ? "user" : user.getUsername();
+        return sysUserMapping.findByUsername(username);
+    }
+
     private static final String SALT = "ceabapples";
     private final SysUserMapping sysUserMapping;
     private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
@@ -132,5 +144,6 @@ public class IndexServiceImpl implements IndexService {
         }
         return null;
     }
+
 
 }

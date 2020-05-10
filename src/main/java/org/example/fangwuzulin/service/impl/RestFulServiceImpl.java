@@ -1,5 +1,7 @@
 package org.example.fangwuzulin.service.impl;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.entity.*;
 import org.example.fangwuzulin.form.ContractForm;
@@ -20,6 +22,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
+    @Value("${isDebug}")
+    private boolean isDebug;
+
+    @Override
+    public SysUser getUserInfo() {
+        Subject subject = SecurityUtils.getSubject();
+        SysUser user = (SysUser) subject.getPrincipal();
+        String username = isDebug ? "user" : user.getUsername();
+        return sysUserMapping.findByUsername(username);
+    }
+
     @Value("${usePhone}")
     private boolean usePhone;
     @Value("${filePath}")
@@ -95,7 +108,7 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     public List<Houses> getHousesByUser() {
-        SysUser sysUser = getUser();
+        SysUser sysUser = getUserInfo();
         return housesMapping.findAllByUser(sysUser.getId()).stream().peek(e -> {
             setUserInfo(e);
             setContractInfo(e);
@@ -114,7 +127,7 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public void saveHousesInfo(HousesForm form) {
         Houses houses = form.toEntity();
-        houses.setUser_id(getUser().getId());
+        houses.setUser_id(getUserInfo().getId());
         if (houses.getId() == null) {
             houses.setId(UUID.randomUUID().toString());
             Integer count = housesMapping.insertHousesInfo(houses);
