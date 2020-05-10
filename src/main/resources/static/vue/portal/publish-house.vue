@@ -70,7 +70,7 @@
 															<router-link to="/publish-house"><i class="ti-package"></i>发布房源</router-link>
 														</li>
 														<li>
-															<a @click="myHouse"><i class="ti-package"></i>我的房源</a>
+															<router-link to="/mine-house"><i class="ti-package"></i>我的房源</router-link>
 														</li>
 													</ul>
 												</template>
