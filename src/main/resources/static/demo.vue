@@ -78,7 +78,7 @@
 															<router-link to="/publish-house"><i class="ti-package"></i>发布房源</router-link>
 														</li>
 														<li>
-															<a @click="myHouse"><i class="ti-package"></i>我的房源</a>
+															<router-link to="/mine-house"><i class="ti-package"></i>我的房源</router-link>
 														</li>
 													</ul>
 												</template>
@@ -96,106 +96,7 @@
 				<div class="container margin_60_35">
 					<div class="main_title">
 					</div>
-					<div v-if="type === 1" class="row justify-content-center">
-						<div class="col-xl-6 col-lg-6 col-md-8">
-							<div class="box_account">
-								<h3 class="new_client">用户资料管理</h3>
-								<div class="form_container">
-									<div class="form-group">
-										<input autocomplete="off" placeholder="用户名" readonly="readonly" type="text"
-										       class="form-control"
-										       v-model="form.username">
-									</div>
-									<div class="form-group">
-										<input autocomplete="off" placeholder="姓名" type="text" class="form-control"
-										       v-model="form.name">
-									</div>
-									<div class="form-group">
-										<input autocomplete="off" placeholder="手机号" type="text" class="form-control"
-										       v-model="form.phone">
-									</div>
-									<div class="form-group">
-										<input autocomplete="off" placeholder="邮箱" type="text" class="form-control"
-										       v-model="form.mail">
-									</div>
-									<div class="form-group">
-										<label class="container_check">修改密码
-											<input type="checkbox" v-model="editPwd">
-											<span class="checkmark"></span>
-										</label>
-									</div>
-									<template v-if="editPwd">
-										<div class="form-group">
-											<input type="password" class="form-control" placeholder="旧密码"
-											       v-model="pwd.password">
-										</div>
-										<div class="form-group">
-											<input type="password" class="form-control" placeholder="新密码"
-											       v-model="pwd.newPassword">
-										</div>
-										<div class="form-group">
-											<input type="password" class="form-control" placeholder="确认新密码"
-											       v-model="pwd.confirm">
-										</div>
-									</template>
-									<div class="text-center"><input @click="submit" type="submit" value="保存"
-									                                class="btn_1 full-width"></div>
-								</div>
-								<!-- /form_container -->
-							</div>
-							<!-- /box_account -->
-						</div>
-					</div>
-					<div v-else-if="type === 2" class="row justify-content-center">
-						<div class="col-xl-6 col-lg-6 col-md-8">
-							<div class="box_account">
-								<h3 class="new_client">{{houseForm.title?'修改':'发布'}}房源</h3>
-								<div class="form_container">
-									<div class="form-group">
-										<input autocomplete="off" placeholder="标题" type="text" class="form-control"
-										       v-model="houseForm.title">
-									</div>
-									<div class="form-group">
-										<input autocomplete="off" placeholder="备注" type="text" class="form-control"
-										       v-model="houseForm.note">
-									</div>
-									<div class="form-group">
-										<input autocomplete="off" placeholder="地址" type="text" class="form-control"
-										       v-model="houseForm.address">
-									</div>
-									<div class="form-group">
-										<input autocomplete="off" placeholder="价格" type="number" class="form-control"
-										       v-model="houseForm.price">
-									</div>
-									<div class="form-group img-box">
-										<div class="row">
-											<template v-if="houseForm.img_src">
-												<div class="col-md-3 item"
-												     v-for="(img, index) in houseForm.img_src.split(',')">
-													<img :src="img" alt="img">
-													<i @click="removeImg(index)">X</i>
-												</div>
-											</template>
-											<div class="col-md-3 item">
-												<div class="btn-upload">点击上传图片</div>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<div id="editor" style="width: 100%;"></div>
-										<!--										<input autocomplete="off" placeholder="合同" type="text" class="form-control"-->
-										<!--										       v-model="houseForm.contracts">-->
-									</div>
-									<div class="text-center">
-										<input @click="submitHouseForm" type="submit" value="发布" class="btn_1 full-width">
-									</div>
-								</div>
-								<!-- /form_container -->
-							</div>
-							<!-- /box_account -->
-						</div>
-					</div>
-					<div v-else class="row small-gutters">
+					<div class="row small-gutters">
 						<div class="col-6 col-md-4 col-xl-3" v-for="houses in housesList">
 							<router-link :to="'house?id='+houses.id">
 								<div class="grid_item house-item">
