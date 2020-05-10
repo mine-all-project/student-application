@@ -121,6 +121,14 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", papers);
     }
 
+    @GetMapping("/getMinePapersByKeyWords/{keyWords}")
+    public ResponseDTO getMinePapersByKeyWords(@PathVariable String keyWords) {
+        logger.info("收到请求->获取文章列表,keyWords:[{}]", keyWords);
+        List<Papers> papers = restFulService.getMinePapersByKeyWords(keyWords);
+        logger.info("返回结果->获取文章列表完成:[{}]", papers);
+        return ResponseDTO.returnSuccess("操作成功", papers);
+    }
+
     @GetMapping("/getPapersById")
     public ResponseDTO getPapersById(String id) {
         logger.info("收到请求->获取文章信息,id:[{}]", id);

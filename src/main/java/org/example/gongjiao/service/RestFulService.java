@@ -13,19 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public interface RestFulService {
-
-    default String getFilePath(HttpServletRequest request,String filePath,String virtualPath) {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        MultipartFile multipartFile = multipartRequest.getFile("file");
-        FileUtils fileUtils = new FileUtils(filePath,virtualPath);
-        return fileUtils.saveFile(multipartFile);
-    }
-    default SysUser getUser() {
-        Subject subject = SecurityUtils.getSubject();
-        return (SysUser) subject.getPrincipal();
-    }
-
+public interface RestFulService extends BaseService{
     List<Linees> getLinesList();
     Linees getLinesById(String id);
     void saveLinesInfo(LinesForm form);
@@ -43,6 +31,7 @@ public interface RestFulService {
 
 
     List<Papers> getPapersByKeyWords(String keyWords);
+    List<Papers> getMinePapersByKeyWords(String keyWords);
     Papers getPapersById(String id);
     void savePapers(PapersForm form);
     void removePapersById(String id);

@@ -21,12 +21,16 @@
 					</el-steps>
 				</el-col>
 			</el-col>
-			<el-col :span="24" class="col-line">
-				<el-button type="primary" round style="width: 100%;padding: 16px">发布信息</el-button>
-			</el-col>
+
 			<el-col :span="24" class="col-line">
 				<router-link to="/mine-info">
 					<el-button type="primary" round style="width: 100%;padding: 16px">个人中心</el-button>
+				</router-link>
+			</el-col>
+
+			<el-col :span="24" class="col-line">
+				<router-link to="/notices-list">
+					<el-button type="primary" round style="width: 100%;padding: 16px">公告列表</el-button>
 				</router-link>
 			</el-col>
 		</el-row>

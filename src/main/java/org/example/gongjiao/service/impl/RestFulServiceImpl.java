@@ -4,6 +4,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.gongjiao.dao.LinesDAO;
 import org.example.gongjiao.dao.PapersDAO;
 import org.example.gongjiao.dao.StandsDAO;
+import org.example.gongjiao.dao.SysUserDAO;
 import org.example.gongjiao.dao.jpa.MessageRepository;
 import org.example.gongjiao.entity.*;
 import org.example.gongjiao.form.LinesForm;
@@ -12,6 +13,7 @@ import org.example.gongjiao.form.StandsForm;
 import org.example.gongjiao.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
+    @Override
+    public SysUser getUserInfo() {
+        return sysUserDAO.findByUsername("user");
+    }
+
     @Value("${filePath}")
     private String filePath;
     @Value("${virtualPath}")
@@ -28,16 +35,18 @@ public class RestFulServiceImpl implements RestFulService {
     private final StandsDAO standsDAO;
     private final LinesDAO linesDAO;
     private final PapersDAO papersDAO;
+    private final SysUserDAO sysUserDAO;
     private final MessageRepository messageRepository;
 
     private final Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
     public RestFulServiceImpl(StandsDAO standsDAO, LinesDAO linesDAO, PapersDAO papersDAO,
-                              MessageRepository messageRepository
+                              SysUserDAO sysUserDAO, MessageRepository messageRepository
     ) {
         this.standsDAO = standsDAO;
         this.linesDAO = linesDAO;
         this.papersDAO = papersDAO;
+        this.sysUserDAO = sysUserDAO;
         this.messageRepository = messageRepository;
     }
 
@@ -106,10 +115,15 @@ public class RestFulServiceImpl implements RestFulService {
         return target;
     }
 
-
     @Override
     public List<Papers> getPapersByKeyWords(String keyWord) {
         return papersDAO.findAllByKeyWords(keyWord);
+    }
+
+    @Override
+    public List<Papers> getMinePapersByKeyWords(String keyWord) {
+        SysUser user = getUserInfo();
+        return papersDAO.findByKeyWordsAndSysUser(user, keyWord);
     }
 
     @Override

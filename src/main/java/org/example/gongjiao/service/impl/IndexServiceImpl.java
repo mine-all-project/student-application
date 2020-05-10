@@ -21,6 +21,10 @@ import java.util.UUID;
 
 @Service
 public class IndexServiceImpl implements IndexService {
+    @Override
+    public SysUser getUserInfo() {
+        return sysUserDAO.findByUsername("user");
+    }
     private final SysUserDAO sysUserDAO;
     private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
     private final String salt;
@@ -29,11 +33,6 @@ public class IndexServiceImpl implements IndexService {
     public IndexServiceImpl(ApplicationConfigure applicationConfigure, SysUserDAO sysUserDAO) {
         this.sysUserDAO = sysUserDAO;
         this.salt = applicationConfigure.SALT;
-    }
-
-    @Override
-    public SysUser getUserInfo() {
-        return sysUserDAO.findByUsername("user");
     }
 
     public boolean login(HttpServletRequest request, SysUser sysUser) {
