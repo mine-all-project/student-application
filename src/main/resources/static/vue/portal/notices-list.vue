@@ -6,16 +6,19 @@
 			<el-col :span="24" class="col-line" v-for="item in dataList" :key="item.id">
 				<el-card class="box-card">
 					<div slot="header" class="clearfix">
-						<span>{{item.title}}</span>
+						<el-input style="width: 80%" v-if="isEdit" v-model="form.title"></el-input>
+						<span v-else>{{item.title}}</span>
+						<el-button style="float: right; padding: 3px 0" type="text" @click="save()" v-if="isEdit">保存</el-button>
+						<el-button style="float: right; padding: 3px 0" type="text" @click="edit(item)" v-else>编辑</el-button>
 					</div>
-					<div class="text item">{{item.content}}</div>
+					<div class="text item" v-if="isEdit">
+						<el-input type="textarea" v-model="form.content"></el-input>
+					</div>
+					<div class="text item" v-else>{{item.content}}</div>
 				</el-card>
 			</el-col>
-
 			<el-col :span="24" class="col-line">
-				<router-link to="/mine-notices">
-					<el-button type="primary" round class="button">我的公告</el-button>
-				</router-link>
+				<el-button type="primary" round class="button" @click="add" v-if="!isEdit">发布公告</el-button>
 			</el-col>
 		</el-row>
 	</div>
@@ -24,6 +27,13 @@
     module.exports = {
         data() {
             return {
+                isEdit: false,
+                form: {
+                    id: '',
+                    keyWords: '',
+                    title: '',
+                    content: '',
+                },
                 keyWords: 'notice',
                 dataList: []
             };
@@ -34,7 +44,7 @@
         methods: {
             getTableDataList(keyWord) {
                 const _this = this;
-                axios.get(`/api/getPapersByKeyWords/${keyWord}`).then(response => {
+                axios.get(`/api/getMinePapersByKeyWords/${keyWord}`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
@@ -45,6 +55,32 @@
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });
+            },
+            edit(item) {
+                const _this = this;
+                _this.isEdit = true
+                _this.form = item;
+            },
+            save() {
+                const _this = this;
+                _this.form.keyWords = this.keyWords;
+                axios.post(`/api/savePapers`, _this.form).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    _this.$message.success('操作成功');
+                    _this.isEdit = false
+                    _this.getTableDataList(this.keyWords)
+                }).catch(function (error) {
+                    window.location.reload();
+                    console.log('请求出现错误:', error);
+                });
+            },
+            add() {
+                router.push({path: '/add-notices'})
             },
         }
     }

@@ -32,8 +32,8 @@ public class PapersDAO {
         return papersRepository.findById(id).orElse(new Papers());
     }
 
-    public void savePapers(PapersForm form) {
-        papersRepository.saveAndFlush(form.toEntity());
+    public void savePapers(Papers papers) {
+        papersRepository.saveAndFlush(papers);
     }
 
     public void removePapersById(String id) {

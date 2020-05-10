@@ -134,7 +134,9 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     public void savePapers(PapersForm form) {
-        papersDAO.savePapers(form);
+        Papers entity = form.toEntity();
+        entity.setSysUser(getUserInfo());
+        papersDAO.savePapers(entity);
     }
 
     @Override
