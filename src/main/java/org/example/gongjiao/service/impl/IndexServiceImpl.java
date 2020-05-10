@@ -14,6 +14,7 @@ import org.example.gongjiao.form.UserForm;
 import org.example.gongjiao.service.IndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +24,16 @@ import java.util.UUID;
 public class IndexServiceImpl implements IndexService {
     @Override
     public SysUser getUserInfo() {
-        return sysUserDAO.findByUsername("user");
+        if (isDebug) {
+            return sysUserDAO.findByUsername("user");
+        } else {
+            Subject subject = SecurityUtils.getSubject();
+            return (SysUser) subject.getPrincipal();
+        }
     }
+
+    @Value("${isDebug}")
+    private boolean isDebug;
     private final SysUserDAO sysUserDAO;
     private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
     private final String salt;

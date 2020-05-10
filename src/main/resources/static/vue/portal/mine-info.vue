@@ -40,7 +40,7 @@
 			</el-col>
 
 			<el-col :span="8" :offset="4" class="col-line" v-if="!isEdit">
-				<router-link to="/notices-list">
+				<router-link to="/mine-notices">
 					<el-button type="primary" plain class="button" size="mini">我的公告</el-button>
 				</router-link>
 			</el-col>
@@ -98,6 +98,7 @@
                         return
                     }
                     this.$message.success(result.message);
+                    this.isEdit = false
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });

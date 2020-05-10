@@ -1,6 +1,8 @@
 package org.example.gongjiao.service.impl;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.example.gongjiao.dao.LinesDAO;
 import org.example.gongjiao.dao.PapersDAO;
 import org.example.gongjiao.dao.StandsDAO;
@@ -25,9 +27,16 @@ import java.util.stream.Collectors;
 public class RestFulServiceImpl implements RestFulService {
     @Override
     public SysUser getUserInfo() {
-        return sysUserDAO.findByUsername("user");
+        if (isDebug) {
+            return sysUserDAO.findByUsername("user");
+        } else {
+            Subject subject = SecurityUtils.getSubject();
+            return (SysUser) subject.getPrincipal();
+        }
     }
 
+    @Value("${isDebug}")
+    private boolean isDebug;
     @Value("${filePath}")
     private String filePath;
     @Value("${virtualPath}")

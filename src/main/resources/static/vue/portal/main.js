@@ -2,6 +2,9 @@ Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', component: httpVueLoader('/demo.vue')},
     {path: '/home', component: httpVueLoader('/vue/portal/home.vue')},
+    {path: '/mine-info', component: httpVueLoader('/vue/portal/mine-info.vue')},
+
+
     {path: '/change-password', component: httpVueLoader('/vue/portal/change-password.vue')},
     {path: '/notices-list', component: httpVueLoader('/vue/portal/notices-list.vue')},
     {path: '/mine-notices', component: httpVueLoader('/vue/portal/mine-notices.vue')},
@@ -41,7 +44,7 @@ const app = new Vue({
     },
     mounted() {
         // this.getUserInfo()
-        router.push({path: '/demo'})
+        router.push({path: '/home'})
         console.log(123)
     },
     methods: {
