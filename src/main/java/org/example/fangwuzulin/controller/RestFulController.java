@@ -6,6 +6,7 @@ import org.example.fangwuzulin.dto.ResponseDTO;
 import org.example.fangwuzulin.entity.AudioFiles;
 import org.example.fangwuzulin.entity.Contracts;
 import org.example.fangwuzulin.entity.Houses;
+import org.example.fangwuzulin.entity.LeaveMessage;
 import org.example.fangwuzulin.form.ContractForm;
 import org.example.fangwuzulin.form.HousesForm;
 import org.example.fangwuzulin.form.LeaveMessageForm;
@@ -132,6 +133,15 @@ public class RestFulController extends BaseController {
         restFulService.saveLeaveMessage(form);
         logger.info("返回结果->保存评论信息完成:[{}]", form);
         return ResponseDTO.returnSuccess("操作成功", form);
+    }
+
+    @RequestMapping("/getLeaveMessage")
+    @RequiresPermissions("manage")
+    public ResponseDTO getLeaveMessage() {
+        logger.info("收到请求->获取评论信息");
+        List<LeaveMessage> messages = restFulService.getLeaveMessage();
+        logger.info("返回结果->获取评论信息完成:[{}]", messages);
+        return ResponseDTO.returnSuccess("操作成功", messages);
     }
 
 }

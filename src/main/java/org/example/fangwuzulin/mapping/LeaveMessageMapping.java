@@ -15,4 +15,6 @@ public interface LeaveMessageMapping {
     List<LeaveMessage> findById(String id);
 
     LeaveMessage findByParentId(String id);
+
+    List<LeaveMessage> findAll();
 }

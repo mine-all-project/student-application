@@ -198,5 +198,8 @@ public class RestFulServiceImpl implements RestFulService {
         }
     }
 
-
+    @Override
+    public List<LeaveMessage> getLeaveMessage() {
+        return leaveMessageMapping.findAll();
+    }
 }
