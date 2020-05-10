@@ -9,7 +9,7 @@
 							<div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
 								<div id="logo">
 									<a href="/index">
-										<img src="/portal/img/logo.svg" alt="" width="100" height="35">
+										<img src="/portal/img/logo.svg" width="100" height="35">
 									</a>
 								</div>
 							</div>
@@ -72,10 +72,10 @@
 													<a href="/loginOut" class="btn_1">退出登录</a>
 													<ul>
 														<li>
-															<router-link to="/user-info"><i class="ti-package"></i>个人信息</router-link>
+															<a @click="editInfo"><i class="ti-user"></i>用户资料管理</a>
 														</li>
 														<li>
-															<router-link to="/publish-house"><i class="ti-package"></i>发布房源</router-link>
+															<a @click="publish"><i class="ti-package"></i>发布房源</a>
 														</li>
 														<li>
 															<a @click="myHouse"><i class="ti-package"></i>我的房源</a>

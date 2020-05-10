@@ -2,6 +2,10 @@ Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', component: httpVueLoader('/demo.vue')},
     {path: '/home', component: httpVueLoader('/vue/portal/home.vue')},
+    {path: '/publish-house', component: httpVueLoader('/vue/portal/publish-house.vue')},
+
+
+    {path: '/user-info', component: httpVueLoader('/vue/portal/user-info.vue')},
     {path: '/house', component: httpVueLoader('/vue/portal/house.vue')},
 ];
 const router = new VueRouter({
@@ -35,6 +39,7 @@ const app = new Vue({
     },
     mounted() {
         // this.getUserInfo()
+        // router.push({path: '/home'})
         router.push({path: '/demo'})
         console.log(123)
     },
