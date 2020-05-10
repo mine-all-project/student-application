@@ -144,4 +144,13 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", messages);
     }
 
+    @RequestMapping("/removeLeaveMessage/{id}")
+    @RequiresPermissions("manage")
+    public ResponseDTO removeLeaveMessage(@PathVariable String id) {
+        logger.info("收到请求->删除评论信息");
+        restFulService.removeLeaveMessage(id);
+        logger.info("返回结果->删除评论信息完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
 }

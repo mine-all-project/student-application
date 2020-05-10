@@ -202,4 +202,12 @@ public class RestFulServiceImpl implements RestFulService {
     public List<LeaveMessage> getLeaveMessage() {
         return leaveMessageMapping.findAll();
     }
+
+    @Override
+    public void removeLeaveMessage(String id) {
+        Integer count = leaveMessageMapping.removeById(id);
+        if (count <= 0) {
+            throw new ApplicationException("操作失败");
+        }
+    }
 }

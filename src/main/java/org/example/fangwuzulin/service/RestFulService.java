@@ -35,4 +35,6 @@ public interface RestFulService extends BaseService{
     void saveLeaveMessage(LeaveMessageForm form);
 
     List<LeaveMessage> getLeaveMessage();
+
+    void removeLeaveMessage(String id);
 }
