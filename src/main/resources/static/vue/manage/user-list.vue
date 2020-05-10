@@ -1,18 +1,18 @@
 <template>
 	<el-row>
 		<el-table :data="tableData" stripe style="width: 100%">
-			<el-table-column prop="username" label="用户名" width=""></el-table-column>
-			<el-table-column prop="name" label="姓名" width=""></el-table-column>
+			<el-table-column prop="username" label="用户名"></el-table-column>
+			<el-table-column prop="name" label="姓名"></el-table-column>
 			<!--			<el-table-column prop="age" label="年龄" width=""></el-table-column>-->
-			<el-table-column prop="mail" label="邮箱" width=""></el-table-column>
-			<el-table-column prop="phone" label="手机号" width=""></el-table-column>
-			<el-table-column label="状态" width="">
+			<el-table-column prop="mail" label="邮箱"></el-table-column>
+			<el-table-column prop="phone" label="手机号"></el-table-column>
+			<el-table-column label="状态">
 				<template slot-scope="scope">
 					<el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
 					<el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" width="160">
+			<el-table-column label="操作">
 				<template slot-scope="scope">
 					<el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
 					<el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>

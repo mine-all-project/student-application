@@ -1,10 +1,10 @@
 <template>
 	<el-row>
 		<el-table :data="tableData" stripe style="width: 100%">
-			<el-table-column prop="createTime" label="日期" width="220"></el-table-column>
-			<el-table-column prop="title" label="标题" width="180"></el-table-column>
+			<el-table-column prop="createTime" label="日期"></el-table-column>
+			<el-table-column prop="title" label="标题"></el-table-column>
 			<el-table-column prop="content" label="正文" :show-overflow-tooltip="true"></el-table-column>
-			<el-table-column label="操作" width="160">
+			<el-table-column label="操作">
 				<template slot-scope="scope">
 					<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
 					<el-button type="primary" @click="drawerOpen(scope)" size="mini">编辑</el-button>
@@ -53,7 +53,7 @@
             };
         },
         mounted() {
-            this.getTableDataList(this.keyWord)
+            this.getTableDataList(this.keyWords)
         },
         methods: {
             remove(scope) {
@@ -76,9 +76,9 @@
                     });
                 });
             },
-            getTableDataList(keyWord) {
+            getTableDataList(keyWords) {
                 const _this = this;
-                axios.get(`/api/getPapersByKeyWords/${keyWord}`).then(response => {
+                axios.get(`/api/getPapersByKeyWords/${keyWords}`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
