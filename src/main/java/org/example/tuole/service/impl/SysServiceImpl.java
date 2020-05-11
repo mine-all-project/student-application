@@ -3,7 +3,6 @@ package org.example.tuole.service.impl;
 import org.example.tuole.config.ApplicationConfigure;
 import org.example.tuole.config.ApplicationException;
 import org.example.tuole.config.MailUtils;
-import org.example.tuole.config.SmsUtils;
 import org.example.tuole.dao.SysUserRepository;
 import org.example.tuole.dto.ResponseDTO;
 import org.example.tuole.entity.SysUser;
@@ -31,14 +30,14 @@ public class SysServiceImpl implements SysService {
     private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
     private String salt;
     private final StringRedisTemplate redisTemplate;
-    private final SmsUtils smsUtils;
     private final SysUserRepository sysUserRepository;
 
 
-    public SysServiceImpl(ApplicationConfigure applicationConfigure, StringRedisTemplate redisTemplate, SmsUtils smsUtils, SysUserRepository sysUserRepository) {
+    public SysServiceImpl(ApplicationConfigure applicationConfigure, StringRedisTemplate redisTemplate,
+                          SysUserRepository sysUserRepository) {
         this.salt = applicationConfigure.SALT;
+
         this.redisTemplate = redisTemplate;
-        this.smsUtils = smsUtils;
         this.sysUserRepository = sysUserRepository;
     }
 

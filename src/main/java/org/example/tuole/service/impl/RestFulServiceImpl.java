@@ -2,7 +2,6 @@ package org.example.tuole.service.impl;
 
 import org.example.tuole.config.ApplicationException;
 import org.example.tuole.config.MailUtils;
-import org.example.tuole.config.SmsUtils;
 import org.example.tuole.dao.AudioFileRepository;
 import org.example.tuole.dao.GoodsRepository;
 import org.example.tuole.dao.MessageRepository;
@@ -27,24 +26,21 @@ import java.util.*;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
-    @Value("${usePhone}")
-    private boolean usePhone;
     @Value("${filePath}")
     private String filePath;
     private final AudioFileRepository audioFileRepository;
     private final GoodsRepository goodsRepository;
     private final OrderRepository orderRepository;
     private final MessageRepository messageRepository;
-    private final SmsUtils smsUtils;
-    private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
     public RestFulServiceImpl(AudioFileRepository audioFileRepository,
                               GoodsRepository goodsRepository, OrderRepository orderRepository,
-                              MessageRepository messageRepository, SmsUtils smsUtils) {
+                              MessageRepository messageRepository
+    ) {
         this.audioFileRepository = audioFileRepository;
         this.goodsRepository = goodsRepository;
         this.orderRepository = orderRepository;
-        this.smsUtils = smsUtils;
         this.messageRepository = messageRepository;
     }
 
@@ -184,13 +180,9 @@ public class RestFulServiceImpl implements RestFulService {
             }
         });
         try {
-            if (usePhone) {
-                smsUtils.sendNoticeMessage(sysUser.getPhone(), sysUser.getName(), goods.getName());
-            } else {
-                String title = "通知邮件";
-                String content = String.format("亲爱的 [%s] ,您的 [%s] 已经预约成功", sysUser.getName(), goods.getName());
-                MailUtils.sendMail(title, content, sysUser.getMail());
-            }
+            String title = "通知邮件";
+            String content = String.format("亲爱的 [%s] ,您的 [%s] 已经预约成功", sysUser.getName(), goods.getName());
+            MailUtils.sendMail(title, content, sysUser.getMail());
             orderRepository.save(orders);
             return orders;
         } catch (Exception e) {
