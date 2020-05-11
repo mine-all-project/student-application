@@ -1,6 +1,9 @@
 Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', name: 'demo', component: httpVueLoader('/demo.vue')},
+    {path: '/user-list', name: 'userList', component: httpVueLoader('/vue/manage/user-list.vue')},
+
+
     {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},
 
 

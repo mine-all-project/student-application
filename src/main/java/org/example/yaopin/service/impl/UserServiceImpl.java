@@ -23,14 +23,14 @@ public class UserServiceImpl implements UserService {
         this.sysUserRepository = sysUserRepository;
     }
 
-    /**
-     * 根据 [用户名] 查询用户
-     * @param username 用户名
-     * @return 查询到的用户
-     */
     @Override
     public Optional<SysUser> findByUsername(String username) {
         return sysUserRepository.findByUsername(username);
+    }
+
+    @Override
+    public Optional<SysUser> findByUsernameAndStatus(String username, int status) {
+        return sysUserRepository.findByUsernameAndStatus(username, status);
     }
 
     @Override
@@ -90,10 +90,11 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 根据[用户名] [密码] [状态] [删除标记] 查询用户
+     *
      * @param username 用户名
      * @param password 密码
-     * @param status 状态
-     * @param delFlag 删除标记
+     * @param status   状态
+     * @param delFlag  删除标记
      * @return 查询到的用户
      */
     @Override

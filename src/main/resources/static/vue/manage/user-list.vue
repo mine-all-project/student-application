@@ -38,9 +38,7 @@
 					</el-form-item>
 				</el-form>
 				<div class="drawer-footer">
-					<el-button type="primary" @click="saveForm" :loading="drawer.loading">
-						{{ drawer.loading ? '提交中 ...' : '确定'}}
-					</el-button>
+					<el-button type="primary" @click="saveForm" :loading="drawer.loading">确定</el-button>
 					<el-button @click="formClose">取 消</el-button>
 				</div>
 			</div>

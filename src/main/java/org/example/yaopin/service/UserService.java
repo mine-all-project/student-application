@@ -17,6 +17,8 @@ public interface UserService {
      */
     Optional<SysUser> findByUsername(String username);
 
+    Optional<SysUser> findByUsernameAndStatus(String username,int status);
+
     /**
      * 添加用户
      */
