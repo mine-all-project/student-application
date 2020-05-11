@@ -65,8 +65,8 @@
 								<ul class="top_tools">
 									<li>
 										<div class="dropdown dropdown-access">
-											<a href="#" class="access_link"><span>Account</span></a>
-											<div class="dropdown-menu">
+											<!--											<a class="access_link"><span>Account</span></a>-->
+											<div class="dropdown-menu" style="display: block">
 												<a v-if="!userInfo.username" href="/login" class="btn_1">登录</a>
 												<template v-else>
 													<a href="/loginOut" class="btn_1">退出登录</a>

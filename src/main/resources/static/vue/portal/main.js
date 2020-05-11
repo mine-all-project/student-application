@@ -8,6 +8,9 @@ const routes = [
 
     {path: '/edit-house', component: httpVueLoader('/vue/portal/edit-house.vue')},
     {path: '/mine-house', component: httpVueLoader('/vue/portal/mine-house.vue')},
+
+
+    {path: '/header-demo', component: httpVueLoader('/vue/portal/header-demo.vue')},
 ];
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes

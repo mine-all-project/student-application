@@ -49,6 +49,46 @@
 					</div>
 				</div>
 				<!-- /main_header -->
+				<div class="main_nav Sticky">
+					<div class="container">
+						<div class="row small-gutters">
+							<div class="col-xl-3 col-lg-3 col-md-3"></div>
+							<div class="col-xl-6 col-lg-7 col-md-6 d-none d-md-block">
+								<div class="custom-search-input" @keydown.enter="search">
+									<input type="text" placeholder="请输入搜索内容" v-model.trim="keywords">
+									<button type="submit" @click="search"><i class="header-icon_search_custom"></i>
+									</button>
+								</div>
+							</div>
+							<div class="col-xl-3 col-lg-2 col-md-3">
+								<ul class="top_tools">
+									<li>
+										<div class="dropdown dropdown-access">
+											<!--											<a class="access_link"><span>Account</span></a>-->
+											<div class="dropdown-menu" style="display: block">
+												<a v-if="!userInfo.username" href="/login" class="btn_1">登录</a>
+												<template v-else>
+													<a href="/loginOut" class="btn_1">退出登录</a>
+													<ul>
+														<li>
+															<router-link to="/user-info"><i class="ti-package"></i>个人信息</router-link>
+														</li>
+														<li>
+															<router-link to="/publish-house"><i class="ti-package"></i>发布房源</router-link>
+														</li>
+														<li>
+															<router-link to="/mine-house"><i class="ti-package"></i>我的房源</router-link>
+														</li>
+													</ul>
+												</template>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
 			</header>
 			<!-- /header -->
 

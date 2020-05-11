@@ -52,13 +52,19 @@
 					<div class="container">
 						<div class="row small-gutters">
 							<div class="col-xl-3 col-lg-3 col-md-3"></div>
-							<div class="col-xl-6 col-lg-7 col-md-6 d-none d-md-block"></div>
+							<div class="col-xl-6 col-lg-7 col-md-6 d-none d-md-block">
+								<div class="custom-search-input" @keydown.enter="search">
+									<input type="text" placeholder="请输入搜索内容" v-model.trim="keywords">
+									<button type="submit" @click="search"><i class="header-icon_search_custom"></i>
+									</button>
+								</div>
+							</div>
 							<div class="col-xl-3 col-lg-2 col-md-3">
 								<ul class="top_tools">
 									<li>
 										<div class="dropdown dropdown-access">
-											<a href="#" class="access_link"><span>Account</span></a>
-											<div class="dropdown-menu">
+											<!--											<a class="access_link"><span>Account</span></a>-->
+											<div class="dropdown-menu" style="display: block">
 												<a v-if="!userInfo.username" href="/login" class="btn_1">登录</a>
 												<template v-else>
 													<a href="/loginOut" class="btn_1">退出登录</a>
