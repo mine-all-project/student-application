@@ -25,7 +25,7 @@
  	</select>
 
     <select id="findAllByHousesId" resultMap="message">
- 		select * from leave_message where houses_id = #{houses_id}
+ 		select * from leave_message where parent_id is null and houses_id = #{houses_id}
  	</select>
 
     <select id="findById" resultMap="message">

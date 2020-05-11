@@ -74,7 +74,7 @@ public class RestFulServiceImpl implements RestFulService {
         List<LeaveMessage> messages = leaveMessageMapping.findAllByHousesId(houses.getId());
         messages = messages.stream().peek(e -> {
             e.setReturnMessage(leaveMessageMapping.findByParentId(e.getId()));
-            e.setUser(sysUserMapping.findById(houses.getUser_id()));
+            e.setUser(sysUserMapping.findById(e.getUser_id()));
         }).collect(Collectors.toList());
         houses.setMessages(messages);
         return houses;

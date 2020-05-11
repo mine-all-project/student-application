@@ -29,6 +29,8 @@ public class LeaveMessage extends BaseEntity {
         if (this.children == null) {
             this.children = new ArrayList<>();
         }
-        this.children.add(msg);
+        if (msg != null) {
+            this.children.add(msg);
+        }
     }
 }
