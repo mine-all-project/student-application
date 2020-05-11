@@ -65,8 +65,8 @@
 							<ul class="top_tools">
 								<li>
 									<div class="dropdown dropdown-access">
-										<!--											<a class="access_link"><span>Account</span></a>-->
-										<div class="dropdown-menu" style="display: block">
+										<a class="access_link" @click="clickUser"><span>Account</span></a>
+										<div class="dropdown-menu" :style="{display:style.display}">
 											<a v-if="!userInfo.username" href="/login" class="btn_1">登录</a>
 											<template v-else>
 												<a href="/loginOut" class="btn_1">退出登录</a>
@@ -108,13 +108,21 @@
         data() {
             return {
                 keywords: '',
-                userInfo: {}
+                userInfo: {},
+                style: {
+                    display: 'none',
+                    show: false
+                }
             };
         },
         mounted() {
             this.getUserInfo();
         },
         methods: {
+            clickUser() {
+                this.style.show = !this.style.show
+                this.style.display = this.style.show ? 'block' : 'none'
+            },
             getUserInfo() {
                 axios.get('/getUserInfo').then(({data: res}) => {
                     if (res.success && res.data) {
@@ -128,5 +136,6 @@
     };
 </script>
 <style>
+
 </style>
 

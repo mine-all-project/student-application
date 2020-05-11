@@ -4,14 +4,9 @@ const routes = [
     {path: '/home', component: httpVueLoader('/vue/portal/home.vue')},
     {path: '/publish-house', component: httpVueLoader('/vue/portal/publish-house.vue')},
     {path: '/user-info', component: httpVueLoader('/vue/portal/user-info.vue')},
-
-
     {path: '/edit-house', component: httpVueLoader('/vue/portal/edit-house.vue')},
     {path: '/mine-house', component: httpVueLoader('/vue/portal/mine-house.vue')},
     {path: '/house-info', component: httpVueLoader('/vue/portal/house-info.vue')},
-
-
-    {path: '/header-demo', component: httpVueLoader('/vue/portal/page-header.vue')},
 ];
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes
