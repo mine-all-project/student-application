@@ -3,6 +3,7 @@ const routes = [
     {path: '/demo', name: 'demo', component: httpVueLoader('/demo.vue')},
     {path: '/user-list', name: 'userList', component: httpVueLoader('/vue/manage/user-list.vue')},
     {path: '/goods-add', name: 'goodsAdd', component: httpVueLoader('/vue/manage/goods-add.vue')},
+    {path: '/goods-query', name: 'goodsQuery', component: httpVueLoader('/vue/manage/goods-query.vue')},
 
 
     {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},
