@@ -8,9 +8,10 @@ const routes = [
 
     {path: '/edit-house', component: httpVueLoader('/vue/portal/edit-house.vue')},
     {path: '/mine-house', component: httpVueLoader('/vue/portal/mine-house.vue')},
+    {path: '/house-info', component: httpVueLoader('/vue/portal/house-info.vue')},
 
 
-    {path: '/header-demo', component: httpVueLoader('/vue/portal/header-demo.vue')},
+    {path: '/header-demo', component: httpVueLoader('/vue/portal/page-header.vue')},
 ];
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes
@@ -19,7 +20,11 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     router,
-    components: {},
+    // components: {
+    //     products: httpVueLoader('/vue/portal/products.vue'),
+    //     news: httpVueLoader('/vue/portal/news.vue'),
+    //     friends: httpVueLoader('/vue/portal/friends.vue'),
+    // },
     data() {
         return {
             ordersList: [],
@@ -43,8 +48,8 @@ const app = new Vue({
     },
     mounted() {
         // this.getUserInfo()
-        // router.push({path: '/home'})
-        router.push({path: '/demo'})
+        router.push({path: '/home'})
+        // router.push({path: '/demo'})
         console.log(123)
     },
     methods: {
