@@ -98,7 +98,7 @@
 					</div>
 					<div class="row small-gutters">
 						<div class="col-6 col-md-4 col-xl-3" v-for="houses in housesList">
-							<router-link :to="'house?id='+houses.id">
+							<router-link :to="'house-info?id='+houses.id">
 								<div class="grid_item house-item">
 									<figure>
 										<template v-if="houses.img_src">

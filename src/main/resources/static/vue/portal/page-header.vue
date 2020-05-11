@@ -51,7 +51,9 @@
 					<div class="row small-gutters">
 						<div class="col-xl-3 col-lg-3 col-md-3"></div>
 						<div class="col-xl-6 col-lg-7 col-md-6 d-none d-md-block">
-							<div class="custom-search-input" @keydown.enter="()=>{this.$emit('search',this.keywords)}">
+							<div class="custom-search-input"
+							     @keydown.enter="()=>{this.$emit('search',this.keywords)}"
+							     v-if="show">
 								<input type="text" placeholder="请输入搜索内容" v-model.trim="keywords">
 								<button type="submit" @click="()=>{this.$emit('search',this.keywords)}"><i
 										class="header-icon_search_custom"></i>
@@ -97,6 +99,10 @@
         props: {
             search: {
                 type: Function
+            },
+            show: {
+                type: Boolean,
+                default: true
             },
         },
         data() {

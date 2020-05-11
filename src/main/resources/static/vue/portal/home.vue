@@ -30,7 +30,6 @@
 				</div>
 			</main>
 			<page-footer></page-footer>
-			<!--/footer-->
 		</div>
 		<div id="toTop"></div><!-- Back to top button -->
 	</div>
