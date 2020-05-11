@@ -1,16 +1,18 @@
 Vue.use(httpVueLoader);
 const routes = [
-    {path: '/demo', component: httpVueLoader('/demo.vue')},
-    {path: '/home', component: httpVueLoader('/vue/portal/home.vue')},
-    {path: '/mine-info', component: httpVueLoader('/vue/portal/mine-info.vue')},
-    {path: '/change-password', component: httpVueLoader('/vue/portal/change-password.vue')},
-    {path: '/notices-list', component: httpVueLoader('/vue/portal/notices-list.vue')},
-    {path: '/mine-notices', component: httpVueLoader('/vue/portal/mine-notices.vue')},
-    {path: '/add-notices', component: httpVueLoader('/vue/portal/add-notices.vue')},
-    {path: '/edit-notices', component: httpVueLoader('/vue/portal/edit-notices.vue')},
-    {path: '/login', component: httpVueLoader('/vue/portal/login.vue')},
+    {path: '/demo', name: 'demo', component: httpVueLoader('/demo.vue')},
+    {path: '/manage-welcome', name: 'manageWelcome', component: httpVueLoader('/vue/manage/welcome.vue')},
 
-    {path: '/registry', component: httpVueLoader('/vue/portal/registry.vue')},
+
+    {path: '/portal-home', name: 'portalHome', component: httpVueLoader('/vue/portal/home.vue')},
+    {path: '/mine-info', name: 'mineInfo', component: httpVueLoader('/vue/portal/mine-info.vue')},
+    {path: '/change-password', name: '/changePassword', component: httpVueLoader('/vue/portal/change-password.vue')},
+    {path: '/notices-list', name: '/noticesList', component: httpVueLoader('/vue/portal/notices-list.vue')},
+    {path: '/mine-notices', name: '/mineNotices', component: httpVueLoader('/vue/portal/mine-notices.vue')},
+    {path: '/add-notices', name: '/addNotices', component: httpVueLoader('/vue/portal/add-notices.vue')},
+    {path: '/edit-notices', name: '/editNotices', component: httpVueLoader('/vue/portal/edit-notices.vue')},
+    {path: '/login', name: '/login', component: httpVueLoader('/vue/portal/login.vue')},
+    {path: '/registry', name: 'registry', component: httpVueLoader('/vue/portal/registry.vue')},
 ];
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes
@@ -43,7 +45,7 @@ const app = new Vue({
     },
     mounted() {
         // this.getUserInfo()
-        router.push({path: '/home'})
+        router.push({path: '/manage-index'})
         console.log(123)
     },
     methods: {
