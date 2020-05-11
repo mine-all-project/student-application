@@ -352,114 +352,14 @@
         },
         methods: {
             clickMenu(url) {
-                this.welcome = false
                 router.push(url)
                 console.log(url)
-            },
-
-            remove(scope) {
-                const _this = this;
-                const id = scope.row.id;
-                _this.$confirm('确认删除？').then(e => {
-                    _this.drawer.loading = true;
-                    axios.delete(`/api/removePaperById/${id}`).then(response => {
-                        _this.getTableDataList();
-                        const result = response.data;
-                        console.log('通过api获取到的数据:', result);
-                        if (result.status !== 200) {
-                            _this.$message.error('数据加载失败');
-                            return
-                        }
-                        _this.$message.success('操作成功')
-                    }).catch(function (error) {
-                        _this.getTableDataList();
-                        console.log('请求出现错误:', error);
-                    });
-                });
-            },
-            changeStatus(scope) {
-                const _this = this;
-                const id = scope.row.id;
-                _this.$confirm('确认操作？').then(e => {
-                    _this.drawer.loading = true;
-                    axios.put(`/manage/changeStatus/${id}`).then(response => {
-                        _this.getTableDataList();
-                        const result = response.data;
-                        console.log('通过api获取到的数据:', result);
-                        if (result.status !== 200) {
-                            _this.$message.error('数据加载失败');
-                            return
-                        }
-                        _this.$message.success('操作成功')
-                    }).catch(function (error) {
-                        _this.getTableDataList();
-                        console.log('请求出现错误:', error);
-                    });
-                });
-            },
-            getTableDataList() {
-                const _this = this;
-                axios.get('/manage/getUserList').then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return;
-                    }
-                    _this.tableData = result.data;
-                }).catch(function (error) {
-                    console.log('请求出现错误:', error);
-                });
-            },
-            edit(scope) {
-                this.$nextTick(() => {
-                    this.findDataById(scope ? scope.row.id : ' ');
-                    this.drawer.show = true;
-                })
-            },
-            findDataById(id) {
-                const _this = this;
-                axios.get(`/manage/getUsersById?id=${id}`).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return
-                    }
-                    _this.form = result.data;
-                }).catch(function (error) {
-                    console.log('请求出现错误:', error);
-                });
-            },
-            formClose() {
-                this.drawer.loading = false;
-                this.drawer.show = false;
-                this.getTableDataList();
-            },
-            saveForm() {
-                const _this = this;
-                _this.drawer.loading = true;
-                axios.post(`/manage/saveUserInfo`, _this.form).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return
-                    }
-                    _this.$message.success('操作成功');
-                    _this.drawer.loading = false;
-                    _this.drawer.show = false;
-                    _this.getTableDataList()
-                }).catch(function (error) {
-                    window.location.reload();
-                    console.log('请求出现错误:', error);
-                });
             },
         }
     }
 </script>
 
-<style scoped>
+<style>
 	.el-header {
 		background-color: #B3C0D1;
 		color: #333;
@@ -468,5 +368,9 @@
 
 	.el-aside {
 		color: #333;
+	}
+
+	.parent-body {
+		padding: 16px;
 	}
 </style>
