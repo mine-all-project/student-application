@@ -34,10 +34,6 @@ public class SysUser extends BaseEntity {
     @NotBlank(message = "手机号不能为空", groups = IsNotNull.class)
     private String phone;
 
-    @Column(columnDefinition = "int (3) default 0 not null comment '年龄'")
-    @NotNull(message = "年龄不能为空", groups = IsNotNull.class)
-    private Integer age;
-
     @Column(columnDefinition = "bit(1) default 0 not null comment '用户状态标记 0:正常 1:禁用'")
     @NotBlank(message = "状态不能为空", groups = IsNotNull.class)
     private Integer status;

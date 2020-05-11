@@ -1,9 +1,10 @@
 Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', name: 'demo', component: httpVueLoader('/demo.vue')},
+    {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},
+
+
     {path: '/manage-welcome', name: 'manageWelcome', component: httpVueLoader('/vue/manage/welcome.vue')},
-
-
     {path: '/portal-home', name: 'portalHome', component: httpVueLoader('/vue/portal/home.vue')},
     {path: '/mine-info', name: 'mineInfo', component: httpVueLoader('/vue/portal/mine-info.vue')},
     {path: '/change-password', name: '/changePassword', component: httpVueLoader('/vue/portal/change-password.vue')},
@@ -15,13 +16,16 @@ const routes = [
     {path: '/registry', name: 'registry', component: httpVueLoader('/vue/portal/registry.vue')},
 ];
 const router = new VueRouter({
-    routes // (缩写) 相当于 routes: routes
+    routes, // (缩写) 相当于 routes: routes
+    // mode: "history"
 });
 
 const app = new Vue({
     el: '#app',
     router,
-    components: {},
+    components: {
+        'manage-index': httpVueLoader('/vue/manage/index.vue')
+    },
     data() {
         return {
             ordersList: [],
@@ -44,9 +48,7 @@ const app = new Vue({
         }
     },
     mounted() {
-        // this.getUserInfo()
-        router.push({path: '/manage-index'})
-        console.log(123)
+        console.log('main.js加载完成')
     },
     methods: {
         getUserInfo() {

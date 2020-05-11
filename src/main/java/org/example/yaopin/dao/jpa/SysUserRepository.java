@@ -27,14 +27,6 @@ public interface SysUserRepository extends JpaRepository<SysUser, String> {
     List<SysUser> findByName(String name);
 
     /**
-     * 根据名字和年龄查询
-     * @param name 姓名
-     * @param age 年龄
-     * @return 查询到的用户集合
-     */
-    List<SysUser> findByNameAndAge(String name, Integer age);
-
-    /**
      * 根据姓名模糊查询
      * @param name 姓名
      * @return 查询到的用户集合

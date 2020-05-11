@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/manage")
-@RequiresPermissions("manage")
+//@RequiresPermissions("manage")
 public class SysController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(SysController.class);

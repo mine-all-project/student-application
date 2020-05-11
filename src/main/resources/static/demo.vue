@@ -1,70 +1,159 @@
 <template>
-	<div class="body-parent">
-		<el-row style="font-size: 1em">
-			<h1>我发布的</h1>
-
-			<el-col :span="24" class="col-line" v-for="item in dataList" :key="item.id">
-				<el-card class="box-card">
-					<div slot="header" class="clearfix">
-						<el-input style="width: 80%" v-if="isEdit" v-model="form.title"></el-input>
-						<span v-else>{{item.title}}</span>
-						<el-button style="float: right; padding: 3px 0" type="text" @click="save()" v-if="isEdit">保存</el-button>
-						<el-button style="float: right; padding: 3px 0" type="text" @click="edit(item)" v-else>编辑</el-button>
-					</div>
-					<div class="text item" v-if="isEdit">
-						<el-input type="textarea" v-model="form.content"></el-input>
-					</div>
-					<div class="text item" v-else>{{item.content}}</div>
-				</el-card>
-			</el-col>
-			<el-col :span="24" class="col-line">
-				<el-button type="primary" round class="button" @click="add" v-if="!isEdit">发布公告</el-button>
-			</el-col>
-		</el-row>
-	</div>
+	<el-row>
+		<el-table :data="tableData" stripe style="width: 100%">
+			<el-table-column prop="username" label="用户名"></el-table-column>
+			<el-table-column prop="name" label="姓名"></el-table-column>
+			<!--			<el-table-column prop="age" label="年龄" width=""></el-table-column>-->
+			<el-table-column prop="mail" label="邮箱"></el-table-column>
+			<el-table-column prop="phone" label="手机号"></el-table-column>
+			<el-table-column label="状态">
+				<template slot-scope="scope">
+					<el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
+					<el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
+				</template>
+			</el-table-column>
+			<el-table-column label="操作" width="300">
+				<template slot-scope="scope">
+					<el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
+					<el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
+					<el-button type="primary" @click="remove(scope)" size="mini">删除</el-button>
+					<el-button type="primary" @click="edit(scope)" size="mini">编辑</el-button>
+				</template>
+			</el-table-column>
+		</el-table>
+		<el-drawer :before-close="formClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
+			<div class="demo-drawer__content">
+				<el-form v-model="form">
+					<el-form-item label="用户名" :label-width="formLabelWidth">
+						<el-input v-model="form.username" autocomplete="off" :disabled="true"></el-input>
+					</el-form-item>
+					<el-form-item label="姓名" :label-width="formLabelWidth">
+						<el-input v-model="form.name" autocomplete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="邮箱" :label-width="formLabelWidth">
+						<el-input v-model="form.mail" autocomplete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="手机号" :label-width="formLabelWidth">
+						<el-input v-model="form.phone" autocomplete="off" :maxlength="11"></el-input>
+					</el-form-item>
+				</el-form>
+				<div class="drawer-footer">
+					<el-button type="primary" @click="saveForm" :loading="drawer.loading">
+						{{ drawer.loading ? '提交中 ...' : '确定'}}
+					</el-button>
+					<el-button @click="formClose">取 消</el-button>
+				</div>
+			</div>
+		</el-drawer>
+	</el-row>
 </template>
+
 <script>
     module.exports = {
         data() {
             return {
-                isEdit: false,
+                formLabelWidth: '80px',
+                tableData: [],
                 form: {
                     id: '',
-                    keyWords: '',
-                    title: '',
-                    content: '',
+                    username: '',
+                    name: '',
+                    mail: '',
+                    phone: '',
                 },
-                keyWords: 'notice',
-                dataList: []
+                drawer: {
+                    show: false,
+                    loading: false,
+                },
             };
         },
         mounted() {
-            this.getTableDataList(this.keyWords)
+            this.getTableDataList()
         },
         methods: {
-            getTableDataList(keyWord) {
+            remove(scope) {
                 const _this = this;
-                axios.get(`/api/getMinePapersByKeyWords/${keyWord}`).then(response => {
+                const id = scope.row.id;
+                _this.$confirm('确认删除？').then(e => {
+                    _this.drawer.loading = true;
+                    axios.delete(`/api/removePaperById/${id}`).then(response => {
+                        _this.getTableDataList();
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            _this.$message.error('数据加载失败');
+                            return
+                        }
+                        _this.$message.success('操作成功')
+                    }).catch(function (error) {
+                        _this.getTableDataList();
+                        console.log('请求出现错误:', error);
+                    });
+                });
+            },
+            changeStatus(scope) {
+                const _this = this;
+                const id = scope.row.id;
+                _this.$confirm('确认操作？').then(e => {
+                    _this.drawer.loading = true;
+                    axios.put(`/manage/changeStatus/${id}`).then(response => {
+                        _this.getTableDataList();
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            _this.$message.error('数据加载失败');
+                            return
+                        }
+                        _this.$message.success('操作成功')
+                    }).catch(function (error) {
+                        _this.getTableDataList();
+                        console.log('请求出现错误:', error);
+                    });
+                });
+            },
+            getTableDataList() {
+                const _this = this;
+                axios.get('/manage/getUserList').then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
                         this.$message.error('数据加载失败');
                         return;
                     }
-                    _this.dataList = result.data;
+                    _this.tableData = result.data;
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });
             },
-            edit(item) {
-                const _this = this;
-                _this.isEdit = true
-                _this.form = item;
+            edit(scope) {
+                this.$nextTick(() => {
+                    this.findDataById(scope ? scope.row.id : ' ');
+                    this.drawer.show = true;
+                })
             },
-            save() {
+            findDataById(id) {
                 const _this = this;
-                _this.form.keyWords = this.keyWords;
-                axios.post(`/api/savePapers`, _this.form).then(response => {
+                axios.get(`/manage/getUsersById?id=${id}`).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    _this.form = result.data;
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            },
+            formClose() {
+                this.drawer.loading = false;
+                this.drawer.show = false;
+                this.getTableDataList();
+            },
+            saveForm() {
+                const _this = this;
+                _this.drawer.loading = true;
+                axios.post(`/manage/saveUserInfo`, _this.form).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
@@ -72,52 +161,26 @@
                         return
                     }
                     _this.$message.success('操作成功');
-                    _this.isEdit = false
-                    _this.getTableDataList(this.keyWords)
+                    _this.drawer.loading = false;
+                    _this.drawer.show = false;
+                    _this.getTableDataList()
                 }).catch(function (error) {
                     window.location.reload();
                     console.log('请求出现错误:', error);
                 });
             },
-            add() {
-                router.push({path: '/add-notices'})
-            },
         }
     }
 </script>
-<style>
-	.button {
-		width: 100%;
-		padding: 16px;
+
+<style scoped>
+	.table-row-hidden {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
-	.body-parent {
-		padding: 16px;
-	}
-
-	.col-line {
-		margin-top: 16px;
-	}
-
-	.text {
-		font-size: 14px;
-	}
-
-	.item {
-		margin-bottom: 18px;
-	}
-
-	.clearfix:before,
-	.clearfix:after {
-		display: table;
-		content: "";
-	}
-
-	.clearfix:after {
-		clear: both
-	}
-
-	.box-card {
-		width: 100%;
+	.drawer-footer {
+		margin-left: 10px;
 	}
 </style>
