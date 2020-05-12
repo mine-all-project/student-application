@@ -1,34 +1,122 @@
 <template>
 	<div class="parent-body">
-		<el-table :data="tableData" style="width: 100%" height="600">
-			<el-table-column fixed prop="name" label="产品名称" width="150" sortable
-			                 :filters="[{text: '2016-05-04', value: '2016-05-04'}]"
-			                 :filter-method="filterByName"></el-table-column>
-			<el-table-column prop="phone" label="电话号码" width="120"></el-table-column>
-			<el-table-column prop="number" label="产品批号" width="120"></el-table-column>
-			<el-table-column prop="address" label="生产地址" width="130">
-				<template slot-scope="scope">
-					<el-popover trigger="hover" placement="top">
-						<p>{{ scope.row.address }}</p>
-						<div slot="reference" class="name-wrapper">
-							<el-tag size="medium">查看详细地址</el-tag>
-						</div>
-					</el-popover>
-				</template>
-			</el-table-column>
-			<el-table-column prop="barCode" label="产品条码" width="120"></el-table-column>
-			<el-table-column prop="amount" label="入库数量" width="120"></el-table-column>
-			<el-table-column prop="producedTime" label="生产日期" width="120"></el-table-column>
-			<el-table-column prop="shelLife" label="有效期至" width="120"></el-table-column>
-			<el-table-column prop="zip" label="操作" width="300" fixed="right">
-				<template slot-scope="scope">
-					<el-button type="success" @click="remove(scope)" size="mini">查看详情</el-button>
-					<el-button type="primary" @click="drawerOpen(scope)" size="mini">编辑</el-button>
-					<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
-				</template>
-			</el-table-column>
-		</el-table>
-		<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
+		<!--采购信息&出库数量-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>采购信息</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-select v-model="form.purchasesId" placeholder="请选择" style="width:100%" size="small">
+					<el-option v-for="item in purchasesList" :key="item.id" :label="item.name" :value="item.id" size="small">
+					</el-option>
+				</el-select>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.purchases}}</span>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>出库数量</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-input placeholder="请输入内容" v-model="form.counts" clearable type="number" size="small"></el-input>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.counts}}</span>
+			</el-col>
+		</el-row>
+		<!--生产日期&有效期至-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>生产日期</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-date-picker v-model="form.goods.producedTime" type="date" style="width: 100%" size="small"
+				                @change="dateChange('producedTime')" size="small"></el-date-picker>
+			</el-col>
+
+
+			<el-col :span="8" v-else>
+				<span>{{form.goods.producedTime}}</span>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>有效期至</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-date-picker v-model="form.goods.shelLife" type="date" style="width: 100%" size="small"
+				                @change="dateChange('shelLife')"></el-date-picker>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.goods.shelLife}}</span>
+			</el-col>
+		</el-row>
+		<!--性状&功能主治-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>性状</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-input placeholder="请输入内容" v-model="form.goods.characte" type="textarea" :rows="3" resize="none"></el-input>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.goods.characte}}</span>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>功能主治</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-input placeholder="请输入内容" v-model="form.goods.majorFunction" type="textarea" :rows="3" resize="none"></el-input>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.goods.majorFunction}}</span>
+			</el-col>
+		</el-row>
+		<!--规格&用法用量-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>规格</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-input placeholder="请输入内容" v-model="form.goods.specification" type="textarea" :rows="3" resize="none"></el-input>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.goods.specification}}</span>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>用法用量</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-input placeholder="请输入内容" v-model="form.goods.usages" type="textarea" :rows="3" resize="none"></el-input>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.goods.usages}}</span>
+			</el-col>
+		</el-row>
+		<!--不良反应&注意事项-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>不良反应</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-input placeholder="请输入内容" v-model="form.goods.adverseReactions" type="textarea" :rows="3"
+				          resize="none"></el-input>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.goods.adverseReactions}}</span>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>注意事项</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-input placeholder="请输入内容" v-model="form.goods.mattersNeeding" type="textarea" :rows="3"
+				          resize="none"></el-input>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.goods.mattersNeeding}}</span>
+			</el-col>
+		</el-row>
+		<!--禁忌&储藏环境-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>禁忌</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-input placeholder="请输入内容" v-model="form.goods.taboo" type="textarea" :rows="3" resize="none"></el-input>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.goods.taboo}}</span>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>储藏环境</label></el-col>
+			<el-col :span="8" v-if="isEdit">
+				<el-input placeholder="请输入内容" v-model="form.goods.storageEnvironment" type="textarea" :rows="3"
+				          resize="none"></el-input>
+			</el-col>
+			<el-col :span="8" v-else>
+				<span>{{form.goods.storageEnvironment}}</span>
+			</el-col>
+		</el-row>
+		<el-row class="form-line">
+			<el-col :span="2">
+				<el-button type="primary" @click="saveForm" size="" v-if="isEdit">保存</el-button>
+			</el-col>
+		</el-row>
 	</div>
 </template>
 
@@ -36,126 +124,41 @@
     module.exports = {
         data() {
             return {
-                tableData: [
-                    {
-                        date: '2016-05-03',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
+                isEdit: true,
+                purchasesList: [],
+                form: {
+                    id: '',
+                    purchasesId: '',
+                    counts: '99999',
+                    goods: {
+                        producedTime: '',
+                        shelLife: '',
+                        characte: '性状',
+                        majorFunction: '主要治疗咳嗽',
+                        specification: '规格',
+                        usages: '每日一次，每次半斤',
+                        adverseReactions: '不良反应',
+                        mattersNeeding: '注意事项',
+                        taboo: '忌辛辣，烟酒',
+                        storageEnvironment: '避光，密闭储存',
+                        status: 0,
                     },
-                    {
-                        date: '2016-05-02',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-04',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-01',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-08',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-06',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-03',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-02',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-04',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-01',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-08',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-08',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                    {
-                        date: '2016-05-08',
-                        name: '王小虎',
-                        province: '上海',
-                        city: '普陀区',
-                        address: '上海市普陀区金沙江路 1518 弄',
-                        zip: 200333
-                    },
-                ]
+                    type: 1,
+                },
             };
         },
         activated() {
-            let id = this.$router.query.id
+            let id = this.$route.query.id
             if (!!id) {
                 this.findDataById(id)
             }
+            this.getPurchasesList()
         },
         mounted() {
         },
         methods: {
-            filterByName(value, row, column) {
-                console.log('筛选-->', value, row, column)
-                return true
+            dateChange(key) {
+                this.form.goods[key] = new moment(this.form.goods[key]).format('YYYY-MM-DD')
             },
             findDataById(id) {
                 const _this = this;
@@ -173,7 +176,8 @@
             },
             saveForm() {
                 const _this = this;
-                axios.post(`/manage/saveData`, _this.form).then(response => {
+                console.log(_this.form)
+                axios.post(`/api/saveStorageInfo`, _this.form).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
@@ -186,9 +190,26 @@
                     console.log('请求出现错误:', error);
                 });
             },
+            getPurchasesList() {
+                const _this = this;
+                axios.get('/api/getPurchasesList').then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return;
+                    }
+                    _this.purchasesList = result.data;
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            },
         }
     }
 </script>
 
 <style scoped>
+	.form-line {
+		margin-top: 16px;
+	}
 </style>

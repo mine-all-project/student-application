@@ -153,18 +153,12 @@
                         },
                         {
                             id: '2',
-                            name: '出库信息',
+                            name: '药品出库',
                             icon: 'el-icon-menu',
                             url: '/storage-output'
                         },
                         {
                             id: '3',
-                            name: '库存盘点',
-                            icon: 'el-icon-menu',
-                            url: '/storage-manage'
-                        },
-                        {
-                            id: '4',
                             name: '库存信息',
                             icon: 'el-icon-menu',
                             url: '/storage-list'

@@ -11,8 +11,7 @@ const routes = [
     {path: '/statistical', name: 'statistical', component: httpVueLoader('/vue/manage/statistical.vue')},
 
     {path: '/storage-input', name: 'storageInput', component: httpVueLoader('/vue/manage/storage-input.vue')},
-    {path: '/storage-input', name: 'storageOutput', component: httpVueLoader('/vue/manage/storage-input.vue')},
-    {path: '/storage-manage', name: 'storageManage', component: httpVueLoader('/vue/manage/storage-manage.vue')},
+    {path: '/storage-output', name: 'storageOutput', component: httpVueLoader('/vue/manage/storage-output.vue')},
     {path: '/storage-list', name: 'storageList', component: httpVueLoader('/vue/manage/storage-list.vue')},
 
 
