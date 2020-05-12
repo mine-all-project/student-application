@@ -133,7 +133,6 @@
                                 },
                             ]
                         },
-
                         {
                             id: '23',
                             name: '消息列表',
@@ -143,22 +142,42 @@
 
                         {
                             id: '1',
-                            name: '入库验收',
+                            name: '库存管理',
                             icon: 'el-icon-menu',
-                            url: '/storage-input'
+                            url: 'goods-list',
+                            // children: [
+                            //     {
+                            //         id: '1-1',
+                            //         name: '库存列表',
+                            //         icon: 'el-icon-menu',
+                            //         url: '/purchases-add'
+                            //     },
+                            //     {
+                            //         id: '1-2',
+                            //         name: '采购记录查询',
+                            //         icon: 'el-icon-menu',
+                            //         url: '/purchases-list'
+                            //     },
+                            // ]
                         },
-                        {
-                            id: '2',
-                            name: '药品出库',
-                            icon: 'el-icon-menu',
-                            url: '/storage-output'
-                        },
-                        {
-                            id: '3',
-                            name: '库存信息',
-                            icon: 'el-icon-menu',
-                            url: '/storage-list'
-                        },
+                        // {
+                        //     id: '1',
+                        //     name: '入库验收',
+                        //     icon: 'el-icon-menu',
+                        //     url: '/storage-input'
+                        // },
+                        // {
+                        //     id: '2',
+                        //     name: '药品出库',
+                        //     icon: 'el-icon-menu',
+                        //     url: '/storage-output'
+                        // },
+                        // {
+                        //     id: '3',
+                        //     name: '库存信息',
+                        //     icon: 'el-icon-menu',
+                        //     url: '/storage-list'
+                        // },
 
                     ],
                     saleMenu: [

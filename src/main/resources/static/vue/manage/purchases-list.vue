@@ -84,11 +84,7 @@
                     }).catch(function (error) {
                         console.log('请求出现错误:', error);
                     });
-
-
                 })
-
-
             },
         }
     }

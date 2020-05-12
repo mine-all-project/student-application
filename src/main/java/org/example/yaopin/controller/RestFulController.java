@@ -1,10 +1,14 @@
 package org.example.yaopin.controller;
 
+import org.example.yaopin.config.groups.IsAdd;
+import org.example.yaopin.config.groups.IsEdit;
+import org.example.yaopin.config.groups.IsNotNull;
 import org.example.yaopin.dto.ResponseDTO;
+import org.example.yaopin.entity.Goods;
+import org.example.yaopin.entity.Messages;
 import org.example.yaopin.entity.Purchases;
-import org.example.yaopin.entity.Storage;
+import org.example.yaopin.form.MessagesForm;
 import org.example.yaopin.form.PurchasesForm;
-import org.example.yaopin.form.StorageForm;
 import org.example.yaopin.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,22 +46,22 @@ public class RestFulController extends BaseController {
     }
 
     @RequestMapping("/savePurchasesInfo")
-    @ResponseBody
     public ResponseDTO savePurchasesInfo(@RequestBody PurchasesForm form) {
         logger.info("收到请求->保存采购信息:[{}]", form);
+        validator(form, IsAdd.class, IsEdit.class);
         restFulService.savePurchasesInfo(form);
         logger.info("返回结果->保存采购信息完成:[{}]", form);
         return ResponseDTO.returnSuccess("操作成功", form);
     }
 
-    @RequestMapping("/saveStorageInfo")
-    @ResponseBody
-    public ResponseDTO saveStorageInfo(@RequestBody StorageForm form) {
-        logger.info("收到请求->保存入库信息:[{}]", form);
-        restFulService.saveStorageInfo(form);
-        logger.info("返回结果->保存入库信息完成:[{}]", form);
-        return ResponseDTO.returnSuccess("操作成功", form);
-    }
+//    @RequestMapping("/saveStorageInfo")
+//    @ResponseBody
+//    public ResponseDTO saveStorageInfo(@RequestBody StorageForm form) {
+//        logger.info("收到请求->保存入库信息:[{}]", form);
+//        restFulService.saveStorageInfo(form);
+//        logger.info("返回结果->保存入库信息完成:[{}]", form);
+//        return ResponseDTO.returnSuccess("操作成功", form);
+//    }
 
     @DeleteMapping("/flagDelPurchasesById")
     public ResponseDTO flagDelPurchasesById(String id) {
@@ -67,13 +71,37 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @RequestMapping("/getStorageList")
-    @ResponseBody
-    public ResponseDTO getStorageList() {
-        logger.info("收到请求->获取库存列表");
-        List<Storage> list = restFulService.getStorageList();
-        logger.info("返回结果->获取库存列表完成:[{}]", list);
+    @RequestMapping("/getGoodsListByFlag")
+    public ResponseDTO getGoodsListByFlag() {
+        logger.info("收到请求->获取商品列表");
+        List<Goods> list = restFulService.getGoodsListByFlag();
+        logger.info("返回结果->获取商品列表:[{}]", list);
         return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/saveMessages")
+    public ResponseDTO saveMessages(@RequestBody MessagesForm form) {
+        logger.info("收到请求->保存消息数据:[{}]", form);
+        validator(form, IsAdd.class, IsEdit.class);
+        restFulService.saveMessages(form);
+        logger.info("返回结果->保存消息数据完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/getMessageList")
+    public ResponseDTO getMessageList() {
+        logger.info("收到请求->获取消息列表");
+        List<Messages> list = restFulService.getMessageList();
+        logger.info("返回结果->获取消息列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/getMessagesById")
+    public ResponseDTO getMessagesById(String id) {
+        logger.info("收到请求->获取消息详情");
+        Messages data = restFulService.getMessagesById(id);
+        logger.info("返回结果->获取获取消息详情完成:[{}]", data);
+        return ResponseDTO.returnSuccess("操作成功", data);
     }
 
 

@@ -9,9 +9,11 @@ const routes = [
 
     {path: '/message-list', name: 'messageList', component: httpVueLoader('/vue/manage/message-list.vue')},
 
+    {path: '/goods-list', name: 'goodsList', component: httpVueLoader('/vue/manage/goods-list.vue')},
+
+
     {path: '/storage-input', name: 'storageInput', component: httpVueLoader('/vue/manage/storage-input.vue')},
     {path: '/storage-output', name: 'storageOutput', component: httpVueLoader('/vue/manage/storage-output.vue')},
-    {path: '/storage-list', name: 'storageList', component: httpVueLoader('/vue/manage/storage-list.vue')},
 
 
     {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},

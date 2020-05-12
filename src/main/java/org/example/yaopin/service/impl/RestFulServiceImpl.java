@@ -1,15 +1,14 @@
 package org.example.yaopin.service.impl;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.example.yaopin.dao.GoodsDAO;
+import org.example.yaopin.dao.MessageDAO;
 import org.example.yaopin.dao.PurchasesDAO;
-import org.example.yaopin.dao.StorageDAO;
 import org.example.yaopin.dao.SysUserDAO;
 import org.example.yaopin.entity.*;
+import org.example.yaopin.form.MessagesForm;
 import org.example.yaopin.form.PurchasesForm;
-import org.example.yaopin.form.StorageForm;
 import org.example.yaopin.service.RestFulService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,10 +19,10 @@ import java.util.List;
 @Service
 public class RestFulServiceImpl implements RestFulService {
     public SysUser getUserInfo() {
-        Subject subject = SecurityUtils.getSubject();
-        SysUser user = (SysUser) subject.getPrincipal();
-        String username = isDebug ? "user" : user.getUsername();
-        return sysUserDAO.findByUsername(username);
+//        Subject subject = SecurityUtils.getSubject();
+//        SysUser user = (SysUser) subject.getPrincipal();
+//        String username = isDebug ? "user" : user.getUsername();
+        return sysUserDAO.findByUsername("user");
     }
 
     @Value("${isDebug}")
@@ -33,13 +32,13 @@ public class RestFulServiceImpl implements RestFulService {
     @Value("${virtualPath}")
     private String virtualPath;
     private final PurchasesDAO purchasesDAO;
-    private final StorageDAO storageDAO;
     private final SysUserDAO sysUserDAO;
     private final GoodsDAO goodsDAO;
+    private final MessageDAO messageDAO;
 
-    public RestFulServiceImpl(PurchasesDAO purchasesDAO, StorageDAO storageDAO, SysUserDAO sysUserDAO, GoodsDAO goodsDAO) {
+    public RestFulServiceImpl(PurchasesDAO purchasesDAO, SysUserDAO sysUserDAO, GoodsDAO goodsDAO, MessageDAO messageDAO) {
         this.purchasesDAO = purchasesDAO;
-        this.storageDAO = storageDAO;
+        this.messageDAO = messageDAO;
         this.sysUserDAO = sysUserDAO;
         this.goodsDAO = goodsDAO;
     }
@@ -72,23 +71,31 @@ public class RestFulServiceImpl implements RestFulService {
         purchasesDAO.flagDelById(id);
     }
 
+    @Override
+    public List<Goods> getGoodsListByFlag() {
+        return goodsDAO.getAllByFlag();
+    }
+
 
     @Override
-    public void saveStorageInfo(StorageForm form) {
-        Purchases purchases = purchasesDAO.findById(form.getPurchasesId());
-        Goods exist = goodsDAO.findDataById(purchases.getGoods().getId());
-        Storage storage = new Storage();
-        storage.setType(form.getType());
-        BeanUtils.copyProperties(form.getGoods(), exist, "id", "name", "createTime");
-//        goods.setId(purchases.getGoods().getId());
-        goodsDAO.saveData(exist);
-//        storage.setGoods(goodsDAO.saveData(goods));
-//        storageDAO.saveData(storage);
+    public void saveMessages(MessagesForm form) {
+        Messages messages = new Messages();
+        BeanUtils.copyProperties(form, messages);
+        messages.setFormAs(getUserInfo());
+        messages.setStatus(0);
+        messageDAO.saveData(messages);
     }
 
     @Override
-    public List<Storage> getStorageList() {
-        return storageDAO.findAll();
+    public List<Messages> getMessageList() {
+        SysUser user = getUserInfo();
+        String role = user.getRole();
+        return messageDAO.findByToAsIn(role);
+    }
+
+    @Override
+    public Messages getMessagesById(String id) {
+        return null;
     }
 //
 //    @Override

@@ -11,25 +11,6 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
-		<el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
-			<div class="demo-drawer__content">
-				<el-form v-model="form">
-					<el-form-item label="通知标题" :label-width="formLabelWidth">
-						<el-input v-model="form.title" autocomplete="off"></el-input>
-					</el-form-item>
-					<el-form-item label="通知内容" :label-width="formLabelWidth">
-						<el-input type="textarea" :rows="4" placeholder="请输入通知内容" v-model="form.content"></el-input>
-					</el-form-item>
-				</el-form>
-				<div class="drawer-footer">
-					<el-button type="primary" @click="savePaper" :loading="drawer.loading">
-						{{ drawer.loading ? '提交中 ...' : '确定'}}
-					</el-button>
-					<el-button @click="drawerClose">取 消</el-button>
-				</div>
-			</div>
-		</el-drawer>
 	</el-row>
 
 </template>
@@ -39,18 +20,6 @@
         data() {
             return {
                 tableData: [],
-                form: {
-                    id: '',
-                    keyWords: '',
-                    title: '',
-                    content: '',
-                },
-                drawer: {
-                    show: false,
-                    loading: false,
-                },
-                formLabelWidth: '80px',
-                keyWords: 'notice',
             };
         },
         mounted() {

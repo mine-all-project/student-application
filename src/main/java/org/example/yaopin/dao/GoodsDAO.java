@@ -4,6 +4,8 @@ import org.example.yaopin.dao.jpa.GoodsRepository;
 import org.example.yaopin.entity.Goods;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 /**
  * 药品DAO
@@ -21,5 +23,9 @@ public class GoodsDAO {
 
     public Goods findDataById(String id) {
         return goodsRepository.findById(id).orElse(null);
+    }
+
+    public List<Goods> getAllByFlag() {
+        return goodsRepository.findAllByDelFlag(1);
     }
 }
