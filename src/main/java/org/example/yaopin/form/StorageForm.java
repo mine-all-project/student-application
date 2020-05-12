@@ -6,7 +6,7 @@ import org.example.yaopin.config.groups.IsAdd;
 import org.example.yaopin.config.groups.IsEdit;
 import org.example.yaopin.entity.Goods;
 import org.example.yaopin.entity.Purchases;
-import org.example.yaopin.entity.Storages;
+import org.example.yaopin.entity.Storage;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class StoragesForm {
+public class StorageForm {
     private String id;
     @NotBlank(message = "采购信息不能为空", groups = {IsAdd.class, IsEdit.class})
     private String purchasesId;

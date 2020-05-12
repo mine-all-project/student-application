@@ -3,16 +3,12 @@ package org.example.yaopin.entity;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.yaopin.config.groups.IsAdd;
-import org.example.yaopin.config.groups.IsEdit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
+import javax.persistence.Table;
+
 
 @Entity
 @Getter
@@ -20,7 +16,7 @@ import java.util.List;
 /**
  * 库存信息
  */
-public class Storages extends BaseEntity {
+public class Storage extends BaseEntity {
     @OneToOne
     private Purchases purchases;
     @OneToOne

@@ -10,26 +10,28 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
-@Entity
+
 @Getter
 @Setter
 /**
  * 药品信息
  */
+@Entity
 public class Goods extends BaseEntity {
+
     @OneToOne
     private Purchases purchases;
 
-    @Column(columnDefinition = "comment '生产日期'")
+    //    @Column(columnDefinition = "comment '生产日期'")
     @JSONField(format = "yyyy-MM-dd")
     private LocalDate producedTime;
 
-    @Column(columnDefinition = "comment '有效期'")
+    //    @Column(columnDefinition = "comment '有效期'")
     @JSONField(format = "yyyy-MM-dd")
     private LocalDate shelLife;
 
     @Column(columnDefinition = "longtext comment '性状'")
-    private String character;
+    private String characte;
 
     @Column(columnDefinition = "longtext comment '功能主治'")
     private String majorFunction;
@@ -38,7 +40,7 @@ public class Goods extends BaseEntity {
     private String specification;
 
     @Column(columnDefinition = "longtext comment '用法用量'")
-    private String usage;
+    private String usages;
 
     @Column(columnDefinition = "longtext comment '不良反应'")
     private String adverseReactions;
@@ -50,9 +52,9 @@ public class Goods extends BaseEntity {
     private String taboo;
 
     @Column(columnDefinition = "longtext comment '存储环境'")
-    private String storagesEnvironment;
+    private String storageEnvironment;
 
-    @Column(columnDefinition = "bit(1) default 0 not null comment '状态标记 0:已入库 1:未入库'")
+    @Column(columnDefinition = "tinyint(1) default 0 not null comment '状态标记 0:已入库 1:未入库'")
     private Integer status;
 
     @Override

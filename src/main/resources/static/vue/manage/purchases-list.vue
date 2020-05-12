@@ -1,7 +1,7 @@
 <template>
 	<div class="parent-body">
 		<el-table :data="tableData" style="width: 100%" height="600">
-			<el-table-column fixed prop="name" label="产品名称" width="150" sortable
+			<el-table-column prop="name" label="产品名称" width="150" sortable
 			                 :filters="[{text: '2016-05-04', value: '2016-05-04'}]"
 			                 :filter-method="filterByName"></el-table-column>
 			<el-table-column prop="number" label="产品批号" width="120"></el-table-column>
@@ -15,17 +15,15 @@
 					</el-popover>
 				</template>
 			</el-table-column>
-			<el-table-column prop="supplier" label="供应商" width="130"></el-table-column>
-			<el-table-column prop="count" label="数量" width="130"></el-table-column>
-			<el-table-column label="操作" width="300" fixed="right">
+			<el-table-column prop="supply" label="供应商" width="130"></el-table-column>
+			<el-table-column prop="counts" label="数量" width="130"></el-table-column>
+			<el-table-column label="操作" width="200">
 				<template slot-scope="scope">
-					<el-button type="success" @click="showInfo(scope)" size="mini">查看详情</el-button>
 					<el-button type="primary" @click="edit(scope)" size="mini">编辑</el-button>
 					<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
 	</div>
 </template>
 
@@ -46,10 +44,6 @@
             edit(row) {
                 let id = row.row.id
                 this.$router.push({path: '/purchases-add', query: {id: id, isEdit: true}})
-            },
-            showInfo(row) {
-                let id = row.row.id
-                this.$router.push({path: '/purchases-add', query: {id: id, isEdit: false}})
             },
             filterByName(value, row, column) {
                 console.log('筛选-->', value, row, column)

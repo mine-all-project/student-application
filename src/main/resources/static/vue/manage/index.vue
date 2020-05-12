@@ -113,7 +113,7 @@
                             url: '/statistical'
                         },
                     ],
-                    storagesMenu: [
+                    storageMenu: [
                         {
                             id: '12',
                             name: '采购管理',
@@ -149,25 +149,25 @@
                             id: '1',
                             name: '入库验收',
                             icon: 'el-icon-menu',
-                            url: '/storages-input'
+                            url: '/storage-input'
                         },
                         {
                             id: '2',
                             name: '出库信息',
                             icon: 'el-icon-menu',
-                            url: '/storages-output'
+                            url: '/storage-output'
                         },
                         {
                             id: '3',
                             name: '库存盘点',
                             icon: 'el-icon-menu',
-                            url: '/storages-manage'
+                            url: '/storage-manage'
                         },
                         {
                             id: '4',
                             name: '库存信息',
                             icon: 'el-icon-menu',
-                            url: '/storages-list'
+                            url: '/storage-list'
                         },
 
                     ],
@@ -322,7 +322,7 @@
             router.push('demo')
             this.menus.menu = this.menus.manageMenu
             this.menus.menu = this.menus.buyMenu
-            this.menus.menu = this.menus.storagesMenu
+            this.menus.menu = this.menus.storageMenu
             // this.menus.menu = this.menus.saleMenu
             // this.getTableDataList()
         },

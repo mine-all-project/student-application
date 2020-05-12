@@ -80,15 +80,16 @@
             };
         },
         activated() {
-            let id = this.$route.query.id
-
+            let id = this.$route.query
+            this.isEdit = true
             console.log(this.$route.query)
             if (!!id) {
                 this.findDataById(id)
             }
-            if (!!this.$route.query.isEdit) {
-                this.isEdit = this.$route.query.isEdit
-            }
+            // if (this.$route.query.isEdit === false) {
+            //     this.isEdit = false
+            // }
+
         },
         mounted() {
         },
