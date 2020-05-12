@@ -1,16 +1,15 @@
 package org.example.yaopin.service;
 
-import org.example.yaopin.entity.*;
-import org.example.yaopin.form.LinesForm;
-import org.example.yaopin.form.PapersForm;
-import org.example.yaopin.form.StandsForm;
+import org.example.yaopin.entity.Purchases;
+import org.example.yaopin.form.PurchasesForm;
 
 import java.util.List;
 
+
 public interface RestFulService extends BaseService{
-//    List<Linees> getLinesList();
-//    Linees getLinesById(String id);
-//    void saveLinesInfo(LinesForm form);
+    List<Purchases> getPurchasesList();
+    Purchases getPurchasesById(String id);
+    void savePurchasesInfo(PurchasesForm form);
 //    void removeLinesById(String id);
 //
 //

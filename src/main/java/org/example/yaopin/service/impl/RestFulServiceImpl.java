@@ -1,25 +1,15 @@
 package org.example.yaopin.service.impl;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
-import org.example.yaopin.dao.LinesDAO;
-import org.example.yaopin.dao.PapersDAO;
-import org.example.yaopin.dao.StandsDAO;
-import org.example.yaopin.dao.SysUserDAO;
+import org.example.yaopin.dao.PurchasesDAO;
 import org.example.yaopin.entity.*;
-import org.example.yaopin.form.LinesForm;
-import org.example.yaopin.form.PapersForm;
-import org.example.yaopin.form.StandsForm;
+import org.example.yaopin.form.PurchasesForm;
 import org.example.yaopin.service.RestFulService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
@@ -37,39 +27,30 @@ public class RestFulServiceImpl implements RestFulService {
     private String filePath;
     @Value("${virtualPath}")
     private String virtualPath;
-//    private final StandsDAO standsDAO;
+    private final PurchasesDAO purchasesDAO;
 //    private final LinesDAO linesDAO;
 //    private final PapersDAO papersDAO;
 //    private final SysUserDAO sysUserDAO;
 //    private final MessageRepository messageRepository;
 
-    private final Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
+    public RestFulServiceImpl(PurchasesDAO purchasesDAO) {
+        this.purchasesDAO = purchasesDAO;
+    }
 
-//    public RestFulServiceImpl(StandsDAO standsDAO, LinesDAO linesDAO, PapersDAO papersDAO,
-//                              SysUserDAO sysUserDAO, MessageRepository messageRepository
-//    ) {
-//        this.standsDAO = standsDAO;
-//        this.linesDAO = linesDAO;
-//        this.papersDAO = papersDAO;
-//        this.sysUserDAO = sysUserDAO;
-//        this.messageRepository = messageRepository;
-//    }
+    @Override
+    public List<Purchases> getPurchasesList() {
+        return purchasesDAO.findAll();
+    }
 
-//    @Override
-//    public List<Linees> getLinesList() {
-//        return linesDAO.findAll();
-//    }
-//
-//    @Override
-//    public Linees getLinesById(String id) {
-//        return linesDAO.findById(id);
-//    }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void saveLinesInfo(LinesForm form) {
-//        linesDAO.saveLines(form);
-//    }
+    @Override
+    public Purchases getPurchasesById(String id) {
+        return purchasesDAO.findById(id);
+    }
+
+    @Override
+    public void savePurchasesInfo(PurchasesForm form) {
+        purchasesDAO.saveGoodsInfo(form);
+    }
 //
 //    @Override
 //    @RequiresPermissions("manage")

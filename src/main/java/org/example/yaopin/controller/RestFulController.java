@@ -1,15 +1,13 @@
 package org.example.yaopin.controller;
 
 import org.example.yaopin.dto.ResponseDTO;
-import org.example.yaopin.form.LinesForm;
-import org.example.yaopin.form.PapersForm;
-import org.example.yaopin.form.StandsForm;
+import org.example.yaopin.entity.Purchases;
+import org.example.yaopin.form.PurchasesForm;
 import org.example.yaopin.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -24,31 +22,31 @@ public class RestFulController extends BaseController {
         this.restFulService = restFulService;
     }
 
-//    @RequestMapping("/getLinesList")
-//    @ResponseBody
-//    public ResponseDTO getLinesList() {
-//        logger.info("收到请求->获取线路列表");
-//        List<Linees> lines = restFulService.getLinesList();
-//        logger.info("返回结果->获取线路信息完成:[{}]", lines);
-//        return ResponseDTO.returnSuccess("操作成功", lines);
-//    }
-//
-//    @GetMapping("/getLinesById")
-//    public ResponseDTO getLinesById(String id) {
-//        logger.info("收到请求->获取线路数据,id:[{}]", id);
-//        Linees lines = restFulService.getLinesById(id);
-//        logger.info("返回结果->获取线路数据完成:[{}]", lines);
-//        return ResponseDTO.returnSuccess("操作成功", lines);
-//    }
-//
-//    @RequestMapping("/saveLinesInfo")
-//    @ResponseBody
-//    public ResponseDTO saveLinesInfo(@RequestBody LinesForm form) {
-//        logger.info("收到请求->保存线路信息:[{}]", form);
-//        restFulService.saveLinesInfo(form);
-//        logger.info("返回结果->保存线路信息完成:[{}]", form);
-//        return ResponseDTO.returnSuccess("操作成功", form);
-//    }
+    @RequestMapping("/getPurchasesList")
+    @ResponseBody
+    public ResponseDTO getPurchasesList() {
+        logger.info("收到请求->获取采购列表");
+        List<Purchases> list = restFulService.getPurchasesList();
+        logger.info("返回结果->获取采购列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @GetMapping("/getPurchasesById")
+    public ResponseDTO getPurchasesById(String id) {
+        logger.info("收到请求->获取采购数据,id:[{}]", id);
+        Purchases data = restFulService.getPurchasesById(id);
+        logger.info("返回结果->获取采购数据完成:[{}]", data);
+        return ResponseDTO.returnSuccess("操作成功", data);
+    }
+
+    @RequestMapping("/savePurchasesInfo")
+    @ResponseBody
+    public ResponseDTO savePurchasesInfo(@RequestBody PurchasesForm form) {
+        logger.info("收到请求->保存采购信息:[{}]", form);
+        restFulService.savePurchasesInfo(form);
+        logger.info("返回结果->保存采购信息完成:[{}]", form);
+        return ResponseDTO.returnSuccess("操作成功", form);
+    }
 //
 //    @DeleteMapping("/removeLinesById/{id}")
 //    public ResponseDTO removeLinesById(@PathVariable("id") String id) {

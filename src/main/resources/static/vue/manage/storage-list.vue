@@ -4,7 +4,8 @@
 			<el-table-column fixed prop="name" label="产品名称" width="150" sortable
 			                 :filters="[{text: '2016-05-04', value: '2016-05-04'}]"
 			                 :filter-method="filterByName"></el-table-column>
-			<el-table-column prop="number" label="产品批号"></el-table-column>
+			<el-table-column prop="phone" label="电话号码" width="120"></el-table-column>
+			<el-table-column prop="number" label="产品批号" width="120"></el-table-column>
 			<el-table-column prop="address" label="生产地址" width="130">
 				<template slot-scope="scope">
 					<el-popover trigger="hover" placement="top">
@@ -15,10 +16,19 @@
 					</el-popover>
 				</template>
 			</el-table-column>
-			<el-table-column prop="phone" label="供应商"></el-table-column>
-			<el-table-column prop="barCode" label="电话号码"></el-table-column>
-			<el-table-column prop="inputTime" label="进货时间"></el-table-column>
+			<el-table-column prop="barCode" label="产品条码" width="120"></el-table-column>
+			<el-table-column prop="amount" label="入库数量" width="120"></el-table-column>
+			<el-table-column prop="producedTime" label="生产日期" width="120"></el-table-column>
+			<el-table-column prop="shelLife" label="有效期至" width="120"></el-table-column>
+			<el-table-column prop="zip" label="操作" width="300" fixed="right">
+				<template slot-scope="scope">
+					<el-button type="success" @click="remove(scope)" size="mini">查看详情</el-button>
+					<el-button type="primary" @click="drawerOpen(scope)" size="mini">编辑</el-button>
+					<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
+				</template>
+			</el-table-column>
 		</el-table>
+		<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
 	</div>
 </template>
 

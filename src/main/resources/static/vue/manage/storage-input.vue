@@ -191,7 +191,4 @@
 </script>
 
 <style scoped>
-	.form-line {
-		margin-top: 16px;
-	}
 </style>

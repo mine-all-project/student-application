@@ -38,7 +38,10 @@
 			</el-aside>
 			<el-main>
 				<!--				<p v-if="welcome">欢迎登录</p>-->
-				<router-view></router-view>
+				<keep-alive>
+					<router-view></router-view>
+				</keep-alive>
+
 			</el-main>
 		</el-container>
 	</el-container>
@@ -79,124 +82,63 @@
                     ],
                     buyMenu: [
                         {
-                            id: '3',
-                            name: '进货信息',
-                            icon: 'el-icon-menu',
-                            children: [
-                                {
-                                    id: '3-1',
-                                    name: '进货信息登记',
-                                    icon: 'el-icon-menu',
-                                    url: '/goods-add'
-                                },
-                                {
-                                    id: '3-2',
-                                    name: '进货信息查询',
-                                    icon: 'el-icon-menu',
-                                    url: '/goods-query'
-                                },
-                            ]
-                        },
-                        {
-                            id: '5',
-                            name: '供应商管理',
-                            icon: 'el-icon-menu',
-                        },
-                        {
-                            id: '6',
-                            name: '进货统计',
-                            icon: 'el-icon-menu',
-                        },
-                    ],
-                    inventoryMenu: [
-                        {
                             id: '1',
-                            name: '公交管理',
+                            name: '采购管理',
                             icon: 'el-icon-menu',
                             children: [
                                 {
                                     id: '1-1',
-                                    name: '公交线路管理',
-                                    icon: '',
-                                    url: '/demo'
+                                    name: '采购计划登记',
+                                    icon: 'el-icon-menu',
+                                    url: '/purchases-add'
                                 },
                                 {
                                     id: '1-2',
-                                    name: '公交站点管理',
+                                    name: '采购记录查询',
                                     icon: 'el-icon-menu',
-                                    url: '/manage/stands'
+                                    url: '/purchases-list'
                                 },
                             ]
                         },
                         {
                             id: '2',
-                            name: '信息管理',
+                            name: '消息列表',
                             icon: 'el-icon-menu',
-                            children: [
-                                {
-                                    id: '2-1',
-                                    name: '公交动态管理',
-                                    icon: '',
-                                    url: '/manage/dynamic'
-                                },
-                                {
-                                    id: '2-2',
-                                    name: '公告管理',
-                                    icon: 'el-icon-menu',
-                                    url: '/manage/notice'
-                                },
-                            ]
+                            url: '/message-list'
                         },
                         {
                             id: '3',
-                            name: '用户管理',
+                            name: '进货统计',
                             icon: 'el-icon-menu',
-                            children: [
-                                {
-                                    id: '3-1',
-                                    name: '用户列表',
-                                    icon: 'el-icon-menu',
-                                    url: '/manage/user-list'
-                                }
-                            ]
+                            url: '/statistical'
                         },
-                        // {
-                        //     id: 'demo',
-                        //     name: '测试菜单',
-                        //     icon: 'el-icon-menu',
-                        //     children: [
-                        //         {
-                        //             id: 'demo-1',
-                        //             name: '表格列表(富文本)',
-                        //             icon: 'el-icon-menu',
-                        //             url: '/demo/demo1'
-                        //         },
-                        //         {
-                        //             id: 'demo-2',
-                        //             name: '表格列表(文本域)',
-                        //             icon: 'el-icon-menu',
-                        //             url: '/demo/demo2'
-                        //         },
-                        //         {
-                        //             id: 'demo-3',
-                        //             name: '照片墙',
-                        //             icon: 'el-icon-menu',
-                        //             url: '/demo/demo3'
-                        //         },
-                        //         {
-                        //             id: 'demo-4',
-                        //             name: '富文本页面',
-                        //             icon: 'el-icon-menu',
-                        //             url: '/demo/demo4'
-                        //         },
-                        //         {
-                        //             id: 'demo-5',
-                        //             name: '表格列表(带图片)',
-                        //             icon: 'el-icon-menu',
-                        //             url: '/demo/demo5'
-                        //         }
-                        //     ]
-                        // },
+                    ],
+                    inventoryMenu: [
+                        {
+                            id: '1',
+                            name: '入库信息',
+                            icon: 'el-icon-menu',
+                            url: '/storage-input'
+                        },
+                        {
+                            id: '2',
+                            name: '出库信息',
+                            icon: 'el-icon-menu',
+                            url: '/storage-output'
+                        },
+                        {
+                            id: '3',
+                            name: '库存盘点',
+                            icon: 'el-icon-menu',
+                            url: '/storage-inventory'
+                        },
+                        {
+                            id: '4',
+                            name: '库存信息',
+                            icon: 'el-icon-menu',
+                            url: '/storage-list'
+                        },
+
                     ],
                     saleMenu: [
                         {
