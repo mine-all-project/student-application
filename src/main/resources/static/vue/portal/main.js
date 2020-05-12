@@ -10,10 +10,10 @@ const routes = [
     {path: '/message-list', name: 'messageList', component: httpVueLoader('/vue/manage/message-list.vue')},
     {path: '/statistical', name: 'statistical', component: httpVueLoader('/vue/manage/statistical.vue')},
 
-    {path: '/storage-input', name: 'storageInput', component: httpVueLoader('/vue/manage/storage-input.vue')},
-    {path: '/storage-input', name: 'storageOutput', component: httpVueLoader('/vue/manage/storage-input.vue')},
-    {path: '/storage-manage', name: 'storageManage', component: httpVueLoader('/vue/manage/storage-manage.vue')},
-    {path: '/storage-list', name: 'storageList', component: httpVueLoader('/vue/manage/storage-list.vue')},
+    {path: '/storages-input', name: 'storagesInput', component: httpVueLoader('/vue/manage/storages-input.vue')},
+    {path: '/storages-input', name: 'storagesOutput', component: httpVueLoader('/vue/manage/storages-input.vue')},
+    {path: '/storages-manage', name: 'storagesManage', component: httpVueLoader('/vue/manage/storage-manage.vue')},
+    {path: '/storages-list', name: 'storagesList', component: httpVueLoader('/vue/manage/storages-list.vue')},
 
 
     {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},

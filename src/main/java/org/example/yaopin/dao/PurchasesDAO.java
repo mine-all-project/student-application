@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+/**
+ * 采购DAO
+ */
 public class PurchasesDAO {
     private final PurchasesRepository purchasesRepository;
 

@@ -13,8 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableJpaAuditing
 @SpringBootApplication
-@EnableNacosConfig(globalProperties = @NacosProperties(serverAddr = "192.168.3.20:8848"))
-@NacosPropertySource(dataId = "yaopin-dev.properties", autoRefreshed = true)
+//@EnableNacosConfig(globalProperties = @NacosProperties(serverAddr = "192.168.3.20:8848"))
+//@NacosPropertySource(dataId = "yaopin-dev.properties", autoRefreshed = true)
 public class StudentApplication {
     private static final Logger logger = LoggerFactory.getLogger(StudentApplication.class);
     public static void main(String[] args) {

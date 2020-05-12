@@ -113,30 +113,61 @@
                             url: '/statistical'
                         },
                     ],
-                    storageMenu: [
+                    storagesMenu: [
+                        {
+                            id: '12',
+                            name: '采购管理',
+                            icon: 'el-icon-menu',
+                            children: [
+                                {
+                                    id: '1-1',
+                                    name: '采购计划登记',
+                                    icon: 'el-icon-menu',
+                                    url: '/purchases-add'
+                                },
+                                {
+                                    id: '1-2',
+                                    name: '采购记录查询',
+                                    icon: 'el-icon-menu',
+                                    url: '/purchases-list'
+                                },
+                            ]
+                        },
+                        {
+                            id: '23',
+                            name: '消息列表',
+                            icon: 'el-icon-menu',
+                            url: '/message-list'
+                        },
+                        {
+                            id: '34',
+                            name: '进货统计',
+                            icon: 'el-icon-menu',
+                            url: '/statistical'
+                        },
                         {
                             id: '1',
-                            name: '入库信息',
+                            name: '入库验收',
                             icon: 'el-icon-menu',
-                            url: '/storage-input'
+                            url: '/storages-input'
                         },
                         {
                             id: '2',
                             name: '出库信息',
                             icon: 'el-icon-menu',
-                            url: '/storage-output'
+                            url: '/storages-output'
                         },
                         {
                             id: '3',
                             name: '库存盘点',
                             icon: 'el-icon-menu',
-                            url: '/storage-manage'
+                            url: '/storages-manage'
                         },
                         {
                             id: '4',
                             name: '库存信息',
                             icon: 'el-icon-menu',
-                            url: '/storage-list'
+                            url: '/storages-list'
                         },
 
                     ],
@@ -291,7 +322,7 @@
             router.push('demo')
             this.menus.menu = this.menus.manageMenu
             this.menus.menu = this.menus.buyMenu
-            this.menus.menu = this.menus.storageMenu
+            this.menus.menu = this.menus.storagesMenu
             // this.menus.menu = this.menus.saleMenu
             // this.getTableDataList()
         },

@@ -2,11 +2,13 @@ package org.example.yaopin.service.impl;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.example.yaopin.dao.GoodsDAO;
 import org.example.yaopin.dao.PurchasesDAO;
-import org.example.yaopin.dao.StorageDAO;
+import org.example.yaopin.dao.StoragesDAO;
+import org.example.yaopin.dao.SysUserDAO;
 import org.example.yaopin.entity.*;
 import org.example.yaopin.form.PurchasesForm;
-import org.example.yaopin.form.StorageForm;
+import org.example.yaopin.form.StoragesForm;
 import org.example.yaopin.service.RestFulService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +22,7 @@ public class RestFulServiceImpl implements RestFulService {
         Subject subject = SecurityUtils.getSubject();
         SysUser user = (SysUser) subject.getPrincipal();
         String username = isDebug ? "user" : user.getUsername();
-        return user;
-//        return sysUserDAO.findByUsername(username);
+        return sysUserDAO.findByUsername(username);
     }
 
     @Value("${isDebug}")
@@ -31,15 +32,15 @@ public class RestFulServiceImpl implements RestFulService {
     @Value("${virtualPath}")
     private String virtualPath;
     private final PurchasesDAO purchasesDAO;
-    private final StorageDAO storageDAO;
-//    private final LinesDAO linesDAO;
-//    private final PapersDAO papersDAO;
-//    private final SysUserDAO sysUserDAO;
-//    private final MessageRepository messageRepository;
+    private final StoragesDAO storagesDAO;
+    private final SysUserDAO sysUserDAO;
+    private final GoodsDAO goodsDAO;
 
-    public RestFulServiceImpl(PurchasesDAO purchasesDAO, StorageDAO storageDAO) {
+    public RestFulServiceImpl(PurchasesDAO purchasesDAO, StoragesDAO storagesDAO, SysUserDAO sysUserDAO, GoodsDAO goodsDAO) {
         this.purchasesDAO = purchasesDAO;
-        this.storageDAO = storageDAO;
+        this.storagesDAO = storagesDAO;
+        this.sysUserDAO = sysUserDAO;
+        this.goodsDAO = goodsDAO;
     }
 
     @Override
@@ -58,8 +59,14 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
-    public void saveStorageInfo(StorageForm form) {
-//        storageDAO.saveStorageInfo(form);
+    public void saveStoragesInfo(StoragesForm form) {
+        Purchases purchases = purchasesDAO.findById(form.getPurchasesId());
+        Storages storages = new Storages();
+        storages.setPurchases(purchases);
+        storages.setType(form.getType());
+        storages.setGoods(goodsDAO.saveData(form.getGoods()));
+        storagesDAO.saveData(storages);
+//        storagesDAO.saveStoragesInfo(form);
     }
 //
 //    @Override

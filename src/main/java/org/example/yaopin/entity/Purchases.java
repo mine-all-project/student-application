@@ -10,6 +10,9 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
+/**
+ * 采购信息
+ */
 public class Purchases extends BaseEntity {
     @Column(columnDefinition = "varchar(32) comment '产品名称'")
     private String name;
