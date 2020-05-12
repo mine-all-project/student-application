@@ -3,20 +3,16 @@ const routes = [
     {path: '/demo', name: 'demo', component: httpVueLoader('/demo.vue')},
     {path: '/user-list', name: 'userList', component: httpVueLoader('/vue/manage/user-list.vue')},
 
+
     {path: '/purchases-add', name: 'purchasesAdd', component: httpVueLoader('/vue/manage/purchases-add.vue')},
     {path: '/purchases-list', name: 'purchasesList', component: httpVueLoader('/vue/manage/purchases-list.vue')},
-
 
     {path: '/message-list', name: 'messageList', component: httpVueLoader('/vue/manage/message-list.vue')},
     {path: '/statistical', name: 'statistical', component: httpVueLoader('/vue/manage/statistical.vue')},
 
     {path: '/storage-input', name: 'storageInput', component: httpVueLoader('/vue/manage/storage-input.vue')},
     {path: '/storage-input', name: 'storageOutput', component: httpVueLoader('/vue/manage/storage-input.vue')},
-    {
-        path: '/storage-inventory',
-        name: 'storageInventory',
-        component: httpVueLoader('/vue/manage/storage-inventory.vue')
-    },
+    {path: '/storage-manage', name: 'storageManage', component: httpVueLoader('/vue/manage/storage-manage.vue')},
     {path: '/storage-list', name: 'storageList', component: httpVueLoader('/vue/manage/storage-list.vue')},
 
 

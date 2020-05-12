@@ -2,6 +2,7 @@ package org.example.yaopin.service;
 
 import org.example.yaopin.entity.Purchases;
 import org.example.yaopin.form.PurchasesForm;
+import org.example.yaopin.form.StorageForm;
 
 import java.util.List;
 
@@ -10,6 +11,8 @@ public interface RestFulService extends BaseService{
     List<Purchases> getPurchasesList();
     Purchases getPurchasesById(String id);
     void savePurchasesInfo(PurchasesForm form);
+
+    void saveStorageInfo(StorageForm form);
 //    void removeLinesById(String id);
 //
 //

@@ -3,9 +3,12 @@ package org.example.yaopin.service.impl;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.example.yaopin.dao.PurchasesDAO;
+import org.example.yaopin.dao.StorageDAO;
 import org.example.yaopin.entity.*;
 import org.example.yaopin.form.PurchasesForm;
+import org.example.yaopin.form.StorageForm;
 import org.example.yaopin.service.RestFulService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +31,15 @@ public class RestFulServiceImpl implements RestFulService {
     @Value("${virtualPath}")
     private String virtualPath;
     private final PurchasesDAO purchasesDAO;
+    private final StorageDAO storageDAO;
 //    private final LinesDAO linesDAO;
 //    private final PapersDAO papersDAO;
 //    private final SysUserDAO sysUserDAO;
 //    private final MessageRepository messageRepository;
 
-    public RestFulServiceImpl(PurchasesDAO purchasesDAO) {
+    public RestFulServiceImpl(PurchasesDAO purchasesDAO, StorageDAO storageDAO) {
         this.purchasesDAO = purchasesDAO;
+        this.storageDAO = storageDAO;
     }
 
     @Override
@@ -50,6 +55,11 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public void savePurchasesInfo(PurchasesForm form) {
         purchasesDAO.saveGoodsInfo(form);
+    }
+
+    @Override
+    public void saveStorageInfo(StorageForm form) {
+//        storageDAO.saveStorageInfo(form);
     }
 //
 //    @Override

@@ -3,6 +3,7 @@ package org.example.yaopin.controller;
 import org.example.yaopin.dto.ResponseDTO;
 import org.example.yaopin.entity.Purchases;
 import org.example.yaopin.form.PurchasesForm;
+import org.example.yaopin.form.StorageForm;
 import org.example.yaopin.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,15 @@ public class RestFulController extends BaseController {
         logger.info("收到请求->保存采购信息:[{}]", form);
         restFulService.savePurchasesInfo(form);
         logger.info("返回结果->保存采购信息完成:[{}]", form);
+        return ResponseDTO.returnSuccess("操作成功", form);
+    }
+
+    @RequestMapping("/saveStorageInfo")
+    @ResponseBody
+    public ResponseDTO saveStorageInfo(@RequestBody StorageForm form) {
+        logger.info("收到请求->保存入库信息:[{}]", form);
+        restFulService.saveStorageInfo(form);
+        logger.info("返回结果->保存入库信息完成:[{}]", form);
         return ResponseDTO.returnSuccess("操作成功", form);
     }
 //

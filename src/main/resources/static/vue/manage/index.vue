@@ -113,7 +113,7 @@
                             url: '/statistical'
                         },
                     ],
-                    inventoryMenu: [
+                    storageMenu: [
                         {
                             id: '1',
                             name: '入库信息',
@@ -130,7 +130,7 @@
                             id: '3',
                             name: '库存盘点',
                             icon: 'el-icon-menu',
-                            url: '/storage-inventory'
+                            url: '/storage-manage'
                         },
                         {
                             id: '4',
@@ -289,7 +289,10 @@
         },
         mounted() {
             router.push('demo')
+            this.menus.menu = this.menus.manageMenu
             this.menus.menu = this.menus.buyMenu
+            this.menus.menu = this.menus.storageMenu
+            // this.menus.menu = this.menus.saleMenu
             // this.getTableDataList()
         },
         methods: {
