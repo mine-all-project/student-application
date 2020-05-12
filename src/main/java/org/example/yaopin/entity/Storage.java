@@ -17,10 +17,10 @@ import javax.persistence.Table;
  * 库存信息
  */
 public class Storage extends BaseEntity {
+//    @OneToOne
+//    private Purchases purchases = new Purchases();
     @OneToOne
-    private Purchases purchases;
-    @OneToOne
-    private Goods goods;
+    private Goods goods = new Goods();
     @Column(columnDefinition = "bit(1) default 0 not null comment '状态标记 0:入库 1:出库'")
     private Integer type;
 

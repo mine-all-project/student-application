@@ -1,8 +1,11 @@
 package org.example.yaopin.dao;
 
+import org.example.yaopin.dao.jpa.GoodsRepository;
 import org.example.yaopin.dao.jpa.PurchasesRepository;
+import org.example.yaopin.entity.Goods;
 import org.example.yaopin.entity.Purchases;
 import org.example.yaopin.form.PurchasesForm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -14,11 +17,12 @@ import java.util.List;
  */
 public class PurchasesDAO {
     private final PurchasesRepository purchasesRepository;
+    private final GoodsRepository goodsRepository;
 
-    public PurchasesDAO(PurchasesRepository purchasesRepository) {
+    public PurchasesDAO(PurchasesRepository purchasesRepository, GoodsRepository goodsRepository) {
         this.purchasesRepository = purchasesRepository;
+        this.goodsRepository = goodsRepository;
     }
-
 
     public List<Purchases> findAll() {
         Sort sort = new Sort(Sort.Direction.ASC, "createTime");
@@ -29,17 +33,14 @@ public class PurchasesDAO {
         return purchasesRepository.findById(id).orElse(new Purchases());
     }
 
-    public void saveGoodsInfo(PurchasesForm form) {
-        Purchases entity = form.toEntity();
-        entity.setStatus(1);
-        purchasesRepository.saveAndFlush(entity);
+    public void saveData(Purchases purchases) {
+        purchasesRepository.saveAndFlush(purchases);
     }
-//
-//    public void removeLinesById(String id) {
-//        linesRepository.deleteById(id);
-//    }
-//
-//    public List<Linees> findByNumber(String number) {
-//        return linesRepository.findByNumberLike("%" + number + "%");
-//    }
+
+    public void flagDelById(String id) {
+        Purchases purchases = purchasesRepository.findById(id).orElse(null);
+        assert purchases != null;
+        purchases.setDelFlag(1);
+        purchasesRepository.saveAndFlush(purchases);
+    }
 }

@@ -131,8 +131,8 @@
                     purchasesId: '',
                     counts: '99999',
                     goods: {
-                        producedTime: '',
-                        shelLife: '',
+                        producedTime: '2020-05-12',
+                        shelLife: '2020-05-20',
                         characte: '性状',
                         majorFunction: '主要治疗咳嗽',
                         specification: '规格',

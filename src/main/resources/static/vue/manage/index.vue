@@ -133,18 +133,14 @@
                                 },
                             ]
                         },
+
                         {
                             id: '23',
                             name: '消息列表',
                             icon: 'el-icon-menu',
                             url: '/message-list'
                         },
-                        {
-                            id: '34',
-                            name: '进货统计',
-                            icon: 'el-icon-menu',
-                            url: '/statistical'
-                        },
+
                         {
                             id: '1',
                             name: '入库验收',

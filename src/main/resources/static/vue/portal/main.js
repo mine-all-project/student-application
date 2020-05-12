@@ -8,7 +8,6 @@ const routes = [
     {path: '/purchases-list', name: 'purchasesList', component: httpVueLoader('/vue/manage/purchases-list.vue')},
 
     {path: '/message-list', name: 'messageList', component: httpVueLoader('/vue/manage/message-list.vue')},
-    {path: '/statistical', name: 'statistical', component: httpVueLoader('/vue/manage/statistical.vue')},
 
     {path: '/storage-input', name: 'storageInput', component: httpVueLoader('/vue/manage/storage-input.vue')},
     {path: '/storage-output', name: 'storageOutput', component: httpVueLoader('/vue/manage/storage-output.vue')},

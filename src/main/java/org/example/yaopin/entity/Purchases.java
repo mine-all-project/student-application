@@ -15,26 +15,16 @@ import javax.persistence.OneToOne;
  * 采购信息
  */
 public class Purchases extends BaseEntity {
+    @OneToOne
+    private Goods goods;
     @Column(columnDefinition = "varchar(32) comment '产品名称'")
     private String name;
-
-    @Column(columnDefinition = "varchar(64) comment '产品批号'")
-    private String number;
-
-    @Column(columnDefinition = "varchar(32) comment '生产地址'")
-    private String address;
-
-    @Column(columnDefinition = "int(10) comment '数量'")
-    private Long counts;
-
     @Column(columnDefinition = "varchar(32) comment '供应商'")
     private String supply;
-
     @Column(columnDefinition = "varchar(32) comment '联系电话'")
     private String phone;
-
-    @Column(columnDefinition = "bit(1) default 0 not null comment '状态标记 0:已入库 1:未入库'")
-    private Integer status;
+    @Column(columnDefinition = "int(10) comment '数量'")
+    private Long counts;
 
     @Override
     public String toString() {

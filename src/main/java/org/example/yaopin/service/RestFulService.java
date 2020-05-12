@@ -1,6 +1,7 @@
 package org.example.yaopin.service;
 
 import org.example.yaopin.entity.Purchases;
+import org.example.yaopin.entity.Storage;
 import org.example.yaopin.form.PurchasesForm;
 import org.example.yaopin.form.StorageForm;
 
@@ -11,9 +12,12 @@ public interface RestFulService extends BaseService{
     List<Purchases> getPurchasesList();
     Purchases getPurchasesById(String id);
     void savePurchasesInfo(PurchasesForm form);
+    void flagDelPurchasesById(String id);
 
     void saveStorageInfo(StorageForm form);
-//    void removeLinesById(String id);
+
+    List<Storage> getStorageList();
+
 //
 //
 //    List<Stands> getStandsList();

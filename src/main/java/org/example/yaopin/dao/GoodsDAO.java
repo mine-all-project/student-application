@@ -18,4 +18,8 @@ public class GoodsDAO {
     public Goods saveData(Goods goods) {
         return goodsRepository.saveAndFlush(goods);
     }
+
+    public Goods findDataById(String id) {
+        return goodsRepository.findById(id).orElse(null);
+    }
 }

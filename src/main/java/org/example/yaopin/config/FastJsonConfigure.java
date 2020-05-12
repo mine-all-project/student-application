@@ -16,7 +16,8 @@ public class FastJsonConfigure {
                 SerializerFeature.WriteNullStringAsEmpty,
                 SerializerFeature.WriteMapNullValue,
                 SerializerFeature.WriteNullListAsEmpty,
-                SerializerFeature.WriteDateUseDateFormat);
+                SerializerFeature.WriteDateUseDateFormat,
+                SerializerFeature.DisableCircularReferenceDetect);
         return fastJsonConfig;
     }
 }

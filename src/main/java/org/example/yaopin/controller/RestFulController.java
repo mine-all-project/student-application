@@ -2,6 +2,7 @@ package org.example.yaopin.controller;
 
 import org.example.yaopin.dto.ResponseDTO;
 import org.example.yaopin.entity.Purchases;
+import org.example.yaopin.entity.Storage;
 import org.example.yaopin.form.PurchasesForm;
 import org.example.yaopin.form.StorageForm;
 import org.example.yaopin.service.RestFulService;
@@ -57,14 +58,25 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->保存入库信息完成:[{}]", form);
         return ResponseDTO.returnSuccess("操作成功", form);
     }
-//
-//    @DeleteMapping("/removeLinesById/{id}")
-//    public ResponseDTO removeLinesById(@PathVariable("id") String id) {
-//        logger.info("收到请求->删除线路,id:[{}]", id);
-//        restFulService.removeLinesById(id);
-//        logger.info("返回结果->删除线路完成");
-//        return ResponseDTO.returnSuccess("操作成功");
-//    }
+
+    @DeleteMapping("/flagDelPurchasesById")
+    public ResponseDTO flagDelPurchasesById(String id) {
+        logger.info("收到请求->采购退货,id:[{}]", id);
+        restFulService.flagDelPurchasesById(id);
+        logger.info("返回结果->采购退货完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/getStorageList")
+    @ResponseBody
+    public ResponseDTO getStorageList() {
+        logger.info("收到请求->获取库存列表");
+        List<Storage> list = restFulService.getStorageList();
+        logger.info("返回结果->获取库存列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+
 //
 //    @RequestMapping("/getStandsList")
 //    @ResponseBody

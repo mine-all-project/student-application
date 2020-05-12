@@ -1,6 +1,7 @@
 package org.example.yaopin.service.impl;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.example.yaopin.dao.GoodsDAO;
 import org.example.yaopin.dao.PurchasesDAO;
@@ -10,7 +11,7 @@ import org.example.yaopin.entity.*;
 import org.example.yaopin.form.PurchasesForm;
 import org.example.yaopin.form.StorageForm;
 import org.example.yaopin.service.RestFulService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -55,28 +56,40 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     public void savePurchasesInfo(PurchasesForm form) {
-        purchasesDAO.saveGoodsInfo(form);
+        Purchases purchases = new Purchases();
+        BeanUtils.copyProperties(form, purchases);
+        Goods goods = purchases.getGoods();
+        BeanUtils.copyProperties(purchases, goods);
+        purchases.setGoods(goodsDAO.saveData(goods));
+        purchasesDAO.saveData(purchases);
     }
+
+    @Override
+    public void flagDelPurchasesById(String id) {
+        Goods goods = purchasesDAO.findById(id).getGoods();
+        goods.setDelFlag(1);
+        goodsDAO.saveData(goods);
+        purchasesDAO.flagDelById(id);
+    }
+
 
     @Override
     public void saveStorageInfo(StorageForm form) {
         Purchases purchases = purchasesDAO.findById(form.getPurchasesId());
+        Goods exist = goodsDAO.findDataById(purchases.getGoods().getId());
         Storage storage = new Storage();
-        storage.setPurchases(purchases);
         storage.setType(form.getType());
-        Goods goods = form.getGoods();
-        goods.setPurchases(purchases);
-        storage.setGoods(goodsDAO.saveData(goods));
-        storageDAO.saveData(storage);
-//        storageDAO.saveStorageInfo(form);
+        BeanUtils.copyProperties(form.getGoods(), exist, "id", "name", "createTime");
+//        goods.setId(purchases.getGoods().getId());
+        goodsDAO.saveData(exist);
+//        storage.setGoods(goodsDAO.saveData(goods));
+//        storageDAO.saveData(storage);
     }
-//
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void removeLinesById(String id) {
-//        linesDAO.removeLinesById(id);
-//    }
-//
+
+    @Override
+    public List<Storage> getStorageList() {
+        return storageDAO.findAll();
+    }
 //
 //    @Override
 //    public List<Stands> getStandsList() {
@@ -93,11 +106,7 @@ public class RestFulServiceImpl implements RestFulService {
 //        standsDAO.saveStands(form);
 //    }
 //
-//    @Override
-//    @RequiresPermissions("manage")
-//    public void removeStandsById(String id) {
-//        standsDAO.removeStandsById(id);
-//    }
+
 //
 //    @Override
 //    public List<Linees> searchLinesByNumber(String name) {
