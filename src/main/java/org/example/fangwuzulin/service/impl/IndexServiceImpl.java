@@ -154,7 +154,7 @@ public class IndexServiceImpl implements IndexService {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             String code = SecurityUtils.getSubject().getSession().getAttribute("randomCode").toString();
             if (!code.equals(randomCode)) {
-//                throw new ApplicationException("验证码错误");
+                throw new ApplicationException("验证码错误");
             }
             subject.login(token);
             return (SysUser) subject.getPrincipal();
