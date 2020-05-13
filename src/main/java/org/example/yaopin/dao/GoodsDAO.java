@@ -26,6 +26,6 @@ public class GoodsDAO {
     }
 
     public List<Goods> getAllByFlag() {
-        return goodsRepository.findAllByDelFlag(1);
+        return goodsRepository.findAllByDelFlag(0);
     }
 }

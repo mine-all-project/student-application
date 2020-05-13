@@ -25,6 +25,8 @@ public class Purchases extends BaseEntity {
     private String phone;
     @Column(columnDefinition = "int(10) comment '数量'")
     private Long counts;
+    @Column(columnDefinition = "tinyint(1) default 0 not null comment '状态标记 0:未入库 1:已入库'")
+    private Integer status;
 
     @Override
     public String toString() {

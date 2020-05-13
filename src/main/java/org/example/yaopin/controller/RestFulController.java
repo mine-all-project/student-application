@@ -29,11 +29,18 @@ public class RestFulController extends BaseController {
     }
 
     @RequestMapping("/getPurchasesList")
-    @ResponseBody
     public ResponseDTO getPurchasesList() {
         logger.info("收到请求->获取采购列表");
         List<Purchases> list = restFulService.getPurchasesList();
         logger.info("返回结果->获取采购列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/getPurchasesListByStatus")
+    public ResponseDTO getPurchasesListByStatus() {
+        logger.info("收到请求->获取采购列表，条件->[status]");
+        List<Purchases> list = restFulService.getPurchasesListByStatus();
+        logger.info("返回结果->获取采购列表完成:[{}],条件->[status]", list);
         return ResponseDTO.returnSuccess("操作成功", list);
     }
 
@@ -53,6 +60,7 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->保存采购信息完成:[{}]", form);
         return ResponseDTO.returnSuccess("操作成功", form);
     }
+
 
 //    @RequestMapping("/saveStorageInfo")
 //    @ResponseBody
@@ -77,6 +85,14 @@ public class RestFulController extends BaseController {
         List<Goods> list = restFulService.getGoodsListByFlag();
         logger.info("返回结果->获取商品列表:[{}]", list);
         return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/addGoodsCountsById")
+    public ResponseDTO addGoodsCountsById(String id) {
+        logger.info("收到请求->商品入库,id:[{}]", id);
+        restFulService.addGoodsCountsById(id);
+        logger.info("返回结果->商品入库商品入库完成");
+        return ResponseDTO.returnSuccess("操作成功");
     }
 
     @RequestMapping("/saveMessages")

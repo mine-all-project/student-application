@@ -1,94 +1,165 @@
 <template>
-	<el-row>
-		<el-table :data="tableData" stripe style="width: 100%">
-			<el-table-column prop="createTime" label="时间"></el-table-column>
-			<el-table-column prop="formAs.name" label="发送人"></el-table-column>
-			<el-table-column prop="type" label="类型">
-				<template slot-scope="scope">
-					<el-tag type="warning" v-if="scope.row.type === 0">缺货</el-tag>
-					<el-tag type="danger" v-else>报损</el-tag>
-				</template>
-			</el-table-column>
-			<el-table-column prop="status" label="状态">
-				<template slot-scope="scope">
-					<el-tag type="primary" v-if="scope.row.status === 0">未读</el-tag>
-					<el-tag type="success" v-else>已读</el-tag>
-				</template>
-			</el-table-column>
-			<el-table-column label="操作">
-				<template slot-scope="scope">
-					<el-button type="primary" @click="showMessageInfo(scope)" size="mini">查看详情</el-button>
-				</template>
-			</el-table-column>
-		</el-table>
-		<el-dialog title="消息" :visible.sync="dialogVisible" width="30%">
-			<span>{{messageInfo.content}}</span>
-			<span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
-		</el-dialog>
-	</el-row>
+	<div class="parent-body">
+		<!--药品信息&入库数量-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>药品信息</label></el-col>
+			<el-col :span="8">
+				<el-select v-model="form.purchasesId" style="width:100%" size="small" @change="selectChange">
+					<el-option v-for="item in purchasesList" :key="item.id" :label="item.name" :value="item.id" size="small">
+					</el-option>
+				</el-select>
+			</el-col>
 
+			<el-col :span="2" :offset="2"><label>入库数量</label></el-col>
+			<el-col :span="8">
+				<el-input-number v-model="form.counts" size="small" style="width:100%" disabled></el-input-number>
+				<!--				<el-input v-model="form.counts" clearable type="number" size="small" :max="55"></el-input>-->
+			</el-col>
+
+		</el-row>
+		<!--生产日期&有效期至-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>生产日期</label></el-col>
+			<el-col :span="8">
+				<el-date-picker v-model="form.goods.producedTime" type="date" style="width: 100%" size="small"
+				                disabled></el-date-picker>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>有效期至</label></el-col>
+			<el-col :span="8">
+				<el-date-picker v-model="form.goods.shelLife" type="date" style="width: 100%" size="small"
+				                disabled></el-date-picker>
+			</el-col>
+		</el-row>
+		<!--性状&功能主治-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>性状</label></el-col>
+			<el-col :span="8">
+				<el-input v-model="form.goods.characte" type="textarea" :rows="3" resize="none" disabled></el-input>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>功能主治</label></el-col>
+			<el-col :span="8">
+				<el-input v-model="form.goods.majorFunction" type="textarea" :rows="3" resize="none" disabled></el-input>
+			</el-col>
+		</el-row>
+		<!--规格&用法用量-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>规格</label></el-col>
+			<el-col :span="8">
+				<el-input v-model="form.goods.specification" type="textarea" :rows="3" resize="none" disabled></el-input>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>用法用量</label></el-col>
+			<el-col :span="8">
+				<el-input v-model="form.goods.usages" type="textarea" :rows="3" resize="none" disabled></el-input>
+			</el-col>
+		</el-row>
+		<!--不良反应&注意事项-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>不良反应</label></el-col>
+			<el-col :span="8">
+				<el-input v-model="form.goods.adverseReactions" type="textarea" :rows="3" resize="none" disabled></el-input>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>注意事项</label></el-col>
+			<el-col :span="8">
+				<el-input v-model="form.goods.mattersNeeding" type="textarea" :rows="3" resize="none" disabled></el-input>
+			</el-col>
+		</el-row>
+		<!--禁忌&储藏环境-->
+		<el-row class="form-line">
+			<el-col :span="2"><label>禁忌</label></el-col>
+			<el-col :span="8">
+				<el-input v-model="form.goods.taboo" type="textarea" :rows="3" resize="none" disabled></el-input>
+			</el-col>
+			<el-col :span="2" :offset="2"><label>储藏环境</label></el-col>
+			<el-col :span="8">
+				<el-input v-model="form.goods.storageEnvironment" type="textarea" :rows="3" resize="none" disabled></el-input>
+			</el-col>
+		</el-row>
+		<el-row class="form-line">
+			<el-col :span="2">
+				<el-button type="primary" @click="saveForm" size="">确认入库</el-button>
+			</el-col>
+		</el-row>
+	</div>
 </template>
 
 <script>
     module.exports = {
         data() {
             return {
-                dialogVisible: false,
-                tableData: [],
-                messageInfo: {}
+                isEdit: true,
+                purchasesList: [],
+                form: {
+                    id: '',
+                    purchasesId: '',
+                    counts: 0,
+                    goods: {
+                        id: '',
+                        producedTime: '',
+                        shelLife: '',
+                        characte: '',
+                        majorFunction: '',
+                        specification: '',
+                        usages: '',
+                        adverseReactions: '',
+                        mattersNeeding: '',
+                        taboo: '',
+                        storageEnvironment: '',
+                        status: 0,
+                    },
+                    type: 0,
+                },
             };
         },
+        activated() {
+        },
         mounted() {
-            this.getTableDataList()
+            this.getPurchasesList()
         },
         methods: {
-            remove(scope) {
-                const _this = this;
-                const id = scope.row.id;
-                _this.$confirm('确认删除？').then(e => {
-                    _this.drawer.loading = true;
-                    axios.delete(`/api/removePapersById/${id}`).then(response => {
-                        _this.getTableDataList();
-                        const result = response.data;
-                        console.log('通过api获取到的数据:', result);
-                        if (result.status !== 200) {
-                            _this.$message.error('数据加载失败');
-                            return
-                        }
-                        _this.$message.success('操作成功')
-                    }).catch(function (error) {
-                        _this.getTableDataList();
-                        console.log('请求出现错误:', error);
-                    });
-                });
+            selectChange(id) {
+                this.getPurchasesById(id)
             },
-            getTableDataList() {
+            getPurchasesById(id) {
                 const _this = this;
-                axios.get(`/api/getMessageList`).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return;
-                    }
-                    _this.tableData = result.data;
-                }).catch(function (error) {
-                    console.log('请求出现错误:', error);
-                });
-            },
-            showMessageInfo(item) {
-                axios.get(`/api/getMessagesById?id=${item.row.id}`).then(response => {
+                axios.get(`/api/getPurchasesById?id=${id}`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
                         this.$message.error('数据加载失败');
                         return
                     }
-                    this.getTableDataList()
-                    this.messageInfo = result.data
-                    this.dialogVisible = true
+                    _this.form = result.data;
+                    _this.form.purchasesId = result.data.id;
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            },
+            saveForm() {
+                const _this = this;
+                console.log(_this.form)
+                axios.get(`/api/addGoodsCountsById?id=` + _this.form.id).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    _this.$message.success('操作成功');
+                }).catch(function (error) {
+                    window.location.reload();
+                    console.log('请求出现错误:', error);
+                });
+            },
+            getPurchasesList() {
+                const _this = this;
+                axios.get('/api/getPurchasesListByStatus').then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return;
+                    }
+                    _this.purchasesList = result.data;
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });
@@ -98,13 +169,7 @@
 </script>
 
 <style scoped>
-	.table-row-hidden {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	.drawer-footer {
-		margin-left: 10px;
+	.form-line {
+		margin-top: 16px;
 	}
 </style>

@@ -49,8 +49,6 @@ public class Goods extends BaseEntity {
     private String taboo;
     @Column(columnDefinition = "longtext comment '存储环境'")
     private String storageEnvironment;
-    @Column(columnDefinition = "tinyint(1) default 0 not null comment '状态标记 0:已入库 1:未入库'")
-    private Integer status;
 
     @Override
     public String toString() {

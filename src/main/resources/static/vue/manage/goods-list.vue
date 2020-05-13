@@ -55,7 +55,6 @@
                     console.log('请求出现错误:', error);
                 });
             },
-            // saveMessages
             sendMessages(item, type) {
                 console.log(item.row, type)
                 this.$confirm(`确定要发送${type === 0 ? '缺货' : '报损'}消息吗?`, '提示', {

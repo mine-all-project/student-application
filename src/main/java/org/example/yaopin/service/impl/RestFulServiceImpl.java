@@ -1,7 +1,5 @@
 package org.example.yaopin.service.impl;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.example.yaopin.dao.GoodsDAO;
 import org.example.yaopin.dao.MessageDAO;
 import org.example.yaopin.dao.PurchasesDAO;
@@ -49,6 +47,11 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    public List<Purchases> getPurchasesListByStatus() {
+        return purchasesDAO.getPurchasesListByStatus();
+    }
+
+    @Override
     public Purchases getPurchasesById(String id) {
         return purchasesDAO.findById(id);
     }
@@ -59,7 +62,9 @@ public class RestFulServiceImpl implements RestFulService {
         BeanUtils.copyProperties(form, purchases);
         Goods goods = purchases.getGoods();
         BeanUtils.copyProperties(purchases, goods);
+        goods.setCounts(0L);
         purchases.setGoods(goodsDAO.saveData(goods));
+        purchases.setStatus(0);
         purchasesDAO.saveData(purchases);
     }
 
@@ -76,6 +81,15 @@ public class RestFulServiceImpl implements RestFulService {
         return goodsDAO.getAllByFlag();
     }
 
+    @Override
+    public void addGoodsCountsById(String id) {
+        Purchases purchases = purchasesDAO.findById(id);
+        Goods goods = purchases.getGoods();
+        goods.setCounts(purchases.getCounts());
+        goodsDAO.saveData(goods);
+        purchases.setStatus(1);
+        purchasesDAO.saveData(purchases);
+    }
 
     @Override
     public void saveMessages(MessagesForm form) {

@@ -29,6 +29,11 @@ public class PurchasesDAO {
         return purchasesRepository.findAll(sort);
     }
 
+    public List<Purchases> getPurchasesListByStatus() {
+        Sort sort = new Sort(Sort.Direction.ASC, "createTime");
+        return purchasesRepository.findByStatusAndDelFlag(sort, 0, 0);
+    }
+
     public Purchases findById(String id) {
         return purchasesRepository.findById(id).orElse(new Purchases());
     }
@@ -43,4 +48,6 @@ public class PurchasesDAO {
         purchases.setDelFlag(1);
         purchasesRepository.saveAndFlush(purchases);
     }
+
+
 }
