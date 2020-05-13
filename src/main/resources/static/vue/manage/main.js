@@ -1,11 +1,7 @@
 Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', component: httpVueLoader('/demo-manage.vue')},
-    {path: '/manage/lines', component: httpVueLoader('/vue/manage/lines.vue')},
-    {path: '/manage/stands', component: httpVueLoader('/vue/manage/stands.vue')},
 
-    {path: '/manage/dynamic', component: httpVueLoader('/vue/manage/dynamic.vue')},
-    {path: '/manage/notice', component: httpVueLoader('/vue/manage/notice.vue')},
 
     {path: '/manage/user-list', component: httpVueLoader('/vue/manage/user-list.vue')},
 
@@ -15,6 +11,8 @@ const routes = [
     {path: '/demo/demo3', component: httpVueLoader('/vue/demo/demo3.vue')},
     {path: '/demo/demo4', component: httpVueLoader('/vue/demo/demo4.vue')},
     {path: '/demo/demo5', component: httpVueLoader('/vue/demo/demo5.vue')},
+    {path: '/demo/demo6', component: httpVueLoader('/vue/demo/demo6.vue')},
+    {path: '/demo/demo7', component: httpVueLoader('/vue/demo/demo7.vue')},
 
 ]
 

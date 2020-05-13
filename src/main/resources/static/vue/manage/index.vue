@@ -157,22 +157,9 @@
                     saleMenu: [
                         {
                             id: '1',
-                            name: '公交管理',
+                            name: '销售记录',
                             icon: 'el-icon-menu',
-                            children: [
-                                {
-                                    id: '1-1',
-                                    name: '公交线路管理',
-                                    icon: '',
-                                    url: '/demo'
-                                },
-                                {
-                                    id: '1-2',
-                                    name: '公交站点管理',
-                                    icon: 'el-icon-menu',
-                                    url: '/manage/stands'
-                                },
-                            ]
+                            url: '/sale-list'
                         },
                         {
                             id: '2',
@@ -306,7 +293,7 @@
             this.menus.menu = this.menus.manageMenu
             this.menus.menu = this.menus.buyMenu
             this.menus.menu = this.menus.storageMenu
-            // this.menus.menu = this.menus.saleMenu
+            this.menus.menu = this.menus.saleMenu
             // this.getTableDataList()
         },
         methods: {
