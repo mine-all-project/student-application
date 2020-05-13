@@ -19,7 +19,7 @@ public class SalesForm {
     @NotBlank(message = "商品信息不能为空", groups = {IsAdd.class, IsEdit.class})
     private String goodsId;
     @NotEmpty(message = "数量不能为空", groups = {IsAdd.class, IsEdit.class})
-    private Integer count;
+    private Long counts;
     @NotNull(message = "类型不能为空", groups = {IsAdd.class, IsEdit.class})
     private Integer type;
 }

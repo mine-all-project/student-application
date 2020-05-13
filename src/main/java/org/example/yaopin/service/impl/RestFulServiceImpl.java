@@ -5,6 +5,7 @@ import org.example.yaopin.dao.*;
 import org.example.yaopin.entity.*;
 import org.example.yaopin.form.MessagesForm;
 import org.example.yaopin.form.PurchasesForm;
+import org.example.yaopin.form.SalesForm;
 import org.example.yaopin.service.RestFulService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -148,4 +149,26 @@ public class RestFulServiceImpl implements RestFulService {
         return salesDAO.getAll();
     }
 
+    @Override
+    public void addSalesInfo(SalesForm form) {
+        Goods goods = goodsDAO.findDataById(form.getGoodsId());
+        goods.setCounts(goods.getCounts() - form.getCounts());
+        Sales sales = new Sales();
+        BeanUtils.copyProperties(form, sales);
+        sales.setTempCount(goods.getCounts());
+        sales.setGoods(goods);
+        sales.setStatus(0);
+        salesDAO.saveData(sales);
+    }
+
+    @Override
+    public void reduceSalesInfo(String id) {
+        Sales sales = salesDAO.findById(id);
+        Goods goods = sales.getGoods();
+        goods.setCounts(goods.getCounts() + sales.getCounts());
+        goodsDAO.saveData(goods);
+        sales.setGoods(goods);
+        sales.setStatus(1);
+        salesDAO.saveData(sales);
+    }
 }

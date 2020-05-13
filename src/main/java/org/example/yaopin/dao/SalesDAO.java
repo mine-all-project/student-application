@@ -2,6 +2,7 @@ package org.example.yaopin.dao;
 
 
 import org.example.yaopin.dao.jpa.SalesRepository;
+import org.example.yaopin.entity.Goods;
 import org.example.yaopin.entity.Sales;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -20,6 +21,14 @@ public class SalesDAO {
     public List<Sales> getAll() {
         Sort sort = new Sort(Sort.Direction.ASC, "createTime");
         return salesRepository.findAll(sort);
+    }
+
+    public void saveData(Sales sales) {
+        salesRepository.saveAndFlush(sales);
+    }
+
+    public Sales findById(String id) {
+        return salesRepository.findById(id).orElse(null);
     }
 
 

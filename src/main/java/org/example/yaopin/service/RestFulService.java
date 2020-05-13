@@ -6,6 +6,7 @@ import org.example.yaopin.entity.Purchases;
 import org.example.yaopin.entity.Sales;
 import org.example.yaopin.form.MessagesForm;
 import org.example.yaopin.form.PurchasesForm;
+import org.example.yaopin.form.SalesForm;
 
 import java.util.List;
 
@@ -28,5 +29,6 @@ public interface RestFulService extends BaseService{
     Messages getMessagesById(String id);
 
     List<Sales> getSalesList();
-
+    void addSalesInfo(SalesForm form);
+    void reduceSalesInfo(String id);
 }

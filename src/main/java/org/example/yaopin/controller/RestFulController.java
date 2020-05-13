@@ -10,6 +10,7 @@ import org.example.yaopin.entity.Purchases;
 import org.example.yaopin.entity.Sales;
 import org.example.yaopin.form.MessagesForm;
 import org.example.yaopin.form.PurchasesForm;
+import org.example.yaopin.form.SalesForm;
 import org.example.yaopin.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,7 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->获取采购列表完成:[{}],条件->[status]", list);
         return ResponseDTO.returnSuccess("操作成功", list);
     }
+
     @RequestMapping("/getPurchasesListByStatusNot")
     public ResponseDTO getPurchasesListByStatusNot() {
         logger.info("收到请求->获取采购列表，条件->[statusNot]");
@@ -133,6 +135,22 @@ public class RestFulController extends BaseController {
         List<Sales> list = restFulService.getSalesList();
         logger.info("返回结果->获取销售记录列表完成:[{}]", list);
         return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/addSalesInfo")
+    public ResponseDTO addSalesInfo(@RequestBody SalesForm form) {
+        logger.info("收到请求->增加销售记录:[{}]", form);
+        restFulService.addSalesInfo(form);
+        logger.info("返回结果->增加销售记录完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/reduceSalesInfo")
+    public ResponseDTO reduceSalesInfo(String id) {
+        logger.info("收到请求->发起退货,id:[{}]", id);
+        restFulService.reduceSalesInfo(id);
+        logger.info("返回结果->发起退货完成");
+        return ResponseDTO.returnSuccess("操作成功");
     }
 
 //

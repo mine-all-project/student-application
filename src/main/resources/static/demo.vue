@@ -1,101 +1,96 @@
 <template>
 	<div class="parent-body">
 		<el-table :data="tableData" style="width: 100%" height="600">
-			<el-table-column fixed prop="name" label="产品名称" width="150" sortable
+			<el-table-column fixed prop="goods.name" label="产品名称" width="150" sortable
 			                 :filters="[{text: '2016-05-04', value: '2016-05-04'}]"
 			                 :filter-method="filterByName"></el-table-column>
-			<el-table-column prop="number" label="数量" width="120"></el-table-column>
-			<el-table-column prop="address" label="生产地址" width="130" :show-overflow-tooltip="true"></el-table-column>
-			<el-table-column prop="counts" label="库存" width="120"></el-table-column>
-			<el-table-column prop="producedTime" label="生产日期" width="120"></el-table-column>
-			<el-table-column prop="shelLife" label="有效期至" width="120"></el-table-column>
-			<el-table-column label="操作" width="180">
+			<el-table-column prop="counts" label="数量" width="120"></el-table-column>
+			<el-table-column prop="goods.counts" label="剩余库存" width="120"></el-table-column>
+			<el-table-column prop="goods.producedTime" label="生产日期" width="120"></el-table-column>
+			<el-table-column prop="goods.shelLife" label="有效期至" width="120"></el-table-column>
+			<el-table-column label="状态" width="120">
 				<template slot-scope="scope">
-					<el-button type="warning" @click="sendMessages(scope,0)" size="mini">缺货</el-button>
-					<el-button type="danger" @click="sendMessages(scope,1)" size="mini">报损</el-button>
+					<el-tag type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
+					<el-tag type="danger" effect="plain" v-else>已退</el-tag>
+				</template>
+			</el-table-column>
+			<el-table-column label="操作" width="180">
+				<template slot-scope="scope" v-if="scope.row.status === 0">
+					<el-button type="danger" @click="returnSalse(scope)" size="mini">申请退货</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 
-		<el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
-			<div class="demo-drawer__content">
-				<el-form v-model="form">
-					<el-form-item label="药品" :label-width="formLabelWidth">
-						<el-select v-model="form.purchasesId" size="small" style="width: 50%">
-							<el-option v-for="item in selectData" :key="item.id" :label="item.name" :value="item.id" size="small">
-							</el-option>
-						</el-select>
-					</el-form-item>
-					<el-form-item label="数量" :label-width="formLabelWidth">
-						<el-input v-model="form.counts" type="number" size="small" style="width: 50%"></el-input>
-					</el-form-item>
-					<el-form-item label="数量" :label-width="formLabelWidth">
-						<!--生产日期&有效期至-->
-						<el-row class="form-line">
-							<el-col :span="2"><label>生产日期</label></el-col>
-							<el-col :span="8">
-								<el-date-picker v-model="form.goods.producedTime" type="date" style="width: 100%" size="small"
-								                disabled></el-date-picker>
-							</el-col>
-							<el-col :span="2" :offset="2"><label>有效期至</label></el-col>
-							<el-col :span="8">
-								<el-date-picker v-model="form.goods.shelLife" type="date" style="width: 100%" size="small"
-								                disabled></el-date-picker>
-							</el-col>
-						</el-row>
-						<!--性状&功能主治-->
-						<el-row class="form-line">
-							<el-col :span="2"><label>性状</label></el-col>
-							<el-col :span="8">
-								<el-input v-model="form.goods.characte" type="textarea" :rows="3" resize="none" disabled></el-input>
-							</el-col>
-							<el-col :span="2" :offset="2"><label>功能主治</label></el-col>
-							<el-col :span="8">
-								<el-input v-model="form.goods.majorFunction" type="textarea" :rows="3" resize="none" disabled></el-input>
-							</el-col>
-						</el-row>
-						<!--规格&用法用量-->
-						<el-row class="form-line">
-							<el-col :span="2"><label>规格</label></el-col>
-							<el-col :span="8">
-								<el-input v-model="form.goods.specification" type="textarea" :rows="3" resize="none" disabled></el-input>
-							</el-col>
-							<el-col :span="2" :offset="2"><label>用法用量</label></el-col>
-							<el-col :span="8">
-								<el-input v-model="form.goods.usages" type="textarea" :rows="3" resize="none" disabled></el-input>
-							</el-col>
-						</el-row>
-						<!--不良反应&注意事项-->
-						<el-row class="form-line">
-							<el-col :span="2"><label>不良反应</label></el-col>
-							<el-col :span="8">
-								<el-input v-model="form.goods.adverseReactions" type="textarea" :rows="3" resize="none" disabled></el-input>
-							</el-col>
-							<el-col :span="2" :offset="2"><label>注意事项</label></el-col>
-							<el-col :span="8">
-								<el-input v-model="form.goods.mattersNeeding" type="textarea" :rows="3" resize="none" disabled></el-input>
-							</el-col>
-						</el-row>
-						<!--禁忌&储藏环境-->
-						<el-row class="form-line">
-							<el-col :span="2"><label>禁忌</label></el-col>
-							<el-col :span="8">
-								<el-input v-model="form.goods.taboo" type="textarea" :rows="3" resize="none" disabled></el-input>
-							</el-col>
-							<el-col :span="2" :offset="2"><label>储藏环境</label></el-col>
-							<el-col :span="8">
-								<el-input v-model="form.goods.storageEnvironment" type="textarea" :rows="3" resize="none" disabled></el-input>
-							</el-col>
-						</el-row>
-					</el-form-item>
+		<el-drawer :before-cldemo-drawer__contentose="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false"
+		           ref="drawer" size="70%">
+			<div class="drawer-inner">
+				<el-row class="form-line">
+					<el-col :span="12">
+						<el-col :span="2">
+							<span>药品</span>
+						</el-col>
+						<el-col :span="21" :offset="1">
+							<el-select v-model="form.goodsId" size="small" style="width: 80%" @change="selectChange">
+								<el-option v-for="item in selectData" :key="item.id" :label="item.name" :value="item.id" size="small">
+								</el-option>
+							</el-select>
+						</el-col>
+					</el-col>
+					<el-col :span="12">
+						<el-col :span="2"><span>数量</span></el-col>
+						<el-col :span="21" :offset="1">
+							<el-input-number v-model="form.counts" :min="1" :max="drawer.data.counts" size="small"
+							                 style="width: 80%"></el-input-number>
+						</el-col>
+					</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">生产日期</el-col>
+					<el-col :span="20">{{drawer.data.producedTime}}</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">有效期至</el-col>
+					<el-col :span="20">{{drawer.data.shelLife}}</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">性状</el-col>
+					<el-col :span="20">{{drawer.data.characte}}</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">功能主治</el-col>
+					<el-col :span="20">{{drawer.data.majorFunction}}</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">规格</el-col>
+					<el-col :span="20">{{drawer.data.specification}}</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">用法用量</el-col>
+					<el-col :span="20">{{drawer.data.usages}}</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">不良反应</el-col>
+					<el-col :span="20">{{drawer.data.adverseReactions}}</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">注意事项</el-col>
+					<el-col :span="20">{{drawer.data.mattersNeeding}}</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">禁忌</el-col>
+					<el-col :span="20">{{drawer.data.taboo}}</el-col>
+				</el-row>
+				<el-row class="form-line">
+					<el-col :span="4">储藏环境</el-col>
+					<el-col :span="20">{{drawer.data.storageEnvironment}}</el-col>
+				</el-row>
 
-				</el-form>
-				<div class="drawer-footer" :label-width="formLabelWidth">
-					<el-button type="primary" @click="savePaper" :loading="drawer.loading">
-						{{ drawer.loading ? '提交中 ...' : '确定'}}
-					</el-button>
-					<el-button @click="drawerClose">取 消</el-button>
-				</div>
+				<el-row class="form-line">
+					<div class="drawer-footer" :label-width="formLabelWidth">
+						<el-button type="primary" @click="saveDrawer">确定</el-button>
+						<el-button @click="drawerClose">取 消</el-button>
+					</div>
+				</el-row>
 			</div>
 		</el-drawer>
 		<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
@@ -109,17 +104,9 @@
                 formLabelWidth: '80px',
                 drawer: {
                     show: false,
-                    loading: false,
-                },
-                tableData: [],
-                selectData: [],
-                form: {
-                    id: '',
-                    keyWords: '',
-                    title: '',
-                    content: '',
-                    goods: {
+                    data: {
                         id: '',
+                        counts: 1,
                         producedTime: '',
                         shelLife: '',
                         characte: '',
@@ -132,6 +119,13 @@
                         storageEnvironment: '',
                         status: 0,
                     },
+                },
+                tableData: [],
+                selectData: [],
+                form: {
+                    goodsId: '',
+                    counts: '',
+                    type: 0,
                 }
             };
         },
@@ -141,41 +135,57 @@
         mounted() {
         },
         methods: {
-            drawerOpen(scope) {
-                this.drawer.show = true;
-                this.$nextTick(() => {
-                    this.editor = new window.wangEditor('#editor');
-                    this.editor.customConfig.uploadImgShowBase64 = true;
-                    this.editor.customConfig.showLinkImg = false;
-                    this.editor.customConfig.pasteIgnoreImg = true;
-                    this.editor.customConfig.menus = this.wangEditorOptions;
-                    this.editor.create();
-                    // this.getSelectData(scope ? scope.row.id : '');
-                    this.getSelectData();
+            returnSalse(item) {
+                this.$confirm(`确定要发起退货吗?`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    const _this = this;
+                    axios.get('/api/reduceSalesInfo?id=' + item.row.id).then(response => {
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            this.$message.error('数据加载失败');
+                            return;
+                        }
+                        _this.$message.success(result.message);
+                        _this.getTableDataList();
+                    }).catch(function (error) {
+                        console.log('请求出现错误:', error);
+                    });
                 })
             },
-            drawerClose() {
-                this.drawer.loading = false;
-                this.drawer.show = false;
-                this.getTableDataList(this.keyWords);
+            selectChange(id) {
+                this.$message.success(id)
+                this.drawer.data = this.selectData.filter(e => {
+                    return e.id === id
+                })[0]
             },
-            savePaper() {
+            drawerOpen() {
+                this.drawer.show = true;
+                this.getSelectData();
+            },
+            drawerClose() {
+                this.drawer.show = false;
+                this.drawer.data = {};
+                this.form = {};
+                this.getTableDataList();
+            },
+            saveDrawer() {
                 const _this = this;
-                _this.form.content = _this.editor.txt.html();
-                _this.loading = true;
-                _this.form.keyWords = this.keyWords;
-                axios.post(`/api/savePapers`, _this.form).then(response => {
+                console.log(_this.form)
+                _this.form.type = 0
+                axios.post(`/api/addSalesInfo`, _this.form).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
                         this.$message.error('数据加载失败');
                         return
                     }
-                    _this.content = result.data;
-                    _this.$message.success('操作成功');
-                    _this.drawer.loading = false;
+                    _this.$message.success(result.message);
                     _this.drawer.show = false;
-                    _this.getTableDataList(this.keyWords);
+                    _this.getTableDataList();
                 }).catch(function (error) {
                     window.location.reload();
                     console.log('请求出现错误:', error);
@@ -241,4 +251,11 @@
 </script>
 
 <style scoped>
+	.drawer-inner {
+		padding: 16px;
+	}
+
+	.form-line {
+		margin-top: 16px;
+	}
 </style>
