@@ -29,9 +29,66 @@
 					<el-form-item label="数量" :label-width="formLabelWidth">
 						<el-input v-model="form.counts" type="number" size="small" style="width: 50%"></el-input>
 					</el-form-item>
-					<el-form-item label="正文" :label-width="formLabelWidth">
-						<div id="editor"></div>
+					<el-form-item label="数量" :label-width="formLabelWidth">
+						<!--生产日期&有效期至-->
+						<el-row class="form-line">
+							<el-col :span="2"><label>生产日期</label></el-col>
+							<el-col :span="8">
+								<el-date-picker v-model="form.goods.producedTime" type="date" style="width: 100%" size="small"
+								                disabled></el-date-picker>
+							</el-col>
+							<el-col :span="2" :offset="2"><label>有效期至</label></el-col>
+							<el-col :span="8">
+								<el-date-picker v-model="form.goods.shelLife" type="date" style="width: 100%" size="small"
+								                disabled></el-date-picker>
+							</el-col>
+						</el-row>
+						<!--性状&功能主治-->
+						<el-row class="form-line">
+							<el-col :span="2"><label>性状</label></el-col>
+							<el-col :span="8">
+								<el-input v-model="form.goods.characte" type="textarea" :rows="3" resize="none" disabled></el-input>
+							</el-col>
+							<el-col :span="2" :offset="2"><label>功能主治</label></el-col>
+							<el-col :span="8">
+								<el-input v-model="form.goods.majorFunction" type="textarea" :rows="3" resize="none" disabled></el-input>
+							</el-col>
+						</el-row>
+						<!--规格&用法用量-->
+						<el-row class="form-line">
+							<el-col :span="2"><label>规格</label></el-col>
+							<el-col :span="8">
+								<el-input v-model="form.goods.specification" type="textarea" :rows="3" resize="none" disabled></el-input>
+							</el-col>
+							<el-col :span="2" :offset="2"><label>用法用量</label></el-col>
+							<el-col :span="8">
+								<el-input v-model="form.goods.usages" type="textarea" :rows="3" resize="none" disabled></el-input>
+							</el-col>
+						</el-row>
+						<!--不良反应&注意事项-->
+						<el-row class="form-line">
+							<el-col :span="2"><label>不良反应</label></el-col>
+							<el-col :span="8">
+								<el-input v-model="form.goods.adverseReactions" type="textarea" :rows="3" resize="none" disabled></el-input>
+							</el-col>
+							<el-col :span="2" :offset="2"><label>注意事项</label></el-col>
+							<el-col :span="8">
+								<el-input v-model="form.goods.mattersNeeding" type="textarea" :rows="3" resize="none" disabled></el-input>
+							</el-col>
+						</el-row>
+						<!--禁忌&储藏环境-->
+						<el-row class="form-line">
+							<el-col :span="2"><label>禁忌</label></el-col>
+							<el-col :span="8">
+								<el-input v-model="form.goods.taboo" type="textarea" :rows="3" resize="none" disabled></el-input>
+							</el-col>
+							<el-col :span="2" :offset="2"><label>储藏环境</label></el-col>
+							<el-col :span="8">
+								<el-input v-model="form.goods.storageEnvironment" type="textarea" :rows="3" resize="none" disabled></el-input>
+							</el-col>
+						</el-row>
 					</el-form-item>
+
 				</el-form>
 				<div class="drawer-footer" :label-width="formLabelWidth">
 					<el-button type="primary" @click="savePaper" :loading="drawer.loading">
@@ -61,6 +118,20 @@
                     keyWords: '',
                     title: '',
                     content: '',
+                    goods: {
+                        id: '',
+                        producedTime: '',
+                        shelLife: '',
+                        characte: '',
+                        majorFunction: '',
+                        specification: '',
+                        usages: '',
+                        adverseReactions: '',
+                        mattersNeeding: '',
+                        taboo: '',
+                        storageEnvironment: '',
+                        status: 0,
+                    },
                 }
             };
         },
