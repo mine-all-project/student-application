@@ -110,6 +110,26 @@
                     ],
                     storageMenu: [
                         {
+                            id: 'demo3',
+                            name: '库存管理',
+                            icon: 'el-icon-menu',
+                            url: 'goods-list',
+                        },
+                        {
+                            id: 'demo4',
+                            name: '入库验收',
+                            icon: 'el-icon-menu',
+                            url: '/goods-input'
+                        },
+                        {
+                            id: 'demo5',
+                            name: '药品出库',
+                            icon: 'el-icon-menu',
+                            url: '/goods-output'
+                        },
+                    ],
+                    saleMenu: [
+                        {
                             id: 'demo1',
                             name: '采购管理',
                             icon: 'el-icon-menu',
@@ -136,25 +156,27 @@
                         },
 
                         {
-                            id: '1',
+                            id: 'demo3',
                             name: '库存管理',
                             icon: 'el-icon-menu',
                             url: 'goods-list',
                         },
                         {
-                            id: '1',
+                            id: 'demo4',
                             name: '入库验收',
                             icon: 'el-icon-menu',
                             url: '/goods-input'
                         },
                         {
-                            id: '2',
+                            id: 'demo5',
                             name: '药品出库',
                             icon: 'el-icon-menu',
                             url: '/goods-output'
                         },
-                    ],
-                    saleMenu: [
+                        {
+                            id: '---------',
+                            name: '-----------------',
+                        },
                         {
                             id: '1',
                             name: '销售记录',

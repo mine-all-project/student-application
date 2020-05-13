@@ -154,7 +154,7 @@
             drawerClose() {
                 this.drawer.loading = false;
                 this.drawer.show = false;
-                _this.getTableDataList(this.keyWords);
+                this.getTableDataList(this.keyWords);
             },
         }
     }
