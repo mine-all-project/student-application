@@ -16,7 +16,7 @@
 		<hr class="hr15">
 		<input autocomplete="off" placeholder="密码" type="password" v-model="password">
 		<hr class="hr15">
-		<input autocomplete="off" placeholder="验证码" type="text" v-model="captcha">
+		<input autocomplete="off" placeholder="验证码" type="text" v-model="randomCode">
 		<hr class="hr15">
 		<div class="captcha" @click="refreshCode">
 			<img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" style="vertical-align: middle;">
@@ -38,7 +38,7 @@
             return {
                 username: '',
                 password: '',
-                captcha: '',
+                randomCode: '',
                 src: '/randomCode'
             }
         },
@@ -54,7 +54,7 @@
                 let data = {
                     username: this.username,
                     password: this.password,
-                    captcha: this.captcha
+                    randomCode: this.randomCode
                 };
                 axios.post('/loginCheck', data).then(response => {
                     const result = response.data;

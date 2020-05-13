@@ -32,7 +32,7 @@ public class ShiroRealm extends AuthorizingRealm {
         SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
         Set<String> permissions = new HashSet<>();
         if (user != null) {
-            if (user.is_admin()) {
+            if (user.isIs_admin()) {
                 permissions.add("manage");
             } else {
                 permissions.add("login");

@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableNacosConfig(globalProperties = @NacosProperties(serverAddr = "192.168.3.20:8848"))
-@NacosPropertySource(dataId = "fangwuzulin-prod.properties", autoRefreshed = true)
+@NacosPropertySource(dataId = "fangwuzulin-dev.properties", autoRefreshed = true)
 @MapperScan("org.example.fangwuzulin.mapping")
 public class StudentApplication {
     private static final Logger logger = LoggerFactory.getLogger(StudentApplication.class);

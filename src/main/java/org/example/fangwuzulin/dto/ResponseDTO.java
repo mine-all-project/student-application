@@ -3,9 +3,9 @@ package org.example.fangwuzulin.dto;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 
-@Getter
+
 public class ResponseDTO {
-    @Getter
+
     enum Status {
         SUCCESS(200),
         AUTH_FAIL(401),

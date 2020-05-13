@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -58,10 +59,10 @@ public class IndexController extends BaseController {
 
     @PostMapping("/loginCheck")
     @ResponseBody
-    public ResponseDTO loginCheck(@RequestBody UserForm form) {
+    public ResponseDTO loginCheck(HttpServletRequest request, @RequestBody UserForm form) {
         logger.info("收到请求->用户登陆验证:[{}]", form);
         super.validator(form, IsLogin.class);
-        SysUser sysUser = indexService.loginOnShiro(form);
+        SysUser sysUser = indexService.loginOnShiro(request, form);
         logger.info("登录验证结束->用户信息:[{}]", sysUser);
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
@@ -104,12 +105,12 @@ public class IndexController extends BaseController {
     }
 
     @GetMapping("/randomCode")
-    public void randomCode(HttpServletResponse response) throws IOException {
+    public void randomCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         logger.info("收到请求->生成图片验证码");
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
         RandomCode randomCode = new RandomCodeUtils().createRandomCode(producer);
-        SecurityUtils.getSubject().getSession().setAttribute("randomCode", randomCode.getCode());
+        request.getSession().setAttribute("randomCode", randomCode.getCode());
         ServletOutputStream out = response.getOutputStream();
         ImageIO.write(randomCode.getImage(), "jpg", out);
         logger.info("返回结果->图片验证码生成完毕，code:[{}]", randomCode.getCode());

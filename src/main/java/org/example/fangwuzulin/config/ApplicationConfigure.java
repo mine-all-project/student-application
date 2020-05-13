@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix= "crabapples")
-@Getter
-@Setter
+
+
 public class ApplicationConfigure {
     /**
      * aesKey种子

@@ -57,7 +57,7 @@ public class ManageServiceImpl implements ManageService {
     public void removeUserById(String id) {
         SysUser sysUser = sysUserMapping.findById(id);
         assert sysUser != null;
-        if (sysUser.is_admin()) {
+        if (sysUser.isIs_admin()) {
             throw new ApplicationException("不能删除管理员");
         }
         sysUserMapping.removeUserById(id);

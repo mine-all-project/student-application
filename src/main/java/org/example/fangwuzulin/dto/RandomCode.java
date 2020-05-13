@@ -6,8 +6,8 @@ import lombok.Setter;
 
 import java.awt.image.BufferedImage;
 
-@Getter
-@Setter
+
+
 public class RandomCode {
     public RandomCode(String code, BufferedImage image) {
         this.code = code;
@@ -16,6 +16,22 @@ public class RandomCode {
 
     private String code;
     private BufferedImage image;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
 
     @Override
     public String toString() {

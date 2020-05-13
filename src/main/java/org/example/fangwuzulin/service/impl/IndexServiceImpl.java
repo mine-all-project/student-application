@@ -73,12 +73,12 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public SysUser loginOnShiro(UserForm form) {
+    public SysUser loginOnShiro(HttpServletRequest request, UserForm form) {
         try {
             String username = form.getUsername();
             String password = new Md5Hash(form.getPassword(), SALT).toString();
             logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
-            SysUser user = shiroCheckLogin(username, password, form.getRandomCode());
+            SysUser user = shiroCheckLogin(request, username, password, form.getRandomCode());
             if (user == null) {
                 throw new ApplicationException("用户名或密码错");
             }
@@ -104,7 +104,7 @@ public class IndexServiceImpl implements IndexService {
         sysUser.setName(form.getName());
         sysUser.setPhone(form.getPhone());
         sysUser.setMail(form.getMail());
-        sysUser.set_admin(false);
+        sysUser.setIs_admin(false);
         sysUser.setStatus(0);
         Integer count = sysUserMapping.insertUser(sysUser);
         if (count <= 0) {
@@ -148,11 +148,11 @@ public class IndexServiceImpl implements IndexService {
      * @param password 密码
      * @return 认证成功后的用户对象
      */
-    private SysUser shiroCheckLogin(String username, String password, String randomCode) {
+    private SysUser shiroCheckLogin(HttpServletRequest request, String username, String password, String randomCode) {
         try {
             Subject subject = SecurityUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            String code = SecurityUtils.getSubject().getSession().getAttribute("randomCode").toString();
+            String code = request.getSession().getAttribute("randomCode").toString();
             if (!code.equals(randomCode)) {
                 throw new ApplicationException("验证码错误");
             }

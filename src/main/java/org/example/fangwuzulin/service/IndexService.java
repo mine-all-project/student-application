@@ -11,7 +11,7 @@ import java.util.Map;
 public interface IndexService extends BaseService{
     boolean login(HttpServletRequest request, SysUser sysUser);
 
-    SysUser loginOnShiro(UserForm form);
+    SysUser loginOnShiro(HttpServletRequest request,UserForm form);
 
     SysUser registry(UserForm form);
 
