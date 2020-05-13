@@ -43,7 +43,7 @@ const app = new Vue({
     },
     mounted() {
         // this.getUserInfo()
-        router.push({path: '/home'})
+        router.push({path: '/login'})
         console.log(123)
     },
     methods: {

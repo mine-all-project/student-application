@@ -26,6 +26,9 @@ public class IndexServiceImpl implements IndexService {
     public SysUser getUserInfo() {
         Subject subject = SecurityUtils.getSubject();
         SysUser user = (SysUser) subject.getPrincipal();
+        if (user == null) {
+            throw new ApplicationException("用户未登录");
+        }
         String username = isDebug ? "user" : user.getUsername();
         return sysUserDAO.findByUsername(username);
     }
@@ -85,6 +88,7 @@ public class IndexServiceImpl implements IndexService {
         sysUser.setMail(form.getMail());
         sysUser.setAdmin(false);
         sysUser.setStatus(0);
+        sysUser.setAge(0);
         sysUserDAO.insertUser(sysUser);
         return sysUser;
     }

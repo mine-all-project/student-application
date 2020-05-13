@@ -70,7 +70,7 @@ public class IndexController extends BaseController {
     @ResponseBody
     public ResponseDTO registryCheck(@RequestBody UserForm form) {
         logger.info("收到请求->用户注册[{}]", form);
-        super.validator(form, IsAdd.class);
+//        super.validator(form, IsAdd.class);
         SysUser sysUser = indexService.registry(form);
         logger.info("注册验证结束->用户信息:[{}]", sysUser);
         return ResponseDTO.returnSuccess("注册成功，即将返回登录页面", sysUser);

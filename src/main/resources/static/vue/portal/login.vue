@@ -16,7 +16,10 @@
 			</div>
 		</div>
 		<div class="login-txt">
-			<a href="#">立即注册</a>|<a href="#">忘记密码？</a>
+			<router-link to="/registry">
+				<a href="#">立即注册</a>
+			</router-link>
+			<!--			<a href="#">忘记密码？</a>-->
 		</div>
 	</div>
 </template>
@@ -45,8 +48,7 @@
                         layer.msg(result.message);
                         return
                     }
-                    layer.msg(result.message);
-                    this.$router.back(-1)
+                    this.$router.push('/home')
                 }).catch(exception => {
                     layer.msg('系统错误');
                     console.error('系统错误', exception)
