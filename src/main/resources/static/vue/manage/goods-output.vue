@@ -111,9 +111,10 @@
             };
         },
         activated() {
+            this.getPurchasesList()
         },
         mounted() {
-            this.getPurchasesList()
+
         },
         methods: {
             selectChange(id) {
@@ -152,7 +153,7 @@
             },
             getPurchasesList() {
                 const _this = this;
-                axios.get('/api/getPurchasesListByStatus').then(response => {
+                axios.get('/api/getPurchasesListByStatusNot').then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {

@@ -12,6 +12,7 @@ import java.util.List;
 public interface RestFulService extends BaseService{
     List<Purchases> getPurchasesList();
     List<Purchases> getPurchasesListByStatus();
+    List<Purchases> getPurchasesListByStatusNot();
     Purchases getPurchasesById(String id);
     void savePurchasesInfo(PurchasesForm form);
     void flagDelPurchasesById(String id);
@@ -20,6 +21,8 @@ public interface RestFulService extends BaseService{
 
     List<Goods> getGoodsListByFlag();
     void addGoodsCountsById(String id);
+    void reduceGoodsCountsById(String id);
+
 
     void saveMessages(MessagesForm form);
     List<Messages> getMessageList();

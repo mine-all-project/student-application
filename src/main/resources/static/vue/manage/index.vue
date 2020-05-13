@@ -145,21 +145,14 @@
                             id: '1',
                             name: '入库验收',
                             icon: 'el-icon-menu',
-                            url: '/storage-input'
+                            url: '/goods-input'
                         },
                         {
                             id: '2',
                             name: '药品出库',
                             icon: 'el-icon-menu',
-                            url: '/storage-output'
+                            url: '/goods-output'
                         },
-                        {
-                            id: '3',
-                            name: '库存信息',
-                            icon: 'el-icon-menu',
-                            url: '/storage-list'
-                        },
-
                     ],
                     saleMenu: [
                         {

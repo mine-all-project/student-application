@@ -111,9 +111,9 @@
             };
         },
         activated() {
+            this.getPurchasesList()
         },
         mounted() {
-            this.getPurchasesList()
         },
         methods: {
             selectChange(id) {

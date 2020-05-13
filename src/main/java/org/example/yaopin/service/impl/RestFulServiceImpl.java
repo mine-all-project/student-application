@@ -52,6 +52,11 @@ public class RestFulServiceImpl implements RestFulService {
     }
 
     @Override
+    public List<Purchases> getPurchasesListByStatusNot() {
+        return purchasesDAO.getPurchasesListByStatusNot();
+    }
+
+    @Override
     public Purchases getPurchasesById(String id) {
         return purchasesDAO.findById(id);
     }
@@ -88,6 +93,16 @@ public class RestFulServiceImpl implements RestFulService {
         goods.setCounts(purchases.getCounts());
         goodsDAO.saveData(goods);
         purchases.setStatus(1);
+        purchasesDAO.saveData(purchases);
+    }
+
+    @Override
+    public void reduceGoodsCountsById(String id) {
+        Purchases purchases = purchasesDAO.findById(id);
+        Goods goods = purchases.getGoods();
+        goods.setCounts(0L);
+        goodsDAO.saveData(goods);
+        purchases.setStatus(0);
         purchasesDAO.saveData(purchases);
     }
 

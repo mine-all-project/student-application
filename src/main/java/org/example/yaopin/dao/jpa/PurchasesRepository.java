@@ -11,4 +11,6 @@ import java.util.List;
 public interface PurchasesRepository extends JpaRepository<Purchases, String> {
 
     List<Purchases> findByStatusAndDelFlag(Sort sort, int status, int delFlag);
+
+    List<Purchases> findByStatusNotAndDelFlag(Sort sort, int status, int delFlag);
 }

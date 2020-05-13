@@ -6,14 +6,11 @@ const routes = [
 
     {path: '/purchases-add', name: 'purchasesAdd', component: httpVueLoader('/vue/manage/purchases-add.vue')},
     {path: '/purchases-list', name: 'purchasesList', component: httpVueLoader('/vue/manage/purchases-list.vue')},
-
     {path: '/message-list', name: 'messageList', component: httpVueLoader('/vue/manage/message-list.vue')},
 
     {path: '/goods-list', name: 'goodsList', component: httpVueLoader('/vue/manage/goods-list.vue')},
-
-
-    {path: '/storage-input', name: 'storageInput', component: httpVueLoader('/vue/manage/storage-input.vue')},
-    {path: '/storage-output', name: 'storageOutput', component: httpVueLoader('/vue/manage/storage-output.vue')},
+    {path: '/goods-input', name: 'goodsInput', component: httpVueLoader('/vue/manage/goods-input.vue')},
+    {path: '/goods-output', name: 'goodsOutput', component: httpVueLoader('/vue/manage/goods-output.vue')},
 
 
     {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},
