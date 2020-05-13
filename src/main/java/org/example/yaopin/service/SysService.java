@@ -3,6 +3,7 @@ package org.example.yaopin.service;
 
 import org.example.yaopin.dto.ResponseDTO;
 import org.example.yaopin.entity.SysUser;
+import org.example.yaopin.form.ResetPasswordForm;
 import org.example.yaopin.form.UserForm;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface SysService {
     void savePassword(Map map);
 
     SysUser getUsersById(String id);
+
+    void resetPassword(ResetPasswordForm form);
 }

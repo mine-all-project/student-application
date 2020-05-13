@@ -11,6 +11,7 @@ import org.example.yaopin.config.ApplicationException;
 import org.example.yaopin.dao.jpa.SysUserRepository;
 import org.example.yaopin.dto.ResponseDTO;
 import org.example.yaopin.entity.SysUser;
+import org.example.yaopin.form.ResetPasswordForm;
 import org.example.yaopin.form.UserForm;
 import org.example.yaopin.service.SysService;
 import org.slf4j.Logger;
@@ -155,5 +156,14 @@ public class SysServiceImpl implements SysService {
     @Override
     public SysUser getUsersById(String id) {
         return sysUserRepository.findById(id).orElse(new SysUser());
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordForm form) {
+        String password = new Md5Hash(form.getPassword(), salt).toString();
+        SysUser user = sysUserRepository.findById(form.getId()).orElse(null);
+        assert user != null;
+        user.setPassword(password);
+        sysUserRepository.saveAndFlush(user);
     }
 }

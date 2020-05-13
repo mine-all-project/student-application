@@ -4,6 +4,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.yaopin.config.groups.IsLogin;
 import org.example.yaopin.dto.ResponseDTO;
 import org.example.yaopin.entity.SysUser;
+import org.example.yaopin.form.ResetPasswordForm;
 import org.example.yaopin.form.UserForm;
 import org.example.yaopin.service.SysService;
 import org.slf4j.Logger;
@@ -112,6 +113,16 @@ public class SysController extends BaseController {
         logger.info("收到请求->修改用户密码");
         sysService.savePassword(map);
         logger.info("返回结果->修改用户密码结束");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @PostMapping("/resetPassword")
+    @ResponseBody
+    public ResponseDTO resetPassword(@RequestBody ResetPasswordForm form) {
+        logger.info("收到请求->重置用户密码");
+        validator(form, IsLogin.class);
+        sysService.resetPassword(form);
+        logger.info("返回结果->重置用户密码结束");
         return ResponseDTO.returnSuccess("操作成功");
     }
 }

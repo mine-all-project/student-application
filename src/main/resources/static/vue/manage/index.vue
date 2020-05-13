@@ -173,15 +173,16 @@
                             icon: 'el-icon-menu',
                             url: '/goods-output'
                         },
-                        {
-                            id: '---------',
-                            name: '-----------------',
-                        },
+
                         {
                             id: '1',
                             name: '销售记录',
                             icon: 'el-icon-menu',
-                            url: '/sale-list'
+                            url: '/sales-list'
+                        },
+                        {
+                            id: '---------',
+                            name: '-----------------',
                         },
                         {
                             id: '2',
@@ -311,11 +312,11 @@
             };
         },
         mounted() {
-            router.push('demo')
-            this.menus.menu = this.menus.manageMenu
+            router.push('/demo')
             this.menus.menu = this.menus.buyMenu
             this.menus.menu = this.menus.storageMenu
             this.menus.menu = this.menus.saleMenu
+            // this.menus.menu = this.menus.manageMenu
             // this.getTableDataList()
         },
         methods: {

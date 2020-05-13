@@ -59,6 +59,9 @@ public class ShiroRealm extends AuthorizingRealm {
         if (null == user) {
             throw new UnknownAccountException("用户不存在");
         }
+        if (user.getStatus() == 1) {
+            throw new AuthenticationException("账户状态异常，请联系管理员");
+        }
         String password = user.getPassword();
         logger.debug("用户:[{}]shiro认证结束", username);
         return new SimpleAuthenticationInfo(user, password, this.getName());

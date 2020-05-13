@@ -1,8 +1,8 @@
 Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', name: 'demo', component: httpVueLoader('/demo.vue')},
-    {path: '/user-list', name: 'userList', component: httpVueLoader('/vue/manage/user-list.vue')},
-
+    {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},
+    {path: '/manage-welcome', name: 'manageWelcome', component: httpVueLoader('/vue/manage/welcome.vue')},
 
     {path: '/purchases-add', name: 'purchasesAdd', component: httpVueLoader('/vue/manage/purchases-add.vue')},
     {path: '/purchases-list', name: 'purchasesList', component: httpVueLoader('/vue/manage/purchases-list.vue')},
@@ -12,20 +12,10 @@ const routes = [
     {path: '/goods-input', name: 'goodsInput', component: httpVueLoader('/vue/manage/goods-input.vue')},
     {path: '/goods-output', name: 'goodsOutput', component: httpVueLoader('/vue/manage/goods-output.vue')},
 
+    {path: '/sales-list', name: 'salesList', component: httpVueLoader('/vue/manage/sales-list.vue')},
 
-    {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},
-
-
-    {path: '/manage-welcome', name: 'manageWelcome', component: httpVueLoader('/vue/manage/welcome.vue')},
-    {path: '/portal-home', name: 'portalHome', component: httpVueLoader('/vue/portal/home.vue')},
-    {path: '/mine-info', name: 'mineInfo', component: httpVueLoader('/vue/portal/mine-info.vue')},
-    {path: '/change-password', name: '/changePassword', component: httpVueLoader('/vue/portal/change-password.vue')},
-    {path: '/notices-list', name: '/noticesList', component: httpVueLoader('/vue/portal/notices-list.vue')},
-    {path: '/mine-notices', name: '/mineNotices', component: httpVueLoader('/vue/portal/mine-notices.vue')},
-    {path: '/add-notices', name: '/addNotices', component: httpVueLoader('/vue/portal/add-notices.vue')},
-    {path: '/edit-notices', name: '/editNotices', component: httpVueLoader('/vue/portal/edit-notices.vue')},
-    {path: '/login', name: '/login', component: httpVueLoader('/vue/portal/login.vue')},
-    {path: '/registry', name: 'registry', component: httpVueLoader('/vue/portal/registry.vue')},
+    {path: '/user-list', name: 'userList', component: httpVueLoader('/vue/manage/user-list.vue')},
+    {path: '/bak-list', name: 'portalHome', component: httpVueLoader('/vue/manage/bak-list.vue')},
 ];
 const router = new VueRouter({
     routes, // (缩写) 相当于 routes: routes

@@ -3,21 +3,31 @@
 		<el-table :data="tableData" stripe style="width: 100%">
 			<el-table-column prop="username" label="用户名"></el-table-column>
 			<el-table-column prop="name" label="姓名"></el-table-column>
-			<!--			<el-table-column prop="age" label="年龄" width=""></el-table-column>-->
 			<el-table-column prop="mail" label="邮箱"></el-table-column>
 			<el-table-column prop="phone" label="手机号"></el-table-column>
+			<el-table-column prop="role" label="角色">
+				<template slot-scope="scope">
+					<el-tag type="success" effect="plain" v-if="scope.row.role === '0'">管理员</el-tag>
+					<el-tag type="primary" effect="plain" v-if="scope.row.role === '1'">采购员</el-tag>
+					<el-tag type="warning" effect="plain" v-if="scope.row.role === '2'">库存员</el-tag>
+					<el-tag type="info" effect="plain" v-if="scope.row.role === '3'">销售员</el-tag>
+				</template>
+			</el-table-column>
 			<el-table-column label="状态">
 				<template slot-scope="scope">
 					<el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
 					<el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" width="300">
+			<el-table-column label="操作" width="350">
 				<template slot-scope="scope">
-					<el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
-					<el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
-					<el-button type="primary" @click="remove(scope)" size="mini">删除</el-button>
+					<template v-if="!scope.row.admin">
+						<el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
+						<el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
+					</template>
+					<el-button type="primary" @click="remove(scope)" size="mini" v-if="!scope.row.admin">删除</el-button>
 					<el-button type="primary" @click="edit(scope)" size="mini">编辑</el-button>
+					<el-button type="primary" @click="changePassword(scope)" size="mini">修改密码</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -36,9 +46,16 @@
 					<el-form-item label="手机号" :label-width="formLabelWidth">
 						<el-input v-model="form.phone" autocomplete="off" :maxlength="11"></el-input>
 					</el-form-item>
+					<el-form-item label="用户权限" :label-width="formLabelWidth">
+						<el-radio-group v-model="form.role">
+							<el-radio label="1">采购员</el-radio>
+							<el-radio label="2">库存员</el-radio>
+							<el-radio label="3">销售员</el-radio>
+						</el-radio-group>
+					</el-form-item>
 				</el-form>
 				<div class="drawer-footer">
-					<el-button type="primary" @click="saveForm" :loading="drawer.loading">确定</el-button>
+					<el-button type="primary" @click="saveForm">确定</el-button>
 					<el-button @click="formClose">取 消</el-button>
 				</div>
 			</div>
@@ -61,19 +78,44 @@
                 },
                 drawer: {
                     show: false,
-                    loading: false,
                 },
+                passwordForm: {
+                    id: '',
+                    password: ''
+                }
             };
         },
         mounted() {
             this.getTableDataList()
         },
         methods: {
+            changePassword(scope) {
+                const _this = this
+                _this.$prompt('请输入新密码', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({value}) => {
+                    _this.passwordForm.id = scope.row.id
+                    _this.passwordForm.password = value
+                    axios.post(`/manage/resetPassword`, _this.passwordForm).then(response => {
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            this.$message.error('数据加载失败');
+                            return
+                        }
+                        _this.$message.success('操作成功');
+                        _this.getTableDataList()
+                    }).catch(function (error) {
+                        window.location.reload();
+                        console.log('请求出现错误:', error);
+                    });
+                })
+            },
             remove(scope) {
                 const _this = this;
                 const id = scope.row.id;
                 _this.$confirm('确认删除？').then(e => {
-                    _this.drawer.loading = true;
                     axios.delete(`/api/removePaperById/${id}`).then(response => {
                         _this.getTableDataList();
                         const result = response.data;
@@ -93,7 +135,6 @@
                 const _this = this;
                 const id = scope.row.id;
                 _this.$confirm('确认操作？').then(e => {
-                    _this.drawer.loading = true;
                     axios.put(`/manage/changeStatus/${id}`).then(response => {
                         _this.getTableDataList();
                         const result = response.data;
@@ -144,13 +185,11 @@
                 });
             },
             formClose() {
-                this.drawer.loading = false;
                 this.drawer.show = false;
                 this.getTableDataList();
             },
             saveForm() {
                 const _this = this;
-                _this.drawer.loading = true;
                 axios.post(`/manage/saveUserInfo`, _this.form).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
@@ -159,7 +198,6 @@
                         return
                     }
                     _this.$message.success('操作成功');
-                    _this.drawer.loading = false;
                     _this.drawer.show = false;
                     _this.getTableDataList()
                 }).catch(function (error) {
@@ -172,12 +210,6 @@
 </script>
 
 <style scoped>
-	.table-row-hidden {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
 	.drawer-footer {
 		margin-left: 10px;
 	}
