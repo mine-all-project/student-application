@@ -43,7 +43,7 @@
             },
             getTableDataList() {
                 const _this = this;
-                axios.get('/api/getGoodsListByFlag').then(response => {
+                axios.get('/api/getSalesList').then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {

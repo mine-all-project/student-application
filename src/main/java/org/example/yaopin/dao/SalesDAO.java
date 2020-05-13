@@ -1,25 +1,28 @@
 package org.example.yaopin.dao;
 
-import org.example.yaopin.form.StandsForm;
+
+import org.example.yaopin.dao.jpa.SalesRepository;
+import org.example.yaopin.entity.Sales;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
-public class StandsDAO {
-//    private final StandsRepository standsRepository;
-//
-//    public StandsDAO(StandsRepository standsRepository) {
-//        this.standsRepository = standsRepository;
-//    }
-//
-//    public List<Stands> findAll() {
-//        Sort sort = new Sort(Sort.Direction.ASC, "createTime");
-//        return standsRepository.findAll(sort);
-//    }
-//
+public class SalesDAO {
+    private final SalesRepository salesRepository;
+
+    public SalesDAO(SalesRepository salesRepository) {
+        this.salesRepository = salesRepository;
+    }
+
+    public List<Sales> getAll() {
+        Sort sort = new Sort(Sort.Direction.ASC, "createTime");
+        return salesRepository.findAll(sort);
+    }
+
+
 //    public Stands findById(String id) {
 //        return standsRepository.findById(id).orElse(new Stands());
 //    }

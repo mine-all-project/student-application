@@ -7,6 +7,7 @@ import org.example.yaopin.dto.ResponseDTO;
 import org.example.yaopin.entity.Goods;
 import org.example.yaopin.entity.Messages;
 import org.example.yaopin.entity.Purchases;
+import org.example.yaopin.entity.Sales;
 import org.example.yaopin.form.MessagesForm;
 import org.example.yaopin.form.PurchasesForm;
 import org.example.yaopin.service.RestFulService;
@@ -68,16 +69,6 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", form);
     }
 
-
-//    @RequestMapping("/saveStorageInfo")
-//    @ResponseBody
-//    public ResponseDTO saveStorageInfo(@RequestBody StorageForm form) {
-//        logger.info("收到请求->保存入库信息:[{}]", form);
-//        restFulService.saveStorageInfo(form);
-//        logger.info("返回结果->保存入库信息完成:[{}]", form);
-//        return ResponseDTO.returnSuccess("操作成功", form);
-//    }
-
     @DeleteMapping("/flagDelPurchasesById")
     public ResponseDTO flagDelPurchasesById(String id) {
         logger.info("收到请求->采购退货,id:[{}]", id);
@@ -136,6 +127,13 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", data);
     }
 
+    @RequestMapping("/getSalesList")
+    public ResponseDTO getSalesList() {
+        logger.info("收到请求->获取销售记录列表");
+        List<Sales> list = restFulService.getSalesList();
+        logger.info("返回结果->获取销售记录列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
 
 //
 //    @RequestMapping("/getStandsList")
