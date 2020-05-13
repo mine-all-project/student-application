@@ -5,14 +5,6 @@ const routes = [
     {path: '/manage/user-list', component: httpVueLoader('/vue/manage/user-list.vue')},
     {path: '/manage/contracts', component: httpVueLoader('/vue/manage/contracts.vue')},
     {path: '/manage/leave-message', component: httpVueLoader('/vue/manage/leave-message.vue')},
-
-    {path: '/manage/culture', component: httpVueLoader('/vue/manage/culture.vue')},
-    {path: '/manage/honor', component: httpVueLoader('/vue/manage/honor.vue')},
-    {path: '/manage/friends', component: httpVueLoader('/vue/manage/friends.vue')},
-    {path: '/manage/products', component: httpVueLoader('/vue/manage/products.vue')},
-    {path: '/manage/contact', component: httpVueLoader('/vue/manage/contact.vue')},
-    {path: '/manage/orders-list', component: httpVueLoader('/vue/manage/house-list.vue')},
-
 ]
 const router = new VueRouter({
     routes // (缩写) 相当于 routes: routes

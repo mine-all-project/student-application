@@ -15,11 +15,6 @@ const router = new VueRouter({
 const app = new Vue({
     el: '#app',
     router,
-    // components: {
-    //     products: httpVueLoader('/vue/portal/products.vue'),
-    //     news: httpVueLoader('/vue/portal/news.vue'),
-    //     friends: httpVueLoader('/vue/portal/friends.vue'),
-    // },
     data() {
         return {
             ordersList: [],
