@@ -164,6 +164,7 @@ public class IndexServiceImpl implements IndexService {
             logger.warn("shiro认证失败,用户不存在:[{}]", e.getMessage());
         } catch (Exception e) {
             logger.warn("shiro认证失败", e);
+            throw e;
         }
         return null;
     }
