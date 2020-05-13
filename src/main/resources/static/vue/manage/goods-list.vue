@@ -11,8 +11,8 @@
 			<el-table-column prop="shelLife" label="有效期至" width="120"></el-table-column>
 			<el-table-column label="操作" width="180">
 				<template slot-scope="scope">
-					<el-button type="danger" @click="sendMessages(scope,0)" size="mini">报损</el-button>
-					<el-button type="primary" @click="sendMessages(scope,1)" size="mini">缺货</el-button>
+					<el-button type="warning" @click="sendMessages(scope,0)" size="mini">缺货</el-button>
+					<el-button type="danger" @click="sendMessages(scope,1)" size="mini">报损</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -41,35 +41,6 @@
                 console.log('筛选-->', value, row, column)
                 return true
             },
-            findDataById(id) {
-                const _this = this;
-                axios.get(`/manage/findDataById?id=${id}`).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return
-                    }
-                    _this.form = result.data;
-                }).catch(function (error) {
-                    console.log('请求出现错误:', error);
-                });
-            },
-            saveForm() {
-                const _this = this;
-                axios.post(`/manage/saveData`, _this.form).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return
-                    }
-                    _this.$message.success('操作成功');
-                }).catch(function (error) {
-                    window.location.reload();
-                    console.log('请求出现错误:', error);
-                });
-            },
             getTableDataList() {
                 const _this = this;
                 axios.get('/api/getGoodsListByFlag').then(response => {
@@ -87,13 +58,14 @@
             // saveMessages
             sendMessages(item, type) {
                 console.log(item.row, type)
-                this.$confirm(`确定要发送${type === 0 ? '报损' : '缺货'}消息吗?`, '提示', {
+                this.$confirm(`确定要发送${type === 0 ? '缺货' : '报损'}消息吗?`, '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     const _this = this;
                     _this.messageForm.objectId = item.row.id
+                    _this.messageForm.type = type
                     axios.post('/api/saveMessages', _this.messageForm).then(response => {
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);

@@ -21,4 +21,8 @@ public class MessageDAO {
     public List<Messages> findByToAsIn(String role) {
         return messageRepository.findAllByToAsIn(role);
     }
+
+    public Messages findById(String id) {
+        return messageRepository.findById(id).orElse(null);
+    }
 }

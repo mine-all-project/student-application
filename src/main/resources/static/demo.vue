@@ -11,7 +11,7 @@
 			</el-table-column>
 			<el-table-column prop="status" label="状态">
 				<template slot-scope="scope">
-					<el-tag type="primary" v-if="scope.row.type === 0">未读</el-tag>
+					<el-tag type="primary" v-if="scope.row.status === 0">未读</el-tag>
 					<el-tag type="success" v-else>已读</el-tag>
 				</template>
 			</el-table-column>
@@ -21,10 +21,9 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-dialog title="消息" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-			<span>这是一段信息</span>
+		<el-dialog title="消息" :visible.sync="dialogVisible" width="30%">
+			<span>{{messageInfo.content}}</span>
 			<span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
   </span>
 		</el-dialog>
@@ -79,15 +78,17 @@
                     console.log('请求出现错误:', error);
                 });
             },
-            showMessageInfo(id) {
-                const _this = this;
-                axios.get(`/api/getMessagesById?id=${id}`).then(response => {
+            showMessageInfo(item) {
+                axios.get(`/api/getMessagesById?id=${item.row.id}`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
                         this.$message.error('数据加载失败');
                         return
                     }
+                    this.getTableDataList()
+                    this.messageInfo = result.data
+                    this.dialogVisible = true
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });

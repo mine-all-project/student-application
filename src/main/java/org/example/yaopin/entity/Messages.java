@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -24,6 +21,8 @@ public class Messages extends BaseEntity {
     private String toAs;
     @Column(columnDefinition = "tinyint(1) default 0 not null comment '阅读状态 0:未读 1:已读'")
     private Integer status;
+    @Transient
+    private String content;
 
     @Override
     public String toString() {

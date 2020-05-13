@@ -1,16 +1,32 @@
 <template>
 	<el-row>
 		<el-table :data="tableData" stripe style="width: 100%">
-			<el-table-column prop="createTime" label="序号"></el-table-column>
-			<el-table-column prop="title" label="名称"></el-table-column>
-			<el-table-column prop="content" label="联系电话" :show-overflow-tooltip="true"></el-table-column>
+			<el-table-column prop="createTime" label="时间"></el-table-column>
+			<el-table-column prop="formAs.name" label="发送人"></el-table-column>
+			<el-table-column prop="type" label="类型">
+				<template slot-scope="scope">
+					<el-tag type="warning" v-if="scope.row.type === 0">缺货</el-tag>
+					<el-tag type="danger" v-else>报损</el-tag>
+				</template>
+			</el-table-column>
+			<el-table-column prop="status" label="状态">
+				<template slot-scope="scope">
+					<el-tag type="primary" v-if="scope.row.status === 0">未读</el-tag>
+					<el-tag type="success" v-else>已读</el-tag>
+				</template>
+			</el-table-column>
 			<el-table-column label="操作">
 				<template slot-scope="scope">
-					<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
-					<el-button type="primary" @click="drawerOpen(scope)" size="mini">编辑</el-button>
+					<el-button type="primary" @click="showMessageInfo(scope)" size="mini">查看详情</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
+		<el-dialog title="消息" :visible.sync="dialogVisible" width="30%">
+			<span>{{messageInfo.content}}</span>
+			<span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+		</el-dialog>
 	</el-row>
 
 </template>
@@ -19,11 +35,13 @@
     module.exports = {
         data() {
             return {
+                dialogVisible: false,
                 tableData: [],
+                messageInfo: {}
             };
         },
         mounted() {
-            this.getTableDataList(this.keyWords)
+            this.getTableDataList()
         },
         methods: {
             remove(scope) {
@@ -32,7 +50,7 @@
                 _this.$confirm('确认删除？').then(e => {
                     _this.drawer.loading = true;
                     axios.delete(`/api/removePapersById/${id}`).then(response => {
-                        _this.getTableDataList(this.keyWords);
+                        _this.getTableDataList();
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
                         if (result.status !== 200) {
@@ -41,14 +59,14 @@
                         }
                         _this.$message.success('操作成功')
                     }).catch(function (error) {
-                        _this.getTableDataList(_this.keyWords);
+                        _this.getTableDataList();
                         console.log('请求出现错误:', error);
                     });
                 });
             },
-            getTableDataList(keyWords) {
+            getTableDataList() {
                 const _this = this;
-                axios.get(`/api/getPapersByKeyWords/${keyWords}`).then(response => {
+                axios.get(`/api/getMessageList`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
@@ -60,50 +78,20 @@
                     console.log('请求出现错误:', error);
                 });
             },
-            drawerOpen(scope) {
-                this.$nextTick(() => {
-                    this.getPaperById(scope ? scope.row.id : ' ');
-                    this.drawer.show = true;
-                })
-            },
-            getPaperById(id) {
-                const _this = this;
-                axios.get(`/api/getPapersById?id=${id}`).then(response => {
+            showMessageInfo(item) {
+                axios.get(`/api/getMessagesById?id=${item.row.id}`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
                         this.$message.error('数据加载失败');
                         return
                     }
-                    _this.form = result.data;
+                    this.getTableDataList()
+                    this.messageInfo = result.data
+                    this.dialogVisible = true
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });
-            },
-            savePaper() {
-                const _this = this;
-                _this.drawer.loading = true;
-                _this.form.keyWords = this.keyWords;
-                axios.post(`/api/savePapers`, _this.form).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return
-                    }
-                    _this.$message.success('操作成功');
-                    _this.drawer.loading = false;
-                    _this.drawer.show = false;
-                    _this.getTableDataList(this.keyWords)
-                }).catch(function (error) {
-                    window.location.reload();
-                    console.log('请求出现错误:', error);
-                });
-            },
-            drawerClose() {
-                this.drawer.loading = false;
-                this.drawer.show = false;
-                this.getTableDataList(this.keyWords);
             },
         }
     }

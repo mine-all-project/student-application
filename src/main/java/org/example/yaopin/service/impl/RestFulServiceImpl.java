@@ -95,7 +95,23 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     public Messages getMessagesById(String id) {
-        return null;
+        Messages messages = messageDAO.findById(id);
+        String objectId = messages.getObjectId();
+        switch (messages.getType()) {
+            case 0: {
+                Goods goods = goodsDAO.findDataById(objectId);
+                messages.setContent(goods.getName() + "缺货");
+                break;
+            }
+            case 1: {
+                Goods goods = goodsDAO.findDataById(objectId);
+                messages.setContent(goods.getName() + "报损");
+                break;
+            }
+        }
+        messages.setStatus(1);
+        messageDAO.saveData(messages);
+        return messages;
     }
 //
 //    @Override
