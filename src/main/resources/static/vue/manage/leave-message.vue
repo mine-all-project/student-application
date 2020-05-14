@@ -8,27 +8,12 @@
       <el-table-column label="操作" width="160">
         <template slot-scope="scope">
           <el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
-          <el-button type="primary" v-if="!scope.row.parent_id" :disabled="scope.row.children.length>0"
-                     @click="drawerOpen(scope.row)" size="mini">回复
+          <el-button type="primary" @click="edit(scope.row)" size="mini"
+                     v-if="!scope.row.parent_id && !scope.row.children.length>0">回复
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
-      <div class="demo-drawer__content">
-        <el-form v-model="form">
-          <el-form-item label="回复内容" :label-width="formLabelWidth">
-            <el-input type="textarea" :rows="4" placeholder="请输入回复内容" v-model="form.content"></el-input>
-          </el-form-item>
-        </el-form>
-        <div class="drawer-footer">
-          <el-button type="primary" @click="savePaper" :loading="drawer.loading">
-            {{ drawer.loading ? '提交中 ...' : '确定'}}
-          </el-button>
-          <el-button @click="drawerClose">取 消</el-button>
-        </div>
-      </div>
-    </el-drawer>
   </el-row>
 
 </template>
@@ -43,37 +28,44 @@
           houses_id: '',
           content: '',
         },
-        drawer: {
-          show: false,
-          loading: false,
-        },
-        wangEditorOptions: [
-          'head',  // 标题
-          'bold',  // 粗体
-          'fontSize',  // 字号
-          'fontName',  // 字体
-          'italic',  // 斜体
-          'underline',  // 下划线
-          'strikeThrough',  // 删除线
-          'justify',  // 对齐方式
-          'image',  // 插入图片
-        ],
-        editor: null,
-        formLabelWidth: '80px',
-        keyWord: 'news',
       };
     },
     mounted() {
-      this.getPaperList()
+      this.getTableDataList()
     },
     methods: {
+      edit(scope) {
+        const _this = this
+        _this.$prompt('请输入内容', '回复', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(({value}) => {
+          this.form = {
+            parent_id: scope.id,
+            houses_id: scope.houses_id,
+            content: value,
+          }
+          axios.post(`/api/saveLeaveMessage`, _this.form).then(response => {
+            const result = response.data;
+            console.log('通过api获取到的数据:', result);
+            if (result.status !== 200) {
+              this.$message.error('数据加载失败');
+              return
+            }
+            _this.$message.success('操作成功');
+            _this.getTableDataList()
+          }).catch(function (error) {
+            window.location.reload();
+            console.log('请求出现错误:', error);
+          });
+        })
+      },
       remove(scope) {
         const _this = this;
         const id = scope.row.id;
         _this.$confirm('确认删除？').then(e => {
-          _this.drawer.loading = true;
           axios.delete(`/api/removeLeaveMessage/${id}`).then(response => {
-            _this.getPaperList(_this.keyWord);
+            _this.getTableDataList();
             const result = response.data;
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
@@ -82,12 +74,12 @@
             }
             _this.$message.success('操作成功')
           }).catch(function (error) {
-            _this.getPaperList(_this.keyWord);
+            _this.getTableDataList();
             console.log('请求出现错误:', error);
           });
         });
       },
-      getPaperList(keyWord) {
+      getTableDataList() {
         const _this = this;
         axios.get(`/api/getLeaveMessage`).then(response => {
           const result = response.data;
@@ -102,7 +94,6 @@
         });
       },
       drawerOpen(scope) {
-        this.drawer.show = true;
         this.form = {
           parent_id: scope.id,
           houses_id: scope.houses_id,
@@ -115,7 +106,6 @@
           return
         }
         const _this = this;
-        _this.loading = true;
         axios.post(`/api/saveLeaveMessage`, _this.form).then(response => {
           const result = response.data;
           console.log('通过api获取到的数据:', result);
@@ -125,17 +115,11 @@
           }
           _this.content = result.data;
           _this.$message.success('操作成功');
-          _this.drawer.loading = false;
-          _this.drawer.show = false;
-          _this.getPaperList(this.keyWord);
+          _this.getTableDataList();
         }).catch(function (error) {
           // window.location.reload();
           console.log('请求出现错误:', error);
         });
-      },
-      drawerClose() {
-        this.drawer.loading = false;
-        this.drawer.show = false;
       },
     }
   }
