@@ -14,6 +14,7 @@ import org.example.fangwuzulin.mapping.SysUserMapping;
 import org.example.fangwuzulin.service.IndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -138,6 +139,21 @@ public class IndexServiceImpl implements IndexService {
                 throw new ApplicationException("操作失败");
             }
         }
+    }
+
+    @Override
+    public void changeUserInfo(UserForm form) {
+        SysUser user = sysUserMapping.findById(form.getId());
+        BeanUtils.copyProperties(form, user);
+        Integer count = sysUserMapping.updateUserInfo(user);
+        if (count <= 0) {
+            throw new ApplicationException("操作失败");
+        }
+    }
+
+    @Override
+    public SysUser getUsersById(String id) {
+        return sysUserMapping.findById(id);
     }
 
     /**

@@ -86,12 +86,31 @@ public class IndexController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
 
+    @RequestMapping("/getUsersById")
+    @ResponseBody
+    public ResponseDTO getUsersById(String id) {
+        logger.info("收到请求->获取用户信息,id:[{}]", id);
+        SysUser sysUser = indexService.getUsersById(id);
+        logger.info("返回结果->获取用户信息结束:[{}]", sysUser);
+        return ResponseDTO.returnSuccess("操作成功", sysUser);
+    }
+
     @PostMapping("/saveUserInfo")
     @ResponseBody
     public ResponseDTO saveUserInfo(@RequestBody UserForm form) {
         logger.info("收到请求->修改用户信息");
         super.validator(form, IsEdit.class);
         indexService.updateUserInfo(form);
+        logger.info("返回结果->修改用户信息结束");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @PostMapping("/changeUserInfo")
+    @ResponseBody
+    public ResponseDTO changeUserInfo(@RequestBody UserForm form) {
+        logger.info("收到请求->修改用户信息");
+        super.validator(form, IsEdit.class);
+        indexService.changeUserInfo(form);
         logger.info("返回结果->修改用户信息结束");
         return ResponseDTO.returnSuccess("操作成功");
     }

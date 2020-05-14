@@ -17,9 +17,14 @@ public interface IndexService extends BaseService{
 
     void updateUserInfo(UserForm form);
 
+    void changeUserInfo(UserForm form);
+
+    SysUser getUsersById(String id);
+
     List<Map<String,Object>> getProvincesList();
 
     List<Map<String,Object>> getCitiesList(String pid);
 
     List<Map<String,Object>> getAreasList(String pid);
+
 }

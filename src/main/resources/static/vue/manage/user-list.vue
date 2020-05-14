@@ -11,14 +11,40 @@
 					<el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" width="160">
-				<template slot-scope="scope" v-if="!scope.row.is_admin">
-					<el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
-					<el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
-					<el-button type="primary" @click="remove(scope)" size="mini">删除</el-button>
+			<el-table-column label="操作" width="250">
+				<template slot-scope="scope">
+					<template v-if="!scope.row.is_admin">
+						<el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
+						<el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
+						<el-button type="primary" @click="remove(scope)" size="mini">删除</el-button>
+					</template>
+					<el-button type="primary" @click="edit(scope)" size="mini">编辑</el-button>
 				</template>
+
 			</el-table-column>
 		</el-table>
+		<el-drawer :before-close="formClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
+			<div class="demo-drawer__content">
+				<el-form v-model="form">
+					<el-form-item label="用户名" :label-width="formLabelWidth">
+						<el-input v-model="form.username" autocomplete="off" :disabled="true"></el-input>
+					</el-form-item>
+					<el-form-item label="姓名" :label-width="formLabelWidth">
+						<el-input v-model="form.name" autocomplete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="邮箱" :label-width="formLabelWidth">
+						<el-input v-model="form.mail" autocomplete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="手机号" :label-width="formLabelWidth">
+						<el-input v-model="form.phone" autocomplete="off" :maxlength="11"></el-input>
+					</el-form-item>
+				</el-form>
+				<div class="drawer-footer">
+					<el-button type="primary" @click="saveForm">确定</el-button>
+					<el-button @click="formClose">取 消</el-button>
+				</div>
+			</div>
+		</el-drawer>
 	</el-row>
 </template>
 
@@ -26,19 +52,69 @@
     module.exports = {
         data() {
             return {
+                formLabelWidth: '80px',
                 tableData: [],
+                form: {
+                    id: '',
+                    username: '',
+                    name: '',
+                    mail: '',
+                    phone: '',
+                },
+                drawer: {
+                    show: false,
+                },
             };
         },
         mounted() {
-            this.getUserList()
+            this.getTableDataList()
         },
         methods: {
+            edit(scope) {
+                this.findDataById(scope ? scope.row.id : ' ');
+                this.drawer.show = true;
+            },
+            findDataById(id) {
+                const _this = this;
+                axios.get(`/getUsersById?id=${id}`).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    _this.form = result.data;
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
+            },
+            saveForm() {
+                const _this = this;
+                axios.post('/changeUserInfo', _this.form).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    _this.$message.success('操作成功');
+                    _this.drawer.show = false;
+                    _this.getTableDataList()
+                }).catch(function (error) {
+                    window.location.reload();
+                    console.log('请求出现错误:', error);
+                });
+            },
+            formClose() {
+                this.drawer.show = false;
+                this.getTableDataList();
+            },
             remove(scope) {
                 const _this = this;
                 const id = scope.row.id;
                 _this.$confirm('确认删除？').then(e => {
                     axios.delete(`/manage/removeUserById/${id}`).then(response => {
-                        _this.getUserList();
+                        _this.getTableDataList();
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
                         if (result.status !== 200) {
@@ -47,7 +123,7 @@
                         }
                         _this.$message.success('操作成功')
                     }).catch(function (error) {
-                        _this.getUserList();
+                        _this.getTableDataList();
                         console.log('请求出现错误:', error);
                     });
                 });
@@ -57,7 +133,7 @@
                 const id = scope.row.id;
                 _this.$confirm('确认要进行操作吗？').then(e => {
                     axios.put(`/manage/changeStatus/${id}`).then(response => {
-                        _this.getUserList();
+                        _this.getTableDataList();
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
                         if (result.status !== 200) {
@@ -66,12 +142,12 @@
                         }
                         _this.$message.success('操作成功')
                     }).catch(function (error) {
-                        _this.getUserList();
+                        _this.getTableDataList();
                         console.log('请求出现错误:', error);
                     });
                 });
             },
-            getUserList() {
+            getTableDataList() {
                 const _this = this;
                 axios.get('/manage/getUserList').then(response => {
                     const result = response.data;
