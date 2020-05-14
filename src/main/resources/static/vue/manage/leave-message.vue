@@ -8,7 +8,9 @@
       <el-table-column label="操作" width="160">
         <template slot-scope="scope">
           <el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
-          <el-button type="primary" v-if="!scope.row.parent_id" :disabled="scope.row.children.length>0" @click="drawerOpen(scope.row)" size="mini">回复</el-button>
+          <el-button type="primary" v-if="!scope.row.parent_id" :disabled="scope.row.children.length>0"
+                     @click="drawerOpen(scope.row)" size="mini">回复
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -140,12 +142,6 @@
 </script>
 
 <style scoped>
-  .table-row-hidden {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
   .drawer-footer {
     margin-left: 10px;
   }

@@ -7,8 +7,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class LeaveMessage extends BaseEntity {
     private String houses_id;
     private String user_id;

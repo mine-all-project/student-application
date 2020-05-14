@@ -47,7 +47,7 @@ public class RestFulServiceImpl implements RestFulService {
     private final SysUserMapping sysUserMapping;
     private final ContractsMapping contractsMapping;
 
-    private Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(RestFulServiceImpl.class);
 
     public RestFulServiceImpl(HousesMapping housesMapping,
                               AudioFilesMapping audioFilesMapping,
@@ -225,6 +225,8 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public void removeLeaveMessage(String id) {
         Integer count = leaveMessageMapping.removeById(id);
+        leaveMessageMapping.removeByPid(id);
+
         if (count <= 0) {
             throw new ApplicationException("操作失败");
         }

@@ -7,8 +7,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.List;
 
-
-
 public class Houses extends BaseEntity {
     private String title;
     private String address;

@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
-
-
 public class SysUser extends BaseEntity {
     private String username;
     private String password;

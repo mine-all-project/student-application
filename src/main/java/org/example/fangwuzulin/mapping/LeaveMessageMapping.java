@@ -19,4 +19,6 @@ public interface LeaveMessageMapping {
     List<LeaveMessage> findAll();
 
     Integer removeById(String id);
+
+    Integer removeByPid(String id);
 }

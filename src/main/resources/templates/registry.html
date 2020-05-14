@@ -57,7 +57,7 @@
                     return
                 }
                 console.log(this.form);
-                axios.post('/manage/registryCheck', this.form).then(response => {
+                axios.post('/registryCheck', this.form).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {

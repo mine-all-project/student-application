@@ -36,7 +36,11 @@
  		delete from leave_message where id = #{id}
  	</delete>
 
-	<select id="findByParentId" resultMap="message">
+    <delete id="removeByPid">
+ 		delete from leave_message where parent_id = #{pid}
+ 	</delete>
+
+    <select id="findByParentId" resultMap="message">
  		select * from leave_message where parent_id = #{parent_id}
  	</select>
 
