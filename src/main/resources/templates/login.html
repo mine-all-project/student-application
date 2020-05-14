@@ -20,7 +20,7 @@
 		<hr class="hr15">
 		<div class="captcha" @click="refreshCode">
 			<img alt="如果看不清楚，请单击图片刷新！" class="pointer" :src="src" style="vertical-align: middle;">
-			<a href="javascript:;" style="margin-left: 1em; color: #3c8dbc;">点击刷新</a>
+			<a href="javascript:" style="margin-left: 1em; color: #3c8dbc;">点击刷新</a>
 		</div>
 		<hr class="hr15">
 		<input style="width:100%;" type="button" value="立即登录" @click="login">
@@ -47,7 +47,7 @@
                 this.src = "/randomCode?t=" + new Date().getTime();
             },
             toRegistry() {
-                window.location.href = '/login'
+                window.location.href = '/registry'
             },
             login() {
                 console.log()
@@ -64,7 +64,7 @@
                         return
                     }
                     // layer.msg(result.message);
-                    if (result.data.admin) {
+                    if (result.data.is_admin) {
                         window.location.href = '/manage/index'
                     } else {
                         window.location.href = '/index'

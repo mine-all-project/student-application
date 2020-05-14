@@ -74,6 +74,9 @@ const app = new Vue({
         }
     },
     methods: {
+        logout() {
+            window.location.href = '/loginOut'
+        },
         clickMenu(url) {
             if (url !== this.activeUrl) {
                 this.welcome = false

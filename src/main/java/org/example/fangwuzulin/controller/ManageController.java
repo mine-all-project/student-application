@@ -27,13 +27,13 @@ public class ManageController extends BaseController {
     }
 
 
-    @GetMapping("/{pageName}")
+    @RequestMapping("/{pageName}")
     public String page(@PathVariable("pageName") String pageName) {
         logger.info("收到请求->进入页面[{}]", MANAGE + pageName);
         return MANAGE + pageName;
     }
 
-    @GetMapping("/getUserList")
+    @RequestMapping("/getUserList")
     @ResponseBody
     public ResponseDTO getUserList() {
         logger.info("收到请求->获取用户列表");
@@ -42,7 +42,7 @@ public class ManageController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", sysUsers);
     }
 
-    @PutMapping("/changeStatus/{id}")
+    @RequestMapping("/changeStatus/{id}")
     @ResponseBody
     public ResponseDTO changeStatus(@PathVariable String id) {
         logger.info("收到请求->修改用户状态");
@@ -51,7 +51,7 @@ public class ManageController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @DeleteMapping("/removeUserById/{id}")
+    @RequestMapping("/removeUserById/{id}")
     @ResponseBody
     public ResponseDTO removeUserById(@PathVariable String id) {
         logger.info("收到请求->修改用户状态");
@@ -60,7 +60,7 @@ public class ManageController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @PostMapping("/savePassword")
+    @RequestMapping("/savePassword")
     @ResponseBody
     public ResponseDTO savePassword(@RequestBody Map map) {
         logger.info("收到请求->修改用户密码");

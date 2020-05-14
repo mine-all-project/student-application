@@ -49,8 +49,14 @@ public class ManageServiceImpl implements ManageService {
     public void changeStatus(String id) {
         SysUser sysUser = sysUserMapping.findById(id);
         assert sysUser != null;
+        if (sysUser.isIs_admin()) {
+            throw new ApplicationException("不能对管理员操作");
+        }
         sysUser.setStatus(Math.abs(sysUser.getStatus() - 1));
-        sysUserMapping.updateUserInfo(sysUser);
+        Integer count = sysUserMapping.updateUserInfo(sysUser);
+        if (count <= 0) {
+            throw new ApplicationException("操作失败");
+        }
     }
 
     @Override

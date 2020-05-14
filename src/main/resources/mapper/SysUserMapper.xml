@@ -31,7 +31,7 @@
             <if test="phone != null">phone = #{phone},</if>
             <if test="mail != null">mail=#{mail},</if>
             <if test="name != null">name=#{name},</if>
-            <if test="status != status">status=#{status}</if>
+            <if test="status != null">status=#{status}</if>
         </set>
         where id = #{id}
     </update>

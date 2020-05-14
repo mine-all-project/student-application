@@ -1,23 +1,20 @@
 <template>
 	<el-row>
 		<el-table :data="tableData" stripe style="width: 100%">
-			<el-table-column prop="title" label="标题" width=""></el-table-column>
-			<el-table-column prop="address" label="地址" width=""></el-table-column>
-			<el-table-column prop="user.name" label="发布人" width=""></el-table-column>
-			<el-table-column prop="price" label="金额" width=""></el-table-column>
-			<el-table-column prop="note" label="备注" width=""></el-table-column>
-			<el-table-column prop="sysUser.name" label="图片" width="">
+			<el-table-column prop="username" label="用户名" width=""></el-table-column>
+			<el-table-column prop="name" label="姓名" width=""></el-table-column>
+			<el-table-column prop="mail" label="邮箱" width=""></el-table-column>
+			<el-table-column prop="phone" label="手机号" width=""></el-table-column>
+			<el-table-column label="状态" width="">
 				<template slot-scope="scope">
-					<el-button type="primary" @click="showImages(scope)" size="mini">点击查看</el-button>
-				</template>
-			</el-table-column>
-			<el-table-column prop="contracts" label="合同" width="">
-				<template slot-scope="scope">
-					<el-button type="primary" @click="showContract(scope)" size="mini">点击查看</el-button>
+					<el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
+					<el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" width="160">
-				<template slot-scope="scope">
+				<template slot-scope="scope" v-if="!scope.row.is_admin">
+					<el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
+					<el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
 					<el-button type="primary" @click="remove(scope)" size="mini">删除</el-button>
 				</template>
 			</el-table-column>
@@ -33,24 +30,24 @@
             };
         },
         mounted() {
-            this.getTableData()
+            this.getUserList()
         },
         methods: {
             remove(scope) {
                 const _this = this;
                 const id = scope.row.id;
-                _this.$confirm('删除后不可恢复,确认删除？').then(e => {
-                    axios.delete(`/api/removeOrdersById/${id}`).then(response => {
-                        _this.getPaperList();
+                _this.$confirm('确认删除？').then(e => {
+                    axios.delete(`/manage/removeUserById/${id}`).then(response => {
+                        _this.getUserList();
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
                         if (result.status !== 200) {
-                            _this.$message.error('数据加载失败');
+                            _this.$message.error(result.message);
                             return
                         }
                         _this.$message.success('操作成功')
                     }).catch(function (error) {
-                        _this.getOrdersList();
+                        _this.getUserList();
                         console.log('请求出现错误:', error);
                     });
                 });
@@ -58,26 +55,25 @@
             changeStatus(scope) {
                 const _this = this;
                 const id = scope.row.id;
-                _this.$confirm('确认删除？').then(e => {
-                    _this.drawer.loading = true;
+                _this.$confirm('确认要进行操作吗？').then(e => {
                     axios.put(`/manage/changeStatus/${id}`).then(response => {
-                        _this.getOrdersList();
+                        _this.getUserList();
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
                         if (result.status !== 200) {
-                            _this.$message.error('数据加载失败');
+                            _this.$message.error(result.message);
                             return
                         }
                         _this.$message.success('操作成功')
                     }).catch(function (error) {
-                        _this.getOrdersList();
+                        _this.getUserList();
                         console.log('请求出现错误:', error);
                     });
                 });
             },
-            getTableData() {
+            getUserList() {
                 const _this = this;
-                axios.get('/api/getHousesList').then(response => {
+                axios.get('/manage/getUserList').then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
@@ -94,12 +90,6 @@
 </script>
 
 <style scoped>
-	.table-row-hidden {
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
 	.drawer-footer {
 		margin-left: 10px;
 	}
