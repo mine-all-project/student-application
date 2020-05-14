@@ -119,6 +119,7 @@
         },
         mounted() {
             this.getHousesById(this.$route.query.id)
+            this.getContractsList()
         },
         methods: {
             search() {
@@ -140,6 +141,13 @@
                 axios.get('/api/getHousesById?id=' + id).then(({data: res}) => {
                     if (res.success) {
                         this.form = res.data;
+                        if (res.data.img_src.length > 0) {
+                            let array = res.data.img_src.split(',').map(e => {
+                                return {name: e, url: e}
+                            })
+                            array.pop()
+                            this.fileList = array
+                        }
                         this.getProvincesList()
                         this.getCitiesList()
                         this.getAreasList()
@@ -214,8 +222,15 @@
             },
             handleRemove(file, fileList) {
                 const _this = this;
-                const url = file.response.data.url
-                _this.form.img_src.replace(url, '')
+                console.log(file)
+                if (file.response) {
+                    const url = file.response.data.url
+                    _this.form.img_src.replace(url, '')
+                } else {
+                    const url = file.url
+                    _this.form.img_src.replace(url, '')
+                }
+
             },
             uploadSuccess(result) {
                 console.log('通过api获取到的数据:', result);
@@ -223,8 +238,9 @@
                     this.$message.error('上传失败');
                     return
                 }
-                let src = this.form.img_src;
-                this.form.img_src = src ? `${src}${result.data.url}` : `${result.data.url},`;
+                // let src = this.form.img_src;
+                // this.form.img_src = src ? `${src},${result.data.url}` : `${result.data.url},`;
+                this.form.img_src += `${result.data.url},`
                 this.$message.success('上传成功');
             },
             getProvincesList() {
