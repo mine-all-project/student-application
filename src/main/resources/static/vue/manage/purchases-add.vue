@@ -217,6 +217,7 @@
         },
         methods: {
             findDataById(id) {
+                id = !!id ? id : ''
                 const _this = this;
                 axios.get(`/api/getPurchasesById?id=${id}`).then(response => {
                     const result = response.data;

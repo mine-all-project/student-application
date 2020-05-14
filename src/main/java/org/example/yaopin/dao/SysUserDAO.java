@@ -46,4 +46,8 @@ public class SysUserDAO {
     public void deleteById(String id) {
         sysUserRepository.deleteById(id);
     }
+
+    public void addUser(SysUser user) {
+        sysUserRepository.saveAndFlush(user);
+    }
 }

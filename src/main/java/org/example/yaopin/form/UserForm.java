@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class UserForm {
     @NotBlank(message = "id不能为空", groups = IsEdit.class)
     @NotBlank(message = "id不能为空", groups = IsStatusChange.class)
-    @Null(message = "id必须为空", groups = IsAdd.class)
+//    @Null(message = "id必须为空", groups = IsAdd.class)
     private String id;
     private LocalDateTime createTime;
 
@@ -42,6 +42,8 @@ public class UserForm {
     @Length(max = 32)
     @NotBlank(message = "邮箱不能为空", groups = {IsAdd.class, IsEdit.class})
     private String mail;
+
+    private String role;
 
     public SysUser toEntity() {
         SysUser entity = new SysUser();

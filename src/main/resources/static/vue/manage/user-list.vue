@@ -176,6 +176,7 @@
             add() {
                 this.drawer.show = true;
                 this.isEdit = false;
+                this.form = {}
             },
             findDataById(id) {
                 const _this = this;
@@ -197,7 +198,8 @@
             },
             saveForm() {
                 const _this = this;
-                axios.post(`/manage/saveUserInfo`, _this.form).then(response => {
+                let url = this.isEdit ? '/manage/saveUserInfo' : 'addUser'
+                axios.post(url, _this.form).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {

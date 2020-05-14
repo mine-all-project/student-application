@@ -14,6 +14,7 @@ import org.example.yaopin.form.UserForm;
 import org.example.yaopin.service.IndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -101,6 +102,15 @@ public class IndexServiceImpl implements IndexService {
         }
         SysUser sysUser = form.toEntity();
         sysUserDAO.updateUserInfo(sysUser);
+    }
+
+    @Override
+    public void addUser(UserForm form) {
+        SysUser user = new SysUser();
+        BeanUtils.copyProperties(form, user);
+        user.setStatus(0);
+        user.setAdmin(false);
+        sysUserDAO.addUser(user);
     }
 
     /**

@@ -1,6 +1,8 @@
 package org.example.yaopin.service.impl;
 
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.example.yaopin.dao.*;
 import org.example.yaopin.entity.*;
 import org.example.yaopin.form.MessagesForm;
@@ -16,10 +18,10 @@ import java.util.List;
 @Service
 public class RestFulServiceImpl implements RestFulService {
     public SysUser getUserInfo() {
-//        Subject subject = SecurityUtils.getSubject();
-//        SysUser user = (SysUser) subject.getPrincipal();
-//        String username = isDebug ? "user" : user.getUsername();
-        return sysUserDAO.findByUsername("user");
+        Subject subject = SecurityUtils.getSubject();
+        SysUser user = (SysUser) subject.getPrincipal();
+        String username = isDebug ? "user" : user.getUsername();
+        return sysUserDAO.findByUsername(username);
     }
 
     @Value("${isDebug}")

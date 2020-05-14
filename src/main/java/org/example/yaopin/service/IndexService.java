@@ -15,5 +15,5 @@ public interface IndexService extends BaseService{
 
     void updateUserInfo(UserForm form);
 
-
+    void addUser(UserForm form);
 }

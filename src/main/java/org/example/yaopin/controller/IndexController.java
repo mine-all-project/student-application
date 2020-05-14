@@ -85,13 +85,24 @@ public class IndexController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
 
+
     @PostMapping("/saveUserInfo")
     @ResponseBody
     public ResponseDTO saveUserInfo(@RequestBody UserForm form) {
-        logger.info("收到请求->修改用户信息");
+        logger.info("收到请求->修改用户信息:[{}]", form);
         super.validator(form, IsEdit.class);
         indexService.updateUserInfo(form);
         logger.info("返回结果->修改用户信息结束");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @PostMapping("/addUser")
+    @ResponseBody
+    public ResponseDTO addUser(@RequestBody UserForm form) {
+        logger.info("收到请求->添加用户:[{}]", form);
+        super.validator(form, IsAdd.class);
+        indexService.addUser(form);
+        logger.info("返回结果->添加用户结束");
         return ResponseDTO.returnSuccess("操作成功");
     }
 
@@ -100,6 +111,6 @@ public class IndexController extends BaseController {
         logger.info("收到请求->退出登录");
         indexService.logout();
         logger.info("返回结果->退出登录结束");
-        return "/index";
+        return "/login";
     }
 }
