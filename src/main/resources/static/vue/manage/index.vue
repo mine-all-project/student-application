@@ -1,17 +1,17 @@
 <template>
 	<el-container style=" border: 1px solid #eee">
 		<el-header width="100%" style="text-align: right; font-size: 12px">
-			<a href="/loginOut">退出登录</a>
+			<!--			<a href="/loginOut">退出登录</a>-->
 			<!--			<h1>管理平台</h1>-->
-			<!--      <el-dropdown>-->
-			<!--        <i class="el-icon-setting" style="margin-right: 15px"></i>-->
-			<!--        <el-dropdown-menu slot="dropdown">-->
-			<!--          <el-dropdown-item>查看</el-dropdown-item>-->
-			<!--          <el-dropdown-item>新增</el-dropdown-item>-->
-			<!--          <el-dropdown-item>删除</el-dropdown-item>-->
-			<!--        </el-dropdown-menu>-->
-			<!--      </el-dropdown>-->
-			<!--      <span>王小虎</span>-->
+			<el-dropdown>
+				<i class="el-icon-setting" style="margin-right: 15px"></i>
+				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item>查看</el-dropdown-item>
+					<el-dropdown-item>新增</el-dropdown-item>
+					<el-dropdown-item><span @click="logout">退出登录</span></el-dropdown-item>
+				</el-dropdown-menu>
+			</el-dropdown>
+			<span>王小虎</span>
 		</el-header>
 		<el-container>
 			<el-aside width="200px" style="background-color: rgb(238, 241, 246)">
@@ -381,7 +381,7 @@
             };
         },
         mounted() {
-            this.getUserInfo()
+            // this.getUserInfo()
             router.push('/welcome')
             // this.menus.menu = this.roleMenus[]
             // this.menus.menu = this.menus.storageMenu
@@ -390,6 +390,9 @@
             // this.getTableDataList()
         },
         methods: {
+            logout() {
+                alert(1)
+            },
             clickMenu(url) {
                 router.push(url)
                 console.log(url)
