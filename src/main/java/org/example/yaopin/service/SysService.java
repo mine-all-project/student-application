@@ -2,6 +2,7 @@ package org.example.yaopin.service;
 
 
 import org.example.yaopin.dto.ResponseDTO;
+import org.example.yaopin.entity.DatabaseBak;
 import org.example.yaopin.entity.SysUser;
 import org.example.yaopin.form.ResetPasswordForm;
 import org.example.yaopin.form.UserForm;
@@ -31,4 +32,6 @@ public interface SysService {
     SysUser getUsersById(String id);
 
     void resetPassword(ResetPasswordForm form);
+
+    List<DatabaseBak> getDatabaseBakList();
 }

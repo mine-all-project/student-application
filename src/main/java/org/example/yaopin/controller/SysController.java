@@ -1,8 +1,10 @@
 package org.example.yaopin.controller;
 
+import javafx.scene.input.DataFormat;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.example.yaopin.config.groups.IsLogin;
 import org.example.yaopin.dto.ResponseDTO;
+import org.example.yaopin.entity.DatabaseBak;
 import org.example.yaopin.entity.SysUser;
 import org.example.yaopin.form.ResetPasswordForm;
 import org.example.yaopin.form.UserForm;
@@ -12,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -124,5 +129,29 @@ public class SysController extends BaseController {
         sysService.resetPassword(form);
         logger.info("返回结果->重置用户密码结束");
         return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @PostMapping("/getDatabaseBakList")
+    @ResponseBody
+    public ResponseDTO getDatabaseBakList() {
+        logger.info("收到请求->获取数据库备份列表");
+        List<DatabaseBak> list = sysService.getDatabaseBakList();
+        logger.info("返回结果->获取数据库备份列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    public static void main(String[] args) throws IOException {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        LocalDateTime localDateTime = LocalDateTime.now();
+        String port = "3306";
+        String username = "root";
+        String password = "root";
+        String databaseName = "yaopin";
+        String datafile = "d:/sqlbak/" + System.currentTimeMillis() + ".sql";
+        String command = "cmd /c mysqldump " +
+                " -u " + username + " -p" + password + " " + databaseName + " > " + datafile;
+        System.err.println(command);
+        Process exec = Runtime.getRuntime().exec(command);
+        System.err.println(exec);
     }
 }

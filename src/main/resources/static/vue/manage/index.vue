@@ -186,22 +186,9 @@
                         },
                         {
                             id: '2',
-                            name: '信息管理',
+                            name: '数据管理',
                             icon: 'el-icon-menu',
-                            children: [
-                                {
-                                    id: '2-1',
-                                    name: '公交动态管理',
-                                    icon: '',
-                                    url: '/manage/dynamic'
-                                },
-                                {
-                                    id: '2-2',
-                                    name: '公告管理',
-                                    icon: 'el-icon-menu',
-                                    url: '/manage/notice'
-                                },
-                            ]
+                            url: '/manage/database-list'
                         },
                         {
                             id: '3',

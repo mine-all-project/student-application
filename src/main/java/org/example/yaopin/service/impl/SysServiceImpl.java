@@ -8,14 +8,18 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.example.yaopin.config.ApplicationConfigure;
 import org.example.yaopin.config.ApplicationException;
+import org.example.yaopin.dao.DatabaseBakDAO;
+import org.example.yaopin.dao.SysUserDAO;
 import org.example.yaopin.dao.jpa.SysUserRepository;
 import org.example.yaopin.dto.ResponseDTO;
+import org.example.yaopin.entity.DatabaseBak;
 import org.example.yaopin.entity.SysUser;
 import org.example.yaopin.form.ResetPasswordForm;
 import org.example.yaopin.form.UserForm;
 import org.example.yaopin.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,12 +31,14 @@ public class SysServiceImpl implements SysService {
     private static final String CODE_TEMP = "CODE:TEMP:";
     private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
     private String salt;
-    private final SysUserRepository sysUserRepository;
+    private final SysUserDAO sysUserDAO;
+    private final DatabaseBakDAO databaseBakDAO;
 
 
-    public SysServiceImpl(ApplicationConfigure applicationConfigure, SysUserRepository sysUserRepository) {
+    public SysServiceImpl(ApplicationConfigure applicationConfigure, SysUserDAO sysUserDAO, DatabaseBakDAO databaseBakDAO) {
         this.salt = applicationConfigure.SALT;
-        this.sysUserRepository = sysUserRepository;
+        this.sysUserDAO = sysUserDAO;
+        this.databaseBakDAO = databaseBakDAO;
     }
 
     @Override
@@ -54,18 +60,10 @@ public class SysServiceImpl implements SysService {
 
     @Override
     public SysUser registry(Map<String, String> map) {
-        SysUser exist = sysUserRepository.findByUsername(map.get("username")).orElse(null);
+        SysUser exist = sysUserDAO.findByUsername(map.get("username"));
         if (exist != null) {
             throw new ApplicationException("用户名已经存在");
         }
-//        String redisKey = CODE_KEY + map.get("phone");
-//        String code = redisTemplate.opsForValue().get(redisKey);
-//        if (StringUtils.isEmpty(code)) {
-//            throw new ApplicationException("验证码失效，请重新获取");
-//        }
-//        if (!code.equals(map.get("code"))) {
-//            throw new ApplicationException("验证码错误");
-//        }
         String username = map.get("username");
         String password = new Md5Hash(map.get("password"), salt).toString();
         SysUser sysUser = new SysUser();
@@ -76,7 +74,7 @@ public class SysServiceImpl implements SysService {
         sysUser.setMail(map.get("mail"));
         sysUser.setAdmin(false);
         sysUser.setStatus(0);
-        return sysUserRepository.save(sysUser);
+        return sysUserDAO.saveAndFlush(sysUser);
     }
 
     /**
@@ -104,32 +102,32 @@ public class SysServiceImpl implements SysService {
 
     @Override
     public List<SysUser> getUserList() {
-        return sysUserRepository.findAll();
+        return sysUserDAO.getAll();
     }
 
     @Override
 //    @RequiresPermissions("manage")
     public void changeStatus(String id) {
-        SysUser sysUser = sysUserRepository.findById(id).orElse(null);
+        SysUser sysUser = sysUserDAO.findById(id);
         assert sysUser != null;
         sysUser.setStatus(Math.abs(sysUser.getStatus() - 1));
-        sysUserRepository.save(sysUser);
+        sysUserDAO.saveAndFlush(sysUser);
     }
 
     @Override
 //    @RequiresPermissions("manage")
     public void removeUserById(String id) {
-        SysUser sysUser = sysUserRepository.findById(id).orElse(null);
+        SysUser sysUser = sysUserDAO.findById(id);
         assert sysUser != null;
         if (sysUser.isAdmin()) {
             throw new ApplicationException("不能删除管理员");
         }
-        sysUserRepository.delete(sysUser);
+        sysUserDAO.deleteById(sysUser.getId());
     }
 
     @Override
     public void saveUserInfo(SysUser sysUser) {
-        sysUserRepository.saveAndFlush(sysUser);
+        sysUserDAO.saveAndFlush(sysUser);
     }
 
     @Override
@@ -140,9 +138,6 @@ public class SysServiceImpl implements SysService {
         String oldPassword = new Md5Hash(map.get("password"), salt).toString();
         String newPassword = new Md5Hash(map.get("newPassword"), salt).toString();
         String rePassword = new Md5Hash(map.get("rePassword"), salt).toString();
-        System.err.println(password);
-        System.err.println(newPassword);
-        System.err.println(rePassword);
         if (!newPassword.equals(rePassword)) {
             throw new ApplicationException("两次密码不相同");
         }
@@ -150,20 +145,27 @@ public class SysServiceImpl implements SysService {
             throw new ApplicationException("原密码错误");
         }
         sysUser.setPassword(newPassword);
-        sysUserRepository.save(sysUser);
+        sysUserDAO.saveAndFlush(sysUser);
     }
 
     @Override
     public SysUser getUsersById(String id) {
-        return sysUserRepository.findById(id).orElse(new SysUser());
+        SysUser user = sysUserDAO.findById(id);
+        return user == null ? new SysUser() : user;
+
     }
 
     @Override
     public void resetPassword(ResetPasswordForm form) {
         String password = new Md5Hash(form.getPassword(), salt).toString();
-        SysUser user = sysUserRepository.findById(form.getId()).orElse(null);
+        SysUser user = sysUserDAO.findById(form.getId());
         assert user != null;
         user.setPassword(password);
-        sysUserRepository.saveAndFlush(user);
+        sysUserDAO.saveAndFlush(user);
+    }
+
+    @Override
+    public List<DatabaseBak> getDatabaseBakList() {
+        return databaseBakDAO.getAll();
     }
 }

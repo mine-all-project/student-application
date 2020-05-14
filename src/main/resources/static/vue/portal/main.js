@@ -15,7 +15,7 @@ const routes = [
     {path: '/sales-list', name: 'salesList', component: httpVueLoader('/vue/manage/sales-list.vue')},
 
     {path: '/user-list', name: 'userList', component: httpVueLoader('/vue/manage/user-list.vue')},
-    {path: '/bak-list', name: 'portalHome', component: httpVueLoader('/vue/manage/bak-list.vue')},
+    {path: '/database-list', name: 'databaseList', component: httpVueLoader('/vue/manage/database-list.vue')},
 ];
 const router = new VueRouter({
     routes, // (缩写) 相当于 routes: routes
