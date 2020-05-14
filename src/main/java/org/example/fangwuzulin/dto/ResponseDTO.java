@@ -2,8 +2,10 @@ package org.example.fangwuzulin.dto;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
+import lombok.Setter;
 
-
+//@Getter
+//@Setter
 public class ResponseDTO {
 
     enum Status {
@@ -15,6 +17,50 @@ public class ResponseDTO {
         Status(int code) {
             this.code = code;
         }
+    }
+
+    public static int getSUCCESS() {
+        return SUCCESS;
+    }
+
+    public static int getAuthFail() {
+        return AUTH_FAIL;
+    }
+
+    public static int getERROR() {
+        return ERROR;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 
     private static final int SUCCESS = 200;
@@ -69,10 +115,5 @@ public class ResponseDTO {
 
     public boolean isSuccess() {
         return 200 == this.status;
-    }
-
-    @Override
-    public String toString() {
-        return JSONObject.toJSONString(this);
     }
 }
