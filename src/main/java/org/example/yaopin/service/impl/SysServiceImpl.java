@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -168,4 +170,73 @@ public class SysServiceImpl implements SysService {
     public List<DatabaseBak> getDatabaseBakList() {
         return databaseBakDAO.getAll();
     }
+
+    @Override
+    public void addDatabaseBak() {
+        try {
+            String filePath = "d:/sqlbak/" + System.currentTimeMillis() + ".sql";
+            databaseBak(filePath);
+            DatabaseBak bak = new DatabaseBak();
+            bak.setFilePath(filePath);
+            databaseBakDAO.saveAndFlush(bak);
+        } catch (Exception e) {
+            logger.warn("数据库备份异常:", e);
+            throw new ApplicationException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void delDatabaseBakById(String id) {
+        try {
+            String filePath = databaseBakDAO.findById(id).getFilePath();
+            File file = new File(filePath);
+            if (file.exists()) {
+                if (file.delete()) {
+                    databaseBakDAO.deleteById(id);
+                    return;
+                }
+            }
+            throw new ApplicationException("备份删除失败");
+        } catch (Exception e) {
+            logger.warn("备份删除失败:", e);
+            throw new ApplicationException(e.getMessage());
+
+        }
+
+
+    }
+
+    @Override
+    public void rollbackDatabaseBakById(String id) {
+        DatabaseBak bak = databaseBakDAO.findById(id);
+        if (bak == null) {
+            throw new ApplicationException("备份信息异常");
+        }
+        try {
+            String filePath = bak.getFilePath();
+            databaseRollback(filePath);
+        } catch (Exception e) {
+            logger.warn("数据库还原异常:", e);
+            throw new ApplicationException(e.getMessage());
+        }
+    }
+
+    private void databaseBak(String filePath) throws IOException {
+        String username = "root";
+        String password = "root";
+        String databaseName = "yaopin";
+        String command = "cmd /c mysqldump -u " + username + " -p" + password + " " + databaseName + " > " + filePath;
+        Process exec = Runtime.getRuntime().exec(command);
+        System.err.println(command);
+    }
+
+    private void databaseRollback(String filePath) throws IOException {
+        String username = "root";
+        String password = "root";
+        String databaseName = "yaopin";
+        String command = "cmd /c mysql -u " + username + " -p" + password + " " + databaseName + " < " + filePath;
+        Process exec = Runtime.getRuntime().exec(command);
+        System.err.println(command);
+    }
+
 }

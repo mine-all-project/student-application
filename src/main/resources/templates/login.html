@@ -45,11 +45,12 @@
                         return
                     }
                     layer.msg(result.message);
-                    if (result.data.admin) {
-                        window.location.href = '/manage/index'
-                    } else {
+                    // if (result.data.admin) {
+                    //     window.location.href = '/manage/index'
+                    // } else {
+                    //     window.location.href = '/index'
+                    // }
                         window.location.href = '/index'
-                    }
                 }).catch(exception => {
                     layer.msg('系统错误');
                     console.error('系统错误', exception)

@@ -35,7 +35,7 @@
 			<div class="demo-drawer__content">
 				<el-form v-model="form">
 					<el-form-item label="用户名" :label-width="formLabelWidth">
-						<el-input v-model="form.username" autocomplete="off" :disabled="true"></el-input>
+						<el-input v-model="form.username" autocomplete="off" :disabled="isEdit"></el-input>
 					</el-form-item>
 					<el-form-item label="姓名" :label-width="formLabelWidth">
 						<el-input v-model="form.name" autocomplete="off"></el-input>
@@ -60,6 +60,7 @@
 				</div>
 			</div>
 		</el-drawer>
+		<el-button type="primary" @click="add()" size="mini">添加</el-button>
 	</el-row>
 </template>
 
@@ -67,6 +68,7 @@
     module.exports = {
         data() {
             return {
+                isEdit: true,
                 formLabelWidth: '80px',
                 tableData: [],
                 form: {
@@ -168,7 +170,12 @@
                 this.$nextTick(() => {
                     this.findDataById(scope ? scope.row.id : ' ');
                     this.drawer.show = true;
+                    this.isEdit = true
                 })
+            },
+            add() {
+                this.drawer.show = true;
+                this.isEdit = false;
             },
             findDataById(id) {
                 const _this = this;

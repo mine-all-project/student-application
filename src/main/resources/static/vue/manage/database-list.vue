@@ -1,65 +1,16 @@
 <template>
 	<el-row>
 		<el-table :data="tableData" stripe style="width: 100%">
-			<el-table-column prop="username" label="用户名"></el-table-column>
-			<el-table-column prop="name" label="姓名"></el-table-column>
-			<el-table-column prop="mail" label="邮箱"></el-table-column>
-			<el-table-column prop="phone" label="手机号"></el-table-column>
-			<el-table-column prop="role" label="角色">
+			<el-table-column prop="createTime" label="备份时间"></el-table-column>
+			<el-table-column prop="filePath" label="备份文件路径"></el-table-column>
+			<el-table-column label="操作" width="200">
 				<template slot-scope="scope">
-					<el-tag type="success" effect="plain" v-if="scope.row.role === '0'">管理员</el-tag>
-					<el-tag type="primary" effect="plain" v-if="scope.row.role === '1'">采购员</el-tag>
-					<el-tag type="warning" effect="plain" v-if="scope.row.role === '2'">库存员</el-tag>
-					<el-tag type="info" effect="plain" v-if="scope.row.role === '3'">销售员</el-tag>
-				</template>
-			</el-table-column>
-			<el-table-column label="状态">
-				<template slot-scope="scope">
-					<el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
-					<el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
-				</template>
-			</el-table-column>
-			<el-table-column label="操作" width="350">
-				<template slot-scope="scope">
-					<template v-if="!scope.row.admin">
-						<el-button type="danger" @click="changeStatus(scope)" size="mini" v-if="scope.row.status === 0">禁用</el-button>
-						<el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
-					</template>
+					<el-button type="danger" @click="rollback(scope)" size="mini">还原</el-button>
 					<el-button type="primary" @click="remove(scope)" size="mini" v-if="!scope.row.admin">删除</el-button>
-					<el-button type="primary" @click="edit(scope)" size="mini">编辑</el-button>
-					<el-button type="primary" @click="changePassword(scope)" size="mini">修改密码</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-drawer :before-close="formClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
-			<div class="demo-drawer__content">
-				<el-form v-model="form">
-					<el-form-item label="用户名" :label-width="formLabelWidth">
-						<el-input v-model="form.username" autocomplete="off" :disabled="true"></el-input>
-					</el-form-item>
-					<el-form-item label="姓名" :label-width="formLabelWidth">
-						<el-input v-model="form.name" autocomplete="off"></el-input>
-					</el-form-item>
-					<el-form-item label="邮箱" :label-width="formLabelWidth">
-						<el-input v-model="form.mail" autocomplete="off"></el-input>
-					</el-form-item>
-					<el-form-item label="手机号" :label-width="formLabelWidth">
-						<el-input v-model="form.phone" autocomplete="off" :maxlength="11"></el-input>
-					</el-form-item>
-					<el-form-item label="用户权限" :label-width="formLabelWidth">
-						<el-radio-group v-model="form.role">
-							<el-radio label="1">采购员</el-radio>
-							<el-radio label="2">库存员</el-radio>
-							<el-radio label="3">销售员</el-radio>
-						</el-radio-group>
-					</el-form-item>
-				</el-form>
-				<div class="drawer-footer">
-					<el-button type="primary" @click="saveForm">确定</el-button>
-					<el-button @click="formClose">取 消</el-button>
-				</div>
-			</div>
-		</el-drawer>
+		<el-button type="primary" @click="add()" size="mini">添加</el-button>
 	</el-row>
 </template>
 
@@ -79,25 +30,38 @@
                 drawer: {
                     show: false,
                 },
-                passwordForm: {
-                    id: '',
-                    password: ''
-                }
             };
         },
         mounted() {
             this.getTableDataList()
         },
         methods: {
-            changePassword(scope) {
+            rollback(scope) {
+                const _this = this;
+                const id = scope.row.id;
+                _this.$confirm('确认要还原这个备份吗，此时间点后的数据数据将会被清空且无法恢复？', '警告').then(e => {
+                    axios.delete(`/manage/rollbackDatabaseBakById?id=${id}`).then(response => {
+                        _this.getTableDataList();
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            _this.$message.error('数据加载失败');
+                            return
+                        }
+                        _this.$message.success('操作成功')
+                    }).catch(function (error) {
+                        _this.getTableDataList();
+                        console.log('请求出现错误:', error);
+                    });
+                });
+            },
+            add() {
                 const _this = this
-                _this.$prompt('请输入新密码', '提示', {
+                _this.$confirm('确定要执行数据库备份吗', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                }).then(({value}) => {
-                    _this.passwordForm.id = scope.row.id
-                    _this.passwordForm.password = value
-                    axios.post(`/manage/resetPassword`, _this.passwordForm).then(response => {
+                }).then(() => {
+                    axios.post(`/manage/addDatabaseBak`).then(response => {
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
                         if (result.status !== 200) {
@@ -116,31 +80,12 @@
                 const _this = this;
                 const id = scope.row.id;
                 _this.$confirm('确认删除？').then(e => {
-                    axios.delete(`/api/removePaperById/${id}`).then(response => {
+                    axios.delete(`/manage/delDatabaseBakById?id=${id}`).then(response => {
                         _this.getTableDataList();
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
                         if (result.status !== 200) {
-                            _this.$message.error('数据加载失败');
-                            return
-                        }
-                        _this.$message.success('操作成功')
-                    }).catch(function (error) {
-                        _this.getTableDataList();
-                        console.log('请求出现错误:', error);
-                    });
-                });
-            },
-            changeStatus(scope) {
-                const _this = this;
-                const id = scope.row.id;
-                _this.$confirm('确认操作？').then(e => {
-                    axios.put(`/manage/changeStatus/${id}`).then(response => {
-                        _this.getTableDataList();
-                        const result = response.data;
-                        console.log('通过api获取到的数据:', result);
-                        if (result.status !== 200) {
-                            _this.$message.error('数据加载失败');
+                            _this.$message.error(result.message);
                             return
                         }
                         _this.$message.success('操作成功')
@@ -152,7 +97,7 @@
             },
             getTableDataList() {
                 const _this = this;
-                axios.get('/manage/getUserList').then(response => {
+                axios.get('/manage/getDatabaseBakList').then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
@@ -161,48 +106,7 @@
                     }
                     _this.tableData = result.data;
                 }).catch(function (error) {
-                    console.log('请求出现错误:', error);
-                });
-            },
-            edit(scope) {
-                this.$nextTick(() => {
-                    this.findDataById(scope ? scope.row.id : ' ');
-                    this.drawer.show = true;
-                })
-            },
-            findDataById(id) {
-                const _this = this;
-                axios.get(`/manage/getUsersById?id=${id}`).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return
-                    }
-                    _this.form = result.data;
-                }).catch(function (error) {
-                    console.log('请求出现错误:', error);
-                });
-            },
-            formClose() {
-                this.drawer.show = false;
-                this.getTableDataList();
-            },
-            saveForm() {
-                const _this = this;
-                axios.post(`/manage/saveUserInfo`, _this.form).then(response => {
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
-                        return
-                    }
-                    _this.$message.success('操作成功');
-                    _this.drawer.show = false;
-                    _this.getTableDataList()
-                }).catch(function (error) {
-                    window.location.reload();
-                    console.log('请求出现错误:', error);
+                    console.error('请求出现错误:', error);
                 });
             },
         }

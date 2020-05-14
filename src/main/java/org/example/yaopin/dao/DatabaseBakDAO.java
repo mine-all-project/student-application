@@ -18,4 +18,16 @@ public class DatabaseBakDAO {
     public List<DatabaseBak> getAll() {
         return databaseBakRepository.findAll();
     }
+
+    public void saveAndFlush(DatabaseBak bak) {
+        databaseBakRepository.saveAndFlush(bak);
+    }
+
+    public void deleteById(String id) {
+        databaseBakRepository.deleteById(id);
+    }
+
+    public DatabaseBak findById(String id) {
+        return databaseBakRepository.findById(id).orElse(null);
+    }
 }

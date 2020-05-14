@@ -131,27 +131,39 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @PostMapping("/getDatabaseBakList")
+    @RequestMapping("/getDatabaseBakList")
     @ResponseBody
     public ResponseDTO getDatabaseBakList() {
         logger.info("收到请求->获取数据库备份列表");
         List<DatabaseBak> list = sysService.getDatabaseBakList();
         logger.info("返回结果->获取数据库备份列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/addDatabaseBak")
+    @ResponseBody
+    public ResponseDTO addDatabaseBak() {
+        logger.info("收到请求->备份数据库");
+        sysService.addDatabaseBak();
+        logger.info("返回结果->备份数据库完成");
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    public static void main(String[] args) throws IOException {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        LocalDateTime localDateTime = LocalDateTime.now();
-        String port = "3306";
-        String username = "root";
-        String password = "root";
-        String databaseName = "yaopin";
-        String datafile = "d:/sqlbak/" + System.currentTimeMillis() + ".sql";
-        String command = "cmd /c mysqldump " +
-                " -u " + username + " -p" + password + " " + databaseName + " > " + datafile;
-        System.err.println(command);
-        Process exec = Runtime.getRuntime().exec(command);
-        System.err.println(exec);
+    @RequestMapping("/delDatabaseBakById")
+    @ResponseBody
+    public ResponseDTO delDatabaseBakById(String id) {
+        logger.info("收到请求->删除数据库备份,id:[{}]", id);
+        sysService.delDatabaseBakById(id);
+        logger.info("返回结果->删除数据库备份完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/rollbackDatabaseBakById")
+    @ResponseBody
+    public ResponseDTO rollbackDatabaseBakById(String id) {
+        logger.info("收到请求->回滚数据库备份,id:[{}]", id);
+        sysService.rollbackDatabaseBakById(id);
+        logger.info("返回结果->回滚数据库备份完成");
+        return ResponseDTO.returnSuccess("操作成功");
     }
 }

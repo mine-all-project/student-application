@@ -34,4 +34,10 @@ public interface SysService {
     void resetPassword(ResetPasswordForm form);
 
     List<DatabaseBak> getDatabaseBakList();
+
+    void addDatabaseBak();
+
+    void delDatabaseBakById(String id);
+
+    void rollbackDatabaseBakById(String id);
 }

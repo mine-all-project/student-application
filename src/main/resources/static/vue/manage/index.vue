@@ -188,7 +188,7 @@
                             id: '2',
                             name: '数据管理',
                             icon: 'el-icon-menu',
-                            url: '/manage/database-list'
+                            url: '/database-list'
                         },
                         {
                             id: '3',
@@ -199,7 +199,7 @@
                                     id: '3-1',
                                     name: '用户列表',
                                     icon: 'el-icon-menu',
-                                    url: '/manage/user-list'
+                                    url: '/user-list'
                                 }
                             ]
                         },
