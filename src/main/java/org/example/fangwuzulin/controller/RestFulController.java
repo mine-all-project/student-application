@@ -54,7 +54,6 @@ public class RestFulController extends BaseController {
     }
 
     @DeleteMapping("/removeHousesById/{id}")
-    @RequiresPermissions("login")
     public ResponseDTO removeHousesById(@PathVariable("id") String id) {
         logger.info("收到请求->删除房源,id:[{}]", id);
         restFulService.removeHousesById(id);
