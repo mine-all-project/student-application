@@ -2,7 +2,7 @@ Vue.use(httpVueLoader);
 const routes = [
     {path: '/demo', name: 'demo', component: httpVueLoader('/demo.vue')},
     {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},
-    {path: '/manage-welcome', name: 'manageWelcome', component: httpVueLoader('/vue/manage/welcome.vue')},
+    {path: '/welcome', name: 'welcome', component: httpVueLoader('/vue/manage/welcome.vue')},
 
     {path: '/purchases-add', name: 'purchasesAdd', component: httpVueLoader('/vue/manage/purchases-add.vue')},
     {path: '/purchases-list', name: 'purchasesList', component: httpVueLoader('/vue/manage/purchases-list.vue')},

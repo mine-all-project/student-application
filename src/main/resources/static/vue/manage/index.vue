@@ -2,7 +2,7 @@
 	<el-container style=" border: 1px solid #eee">
 		<el-header width="100%" style="text-align: right; font-size: 12px">
 			<a href="/loginOut">退出登录</a>
-<!--			<h1>管理平台</h1>-->
+			<!--			<h1>管理平台</h1>-->
 			<!--      <el-dropdown>-->
 			<!--        <i class="el-icon-setting" style="margin-right: 15px"></i>-->
 			<!--        <el-dropdown-menu slot="dropdown">-->
@@ -71,129 +71,12 @@
                         [
                             {
                                 id: '1',
-                                name: '系统设置',
-                                icon: 'el-icon-menu',
-                                url: '/demo'
-                            },
-                            {
-                                id: '2',
-                                name: '用户管理',
-                                icon: 'el-icon-menu',
-                                url: '/user-list'
-                            },
-                        ],
-                        [
-                            {
-                                id: '1',
-                                name: '采购管理',
-                                icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '1-1',
-                                        name: '采购计划登记',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-add'
-                                    },
-                                    {
-                                        id: '1-2',
-                                        name: '采购记录查询',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-list'
-                                    },
-                                ]
-                            },
-                            {
-                                id: '2',
-                                name: '消息列表',
-                                icon: 'el-icon-menu',
-                                url: '/message-list'
-                            },
-
-                        ],
-                        [
-                            {
-                                id: 'demo3',
-                                name: '库存管理',
-                                icon: 'el-icon-menu',
-                                url: 'goods-list',
-                            },
-                            {
-                                id: 'demo4',
-                                name: '入库验收',
-                                icon: 'el-icon-menu',
-                                url: '/goods-input'
-                            },
-                            {
-                                id: 'demo5',
-                                name: '药品出库',
-                                icon: 'el-icon-menu',
-                                url: '/goods-output'
-                            },
-                        ],
-                        [
-                            {
-                                id: 'demo1',
-                                name: '采购管理',
-                                icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '1-1',
-                                        name: '采购计划登记',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-add'
-                                    },
-                                    {
-                                        id: '1-2',
-                                        name: '采购记录查询',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-list'
-                                    },
-                                ]
-                            },
-                            {
-                                id: 'demo2',
-                                name: '消息列表',
-                                icon: 'el-icon-menu',
-                                url: '/message-list'
-                            },
-
-                            {
-                                id: 'demo3',
-                                name: '库存管理',
-                                icon: 'el-icon-menu',
-                                url: 'goods-list',
-                            },
-                            {
-                                id: 'demo4',
-                                name: '入库验收',
-                                icon: 'el-icon-menu',
-                                url: '/goods-input'
-                            },
-                            {
-                                id: 'demo5',
-                                name: '药品出库',
-                                icon: 'el-icon-menu',
-                                url: '/goods-output'
-                            },
-
-                            {
-                                id: '1',
-                                name: '销售记录',
-                                icon: 'el-icon-menu',
-                                url: '/sales-list'
-                            },
-                            {
-                                id: '---------',
-                                name: '-----------------',
-                            },
-                            {
-                                id: '2',
                                 name: '数据管理',
                                 icon: 'el-icon-menu',
                                 url: '/database-list'
                             },
                             {
-                                id: '3',
+                                id: '2',
                                 name: '用户管理',
                                 icon: 'el-icon-menu',
                                 children: [
@@ -204,6 +87,62 @@
                                         url: '/user-list'
                                     }
                                 ]
+                            },
+                        ],
+                        [
+                            {
+                                id: '1',
+                                name: '采购管理',
+                                icon: 'el-icon-menu',
+                                children: [
+                                    {
+                                        id: '1-1',
+                                        name: '采购计划登记',
+                                        icon: 'el-icon-menu',
+                                        url: '/purchases-add'
+                                    },
+                                    {
+                                        id: '1-2',
+                                        name: '采购记录查询',
+                                        icon: 'el-icon-menu',
+                                        url: '/purchases-list'
+                                    },
+                                ]
+                            },
+                            {
+                                id: '2',
+                                name: '消息列表',
+                                icon: 'el-icon-menu',
+                                url: '/message-list'
+                            },
+
+                        ],
+                        [
+                            {
+                                id: '1',
+                                name: '库存管理',
+                                icon: 'el-icon-menu',
+                                url: 'goods-list',
+                            },
+                            {
+                                id: '2',
+                                name: '入库验收',
+                                icon: 'el-icon-menu',
+                                url: '/goods-input'
+                            },
+                            {
+                                id: '3',
+                                name: '药品出库',
+                                icon: 'el-icon-menu',
+                                url: '/goods-output'
+                            },
+                        ],
+                        [
+                            {
+                                id: '1',
+                                name: '销售记录',
+                                icon: 'el-icon-menu',
+                                url: '/sales-list'
                             },
                         ],
                     ],
@@ -443,7 +382,7 @@
         },
         mounted() {
             this.getUserInfo()
-            router.push('/demo')
+            router.push('/welcome')
             // this.menus.menu = this.roleMenus[]
             // this.menus.menu = this.menus.storageMenu
             // this.menus.menu = this.menus.saleMenu
