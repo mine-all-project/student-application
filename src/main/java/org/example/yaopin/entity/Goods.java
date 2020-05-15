@@ -18,6 +18,119 @@ import java.time.LocalDate;
  */
 @Entity
 public class Goods extends BaseEntity {
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getCounts() {
+        return counts;
+    }
+
+    public void setCounts(Long counts) {
+        this.counts = counts;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public LocalDate getProducedTime() {
+        return producedTime;
+    }
+
+    public void setProducedTime(LocalDate producedTime) {
+        this.producedTime = producedTime;
+    }
+
+    public LocalDate getShelLife() {
+        return shelLife;
+    }
+
+    public void setShelLife(LocalDate shelLife) {
+        this.shelLife = shelLife;
+    }
+
+    public String getCharacte() {
+        return characte;
+    }
+
+    public void setCharacte(String characte) {
+        this.characte = characte;
+    }
+
+    public String getMajorFunction() {
+        return majorFunction;
+    }
+
+    public void setMajorFunction(String majorFunction) {
+        this.majorFunction = majorFunction;
+    }
+
+    public String getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(String specification) {
+        this.specification = specification;
+    }
+
+    public String getUsages() {
+        return usages;
+    }
+
+    public void setUsages(String usages) {
+        this.usages = usages;
+    }
+
+    public String getAdverseReactions() {
+        return adverseReactions;
+    }
+
+    public void setAdverseReactions(String adverseReactions) {
+        this.adverseReactions = adverseReactions;
+    }
+
+    public String getMattersNeeding() {
+        return mattersNeeding;
+    }
+
+    public void setMattersNeeding(String mattersNeeding) {
+        this.mattersNeeding = mattersNeeding;
+    }
+
+    public String getTaboo() {
+        return taboo;
+    }
+
+    public void setTaboo(String taboo) {
+        this.taboo = taboo;
+    }
+
+    public String getStorageEnvironment() {
+        return storageEnvironment;
+    }
+
+    public void setStorageEnvironment(String storageEnvironment) {
+        this.storageEnvironment = storageEnvironment;
+    }
+
     @Column(columnDefinition = "varchar(64) comment '名称'")
     private String name;
     @Column(columnDefinition = "int(10) comment '数量'")

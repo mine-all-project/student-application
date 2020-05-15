@@ -62,6 +62,9 @@ const app = new Vue({
                     return
                 }
                 this.userInfo = result.data ? result.data : null;
+                // if (result.data === null) {
+                //     window.location.href = '/login'
+                // }
             }).catch(function (error) {
                 console.log('请求出现错误:', error);
             });

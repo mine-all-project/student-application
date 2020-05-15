@@ -9,12 +9,58 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @Entity
-@Getter
-@Setter
 /**
  * 采购信息
  */
 public class Purchases extends BaseEntity {
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Goods goods) {
+        this.goods = goods;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSupply() {
+        return supply;
+    }
+
+    public void setSupply(String supply) {
+        this.supply = supply;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Long getCounts() {
+        return counts;
+    }
+
+    public void setCounts(Long counts) {
+        this.counts = counts;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @OneToOne
     private Goods goods;
     @Column(columnDefinition = "varchar(32) comment '产品名称'")

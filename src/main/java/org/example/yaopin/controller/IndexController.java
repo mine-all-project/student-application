@@ -60,7 +60,6 @@ public class IndexController extends BaseController {
     @ResponseBody
     public ResponseDTO loginCheck(@RequestBody UserForm form) {
         logger.info("收到请求->用户登陆验证:[{}]", form);
-        super.validator(form, IsLogin.class);
         SysUser sysUser = indexService.loginOnShiro(form);
         logger.info("登录验证结束->用户信息:[{}]", sysUser);
         return ResponseDTO.returnSuccess("操作成功", sysUser);

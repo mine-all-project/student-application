@@ -400,6 +400,7 @@
                     console.log(result)
                     if (result.status !== 200) {
                         this.$message.error('用户信息获取失败');
+                        window.location.href = '/login'
                         return;
                     }
                     this.userInfo = result.data;

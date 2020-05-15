@@ -1,17 +1,67 @@
 package org.example.yaopin.dto;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.Getter;
 
-@Getter
 public class ResponseDTO {
-    @Getter
+    public static int getAuthFail() {
+        return AUTH_FAIL;
+    }
+
+    public static int getERROR() {
+        return ERROR;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public static int getSUCCESS() {
+        return SUCCESS;
+    }
+
     enum Status{
         SUCCESS(200),
         AUTH_FAIL(401),
         ERROR(500);
         int code;
         Status(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+
+        public void setCode(int code) {
             this.code = code;
         }
     }

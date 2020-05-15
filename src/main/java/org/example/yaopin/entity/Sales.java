@@ -8,12 +8,50 @@ import javax.persistence.*;
 
 
 @Entity
-@Getter
-@Setter
 /**
  * 销售信息
  */
 public class Sales extends BaseEntity {
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Goods goods) {
+        this.goods = goods;
+    }
+
+    public Long getCounts() {
+        return counts;
+    }
+
+    public void setCounts(Long counts) {
+        this.counts = counts;
+    }
+
+    public Long getTempCount() {
+        return tempCount;
+    }
+
+    public void setTempCount(Long tempCount) {
+        this.tempCount = tempCount;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     @ManyToOne
     private Goods goods;
     @Column(columnDefinition = "int(10) not null comment '数量'")

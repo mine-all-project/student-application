@@ -8,9 +8,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-@Getter
-@Setter
 public class DatabaseBak extends BaseEntity {
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
     @Column(columnDefinition = "varchar(128) comment '备份文件路径'")
     private String filePath;
 

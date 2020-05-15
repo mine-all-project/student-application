@@ -12,9 +12,39 @@ import javax.validation.constraints.NotNull;
 /**
  * 入库表单
  */
-@Getter
-@Setter
 public class SalesForm {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
+
+    public Long getCounts() {
+        return counts;
+    }
+
+    public void setCounts(Long counts) {
+        this.counts = counts;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     private String id;
     @NotBlank(message = "商品信息不能为空", groups = {IsAdd.class, IsEdit.class})
     private String goodsId;
