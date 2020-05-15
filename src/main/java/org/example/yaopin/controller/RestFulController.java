@@ -65,7 +65,7 @@ public class RestFulController extends BaseController {
     @RequestMapping("/savePurchasesInfo")
     public ResponseDTO savePurchasesInfo(@RequestBody PurchasesForm form) {
         logger.info("收到请求->保存采购信息:[{}]", form);
-        validator(form, IsAdd.class, IsEdit.class);
+//        validator(form, IsAdd.class, IsEdit.class);
         restFulService.savePurchasesInfo(form);
         logger.info("返回结果->保存采购信息完成:[{}]", form);
         return ResponseDTO.returnSuccess("操作成功", form);

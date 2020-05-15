@@ -230,14 +230,13 @@
             if (!!id) {
                 this.findDataById(id)
             }
-            // if (this.$route.query.isEdit === false) {
-            //     this.isEdit = false
-            // }
-
         },
         mounted() {
         },
         methods: {
+            dateChange(key) {
+                this.form.goods[key] = new moment(this.form.goods[key]).format('YYYY-MM-DD')
+            },
             findDataById(id) {
                 id = !!id ? id : ''
                 const _this = this;

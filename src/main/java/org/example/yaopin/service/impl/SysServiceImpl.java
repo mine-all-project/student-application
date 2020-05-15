@@ -20,6 +20,7 @@ import org.example.yaopin.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -29,10 +30,12 @@ import java.util.Map;
 
 @Service
 public class SysServiceImpl implements SysService {
-    private static final String CODE_KEY = "CODE:";
-    private static final String CODE_TEMP = "CODE:TEMP:";
+    @Value("${spring.datasource.username}")
+    private String dbUsername;
+    private @Value("${spring.datasource.password}")
+    String dbPassword;
     private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
-    private String salt;
+    private final String salt;
     private final SysUserDAO sysUserDAO;
     private final DatabaseBakDAO databaseBakDAO;
 
@@ -222,8 +225,8 @@ public class SysServiceImpl implements SysService {
     }
 
     private void databaseBak(String filePath) throws IOException {
-        String username = "root";
-        String password = "root";
+        String username = dbUsername;
+        String password = dbPassword;
         String databaseName = "yaopin";
         String command = "cmd /c mysqldump -u " + username + " -p" + password + " " + databaseName + " > " + filePath;
         Process exec = Runtime.getRuntime().exec(command);
@@ -231,8 +234,8 @@ public class SysServiceImpl implements SysService {
     }
 
     private void databaseRollback(String filePath) throws IOException {
-        String username = "root";
-        String password = "root";
+        String username = dbUsername;
+        String password = dbPassword;
         String databaseName = "yaopin";
         String command = "cmd /c mysql -u " + username + " -p" + password + " " + databaseName + " < " + filePath;
         Process exec = Runtime.getRuntime().exec(command);
