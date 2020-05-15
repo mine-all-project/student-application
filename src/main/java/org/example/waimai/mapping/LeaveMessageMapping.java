@@ -1,0 +1,23 @@
+package org.example.waimai.mapping;
+
+import org.example.waimai.entity.LeaveMessage;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface LeaveMessageMapping {
+    Integer insertMessage(LeaveMessage message);
+
+    List<LeaveMessage> findAllByHousesId(String houses_id);
+
+    List<LeaveMessage> findById(String id);
+
+    LeaveMessage findByParentId(String id);
+
+    List<LeaveMessage> findAll();
+
+    Integer removeById(String id);
+
+    Integer removeByPid(String id);
+}
