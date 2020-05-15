@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-  <title></title>
-  <div data-th-include="/base/page :: meta"></div>
-  <div data-th-include="/base/page :: style"></div>
+	<title></title>
+	<div data-th-include="/base/page :: meta"></div>
+	<div data-th-include="/base/page :: style"></div>
 	<style>
 		.foot-img {
 			width: 23%;
@@ -18,87 +18,117 @@
 
 <body>
 <div class="header">
-  <div data-th-include="/base/page :: nav"></div>
+	<div data-th-include="/base/page :: nav"></div>
 </div>
 <div id="page-index">
-  <div class="clear"></div>
-  <div class="banner">
-    <div class="b-img">
-      <img src="images/banner1.jpg" width="100%"/>
-      <img src="images/banner1.jpg" width="100%"/>
-    </div>
-    <div class="clear"></div>
-    <div class="b-list"></div>
-  </div>
-  <div class="clear"></div>
-  <div class="part1">
-    <div class="main">
-      <div class="contitbox">
-        <p><a href="/page/info.html" class="ccsl">妥乐概况</a></p>
-        <span class="ccsl">SCENIC OVERVIEW</span>
-      </div>
-      <div class="conbox" style="text-align: left">
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        妥乐古银杏风景区位于贵州省盘州市妥乐村，是国家AAAA级景区，这里流水潺潺，小桥流水，风景秀丽，古树绵绵，小桥映虹，奇峰傍寺。
-        全妥乐村拥有古银杏1200余株，胸径一般在50一150cm，最大220cm。一般树龄在300年以上，最长者为1500年，树干高达几十米。
-        是世界上古银杏生长密度最高、保存最完好的地方。
-      </div>
-      <div>
-        <img data-th-src="@{/images/info/image1.jpeg}" class="foot-img"/>
-        <img data-th-src="@{/images/info/image2.jpeg}" class="foot-img"/>
-        <img data-th-src="@{/images/info/image3.jpeg}" class="foot-img"/>
-        <img data-th-src="@{/images/info/image4.jpeg}" class="foot-img"/>
-      </div>
-      <div class="morebox"></div>
-    </div>
-  </div>
-  <div class="part2">
-    <ul class="piclistul">
-      <div class="contitbox">
-        <p><a href="/page/video.html" class="ccsl">精彩视频</a></p>
-        <span class="ccsl">VIDEO</span>
-      </div>
-      <div class="proimg">
-          <video width="100%" height="100%" controls>
-            <source src="/index.mp4" type="video/mp4">
-          </video>
-      </div>
-    </ul>
-  </div>
-  <div class="clear"></div>
+	<div class="clear"></div>
+	<div class="banner">
+		<div class="b-img">
+			<img src="images/banner1.jpg" width="100%"/>
+			<img src="images/banner1.jpg" width="100%"/>
+		</div>
+		<div class="clear"></div>
+		<div class="b-list"></div>
+	</div>
+	<div class="clear"></div>
+	<div class="part1">
+		<div class="main">
+			<div class="contitbox">
+				<p><a href="/page/info.html" class="ccsl">妥乐概况</a></p>
+				<span class="ccsl">SCENIC OVERVIEW</span>
+			</div>
+			<div class="conbox" style="text-align: left">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				妥乐古银杏风景区位于贵州省盘州市妥乐村，是国家AAAA级景区，这里流水潺潺，小桥流水，风景秀丽，古树绵绵，小桥映虹，奇峰傍寺。
+				全妥乐村拥有古银杏1200余株，胸径一般在50一150cm，最大220cm。一般树龄在300年以上，最长者为1500年，树干高达几十米。
+				是世界上古银杏生长密度最高、保存最完好的地方。
+			</div>
+			<div>
+				<img data-th-src="@{/images/info/image1.jpeg}" class="foot-img"/>
+				<img data-th-src="@{/images/info/image2.jpeg}" class="foot-img"/>
+				<img data-th-src="@{/images/info/image3.jpeg}" class="foot-img"/>
+				<img data-th-src="@{/images/info/image4.jpeg}" class="foot-img"/>
+			</div>
+			<div class="morebox"></div>
+		</div>
+	</div>
+	<div class="part2">
+		<ul class="piclistul">
+			<div class="contitbox">
+				<p><a href="/page/video.html" class="ccsl">精彩视频</a></p>
+				<span class="ccsl">VIDEO</span>
+			</div>
+			<div class="proimg">
+				<video width="100%" height="100%" controls>
+					<source src="/index.mp4" type="video/mp4">
+				</video>
+			</div>
+		</ul>
+	</div>
+	<div class="clear"></div>
 </div>
 <div data-th-include="/base/page :: footer"></div>
 <div data-th-include="/base/page :: javascript"></div>
 <script>
-  let vue = new Vue({
-    el: '#page-index',
-    data() {
-      return {
-        banner: [],
-        video: {},
-      }
-    },
-    mounted() {
-      this.getVideo()
-    },
-    methods: {
-      getVideo() {
-        const _this = this
-        axios.get('/api/getAudioFile/video').then(response => {
-          const result = response.data
-          console.log('通过api获取到的数据:', result)
-          if (result.status !== 200) {
-            this.$message.error('视频缓冲失败');
-            return
-          }
-          _this.video = result.data
-        }).catch(function (error) {
-          // 请求失败处理
-          console.log('请求出现错误:', error);
-        });
-      },
-    }
-  })
+    let vue = new Vue({
+        el: '#page-index',
+        data() {
+            return {
+                banner: [],
+                video: {},
+                userInfo: null,
+            }
+        },
+        mounted() {
+            this.getVideo()
+            this.getUserInfo()
+        },
+        methods: {
+            getVideo() {
+                const _this = this
+                axios.get('/api/getAudioFile/video').then(response => {
+                    const result = response.data
+                    console.log('通过api获取到的数据:', result)
+                    if (result.status !== 200) {
+                        this.$message.error('视频缓冲失败');
+                        return
+                    }
+                    _this.video = result.data
+                }).catch(function (error) {
+                    // 请求失败处理
+                    console.log('请求出现错误:', error);
+                });
+            },
+            getUserInfo() {
+                let login = document.querySelector('#login')
+                let logout = document.querySelector('#logout')
+                login.style.display = "none";
+                logout.style.display = "none";
+                console.log(login)
+                console.log(logout)
+
+                axios.get('getUserInfo').then(response => {
+
+                    const result = response.data
+                    console.log('通过api获取到的数据:', result)
+                    if (result.status !== 200) {
+                        this.$message.error('用户信息获取失败');
+                        return
+                    }
+                    this.userInfo = result.data
+                    if (!result.data) {
+                        login.style.display = "block";
+                    } else {
+                        logout.style.display = "block";
+                    }
+                }).catch(function (error) {
+                    login.style.display = "block";
+                    // 请求失败处理
+                    console.log('请求出现错误:', error);
+                });
+            }
+        }
+    })
 </script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package org.example.tuole.controller;
 
+import org.example.tuole.dto.ResponseDTO;
+import org.example.tuole.entity.SysUser;
 import org.example.tuole.service.IndexService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class IndexController extends BaseController {
@@ -17,7 +20,7 @@ public class IndexController extends BaseController {
         this.indexService = indexService;
     }
 
-    private Logger logger = LoggerFactory.getLogger(IndexController.class);
+    private final Logger logger = LoggerFactory.getLogger(IndexController.class);
     private static final String PAGE = "page/";
 
     @GetMapping("/page/{pageName}")
@@ -34,12 +37,12 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/")
     public String index() {
-        return "index";
+        return "/index";
     }
 
     @RequestMapping("/index")
     public String toIndex() {
-        return "index";
+        return "/index";
     }
 
     @RequestMapping("/login")
@@ -51,4 +54,18 @@ public class IndexController extends BaseController {
     public String registry() {
         return "registry";
     }
+
+    @RequestMapping("/logOut")
+    public String logOut() {
+        indexService.logOut();
+        return "/index";
+    }
+
+    @RequestMapping("/getUserInfo")
+    @ResponseBody
+    public ResponseDTO getUserInfo() {
+        SysUser user = indexService.getUserInfo();
+        return ResponseDTO.returnSuccess("操作成功",user);
+    }
+
 }
