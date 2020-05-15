@@ -12,7 +12,7 @@ public class MailUtilsConfigure {
     private String source = "294046317@qq.com";
     private String port = "465";
     private String username = "294046317@qq.com";
-    private String password = "LILI5201";;
+    private String password = "LILI5202";
     private boolean isAuth = true;
     private boolean isDebug = true;
     private String protocol = "smtp";
