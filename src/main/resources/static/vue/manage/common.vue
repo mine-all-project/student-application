@@ -73,6 +73,7 @@
             return
           }
           _this.content = result.data
+          this.$message.success('发表成功');
         }).catch(function (error) {
           // 请求失败处理
           console.log('请求出现错误:', error);
