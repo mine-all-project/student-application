@@ -37,9 +37,9 @@
 							<!--/main-menu -->
 						</nav>
 						<div class="col-xl-3 col-lg-2 d-lg-flex align-items-center justify-content-end text-right">
-							<a class="phone_top" href="tel://13111111111">
-								<strong><span>联系电话</span>13111111111</strong>
-							</a>
+							<!--							<a class="phone_top" href="tel://13111111111">-->
+							<!--								<strong><span>联系电话</span>13111111111</strong>-->
+							<!--							</a>-->
 						</div>
 					</div>
 					<!-- /row -->

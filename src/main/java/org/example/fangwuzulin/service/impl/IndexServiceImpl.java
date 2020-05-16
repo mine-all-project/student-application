@@ -167,9 +167,9 @@ public class IndexServiceImpl implements IndexService {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             String code = request.getSession().getAttribute("randomCode").toString();
             if (!code.equals(randomCode)) {
-                if (isDebug) {
-//                    throw new ApplicationException("验证码错误");
-                }
+//                if (isDebug) {
+                throw new ApplicationException("验证码错误");
+//                }
             }
             subject.login(token);
             return (SysUser) subject.getPrincipal();
@@ -177,6 +177,7 @@ public class IndexServiceImpl implements IndexService {
             logger.warn("shiro认证失败,密码错误:[{}]", e.getMessage());
         } catch (UnknownAccountException e) {
             logger.warn("shiro认证失败,用户不存在:[{}]", e.getMessage());
+            throw new ApplicationException("用户不存在");
         } catch (Exception e) {
             logger.warn("shiro认证失败", e);
             throw e;

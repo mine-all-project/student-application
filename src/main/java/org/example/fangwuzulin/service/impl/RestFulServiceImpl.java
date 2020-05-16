@@ -124,6 +124,7 @@ public class RestFulServiceImpl implements RestFulService {
         if (count <= 0) {
             throw new ApplicationException("操作失败");
         }
+        leaveMessageMapping.delByHousesId(id);
     }
 
     @Override

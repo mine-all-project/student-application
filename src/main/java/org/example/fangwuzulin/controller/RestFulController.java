@@ -136,9 +136,9 @@ public class RestFulController extends BaseController {
     @RequestMapping("/getLeaveMessage")
     @RequiresPermissions("manage")
     public ResponseDTO getLeaveMessage() {
-        logger.info("收到请求->获取评论信息");
+        logger.info("收到请求->获取评论列表");
         List<LeaveMessage> messages = restFulService.getLeaveMessage();
-        logger.info("返回结果->获取评论信息完成:[{}]", messages);
+        logger.info("返回结果->获取评论信息列表:[{}]", messages);
         return ResponseDTO.returnSuccess("操作成功", messages);
     }
 

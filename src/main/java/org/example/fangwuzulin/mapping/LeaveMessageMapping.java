@@ -20,4 +20,6 @@ public interface LeaveMessageMapping {
     Integer removeById(String id);
 
     Integer removeByPid(String id);
+
+    void delByHousesId(String houses_id);
 }

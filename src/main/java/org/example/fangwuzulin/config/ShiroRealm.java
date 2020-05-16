@@ -32,6 +32,9 @@ public class ShiroRealm extends AuthorizingRealm {
         SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
         Set<String> permissions = new HashSet<>();
         if (user != null) {
+            if (user.getStatus() == 1) {
+                throw new ApplicationException("用户被冻结");
+            }
             if (user.isIs_admin()) {
                 permissions.add("manage");
             } else {
