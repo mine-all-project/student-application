@@ -4,7 +4,6 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.entity.SysUser;
@@ -75,7 +74,7 @@ public class IndexServiceImpl implements IndexService {
     public SysUser loginOnShiro(HttpServletRequest request, UserForm form) {
         try {
             String username = form.getUsername();
-            String password = new Md5Hash(form.getPassword(), SALT).toString();
+            String password = String.valueOf(form.getPassword());
             logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
             SysUser user = shiroCheckLogin(request, username, password, form.getRandomCode());
             if (user == null) {
@@ -95,7 +94,7 @@ public class IndexServiceImpl implements IndexService {
             throw new ApplicationException("用户名已经存在");
         }
         String username = form.getUsername();
-        String password = new Md5Hash(form.getPassword(), SALT).toString();
+        String password = String.valueOf(form.getPassword());
         SysUser sysUser = new SysUser();
         sysUser.setId(UUID.randomUUID().toString());
         sysUser.setUsername(username);
@@ -121,12 +120,12 @@ public class IndexServiceImpl implements IndexService {
         form.setId(user.getId());
         user = sysUserMapping.findById(user.getId());
         if (form.getPassword() != null) {
-            String password = new Md5Hash(form.getPassword(), SALT).toString();
+            String password = String.valueOf(form.getPassword());
             if (!user.getPassword().equals(password)) {
                 throw new ApplicationException("原密码错误");
             }
             SysUser sysUser = form.toEntity();
-            String newPassword = new Md5Hash(form.getNewPassword(), SALT).toString();
+            String newPassword = String.valueOf(form.getNewPassword());
             sysUser.setPassword(newPassword);
             Integer count = sysUserMapping.updateUserInfo(sysUser);
             if (count <= 0) {

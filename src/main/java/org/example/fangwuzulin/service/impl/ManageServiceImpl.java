@@ -1,7 +1,6 @@
 package org.example.fangwuzulin.service.impl;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.config.ApplicationConfigure;
 import org.example.fangwuzulin.config.ApplicationException;
@@ -73,9 +72,9 @@ public class ManageServiceImpl implements ManageService {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         String password = sysUser.getPassword();
-        String oldPassword = new Md5Hash(map.get("password"), salt).toString();
-        String newPassword = new Md5Hash(map.get("newPassword"), salt).toString();
-        String rePassword = new Md5Hash(map.get("rePassword"), salt).toString();
+        String oldPassword = String.valueOf(map.get("password"));
+        String newPassword = String.valueOf(map.get("newPassword"));
+        String rePassword = String.valueOf(map.get("rePassword"));
         System.err.println(password);
         System.err.println(newPassword);
         System.err.println(rePassword);
