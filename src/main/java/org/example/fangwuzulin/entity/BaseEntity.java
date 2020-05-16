@@ -2,13 +2,12 @@ package org.example.fangwuzulin.entity;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public abstract class BaseEntity implements Serializable {
+
     public String getId() {
         return id;
     }

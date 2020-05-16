@@ -1,8 +1,6 @@
 package org.example.fangwuzulin.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.code.kaptcha.Producer;
-import org.apache.shiro.SecurityUtils;
 import org.example.fangwuzulin.config.groups.IsAdd;
 import org.example.fangwuzulin.config.groups.IsEdit;
 import org.example.fangwuzulin.config.groups.IsLogin;

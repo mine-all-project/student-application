@@ -1,8 +1,8 @@
 package org.example.fangwuzulin.controller;
 
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.dto.ResponseDTO;
-import org.apache.shiro.authz.UnauthenticatedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import javax.validation.Validator;
 import java.util.Set;
 
 public abstract class BaseController {
-    private Logger logger = LoggerFactory.getLogger(BaseController.class);
+    private final Logger logger = LoggerFactory.getLogger(BaseController.class);
     @Autowired
     private Validator validator;
 

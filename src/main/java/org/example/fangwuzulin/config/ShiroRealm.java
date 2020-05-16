@@ -1,12 +1,12 @@
 package org.example.fangwuzulin.config;
 
-import org.example.fangwuzulin.entity.SysUser;
-import org.example.fangwuzulin.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.example.fangwuzulin.entity.SysUser;
+import org.example.fangwuzulin.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;

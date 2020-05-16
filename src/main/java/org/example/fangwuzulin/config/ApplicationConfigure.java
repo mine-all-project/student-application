@@ -1,8 +1,6 @@
 package org.example.fangwuzulin.config;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 

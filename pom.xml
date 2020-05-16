@@ -18,6 +18,11 @@
     </properties>
 
     <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <version>1.16.16</version>-->
+<!--        </dependency>-->
         <!-- 属性配置依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -47,11 +52,7 @@
             <version>0.2.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.16</version>
-        </dependency>
+
         <dependency>
             <groupId>com.github.axet</groupId>
             <artifactId>kaptcha</artifactId>

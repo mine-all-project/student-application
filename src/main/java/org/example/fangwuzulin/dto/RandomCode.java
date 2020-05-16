@@ -1,8 +1,6 @@
 package org.example.fangwuzulin.dto;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.awt.image.BufferedImage;
 

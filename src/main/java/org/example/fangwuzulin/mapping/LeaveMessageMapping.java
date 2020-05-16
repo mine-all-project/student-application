@@ -1,7 +1,6 @@
 package org.example.fangwuzulin.mapping;
 
 import org.example.fangwuzulin.entity.LeaveMessage;
-import org.example.fangwuzulin.entity.SysUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

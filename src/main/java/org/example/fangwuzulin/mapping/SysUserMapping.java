@@ -1,6 +1,5 @@
 package org.example.fangwuzulin.mapping;
 
-import org.apache.ibatis.annotations.Select;
 import org.example.fangwuzulin.entity.SysUser;
 import org.springframework.stereotype.Repository;
 

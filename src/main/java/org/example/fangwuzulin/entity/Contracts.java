@@ -1,10 +1,9 @@
 package org.example.fangwuzulin.entity;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.Getter;
-import lombok.Setter;
 
 public class Contracts extends BaseEntity{
+
     private String title;
     private String content;
 

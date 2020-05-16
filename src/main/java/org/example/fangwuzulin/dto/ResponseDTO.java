@@ -1,9 +1,5 @@
 package org.example.fangwuzulin.dto;
 
-import com.alibaba.fastjson.JSONObject;
-import lombok.Getter;
-import lombok.Setter;
-
 //@Getter
 //@Setter
 public class ResponseDTO {

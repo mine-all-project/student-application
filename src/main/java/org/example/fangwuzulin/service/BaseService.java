@@ -1,6 +1,5 @@
 package org.example.fangwuzulin.service;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.entity.SysUser;
@@ -9,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 public interface BaseService {
 //        default SysUser getUserInfo() {
