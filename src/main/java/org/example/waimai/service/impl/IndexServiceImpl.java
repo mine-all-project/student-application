@@ -168,10 +168,10 @@ public class IndexServiceImpl implements IndexService {
         try {
             Subject subject = SecurityUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            String code = request.getSession().getAttribute("randomCode").toString();
+            String code = String.valueOf(request.getSession().getAttribute("randomCode"));
             if (!code.equals(randomCode)) {
-                if (isDebug) {
-//                    throw new ApplicationException("验证码错误");
+                if (!isDebug) {
+                    throw new ApplicationException("验证码错误");
                 }
             }
             subject.login(token);

@@ -1,94 +1,42 @@
 <template>
 	<div>
-		<header class="version_1">
-			<div class="layer"></div><!-- Mobile menu overlay mask -->
-			<div class="main_header">
-				<div class="container">
-					<div class="row small-gutters">
-						<div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
-							<div id="logo">
-								<a href="/index">
-									<img src="/portal/img/logo.svg" alt="" width="100" height="35">
-								</a>
-							</div>
-						</div>
-						<nav class="col-xl-6 col-lg-7">
-							<a class="open_close" href="javascript:void(0);">
-								<div class="hamburger hamburger--spin">
-									<div class="hamburger-box">
-										<div class="hamburger-inner"></div>
-									</div>
-								</div>
-							</a>
-							<!-- Mobile menu button -->
-							<div class="main-menu">
-								<div id="header_menu">
-									<a href="/index">
-										<img src="/portal/img/logo_black.svg" alt="" width="100" height="35">
-									</a>
-									<a href="#" class="open_close" id="close_in">
-										<i class="ti-close"></i>
-									</a>
-								</div>
-								<ul>
-									<li><a>房屋出租平台</a></li>
-								</ul>
-							</div>
-							<!--/main-menu -->
-						</nav>
-						<div class="col-xl-3 col-lg-2 d-lg-flex align-items-center justify-content-end text-right">
-							<a class="phone_top" href="tel://13111111111">
-								<strong><span>联系电话</span>13111111111</strong>
-							</a>
-						</div>
-					</div>
-					<!-- /row -->
+		<div class="nav">
+			<ul class="uu-nav">
+				<li class="logo">美食汇</li>
+				<li class="nav-lists"><a href="index.html">首页</a></li>
+				<li class="nav-lists"><a href="health.html">饮食健康</a></li>
+				<li class="nav-lists"><a href="master.html">美食达人</a></li>
+				<li class="nav-lists"><a href="caipu.html">菜谱大全</a></li>
+				<!--				<li class="nav-lists"><a href="login.html">登录</a></li>-->
+				<li class="nav-lists">
+					<router-link to="/login">登录1</router-link>
+				</li>
+				<li class="ico">三</li>
+			</ul>
+			<ul class="uu-lists">
+				<li><a href="index.html">首页</a></li>
+				<li><a href="health.html">饮食健康</a></li>
+				<li><a href="master.html">美食达人</a></li>
+				<li><a href="caipu.html">菜谱大全</a></li>
+				<li><a href="login.html">登录</a></li>
+			</ul>
+		</div>
+		<header>
+			<div id="benner">
+				<div class="img">
+					<img src="/portal/img/11.jpg" class="imga active">
+					<img src="/portal/img/22.jpg" class="imga">
+					<img src="/portal/img/33.jpg" class="imga">
+					<img src="/portal/img/44.jpg" class="imga">
+					<img src="/portal/img/55.jpg" class="imga">
 				</div>
-			</div>
-			<!-- /main_header -->
-			<div class="main_nav Sticky">
-				<div class="container">
-					<div class="row small-gutters">
-						<div class="col-xl-3 col-lg-3 col-md-3"></div>
-						<div class="col-xl-6 col-lg-7 col-md-6 d-none d-md-block">
-							<div class="custom-search-input"
-							     @keydown.enter="()=>{this.$emit('search',this.keywords)}"
-							     v-if="show">
-								<input type="text" placeholder="请输入搜索内容" v-model.trim="keywords">
-								<button type="submit" @click="()=>{this.$emit('search',this.keywords)}"><i
-										class="header-icon_search_custom"></i>
-								</button>
-							</div>
-						</div>
-
-						<div class="col-xl-3 col-lg-2 col-md-3">
-							<ul class="top_tools">
-								<li>
-									<div class="dropdown dropdown-access">
-										<a class="access_link" @click="clickUser"><span>Account</span></a>
-										<div class="dropdown-menu" :style="{display:style.display}">
-											<a v-if="!userInfo.username" href="/login" class="btn_1">登录</a>
-											<template v-else>
-												<a href="/loginOut" class="btn_1">退出登录</a>
-												<ul>
-													<li>
-														<router-link to="/user-info"><i class="ti-package"></i>个人信息</router-link>
-													</li>
-													<li>
-														<router-link to="/publish-house"><i class="ti-package"></i>发布房源</router-link>
-													</li>
-													<li>
-														<router-link to="/mine-house"><i class="ti-package"></i>我的房源</router-link>
-													</li>
-												</ul>
-											</template>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
+				<ul class="title">
+					<li class="nr active"></li>
+					<li class="nr"></li>
+					<li class="nr"></li>
+					<li class="nr"></li>
+					<li class="nr"></li>
+				</ul>
 			</div>
 		</header>
 	</div>
@@ -116,7 +64,107 @@
             };
         },
         mounted() {
-            this.getUserInfo();
+            benner('#benner', '.nr', '.imga')
+
+            function benner(parent, controller, mod) {
+
+                var num = 0;
+                var controller = $(controller);
+                var mod = $(mod);
+                var benner = $(parent);
+                var autoPlayTime = 3000;
+                var imgNum = mod.length - 1;
+                var auto;
+
+                autoPlay();
+
+                //根据传进来的名字获取这个名字所对应的对象
+                function $(name) {
+                    if (name[0] == '#') {
+                        return document.getElementById(name.substr(1));
+                    } else if (name[0] == '.') {
+                        return document.getElementsByClassName(name.substr(1));
+                    } else {
+                        return document.getElementsByTagName(name);
+                    }
+                }
+
+                //实现鼠标划过圆点,变化图片的效果
+                //function change(controller, mod){
+                //遍历控制器,绑定鼠标划过事件
+                for (var i = 0; i < controller.length; i++) {
+                    //给控制器加个索引,并把i值赋值给索引
+                    controller[i].index = i;
+                    //给所有的控制器都加划过事件
+                    controller[i].onmouseover = function () {
+                        for (var j = 0; j < controller.length; j++) {
+                            //将所有控制器改为默认样式
+                            controller[j].className = 'nr';
+                        }
+                        //改变所选的控制器样式
+                        this.className = 'nr active';
+                        //将模型改为默认样式
+                        for (var x = 0; x < mod.length; x++) {
+                            mod[x].className = 'imga';
+                        }
+                        //改变所选控制器对应的模型的样式
+                        mod[this.index].className = 'imga active';
+                    }
+                }
+                //}
+                //绑定鼠标移入,暂停播放图片
+                benner.onmouseover = function () {
+                    clearInterval(auto);
+                }
+                //绑定鼠标离开,继续播放
+                benner.onmouseleave = function () {
+                    autoPlay();
+                }
+
+                //指定播放那个图片
+                function play(num) {
+                    for (var j = 0; j < controller.length; j++) {
+                        controller[j].className = 'nr';
+                    }
+                    controller[num].className = 'nr active';
+                    for (var x = 0; x < mod.length; x++) {
+                        mod[x].className = 'imga';
+                    }
+                    mod[num].className = 'imga active';
+                }
+
+                //自动播放
+                function autoPlay() {
+                    auto = setInterval(function () {
+                        if (num > imgNum) {
+                            num = 0;
+                        }
+                        play(num);
+                        num++;
+                    }, autoPlayTime)
+                }
+            }
+
+            //	导航栏start
+//获取元素
+            var ico = document.getElementsByClassName("ico")[0];
+            var lists = document.getElementsByClassName("uu-lists")[0];
+//点击事件
+            ico.onclick = function () {
+//	判断是否透明
+                if (lists.style.opacity == 1) {
+                    //	透明择显示
+                    lists.style.opacity = "0"
+                } else {
+                    //	显示择透明
+                    lists.style.opacity = "1"
+                }
+
+
+            }
+//	导航栏end
+
+
         },
         methods: {
             clickUser() {
