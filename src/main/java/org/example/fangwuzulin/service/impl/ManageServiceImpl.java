@@ -2,7 +2,6 @@ package org.example.fangwuzulin.service.impl;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.example.fangwuzulin.config.ApplicationConfigure;
 import org.example.fangwuzulin.config.ApplicationException;
 import org.example.fangwuzulin.entity.SysUser;
 import org.example.fangwuzulin.mapping.SysUserMapping;
@@ -29,12 +28,10 @@ public class ManageServiceImpl implements ManageService {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(ManageServiceImpl.class);
-    private final String salt;
 
     private final SysUserMapping sysUserMapping;
 
-    public ManageServiceImpl(ApplicationConfigure applicationConfigure, SysUserMapping sysUserMapping) {
-        this.salt = applicationConfigure.SALT;
+    public ManageServiceImpl(SysUserMapping sysUserMapping) {
         this.sysUserMapping = sysUserMapping;
     }
 

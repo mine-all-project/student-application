@@ -1,6 +1,5 @@
 package org.example.fangwuzulin.service.impl;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.example.fangwuzulin.config.ApplicationException;
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -35,8 +35,6 @@ public class RestFulServiceImpl implements RestFulService {
         return sysUserMapping.findByUsername(username);
     }
 
-    @Value("${usePhone}")
-    private boolean usePhone;
     @Value("${filePath}")
     private String filePath;
     @Value("${virtualPath}")
