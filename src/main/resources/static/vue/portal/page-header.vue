@@ -4,9 +4,13 @@
 			<ul class="uu-nav">
 				<li class="logo">美食汇</li>
 				<li class="nav-lists"><a href="index.html">首页</a></li>
-				<li class="nav-lists"><a href="health.html">饮食健康</a></li>
-				<li class="nav-lists"><a href="master.html">美食达人</a></li>
-				<li class="nav-lists"><a href="caipu.html">菜谱大全</a></li>
+				<li class="nav-lists"><a href="health.html">美食推荐</a></li>
+				<li class="nav-lists">
+					<router-link :to="{path:'/orders'}">我的订单</router-link>
+				</li>
+				<li class="nav-lists"><a href="caipu.html">商家入驻</a></li>
+				<li class="nav-lists"><a href="caipu.html">周边休闲</a></li>
+				<li class="nav-lists"><a href="caipu.html">关于我们</a></li>
 				<!--				<li class="nav-lists"><a href="login.html">登录</a></li>-->
 				<li class="nav-lists">
 					<router-link to="/login">登录1</router-link>
@@ -14,7 +18,7 @@
 				<li class="ico">三</li>
 			</ul>
 			<ul class="uu-lists">
-				<li><a href="index.html">首页</a></li>
+				<li><a href="index.html">首页111</a></li>
 				<li><a href="health.html">饮食健康</a></li>
 				<li><a href="master.html">美食达人</a></li>
 				<li><a href="caipu.html">菜谱大全</a></li>
