@@ -1,11 +1,16 @@
 package org.example.fangwuzulin.form;
 
+import org.example.fangwuzulin.config.groups.IsLogin;
 import org.example.fangwuzulin.entity.SysUser;
+
+import javax.validation.constraints.NotBlank;
 
 public class UserForm {
 
     private String id;
+    @NotBlank(message = "账号或密码不能为空", groups = {IsLogin.class})
     private String username;
+    @NotBlank(message = "账号或密码不能为空", groups = {IsLogin.class})
     private String password;
     private String newPassword;
     private String name;
