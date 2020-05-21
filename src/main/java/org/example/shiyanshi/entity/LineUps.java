@@ -11,12 +11,12 @@ import javax.persistence.OneToOne;
 @Entity
 @Getter
 @Setter
-/**
- * 采购信息
+/*
+ * 预约信息
  */
-public class Purchases extends BaseEntity {
+public class LineUps extends BaseEntity {
     @OneToOne
-    private Goods goods;
+    private Rooms rooms;
     @Column(columnDefinition = "varchar(32) comment '产品名称'")
     private String name;
     @Column(columnDefinition = "varchar(32) comment '供应商'")

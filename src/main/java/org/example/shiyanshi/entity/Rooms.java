@@ -12,11 +12,11 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-/**
- * 药品信息
+/*
+ * 实验室信息
  */
 @Entity
-public class Goods extends BaseEntity {
+public class Rooms extends BaseEntity {
     @Column(columnDefinition = "varchar(64) comment '名称'")
     private String name;
     @Column(columnDefinition = "int(10) comment '数量'")

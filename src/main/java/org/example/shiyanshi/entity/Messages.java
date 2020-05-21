@@ -17,7 +17,7 @@ public class Messages extends BaseEntity {
     private String objectId;
     @OneToOne
     private SysUser formAs;
-    @Column(columnDefinition = "varchar(10) default 0 not null comment '接收方 0:管理员 1：采购员 2：库存员 3：销售员''")
+    @Column(columnDefinition = "varchar(10) default 0 not null comment '接收方 0:管理员 1：采购员 2：库存员 3：销售员'")
     private String toAs;
     @Column(columnDefinition = "tinyint(1) default 0 not null comment '阅读状态 0:未读 1:已读'")
     private Integer status;

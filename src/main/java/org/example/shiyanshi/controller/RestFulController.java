@@ -1,12 +1,5 @@
 package org.example.shiyanshi.controller;
 
-import org.example.shiyanshi.config.groups.IsAdd;
-import org.example.shiyanshi.config.groups.IsEdit;
-import org.example.shiyanshi.dto.ResponseDTO;
-import org.example.shiyanshi.entity.Goods;
-import org.example.shiyanshi.entity.Messages;
-import org.example.shiyanshi.entity.Purchases;
-import org.example.shiyanshi.entity.Sales;
 import org.example.shiyanshi.form.MessagesForm;
 import org.example.shiyanshi.form.PurchasesForm;
 import org.example.shiyanshi.form.SalesForm;
@@ -29,128 +22,128 @@ public class RestFulController extends BaseController {
         this.restFulService = restFulService;
     }
 
-    @RequestMapping("/getPurchasesList")
-    public ResponseDTO getPurchasesList() {
-        logger.info("收到请求->获取采购列表");
-        List<Purchases> list = restFulService.getPurchasesList();
-        logger.info("返回结果->获取采购列表完成:[{}]", list);
-        return ResponseDTO.returnSuccess("操作成功", list);
-    }
-
-    @RequestMapping("/getPurchasesListByStatus")
-    public ResponseDTO getPurchasesListByStatus() {
-        logger.info("收到请求->获取采购列表，条件->[status]");
-        List<Purchases> list = restFulService.getPurchasesListByStatus();
-        logger.info("返回结果->获取采购列表完成:[{}],条件->[status]", list);
-        return ResponseDTO.returnSuccess("操作成功", list);
-    }
-
-    @RequestMapping("/getPurchasesListByStatusNot")
-    public ResponseDTO getPurchasesListByStatusNot() {
-        logger.info("收到请求->获取采购列表，条件->[statusNot]");
-        List<Purchases> list = restFulService.getPurchasesListByStatusNot();
-        logger.info("返回结果->获取采购列表完成:[{}],条件->[status]", list);
-        return ResponseDTO.returnSuccess("操作成功", list);
-    }
-
-    @GetMapping("/getPurchasesById")
-    public ResponseDTO getPurchasesById(String id) {
-        logger.info("收到请求->获取采购数据,id:[{}]", id);
-        Purchases data = restFulService.getPurchasesById(id);
-        logger.info("返回结果->获取采购数据完成:[{}]", data);
-        return ResponseDTO.returnSuccess("操作成功", data);
-    }
-
-    @RequestMapping("/savePurchasesInfo")
-    public ResponseDTO savePurchasesInfo(@RequestBody PurchasesForm form) {
-        logger.info("收到请求->保存采购信息:[{}]", form);
-        validator(form, IsAdd.class, IsEdit.class);
-        restFulService.savePurchasesInfo(form);
-        logger.info("返回结果->保存采购信息完成:[{}]", form);
-        return ResponseDTO.returnSuccess("操作成功", form);
-    }
-
-    @DeleteMapping("/flagDelPurchasesById")
-    public ResponseDTO flagDelPurchasesById(String id) {
-        logger.info("收到请求->采购退货,id:[{}]", id);
-        restFulService.flagDelPurchasesById(id);
-        logger.info("返回结果->采购退货完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
-    @RequestMapping("/getGoodsListByFlag")
-    public ResponseDTO getGoodsListByFlag() {
-        logger.info("收到请求->获取商品列表");
-        List<Goods> list = restFulService.getGoodsListByFlag();
-        logger.info("返回结果->获取商品列表:[{}]", list);
-        return ResponseDTO.returnSuccess("操作成功", list);
-    }
-
-
-    @RequestMapping("/addGoodsCountsById")
-    public ResponseDTO addGoodsCountsById(String id) {
-        logger.info("收到请求->商品入库,id:[{}]", id);
-        restFulService.addGoodsCountsById(id);
-        logger.info("返回结果->商品入库商品入库完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
-    @RequestMapping("/reduceGoodsCountsById")
-    public ResponseDTO reduceGoodsCountsById(String id) {
-        logger.info("收到请求->商品出库,id:[{}]", id);
-        restFulService.reduceGoodsCountsById(id);
-        logger.info("返回结果->商品出库商品入库完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
-    @RequestMapping("/saveMessages")
-    public ResponseDTO saveMessages(@RequestBody MessagesForm form) {
-        logger.info("收到请求->保存消息数据:[{}]", form);
-        validator(form, IsAdd.class, IsEdit.class);
-        restFulService.saveMessages(form);
-        logger.info("返回结果->保存消息数据完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
-    @RequestMapping("/getMessageList")
-    public ResponseDTO getMessageList() {
-        logger.info("收到请求->获取消息列表");
-        List<Messages> list = restFulService.getMessageList();
-        logger.info("返回结果->获取消息列表完成:[{}]", list);
-        return ResponseDTO.returnSuccess("操作成功", list);
-    }
-
-    @RequestMapping("/getMessagesById")
-    public ResponseDTO getMessagesById(String id) {
-        logger.info("收到请求->获取消息详情");
-        Messages data = restFulService.getMessagesById(id);
-        logger.info("返回结果->获取获取消息详情完成:[{}]", data);
-        return ResponseDTO.returnSuccess("操作成功", data);
-    }
-
-    @RequestMapping("/getSalesList")
-    public ResponseDTO getSalesList() {
-        logger.info("收到请求->获取销售记录列表");
-        List<Sales> list = restFulService.getSalesList();
-        logger.info("返回结果->获取销售记录列表完成:[{}]", list);
-        return ResponseDTO.returnSuccess("操作成功", list);
-    }
-
-    @RequestMapping("/addSalesInfo")
-    public ResponseDTO addSalesInfo(@RequestBody SalesForm form) {
-        logger.info("收到请求->增加销售记录:[{}]", form);
-        restFulService.addSalesInfo(form);
-        logger.info("返回结果->增加销售记录完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
-    @RequestMapping("/reduceSalesInfo")
-    public ResponseDTO reduceSalesInfo(String id) {
-        logger.info("收到请求->发起退货,id:[{}]", id);
-        restFulService.reduceSalesInfo(id);
-        logger.info("返回结果->发起退货完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
+//    @RequestMapping("/getPurchasesList")
+//    public ResponseDTO getPurchasesList() {
+//        logger.info("收到请求->获取采购列表");
+//        List<Purchases> list = restFulService.getPurchasesList();
+//        logger.info("返回结果->获取采购列表完成:[{}]", list);
+//        return ResponseDTO.returnSuccess("操作成功", list);
+//    }
+//
+//    @RequestMapping("/getPurchasesListByStatus")
+//    public ResponseDTO getPurchasesListByStatus() {
+//        logger.info("收到请求->获取采购列表，条件->[status]");
+//        List<Purchases> list = restFulService.getPurchasesListByStatus();
+//        logger.info("返回结果->获取采购列表完成:[{}],条件->[status]", list);
+//        return ResponseDTO.returnSuccess("操作成功", list);
+//    }
+//
+//    @RequestMapping("/getPurchasesListByStatusNot")
+//    public ResponseDTO getPurchasesListByStatusNot() {
+//        logger.info("收到请求->获取采购列表，条件->[statusNot]");
+//        List<Purchases> list = restFulService.getPurchasesListByStatusNot();
+//        logger.info("返回结果->获取采购列表完成:[{}],条件->[status]", list);
+//        return ResponseDTO.returnSuccess("操作成功", list);
+//    }
+//
+//    @GetMapping("/getPurchasesById")
+//    public ResponseDTO getPurchasesById(String id) {
+//        logger.info("收到请求->获取采购数据,id:[{}]", id);
+//        Purchases data = restFulService.getPurchasesById(id);
+//        logger.info("返回结果->获取采购数据完成:[{}]", data);
+//        return ResponseDTO.returnSuccess("操作成功", data);
+//    }
+//
+//    @RequestMapping("/savePurchasesInfo")
+//    public ResponseDTO savePurchasesInfo(@RequestBody PurchasesForm form) {
+//        logger.info("收到请求->保存采购信息:[{}]", form);
+//        validator(form, IsAdd.class, IsEdit.class);
+//        restFulService.savePurchasesInfo(form);
+//        logger.info("返回结果->保存采购信息完成:[{}]", form);
+//        return ResponseDTO.returnSuccess("操作成功", form);
+//    }
+//
+//    @DeleteMapping("/flagDelPurchasesById")
+//    public ResponseDTO flagDelPurchasesById(String id) {
+//        logger.info("收到请求->采购退货,id:[{}]", id);
+//        restFulService.flagDelPurchasesById(id);
+//        logger.info("返回结果->采购退货完成");
+//        return ResponseDTO.returnSuccess("操作成功");
+//    }
+//
+//    @RequestMapping("/getGoodsListByFlag")
+//    public ResponseDTO getGoodsListByFlag() {
+//        logger.info("收到请求->获取商品列表");
+//        List<Goods> list = restFulService.getGoodsListByFlag();
+//        logger.info("返回结果->获取商品列表:[{}]", list);
+//        return ResponseDTO.returnSuccess("操作成功", list);
+//    }
+//
+//
+//    @RequestMapping("/addGoodsCountsById")
+//    public ResponseDTO addGoodsCountsById(String id) {
+//        logger.info("收到请求->商品入库,id:[{}]", id);
+//        restFulService.addGoodsCountsById(id);
+//        logger.info("返回结果->商品入库商品入库完成");
+//        return ResponseDTO.returnSuccess("操作成功");
+//    }
+//
+//    @RequestMapping("/reduceGoodsCountsById")
+//    public ResponseDTO reduceGoodsCountsById(String id) {
+//        logger.info("收到请求->商品出库,id:[{}]", id);
+//        restFulService.reduceGoodsCountsById(id);
+//        logger.info("返回结果->商品出库商品入库完成");
+//        return ResponseDTO.returnSuccess("操作成功");
+//    }
+//
+//    @RequestMapping("/saveMessages")
+//    public ResponseDTO saveMessages(@RequestBody MessagesForm form) {
+//        logger.info("收到请求->保存消息数据:[{}]", form);
+//        validator(form, IsAdd.class, IsEdit.class);
+//        restFulService.saveMessages(form);
+//        logger.info("返回结果->保存消息数据完成");
+//        return ResponseDTO.returnSuccess("操作成功");
+//    }
+//
+//    @RequestMapping("/getMessageList")
+//    public ResponseDTO getMessageList() {
+//        logger.info("收到请求->获取消息列表");
+//        List<Messages> list = restFulService.getMessageList();
+//        logger.info("返回结果->获取消息列表完成:[{}]", list);
+//        return ResponseDTO.returnSuccess("操作成功", list);
+//    }
+//
+//    @RequestMapping("/getMessagesById")
+//    public ResponseDTO getMessagesById(String id) {
+//        logger.info("收到请求->获取消息详情");
+//        Messages data = restFulService.getMessagesById(id);
+//        logger.info("返回结果->获取获取消息详情完成:[{}]", data);
+//        return ResponseDTO.returnSuccess("操作成功", data);
+//    }
+//
+//    @RequestMapping("/getSalesList")
+//    public ResponseDTO getSalesList() {
+//        logger.info("收到请求->获取销售记录列表");
+//        List<Sales> list = restFulService.getSalesList();
+//        logger.info("返回结果->获取销售记录列表完成:[{}]", list);
+//        return ResponseDTO.returnSuccess("操作成功", list);
+//    }
+//
+//    @RequestMapping("/addSalesInfo")
+//    public ResponseDTO addSalesInfo(@RequestBody SalesForm form) {
+//        logger.info("收到请求->增加销售记录:[{}]", form);
+//        restFulService.addSalesInfo(form);
+//        logger.info("返回结果->增加销售记录完成");
+//        return ResponseDTO.returnSuccess("操作成功");
+//    }
+//
+//    @RequestMapping("/reduceSalesInfo")
+//    public ResponseDTO reduceSalesInfo(String id) {
+//        logger.info("收到请求->发起退货,id:[{}]", id);
+//        restFulService.reduceSalesInfo(id);
+//        logger.info("返回结果->发起退货完成");
+//        return ResponseDTO.returnSuccess("操作成功");
+//    }
 
 //
 //    @RequestMapping("/getStandsList")

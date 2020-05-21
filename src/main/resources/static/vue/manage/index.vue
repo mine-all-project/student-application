@@ -56,7 +56,7 @@
                     menu: [
                         {
                             id: '1',
-                            name: '系统设置',
+                            name: '实验室预约',
                             icon: 'el-icon-menu',
                             url: '/demo'
                         },
@@ -71,7 +71,7 @@
                         [
                             {
                                 id: '1',
-                                name: '数据管理',
+                                name: '数据备份',
                                 icon: 'el-icon-menu',
                                 url: '/database-list'
                             },
@@ -382,7 +382,7 @@
         },
         mounted() {
             // this.getUserInfo()
-            router.push('/welcome')
+            router.push('/demo')
             // this.menus.menu = this.roleMenus[]
             // this.menus.menu = this.menus.storageMenu
             // this.menus.menu = this.menus.saleMenu

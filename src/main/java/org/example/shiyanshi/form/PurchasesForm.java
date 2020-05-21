@@ -3,7 +3,7 @@ package org.example.shiyanshi.form;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.shiyanshi.config.groups.*;
-import org.example.shiyanshi.entity.Goods;
+import org.example.shiyanshi.entity.Rooms;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -21,5 +21,5 @@ public class PurchasesForm {
     private String phone;
     @NotEmpty(message = "数量不能为空", groups = {IsAdd.class, IsEdit.class})
     private Long counts;
-    private Goods goods;
+    private Rooms Rooms;
 }

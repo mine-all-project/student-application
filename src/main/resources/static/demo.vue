@@ -1,16 +1,17 @@
 <template>
 	<el-row>
 		<el-table :data="tableData" stripe style="width: 100%">
-			<el-table-column prop="createTime" label="备份时间"></el-table-column>
-			<el-table-column prop="filePath" label="备份文件路径"></el-table-column>
+			<el-table-column prop="createTime" label="预约时间"></el-table-column>
+			<el-table-column prop="filePath" label="开始时间"></el-table-column>
+			<el-table-column prop="filePath" label="结束时间"></el-table-column>
+			<el-table-column prop="filePath" label="状态"></el-table-column>
 			<el-table-column label="操作" width="200">
 				<template slot-scope="scope">
-					<el-button type="danger" @click="rollback(scope)" size="mini">还原</el-button>
-					<el-button type="primary" @click="remove(scope)" size="mini" v-if="!scope.row.admin">删除</el-button>
+					<el-button type="danger" @click="rollback(scope)" size="mini">撤销</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-button type="primary" @click="add()" size="mini">添加</el-button>
+		<el-button type="primary" @click="add()" size="mini">发起预约</el-button>
 	</el-row>
 </template>
 
