@@ -1,9 +1,10 @@
 package org.example.shiyanshi.controller;
 
+import org.example.shiyanshi.config.base.BaseController;
 import org.example.shiyanshi.config.groups.IsAdd;
 import org.example.shiyanshi.config.groups.IsEdit;
 import org.example.shiyanshi.config.groups.IsLogin;
-import org.example.shiyanshi.dto.ResponseDTO;
+import org.example.shiyanshi.config.base.ResponseDTO;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.UserForm;
 import org.example.shiyanshi.service.IndexService;

@@ -1,7 +1,6 @@
-package org.example.shiyanshi.controller;
+package org.example.shiyanshi.config.base;
 
 import org.example.shiyanshi.config.ApplicationException;
-import org.example.shiyanshi.dto.ResponseDTO;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

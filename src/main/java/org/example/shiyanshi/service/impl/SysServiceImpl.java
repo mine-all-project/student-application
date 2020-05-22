@@ -10,7 +10,7 @@ import org.example.shiyanshi.config.ApplicationConfigure;
 import org.example.shiyanshi.config.ApplicationException;
 import org.example.shiyanshi.dao.DatabaseBakDAO;
 import org.example.shiyanshi.dao.SysUserDAO;
-import org.example.shiyanshi.dto.ResponseDTO;
+import org.example.shiyanshi.config.base.ResponseDTO;
 import org.example.shiyanshi.entity.DatabaseBak;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.ResetPasswordForm;

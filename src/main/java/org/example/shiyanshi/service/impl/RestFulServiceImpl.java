@@ -6,11 +6,13 @@ import org.apache.shiro.subject.Subject;
 import org.example.shiyanshi.config.ApplicationException;
 import org.example.shiyanshi.dao.*;
 import org.example.shiyanshi.entity.*;
+import org.example.shiyanshi.form.MachinesForm;
 import org.example.shiyanshi.form.RoomsForm;
 import org.example.shiyanshi.service.RestFulService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,7 +69,21 @@ public class RestFulServiceImpl implements RestFulService {
     public void saveRoomsInfo(RoomsForm form) {
         Rooms rooms = new Rooms();
         BeanUtils.copyProperties(form, rooms);
-        roomsDAO.saveData(rooms);
+        try {
+            roomsDAO.saveData(rooms);
+        } catch (DataIntegrityViolationException e) {
+            throw new ApplicationException("不能重复指定设备");
+        }
+    }
+
+    @Override
+    public void delRoomsById(String id) {
+        roomsDAO.delById(id);
+    }
+
+    @Override
+    public Rooms getRoomsById(String id) {
+        return roomsDAO.findById(id);
     }
 
     @Override
@@ -78,6 +94,20 @@ public class RestFulServiceImpl implements RestFulService {
     @Override
     public List<Machines> getMachinesList() {
         return machinesDAO.findAll();
+    }
+
+    @Override
+    public void saveMachinesInfo(MachinesForm form) {
+        Machines machines = new Machines();
+        machines.setLineCount(0);
+        machines.setUseCount(0);
+        BeanUtils.copyProperties(form, machines);
+        machinesDAO.saveData(machines);
+    }
+
+    @Override
+    public void delMachinesById(String id) {
+        machinesDAO.delById(id);
     }
 
     //
@@ -99,16 +129,7 @@ public class RestFulServiceImpl implements RestFulService {
 //    public List<Goods> getGoodsListByFlag() {
 //        return goodsDAO.getAllByFlag();
 //    }
-//
-//    @Override
-//    public void addGoodsCountsById(String id) {
-//        Purchases purchases = purchasesDAO.findById(id);
-//        Goods goods = purchases.getGoods();
-//        goods.setCounts(purchases.getCounts());
-//        goodsDAO.saveData(goods);
-//        purchases.setStatus(1);
-//        purchasesDAO.saveData(purchases);
-//    }
+
 //
 //    @Override
 //    public void reduceGoodsCountsById(String id) {

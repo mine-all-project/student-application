@@ -12,7 +12,6 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
 		<el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
 			<div class="demo-drawer__content">
 				<el-form v-model="form">
@@ -30,8 +29,7 @@
 					</el-form-item>
 					<el-form-item label="站点" :label-width="formLabelWidth">
 						<el-transfer v-model="form.standsList" :data="stands" target-order="push"
-						             :titles="['所有站点', '途经站点']"
-						             :button-texts="['移除', '添加']">
+						             :titles="['所有站点', '途经站点']" :button-texts="['移除', '添加']">
 						</el-transfer>
 					</el-form-item>
 				</el-form>
@@ -43,6 +41,9 @@
 				</div>
 			</div>
 		</el-drawer>
+		<div style="margin-top: 10px">
+			<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
+		</div>
 	</el-row>
 
 </template>

@@ -1,4 +1,4 @@
-package org.example.shiyanshi.entity;
+package org.example.shiyanshi.config.base;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;

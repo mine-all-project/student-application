@@ -1,87 +1,92 @@
 <template>
 	<el-row>
 		<el-table :data="tableData" stripe style="width: 100%" :height="400">
-			<el-table-column prop="name" label="设备名" width="220"></el-table-column>
-			<el-table-column prop="title" label="预约次数" width="180"></el-table-column>
-			<el-table-column prop="content" label="使用次数" :show-overflow-tooltip="true"></el-table-column>
-			<el-table-column label="操作" width="160">
+			<el-table-column prop="name" label="名称"></el-table-column>
+			<el-table-column prop="filePath" label="设备信息">
 				<template slot-scope="scope">
+					<el-button type="primary" @click="remove(scope)" size="mini">查看详情</el-button>
+				</template>
+			</el-table-column>
+			<el-table-column label="操作" width="200">
+				<template slot-scope="scope">
+					<el-button type="primary" @click="edit(scope)" size="mini">管理</el-button>
 					<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
-					<el-button type="primary" @click="drawerOpen(scope)" size="mini">编辑</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-drawer :visible.sync="drawer.show" :wrapperClosable="false" size="50%">
-			<div class="demo-drawer__content">
-				<el-form v-model="form">
-					<el-form-item label="设备名称" :label-width="formLabelWidth">
-						<el-input v-model="form.name" autocomplete="off"></el-input>
-					</el-form-item>
-					<el-form-item label="运行时长" :label-width="formLabelWidth">
-						<el-input v-model="form.time" autocomplete="off" placeholder="单位(分钟)"></el-input>
-					</el-form-item>
-					<el-form-item label="注意事项" :label-width="formLabelWidth">
-						<el-input type="textarea" :rows="4" v-model="form.content"></el-input>
-					</el-form-item>
-					<el-form-item :label-width="formLabelWidth">
-						<el-button size="mini" @click="saveForm" type="primary">确定</el-button>
-						<el-button size="mini" @click="drawerClose">取 消</el-button>
-					</el-form-item>
-				</el-form>
-			</div>
-		</el-drawer>
 
+		<el-drawer :visible.sync="drawer.show" :wrapperClosable="false" size="80%">
+			<el-form v-model="form">
+				<el-form-item label="名称" :label-width="formLabelWidth">
+					<el-input v-model="form.name" autocomplete="off" style="width: 30%" size="mini"></el-input>
+				</el-form-item>
+				<el-form-item label="站点" :label-width="formLabelWidth">
+					<el-transfer v-model="form.machines" :data="machines" target-order="push"
+					             :titles="['所有设备', '已有设备']" :button-texts="['移除', '添加']" style="width: 100%">
+					</el-transfer>
+				</el-form-item>
+				<el-form-item :label-width="formLabelWidth">
+					<el-button type="primary" @click="saveForm" size="mini">确定</el-button>
+					<el-button @click="formClose" size="mini">取 消</el-button>
+				</el-form-item>
+			</el-form>
+		</el-drawer>
 		<div style="margin-top: 10px">
-			<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
+			<el-button type="primary" @click="addRooms(undefined)" size="mini">添加实训室</el-button>
 		</div>
 	</el-row>
-
 </template>
 
 <script>
     module.exports = {
         data() {
             return {
+                formLabelWidth: '80px',
                 tableData: [],
+                machines: [],
+                machinesList: [],
                 form: {
                     id: '',
-                    keyWords: '',
-                    title: '',
-                    content: '',
+                    name: '',
+                    machines: [],
+                    createTime: '',
                 },
                 drawer: {
                     show: false,
                 },
-                formLabelWidth: '80px',
-                keyWords: 'demo2',
             };
         },
         mounted() {
-            this.getTableDataList(this.keyWord)
+            this.getTableDataList()
         },
         methods: {
+            edit(scope) {
+                this.drawer.show = true
+                this.getDataById(scope.row.id)
+                this.getMachinesList()
+            },
             remove(scope) {
                 const _this = this;
                 const id = scope.row.id;
                 _this.$confirm('确认删除？').then(e => {
-                    axios.delete(`/api/removePapersById/${id}`).then(response => {
-                        _this.getTableDataList(this.keyWords);
+                    axios.delete(`/api/delRoomsById?id=${id}`).then(response => {
+                        _this.getTableDataList();
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
                         if (result.status !== 200) {
-                            _this.$message.error('数据加载失败');
+                            _this.$message.error(result.message);
                             return
                         }
                         _this.$message.success('操作成功')
                     }).catch(function (error) {
-                        _this.getTableDataList(_this.keyWords);
+                        _this.getTableDataList();
                         console.log('请求出现错误:', error);
                     });
                 });
             },
-            getTableDataList(keyWord) {
+            getTableDataList() {
                 const _this = this;
-                axios.get(`/api/getPapersByKeyWords/${keyWord}`).then(response => {
+                axios.get('/api/getRoomsList').then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
@@ -90,18 +95,12 @@
                     }
                     _this.tableData = result.data;
                 }).catch(function (error) {
-                    console.log('请求出现错误:', error);
+                    console.error('请求出现错误:', error);
                 });
-            },
-            drawerOpen(scope) {
-                this.$nextTick(() => {
-                    this.getDataById(scope ? scope.row.id : ' ');
-                    this.drawer.show = true;
-                })
             },
             getDataById(id) {
                 const _this = this;
-                axios.get(`/api/getMachinesById?id=${id}`).then(response => {
+                axios.get(`/api/getRoomsById?id=${id}`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
@@ -109,20 +108,78 @@
                         return
                     }
                     _this.form = result.data;
+                    _this.form.machines = result.data.machines.map(e => {
+                        return e.id
+                    })
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });
             },
-            saveForm() {
+            addRooms(scope) {
+                const _this = this
+                _this.$nextTick(() => {
+                    _this.getDataById(scope ? scope.row.id : ' ');
+                    _this.$prompt('请输入名称', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({value}) => {
+                        _this.form.name = value
+                        axios.post(`/api/saveRoomsInfo`, _this.form).then(response => {
+                            const result = response.data;
+                            console.log('通过api获取到的数据:', result);
+                            if (result.status !== 200) {
+                                this.$message.error('数据加载失败');
+                                return
+                            }
+                            _this.$message.success('操作成功');
+                            _this.getTableDataList()
+                        }).catch(function (error) {
+                            window.location.reload();
+                            console.log('请求出现错误:', error);
+                        });
+                    })
+                })
+            },
+            getMachinesList() {
                 const _this = this;
-                axios.post(`/api/savePapers`, _this.form).then(response => {
+                axios.get('/api/getMachinesList').then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
                         this.$message.error('数据加载失败');
+                        return;
+                    }
+                    _this.machinesList = result.data
+                    _this.machines = result.data.map(e => {
+                        return {
+                            key: e.id,
+                            label: e.name,
+                        }
+                    });
+                }).catch(function (error) {
+                    console.error('请求出现错误:', error);
+                });
+            },
+            saveForm() {
+                const _this = this;
+                let array = []
+                _this.form.machines.forEach(e => {
+                    _this.machinesList.forEach(t => {
+                        if (e === t.id) {
+                            array.push(t)
+                        }
+                    })
+                })
+                _this.form.machines = array
+                console.log(_this.form)
+                axios.post('/api/saveRoomsInfo', _this.form).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
                         return
                     }
-                    _this.$message.success('操作成功');
+                    _this.$message.success(result.message);
                     _this.drawer.show = false;
                     _this.getTableDataList()
                 }).catch(function (error) {
@@ -130,7 +187,7 @@
                     console.log('请求出现错误:', error);
                 });
             },
-            drawerClose() {
+            formClose() {
                 this.drawer.show = false;
                 this.getTableDataList();
             },

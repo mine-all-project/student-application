@@ -2,19 +2,16 @@ package org.example.shiyanshi.form;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.example.shiyanshi.config.groups.*;
-import org.example.shiyanshi.entity.Machines;
+import org.example.shiyanshi.config.groups.IsNotNull;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
-public class RoomsForm {
+public class MachinesForm {
     private String id;
+    private Integer time;
     @NotBlank(message = "名称不能为空", groups = {IsNotNull.class})
     private String name;
-    private List<Machines> machines;
-    private LocalDateTime createTime;
+    private String content;
 }

@@ -1,4 +1,4 @@
-package org.example.shiyanshi.service;
+package org.example.shiyanshi.config.base;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -10,10 +10,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 public interface BaseService {
-//    default SysUser getUserInfo() {
-//        Subject subject = SecurityUtils.getSubject();
-//        return (SysUser) subject.getPrincipal();
-//    }
     SysUser getUserInfo();
 
     default void logout() {

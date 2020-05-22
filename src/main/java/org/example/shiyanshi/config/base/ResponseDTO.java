@@ -1,4 +1,4 @@
-package org.example.shiyanshi.dto;
+package org.example.shiyanshi.config.base;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;

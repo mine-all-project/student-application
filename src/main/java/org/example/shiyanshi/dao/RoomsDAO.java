@@ -1,5 +1,6 @@
 package org.example.shiyanshi.dao;
 
+import org.example.shiyanshi.config.base.BaseDAO;
 import org.example.shiyanshi.dao.jpa.RoomsRepository;
 import org.example.shiyanshi.entity.Rooms;
 import org.springframework.stereotype.Repository;
@@ -23,5 +24,13 @@ public class RoomsDAO extends BaseDAO {
 
     public void saveData(Rooms rooms) {
         roomsRepository.saveAndFlush(rooms);
+    }
+
+    public void delById(String id) {
+        roomsRepository.deleteById(id);
+    }
+
+    public Rooms findById(String id) {
+        return roomsRepository.findById(id).orElse(new Rooms());
     }
 }

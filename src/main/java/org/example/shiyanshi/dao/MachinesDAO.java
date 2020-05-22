@@ -1,9 +1,9 @@
 package org.example.shiyanshi.dao;
 
 
+import org.example.shiyanshi.config.base.BaseDAO;
 import org.example.shiyanshi.dao.jpa.MachinesRepository;
 import org.example.shiyanshi.entity.Machines;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -31,9 +31,13 @@ public class MachinesDAO extends BaseDAO {
         return machinesRepository.findById(id).orElse(new Machines());
     }
 
-    public Page<Machines> findAll() {
+    public List<Machines> findAll() {
         Sort sort = Sort.by(Sort.Order.asc("createTime"));
-        PageRequest page = PageRequest.of(pageIndex, pageSize,sort);
-        return machinesRepository.findAll(page);
+        PageRequest page = PageRequest.of(pageIndex, pageSize, sort);
+        return machinesRepository.findAll(sort);
+    }
+
+    public void delById(String id) {
+        machinesRepository.deleteById(id);
     }
 }

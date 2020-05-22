@@ -1,5 +1,6 @@
 package org.example.shiyanshi.dao;
 
+import org.example.shiyanshi.config.base.BaseDAO;
 import org.example.shiyanshi.dao.jpa.LineUpsRepository;
 import org.example.shiyanshi.entity.LineUps;
 import org.example.shiyanshi.entity.SysUser;

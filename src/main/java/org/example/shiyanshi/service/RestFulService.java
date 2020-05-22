@@ -1,20 +1,29 @@
 package org.example.shiyanshi.service;
 
 
+import org.example.shiyanshi.config.base.BaseService;
 import org.example.shiyanshi.entity.LineUps;
 import org.example.shiyanshi.entity.Machines;
 import org.example.shiyanshi.entity.Rooms;
+import org.example.shiyanshi.form.MachinesForm;
 import org.example.shiyanshi.form.RoomsForm;
 
 import java.util.List;
 
 
-public interface RestFulService extends BaseService{
+public interface RestFulService extends BaseService {
     List<LineUps> getLineUpsListByUser();
     List<Rooms> getRoomsList();
     void saveRoomsInfo(RoomsForm form);
+    void delRoomsById(String id);
+    Rooms getRoomsById(String id);
+
+
     Machines getMachinesById(String id);
     List<Machines> getMachinesList();
+    void saveMachinesInfo(MachinesForm form);
+    void delMachinesById(String id);
+
 
 
 //    List<Purchases> getPurchasesListByStatus();

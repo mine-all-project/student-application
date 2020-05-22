@@ -1,14 +1,13 @@
 package org.example.shiyanshi.controller;
 
-import org.example.shiyanshi.config.groups.IsAdd;
-import org.example.shiyanshi.config.groups.IsEdit;
+import org.example.shiyanshi.config.base.BaseController;
 import org.example.shiyanshi.config.groups.IsNotNull;
-import org.example.shiyanshi.dto.ResponseDTO;
+import org.example.shiyanshi.config.base.ResponseDTO;
 import org.example.shiyanshi.entity.LineUps;
 import org.example.shiyanshi.entity.Machines;
 import org.example.shiyanshi.entity.Rooms;
+import org.example.shiyanshi.form.MachinesForm;
 import org.example.shiyanshi.form.RoomsForm;
-import org.example.shiyanshi.form.SalesForm;
 import org.example.shiyanshi.service.RestFulService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +52,21 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", form);
     }
 
+    @RequestMapping("/delRoomsById")
+    public ResponseDTO delRoomsById(String id) {
+        logger.info("收到请求->删除实训室信息,id:[{}]", id);
+        restFulService.delRoomsById(id);
+        logger.info("返回结果->删除实训室信息完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+    @RequestMapping("/getRoomsById")
+    public ResponseDTO getRoomsById(String id) {
+        logger.info("收到请求->获取实训室数据,id:[{}]", id);
+        Rooms data = restFulService.getRoomsById(id);
+        logger.info("返回结果->获取实训室数据完成:[{}]", data);
+        return ResponseDTO.returnSuccess("操作成功", data);
+    }
+
     @RequestMapping("/getMachinesById")
     public ResponseDTO getMachinesById(String id) {
         logger.info("收到请求->获取设备数据,id:[{}]", id);
@@ -67,6 +81,22 @@ public class RestFulController extends BaseController {
         List<Machines> list = restFulService.getMachinesList();
         logger.info("返回结果->获取设备列表完成:[{}]", list);
         return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/saveMachinesInfo")
+    public ResponseDTO saveMachinesInfo(@RequestBody MachinesForm form) {
+        logger.info("收到请求->保存设备信息:[{}]", form);
+        restFulService.saveMachinesInfo(form);
+        logger.info("返回结果->保存设备信息完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/delMachinesById")
+    public ResponseDTO delMachinesById(String id) {
+        logger.info("收到请求->删除设备信息,id:[{}]", id);
+        restFulService.delMachinesById(id);
+        logger.info("返回结果->删除设备信息完成");
+        return ResponseDTO.returnSuccess("操作成功");
     }
 
 //

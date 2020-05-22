@@ -9,7 +9,7 @@ const routes = [
     {path: '/lineups-info', name: 'lineUpsInfo', component: httpVueLoader('/vue/manage/lineups-info.vue')},
 
     {path: '/rooms-list', name: 'roomsList', component: httpVueLoader('/vue/manage/rooms-list.vue')},
-
+    {path: '/machines-list', name: 'machinesList', component: httpVueLoader('/vue/manage/machines-list.vue')},
 
     {path: '/message-list', name: 'messageList', component: httpVueLoader('/vue/manage/message-list.vue')},
 

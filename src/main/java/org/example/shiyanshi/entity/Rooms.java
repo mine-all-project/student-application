@@ -1,14 +1,13 @@
 package org.example.shiyanshi.entity;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.shiyanshi.config.base.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.time.LocalDate;
 import java.util.List;
 
 

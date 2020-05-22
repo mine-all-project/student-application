@@ -9,13 +9,13 @@
 			</el-table-column>
 			<el-table-column label="操作" width="200">
 				<template slot-scope="scope">
-					<el-button type="primary" @click="edit(scope)" size="mini">编辑</el-button>
+					<el-button type="primary" @click="edit(scope)" size="mini">管理</el-button>
 					<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 
-		<el-drawer :visible.sync="drawer.show" :wrapperClosable="false" size="70%">
+		<el-drawer :visible.sync="drawer.show" :wrapperClosable="false" size="50%">
 			<div class="demo-drawer__content">
 				<el-form v-model="form">
 					<el-form-item label="名称" :label-width="formLabelWidth">
@@ -62,8 +62,9 @@
             this.getTableDataList()
         },
         methods: {
-            edit() {
+            edit(scope) {
                 this.drawer.show = true
+                this.getDataById(scope.row.id)
             },
             saveForm() {
                 const _this = this;
@@ -137,7 +138,7 @@
                 const _this = this;
                 const id = scope.row.id;
                 _this.$confirm('确认删除？').then(e => {
-                    axios.delete(`/manage/delDatabaseBakById?id=${id}`).then(response => {
+                    axios.delete(`/api/delRoomsById?id=${id}`).then(response => {
                         _this.getTableDataList();
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
@@ -166,8 +167,19 @@
                     console.error('请求出现错误:', error);
                 });
             },
-            getDataById() {
-
+            getDataById(id) {
+                const _this = this;
+                axios.get(`/api/getRoomsById?id=${id}`).then(response => {
+                    const result = response.data;
+                    console.log('通过api获取到的数据:', result);
+                    if (result.status !== 200) {
+                        this.$message.error('数据加载失败');
+                        return
+                    }
+                    _this.form = result.data;
+                }).catch(function (error) {
+                    console.log('请求出现错误:', error);
+                });
             },
 
         }
@@ -175,7 +187,4 @@
 </script>
 
 <style scoped>
-	.drawer-footer {
-		margin-left: 10px;
-	}
 </style>

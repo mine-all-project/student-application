@@ -1,7 +1,8 @@
 package org.example.shiyanshi.controller;
 
+import org.example.shiyanshi.config.base.BaseController;
 import org.example.shiyanshi.config.groups.IsLogin;
-import org.example.shiyanshi.dto.ResponseDTO;
+import org.example.shiyanshi.config.base.ResponseDTO;
 import org.example.shiyanshi.entity.DatabaseBak;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.ResetPasswordForm;
@@ -123,42 +124,6 @@ public class SysController extends BaseController {
         validator(form, IsLogin.class);
         sysService.resetPassword(form);
         logger.info("返回结果->重置用户密码结束");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
-    @RequestMapping("/getDatabaseBakList")
-    @ResponseBody
-    public ResponseDTO getDatabaseBakList() {
-        logger.info("收到请求->获取数据库备份列表");
-        List<DatabaseBak> list = sysService.getDatabaseBakList();
-        logger.info("返回结果->获取数据库备份列表完成:[{}]", list);
-        return ResponseDTO.returnSuccess("操作成功", list);
-    }
-
-    @RequestMapping("/addDatabaseBak")
-    @ResponseBody
-    public ResponseDTO addDatabaseBak() {
-        logger.info("收到请求->备份数据库");
-        sysService.addDatabaseBak();
-        logger.info("返回结果->备份数据库完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
-    @RequestMapping("/delDatabaseBakById")
-    @ResponseBody
-    public ResponseDTO delDatabaseBakById(String id) {
-        logger.info("收到请求->删除数据库备份,id:[{}]", id);
-        sysService.delDatabaseBakById(id);
-        logger.info("返回结果->删除数据库备份完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
-    @RequestMapping("/rollbackDatabaseBakById")
-    @ResponseBody
-    public ResponseDTO rollbackDatabaseBakById(String id) {
-        logger.info("收到请求->回滚数据库备份,id:[{}]", id);
-        sysService.rollbackDatabaseBakById(id);
-        logger.info("返回结果->回滚数据库备份完成");
         return ResponseDTO.returnSuccess("操作成功");
     }
 }

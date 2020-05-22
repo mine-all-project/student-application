@@ -3,6 +3,7 @@ package org.example.shiyanshi.entity;//package org.example.yaopin.entity;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.shiyanshi.config.base.BaseEntity;
 
 import javax.persistence.*;
 
