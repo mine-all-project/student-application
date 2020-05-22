@@ -12,7 +12,7 @@
 			</el-table-column>
 		</el-table>
 		<el-button type="primary" @click="drawerOpen(undefined)" size="mini">添加</el-button>
-		<el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer" size="70%">
+		<el-drawer :visible.sync="drawer.show" :wrapperClosable="false" size="50%">
 			<div class="demo-drawer__content">
 				<el-form v-model="form">
 					<el-form-item label="通知标题" :label-width="formLabelWidth">

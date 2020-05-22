@@ -1,80 +1,91 @@
-//package org.example.shiyanshi.service.impl;
-//
-//
-//import org.apache.shiro.SecurityUtils;
-//import org.apache.shiro.subject.Subject;
-//import org.example.shiyanshi.dao.*;
-//import org.example.shiyanshi.entity.*;
-//import org.example.shiyanshi.form.MessagesForm;
-//import org.example.shiyanshi.form.PurchasesForm;
-//import org.example.shiyanshi.form.SalesForm;
-//import org.example.shiyanshi.service.RestFulService;
-//import org.springframework.beans.BeanUtils;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service
-//public class RestFulServiceImpl implements RestFulService {
-//    public SysUser getUserInfo() {
-//        Subject subject = SecurityUtils.getSubject();
-//        SysUser user = (SysUser) subject.getPrincipal();
-//        String username = isDebug ? "user" : user.getUsername();
-//        return sysUserDAO.findByUsername(username);
-//    }
-//
-//    @Value("${isDebug}")
-//    private boolean isDebug;
-//    @Value("${filePath}")
-//    private String filePath;
-//    @Value("${virtualPath}")
-//    private String virtualPath;
-//    private final PurchasesDAO purchasesDAO;
-//    private final SysUserDAO sysUserDAO;
-//    private final GoodsDAO goodsDAO;
-//    private final MessageDAO messageDAO;
-//    private final SalesDAO salesDAO;
-//
-//    public RestFulServiceImpl(PurchasesDAO purchasesDAO, SysUserDAO sysUserDAO, GoodsDAO goodsDAO, MessageDAO messageDAO, SalesDAO salesDAO) {
-//        this.purchasesDAO = purchasesDAO;
-//        this.messageDAO = messageDAO;
-//        this.sysUserDAO = sysUserDAO;
-//        this.goodsDAO = goodsDAO;
-//        this.salesDAO = salesDAO;
-//    }
-//
-//    @Override
-//    public List<Purchases> getPurchasesList() {
-//        return purchasesDAO.findAll();
-//    }
-//
-//    @Override
-//    public List<Purchases> getPurchasesListByStatus() {
-//        return purchasesDAO.getPurchasesListByStatus();
-//    }
-//
+package org.example.shiyanshi.service.impl;
+
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.example.shiyanshi.config.ApplicationException;
+import org.example.shiyanshi.dao.*;
+import org.example.shiyanshi.entity.*;
+import org.example.shiyanshi.form.RoomsForm;
+import org.example.shiyanshi.service.RestFulService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class RestFulServiceImpl implements RestFulService {
+    public SysUser getUserInfo() {
+        Subject subject = SecurityUtils.getSubject();
+        SysUser user = (SysUser) subject.getPrincipal();
+        String username;
+        if (user == null) {
+            if (isDebug) {
+                username = "admin";
+            } else {
+                throw new ApplicationException("用户未登录");
+            }
+        } else {
+            username = user.getUsername();
+        }
+        return sysUserDAO.findByUsername(username);
+    }
+
+    @Value("${isDebug}")
+    private boolean isDebug;
+    @Value("${filePath}")
+    private String filePath;
+    @Value("${virtualPath}")
+    private String virtualPath;
+    private final LineUpsDAO lineUpsDAO;
+    private final SysUserDAO sysUserDAO;
+    private final RoomsDAO roomsDAO;
+    private final MachinesDAO machinesDAO;
+
+    public RestFulServiceImpl(LineUpsDAO lineUpsDAO, SysUserDAO sysUserDAO,
+                              RoomsDAO roomsDAO, MachinesDAO machinesDAO) {
+        this.lineUpsDAO = lineUpsDAO;
+        this.sysUserDAO = sysUserDAO;
+        this.roomsDAO = roomsDAO;
+        this.machinesDAO = machinesDAO;
+    }
+
+    @Override
+    public List<LineUps> getLineUpsListByUser() {
+        SysUser user = getUserInfo();
+        return lineUpsDAO.findAllByUser(user);
+    }
+
+    @Override
+    public List<Rooms> getRoomsList() {
+        return roomsDAO.getRoomsList();
+    }
+
+    @Override
+    public void saveRoomsInfo(RoomsForm form) {
+        Rooms rooms = new Rooms();
+        BeanUtils.copyProperties(form, rooms);
+        roomsDAO.saveData(rooms);
+    }
+
+    @Override
+    public Machines getMachinesById(String id) {
+        return machinesDAO.findById(id);
+    }
+
+    @Override
+    public List<Machines> getMachinesList() {
+        return machinesDAO.findAll();
+    }
+
+    //
 //    @Override
 //    public List<Purchases> getPurchasesListByStatusNot() {
 //        return purchasesDAO.getPurchasesListByStatusNot();
 //    }
-//
-//    @Override
-//    public Purchases getPurchasesById(String id) {
-//        return purchasesDAO.findById(id);
-//    }
-//
-//    @Override
-//    public void savePurchasesInfo(PurchasesForm form) {
-//        Purchases purchases = new Purchases();
-//        BeanUtils.copyProperties(form, purchases);
-//        Goods goods = purchases.getGoods();
-//        BeanUtils.copyProperties(purchases, goods);
-//        goods.setCounts(0L);
-//        purchases.setGoods(goodsDAO.saveData(goods));
-//        purchases.setStatus(0);
-//        purchasesDAO.saveData(purchases);
-//    }
+
 //
 //    @Override
 //    public void flagDelPurchasesById(String id) {
@@ -173,4 +184,4 @@
 //        sales.setStatus(1);
 //        salesDAO.saveData(sales);
 //    }
-//}
+}

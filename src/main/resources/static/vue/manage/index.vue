@@ -56,15 +56,27 @@
                     menu: [
                         {
                             id: '1',
-                            name: '实验室预约',
+                            name: '预约列表',
                             icon: 'el-icon-menu',
-                            url: '/demo'
+                            url: '/lineups-list'
                         },
                         {
                             id: '2',
-                            name: '用户管理',
+                            name: '发起预约',
                             icon: 'el-icon-menu',
-                            url: '/user-list'
+                            url: '/lineups-add'
+                        },
+                        {
+                            id: '3',
+                            name: '实训室列表',
+                            icon: 'el-icon-menu',
+                            url: '/rooms-list'
+                        },
+                        {
+                            id: '4',
+                            name: '设备列表',
+                            icon: 'el-icon-menu',
+                            url: '/machines-list'
                         },
                     ],
                     roleMenus: [

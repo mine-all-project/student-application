@@ -17,6 +17,8 @@ import javax.persistence.OneToOne;
 public class LineUps extends BaseEntity {
     @OneToOne
     private Rooms rooms;
+    @OneToOne
+    private SysUser user;
     @Column(columnDefinition = "varchar(32) comment '产品名称'")
     private String name;
     @Column(columnDefinition = "varchar(32) comment '供应商'")

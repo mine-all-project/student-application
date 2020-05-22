@@ -8,24 +8,20 @@ import java.util.List;
 
 @Repository
 /*
- * 预约DAO
+ * 实验室DAO
  */
-public class RoomsDAO {
+public class RoomsDAO extends BaseDAO {
     private final RoomsRepository roomsRepository;
 
     public RoomsDAO(RoomsRepository roomsRepository) {
         this.roomsRepository = roomsRepository;
     }
 
-    public Rooms saveData(Rooms rooms) {
-        return roomsRepository.saveAndFlush(rooms);
+    public List<Rooms> getRoomsList() {
+        return roomsRepository.findAll();
     }
 
-    public Rooms findDataById(String id) {
-        return roomsRepository.findById(id).orElse(null);
-    }
-
-    public List<Rooms> getAllByFlag() {
-        return roomsRepository.findAllByDelFlag(0);
+    public void saveData(Rooms rooms) {
+        roomsRepository.saveAndFlush(rooms);
     }
 }

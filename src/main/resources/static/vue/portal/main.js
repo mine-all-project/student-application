@@ -4,8 +4,13 @@ const routes = [
     {path: '/manage-index', name: 'manageIndex', component: httpVueLoader('/vue/manage/index.vue')},
     {path: '/welcome', name: 'welcome', component: httpVueLoader('/vue/manage/welcome.vue')},
 
-    {path: '/purchases-add', name: 'purchasesAdd', component: httpVueLoader('/vue/manage/purchases-add.vue')},
-    {path: '/purchases-list', name: 'purchasesList', component: httpVueLoader('/vue/manage/purchases-list.vue')},
+    {path: '/lineups-list', name: 'lineUpsList', component: httpVueLoader('/vue/manage/lineups-list.vue')},
+    {path: '/lineups-add', name: 'lineUpsAdd', component: httpVueLoader('/vue/manage/lineups-add.vue')},
+    {path: '/lineups-info', name: 'lineUpsInfo', component: httpVueLoader('/vue/manage/lineups-info.vue')},
+
+    {path: '/rooms-list', name: 'roomsList', component: httpVueLoader('/vue/manage/rooms-list.vue')},
+
+
     {path: '/message-list', name: 'messageList', component: httpVueLoader('/vue/manage/message-list.vue')},
 
     {path: '/goods-list', name: 'goodsList', component: httpVueLoader('/vue/manage/goods-list.vue')},

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -14,19 +15,21 @@ import javax.persistence.*;
  * 设备信息
  */
 public class Machines extends BaseEntity {
-//    @ManyToOne
-//    private Goods goods;
-//    @Column(columnDefinition = "int(10) not null comment '数量'")
-//    private Long counts;
-//    @Column(columnDefinition = "int(10) not null comment '临时库存'")
-//    private Long tempCount;
-//    @Column(columnDefinition = "tinyint(1) not null comment '状态标记 0:售出 1:退货'")
-//    private Integer type;
-//    @Column(columnDefinition = "tinyint(1) not null comment '状态标记 0:正常 1:已退'")
-//    private Integer status;
-//
-//    @Override
-//    public String toString() {
-//        return JSONObject.toJSONString(this);
-//    }
+    @ManyToMany
+    private List<LineUps> lineUps;
+    @ManyToOne
+    private Rooms rooms;
+    @Column(columnDefinition = "varchar(20) not null comment '设备名'")
+    private String name;
+    @Column(columnDefinition = "int(20) not null comment '预约次数'")
+    private Integer lineCount;
+    @Column(columnDefinition = "int(20) not null comment '运行时长'")
+    private Integer time;
+    @Column(columnDefinition = "int(10) not null comment '使用次数'")
+    private Integer useCount;
+
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
 }

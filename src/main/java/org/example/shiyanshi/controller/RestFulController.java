@@ -1,7 +1,13 @@
 package org.example.shiyanshi.controller;
 
-import org.example.shiyanshi.form.MessagesForm;
-import org.example.shiyanshi.form.PurchasesForm;
+import org.example.shiyanshi.config.groups.IsAdd;
+import org.example.shiyanshi.config.groups.IsEdit;
+import org.example.shiyanshi.config.groups.IsNotNull;
+import org.example.shiyanshi.dto.ResponseDTO;
+import org.example.shiyanshi.entity.LineUps;
+import org.example.shiyanshi.entity.Machines;
+import org.example.shiyanshi.entity.Rooms;
+import org.example.shiyanshi.form.RoomsForm;
 import org.example.shiyanshi.form.SalesForm;
 import org.example.shiyanshi.service.RestFulService;
 import org.slf4j.Logger;
@@ -22,21 +28,47 @@ public class RestFulController extends BaseController {
         this.restFulService = restFulService;
     }
 
-//    @RequestMapping("/getPurchasesList")
-//    public ResponseDTO getPurchasesList() {
-//        logger.info("收到请求->获取采购列表");
-//        List<Purchases> list = restFulService.getPurchasesList();
-//        logger.info("返回结果->获取采购列表完成:[{}]", list);
-//        return ResponseDTO.returnSuccess("操作成功", list);
-//    }
-//
-//    @RequestMapping("/getPurchasesListByStatus")
-//    public ResponseDTO getPurchasesListByStatus() {
-//        logger.info("收到请求->获取采购列表，条件->[status]");
-//        List<Purchases> list = restFulService.getPurchasesListByStatus();
-//        logger.info("返回结果->获取采购列表完成:[{}],条件->[status]", list);
-//        return ResponseDTO.returnSuccess("操作成功", list);
-//    }
+    @RequestMapping("/getLineUpsListByUser")
+    public ResponseDTO getLineUpsList() {
+        logger.info("收到请求->获取我的预约列表");
+        List<LineUps> list = restFulService.getLineUpsListByUser();
+        logger.info("返回结果-获取我的预约列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/getRoomsList")
+    public ResponseDTO getRoomsList() {
+        logger.info("收到请求->获取实验室列表");
+        List<Rooms> list = restFulService.getRoomsList();
+        logger.info("返回结果->获取实验室列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/saveRoomsInfo")
+    public ResponseDTO saveRoomsInfo(@RequestBody RoomsForm form) {
+        logger.info("收到请求->保存实验室信息:[{}]", form);
+        validator(form, IsNotNull.class);
+        restFulService.saveRoomsInfo(form);
+        logger.info("返回结果->保存实验室信息完成:[{}]", form);
+        return ResponseDTO.returnSuccess("操作成功", form);
+    }
+
+    @RequestMapping("/getMachinesById")
+    public ResponseDTO getMachinesById(String id) {
+        logger.info("收到请求->获取设备数据,id:[{}]", id);
+        Machines data = restFulService.getMachinesById(id);
+        logger.info("返回结果->获取设备数据完成:[{}]", data);
+        return ResponseDTO.returnSuccess("操作成功", data);
+    }
+
+    @RequestMapping("/getMachinesList")
+    public ResponseDTO getMachinesList() {
+        logger.info("收到请求->获取设备列表");
+        List<Machines> list = restFulService.getMachinesList();
+        logger.info("返回结果->获取设备列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
 //
 //    @RequestMapping("/getPurchasesListByStatusNot")
 //    public ResponseDTO getPurchasesListByStatusNot() {
@@ -45,23 +77,8 @@ public class RestFulController extends BaseController {
 //        logger.info("返回结果->获取采购列表完成:[{}],条件->[status]", list);
 //        return ResponseDTO.returnSuccess("操作成功", list);
 //    }
-//
-//    @GetMapping("/getPurchasesById")
-//    public ResponseDTO getPurchasesById(String id) {
-//        logger.info("收到请求->获取采购数据,id:[{}]", id);
-//        Purchases data = restFulService.getPurchasesById(id);
-//        logger.info("返回结果->获取采购数据完成:[{}]", data);
-//        return ResponseDTO.returnSuccess("操作成功", data);
-//    }
-//
-//    @RequestMapping("/savePurchasesInfo")
-//    public ResponseDTO savePurchasesInfo(@RequestBody PurchasesForm form) {
-//        logger.info("收到请求->保存采购信息:[{}]", form);
-//        validator(form, IsAdd.class, IsEdit.class);
-//        restFulService.savePurchasesInfo(form);
-//        logger.info("返回结果->保存采购信息完成:[{}]", form);
-//        return ResponseDTO.returnSuccess("操作成功", form);
-//    }
+
+
 //
 //    @DeleteMapping("/flagDelPurchasesById")
 //    public ResponseDTO flagDelPurchasesById(String id) {
