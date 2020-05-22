@@ -1,8 +1,5 @@
 package org.example.tuole;
 
-import com.alibaba.nacos.api.annotation.NacosProperties;
-import com.alibaba.nacos.spring.context.annotation.config.EnableNacosConfig;
-import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
