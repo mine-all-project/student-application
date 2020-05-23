@@ -72,7 +72,7 @@ public class RestFulServiceImpl implements RestFulService {
         try {
             roomsDAO.saveData(rooms);
         } catch (DataIntegrityViolationException e) {
-            throw new ApplicationException("不能重复指定设备");
+            throw new ApplicationException("选定的设备中有一个或多个设备已经归属于其他实验室，请检查后重试");
         }
     }
 
