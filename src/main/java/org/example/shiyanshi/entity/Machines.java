@@ -20,8 +20,10 @@ public class Machines extends BaseEntity {
     private List<LineUps> lineUps;
     @Column(columnDefinition = "varchar(20) not null comment '设备名'")
     private String name;
-    @Column(columnDefinition = "int(20) not null comment '运行时长'")
+    @Column(columnDefinition = "int(20) not null comment '单次运行时长'")
     private Integer time;
+    @Column(columnDefinition = "int(20) default 0 comment '总运行时长'")
+    private Integer timeCount;
     @Column(columnDefinition = "longtext comment '注意事项'")
     private String content;
     @Column(columnDefinition = "int(20) not null comment '预约次数'")

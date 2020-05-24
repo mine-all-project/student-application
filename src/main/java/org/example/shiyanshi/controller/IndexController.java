@@ -11,15 +11,18 @@ import org.example.shiyanshi.service.IndexService;
 import org.example.shiyanshi.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class IndexController extends BaseController {
     private final IndexService indexService;
+    private final SysService sysService;
 
-    public IndexController(IndexService indexService, SysService sysService) {
+    public IndexController(IndexService indexService, SysService sysService, SysService sysService1) {
         this.indexService = indexService;
+        this.sysService = sysService1;
     }
 
     private final Logger logger = LoggerFactory.getLogger(IndexController.class);
@@ -81,7 +84,7 @@ public class IndexController extends BaseController {
     @ResponseBody
     public ResponseDTO getUserInfo() {
         logger.info("收到请求->获取用户信息");
-        SysUser sysUser = indexService.getUserInfo();
+        SysUser sysUser = sysService.getUserInfo();
         logger.info("返回结果->获取用户信息结束:[{}]", sysUser);
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }

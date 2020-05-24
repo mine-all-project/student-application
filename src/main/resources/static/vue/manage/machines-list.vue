@@ -2,7 +2,8 @@
 	<el-row>
 		<el-table :data="tableData" stripe style="width: 100%" :height="400">
 			<el-table-column prop="name" label="设备名"></el-table-column>
-			<el-table-column prop="time" label="运行时长(分钟)"></el-table-column>
+			<el-table-column prop="time" label="单次运行时长(分钟)"></el-table-column>
+			<el-table-column prop="timeCount" label="总运行时长(分钟)"></el-table-column>
 			<el-table-column prop="lineCount" label="预约次数"></el-table-column>
 			<el-table-column prop="useCount" label="使用次数"></el-table-column>
 			<el-table-column label="操作" width="160">

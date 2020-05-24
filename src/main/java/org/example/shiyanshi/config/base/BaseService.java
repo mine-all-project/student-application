@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 public interface BaseService {
-    SysUser getUserInfo();
 
     default void logout() {
         Subject subject = SecurityUtils.getSubject();

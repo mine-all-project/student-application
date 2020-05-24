@@ -103,7 +103,6 @@
                     }
                     _this.tableData = result.data;
                     result.data.forEach(e => {
-                        console.log(e.reallyEndTime, new moment().format('YYYY-MM-DD HH:mm:ss'))
                         if (new moment() > new moment(e.reallyEndTime) && e.status === 1) {
                             this.endUse(e.id)
                         }

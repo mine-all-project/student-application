@@ -12,9 +12,11 @@ import org.example.shiyanshi.dao.SysUserDAO;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.UserForm;
 import org.example.shiyanshi.service.IndexService;
+import org.example.shiyanshi.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,22 +25,16 @@ import java.util.UUID;
 
 @Service
 public class IndexServiceImpl implements IndexService {
-    @Override
-    public SysUser getUserInfo() {
-        Subject subject = SecurityUtils.getSubject();
-        SysUser user = (SysUser) subject.getPrincipal();
-        String username = isDebug ? "user" : user.getUsername();
-        return sysUserDAO.findByUsername(username);
-    }
-
     @Value("${isDebug}")
     private boolean isDebug;
+    private final SysService sysService;
     private final SysUserDAO sysUserDAO;
     private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
     private final String salt;
 
 
-    public IndexServiceImpl(ApplicationConfigure applicationConfigure, SysUserDAO sysUserDAO) {
+    public IndexServiceImpl(SysService sysService, ApplicationConfigure applicationConfigure, SysUserDAO sysUserDAO) {
+        this.sysService = sysService;
         this.sysUserDAO = sysUserDAO;
         this.salt = applicationConfigure.SALT;
     }
@@ -92,7 +88,7 @@ public class IndexServiceImpl implements IndexService {
 
     @Override
     public void updateUserInfo(UserForm form) {
-        SysUser user = getUserInfo();
+        SysUser user = sysService.getUserInfo();
         String password = new Md5Hash(form.getPassword(), salt).toString();
         if (user == null) {
             throw new ApplicationException("用户尚未登陆");

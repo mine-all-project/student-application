@@ -8,38 +8,34 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.example.shiyanshi.config.ApplicationConfigure;
 import org.example.shiyanshi.config.ApplicationException;
-import org.example.shiyanshi.dao.DatabaseBakDAO;
 import org.example.shiyanshi.dao.SysUserDAO;
 import org.example.shiyanshi.config.base.ResponseDTO;
-import org.example.shiyanshi.entity.DatabaseBak;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.ResetPasswordForm;
 import org.example.shiyanshi.form.UserForm;
 import org.example.shiyanshi.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class SysServiceImpl implements SysService {
-    private static final String CODE_KEY = "CODE:";
-    private static final String CODE_TEMP = "CODE:TEMP:";
     private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
     private final String salt;
     private final SysUserDAO sysUserDAO;
-    private final DatabaseBakDAO databaseBakDAO;
 
 
-    public SysServiceImpl(ApplicationConfigure applicationConfigure, SysUserDAO sysUserDAO, DatabaseBakDAO databaseBakDAO) {
+    public SysServiceImpl(ApplicationConfigure applicationConfigure, SysUserDAO sysUserDAO) {
         this.salt = applicationConfigure.SALT;
         this.sysUserDAO = sysUserDAO;
-        this.databaseBakDAO = databaseBakDAO;
     }
+
+    @Value("${isDebug}")
+    private boolean isDebug;
 
     @Override
     public ResponseDTO login(UserForm form) {
@@ -106,6 +102,15 @@ public class SysServiceImpl implements SysService {
     }
 
     @Override
+    public SysUser getUserInfo() {
+        Subject subject = SecurityUtils.getSubject();
+        SysUser user = (SysUser) subject.getPrincipal();
+        String username = isDebug ? "user" : user.getUsername();
+        return sysUserDAO.findByUsername(username);
+    }
+
+
+    @Override
 //    @RequiresPermissions("manage")
     public void changeStatus(String id) {
         SysUser sysUser = sysUserDAO.findById(id);
@@ -163,78 +168,4 @@ public class SysServiceImpl implements SysService {
         user.setPassword(password);
         sysUserDAO.saveAndFlush(user);
     }
-
-    @Override
-    public List<DatabaseBak> getDatabaseBakList() {
-        return databaseBakDAO.getAll();
-    }
-
-    @Override
-    public void addDatabaseBak() {
-        try {
-            String filePath = "d:/sqlbak/" + System.currentTimeMillis() + ".sql";
-            databaseBak(filePath);
-            DatabaseBak bak = new DatabaseBak();
-            bak.setFilePath(filePath);
-            databaseBakDAO.saveAndFlush(bak);
-        } catch (Exception e) {
-            logger.warn("数据库备份异常:", e);
-            throw new ApplicationException(e.getMessage());
-        }
-    }
-
-    @Override
-    public void delDatabaseBakById(String id) {
-        try {
-            String filePath = databaseBakDAO.findById(id).getFilePath();
-            File file = new File(filePath);
-            if (file.exists()) {
-                if (file.delete()) {
-                    databaseBakDAO.deleteById(id);
-                    return;
-                }
-            }
-            throw new ApplicationException("备份删除失败");
-        } catch (Exception e) {
-            logger.warn("备份删除失败:", e);
-            throw new ApplicationException(e.getMessage());
-
-        }
-
-
-    }
-
-    @Override
-    public void rollbackDatabaseBakById(String id) {
-        DatabaseBak bak = databaseBakDAO.findById(id);
-        if (bak == null) {
-            throw new ApplicationException("备份信息异常");
-        }
-        try {
-            String filePath = bak.getFilePath();
-            databaseRollback(filePath);
-        } catch (Exception e) {
-            logger.warn("数据库还原异常:", e);
-            throw new ApplicationException(e.getMessage());
-        }
-    }
-
-    private void databaseBak(String filePath) throws IOException {
-        String username = "root";
-        String password = "root";
-        String databaseName = "yaopin";
-        String command = "cmd /c mysqldump -u " + username + " -p" + password + " " + databaseName + " > " + filePath;
-        Process exec = Runtime.getRuntime().exec(command);
-        System.err.println(command);
-    }
-
-    private void databaseRollback(String filePath) throws IOException {
-        String username = "root";
-        String password = "root";
-        String databaseName = "yaopin";
-        String command = "cmd /c mysql -u " + username + " -p" + password + " " + databaseName + " < " + filePath;
-        Process exec = Runtime.getRuntime().exec(command);
-        System.err.println(command);
-    }
-
 }

@@ -11,7 +11,7 @@
 					<el-dropdown-item><span @click="logout">退出登录</span></el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
-			<span>王小虎</span>
+			<span>{{userInfo.name}}</span>
 		</el-header>
 		<el-container>
 			<el-aside width="200px" style="background-color: rgb(238, 241, 246)">
@@ -78,6 +78,13 @@
                             icon: 'el-icon-menu',
                             url: '/machines-list'
                         },
+                        {
+                            id: '3-1',
+                            name: '用户列表',
+                            icon: 'el-icon-menu',
+                            url: '/user-list'
+                        }
+
                     ],
                     roleMenus: [
                         [
@@ -393,7 +400,7 @@
             };
         },
         mounted() {
-            // this.getUserInfo()
+            this.getUserInfo()
             router.push('/demo')
             // this.menus.menu = this.roleMenus[]
             // this.menus.menu = this.menus.storageMenu

@@ -2,7 +2,6 @@ package org.example.shiyanshi.service;
 
 
 import org.example.shiyanshi.config.base.ResponseDTO;
-import org.example.shiyanshi.entity.DatabaseBak;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.ResetPasswordForm;
 import org.example.shiyanshi.form.UserForm;
@@ -21,6 +20,8 @@ public interface SysService {
 
     List<SysUser> getUserList();
 
+    SysUser getUserInfo();
+
     void changeStatus(String id);
 
     void removeUserById(String id);
@@ -33,11 +34,4 @@ public interface SysService {
 
     void resetPassword(ResetPasswordForm form);
 
-    List<DatabaseBak> getDatabaseBakList();
-
-    void addDatabaseBak();
-
-    void delDatabaseBakById(String id);
-
-    void rollbackDatabaseBakById(String id);
 }

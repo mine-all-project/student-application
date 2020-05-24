@@ -69,7 +69,7 @@ public class RestFulServiceImpl implements RestFulService {
         Machines machines = new Machines();
         BeanUtils.copyProperties(lineUps.getMachines(), machines);
         if (machinesDAO.findById(machines.getId()).getStatus() == 1) {
-            throw new ApplicationException("改设备已被预约");
+            throw new ApplicationException("该设备已被预约");
         }
         machines.setStatus(1);
         machines.setLineCount(machines.getLineCount() + 1);
@@ -97,6 +97,7 @@ public class RestFulServiceImpl implements RestFulService {
         Machines machines = lineUps.getMachines();
         int time = machines.getTime();
         machines.setUseCount(machines.getUseCount() + 1);
+        machines.setTimeCount(machines.getTimeCount() + machines.getTime());
         lineUps.setStatus(1);
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = startTime.plusMinutes(time);
@@ -165,100 +166,4 @@ public class RestFulServiceImpl implements RestFulService {
     public void delMachinesById(String id) {
         machinesDAO.delById(id);
     }
-
-    //
-//    @Override
-//    public List<Purchases> getPurchasesListByStatusNot() {
-//        return purchasesDAO.getPurchasesListByStatusNot();
-//    }
-
-//
-//    @Override
-//    public void flagDelPurchasesById(String id) {
-//        Goods goods = purchasesDAO.findById(id).getGoods();
-//        goods.setDelFlag(1);
-//        goodsDAO.saveData(goods);
-//        purchasesDAO.flagDelById(id);
-//    }
-//
-//    @Override
-//    public List<Goods> getGoodsListByFlag() {
-//        return goodsDAO.getAllByFlag();
-//    }
-
-//
-//    @Override
-//    public void reduceGoodsCountsById(String id) {
-//        Purchases purchases = purchasesDAO.findById(id);
-//        Goods goods = purchases.getGoods();
-//        goods.setCounts(0L);
-//        goodsDAO.saveData(goods);
-//        purchases.setStatus(0);
-//        purchasesDAO.saveData(purchases);
-//    }
-//
-//    @Override
-//    public void saveMessages(MessagesForm form) {
-//        Messages messages = new Messages();
-//        BeanUtils.copyProperties(form, messages);
-//        messages.setFormAs(getUserInfo());
-//        messages.setStatus(0);
-//        messageDAO.saveData(messages);
-//    }
-//
-//    @Override
-//    public List<Messages> getMessageList() {
-//        SysUser user = getUserInfo();
-//        String role = user.getRole();
-//        return messageDAO.findByToAsIn(role);
-//    }
-//
-//    @Override
-//    public Messages getMessagesById(String id) {
-//        Messages messages = messageDAO.findById(id);
-//        String objectId = messages.getObjectId();
-//        switch (messages.getType()) {
-//            case 0: {
-//                Goods goods = goodsDAO.findDataById(objectId);
-//                messages.setContent(goods.getName() + "缺货");
-//                break;
-//            }
-//            case 1: {
-//                Goods goods = goodsDAO.findDataById(objectId);
-//                messages.setContent(goods.getName() + "报损");
-//                break;
-//            }
-//        }
-//        messages.setStatus(1);
-//        messageDAO.saveData(messages);
-//        return messages;
-//    }
-//
-//    @Override
-//    public List<Sales> getSalesList() {
-//        return salesDAO.getAll();
-//    }
-//
-//    @Override
-//    public void addSalesInfo(SalesForm form) {
-//        Goods goods = goodsDAO.findDataById(form.getGoodsId());
-//        goods.setCounts(goods.getCounts() - form.getCounts());
-//        Sales sales = new Sales();
-//        BeanUtils.copyProperties(form, sales);
-//        sales.setTempCount(goods.getCounts());
-//        sales.setGoods(goods);
-//        sales.setStatus(0);
-//        salesDAO.saveData(sales);
-//    }
-//
-//    @Override
-//    public void reduceSalesInfo(String id) {
-//        Sales sales = salesDAO.findById(id);
-//        Goods goods = sales.getGoods();
-//        goods.setCounts(goods.getCounts() + sales.getCounts());
-//        goodsDAO.saveData(goods);
-//        sales.setGoods(goods);
-//        sales.setStatus(1);
-//        salesDAO.saveData(sales);
-//    }
 }

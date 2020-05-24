@@ -4,7 +4,7 @@
 			<el-table-column prop="name" label="名称"></el-table-column>
 			<el-table-column prop="filePath" label="设备信息">
 				<template slot-scope="scope">
-					<el-button type="primary" @click="remove(scope)" size="mini">查看详情</el-button>
+					<el-button type="primary" @click="showMachines(scope)" size="mini">查看详情</el-button>
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" width="200">
@@ -15,7 +15,7 @@
 			</el-table-column>
 		</el-table>
 
-		<el-drawer :visible.sync="drawer.show" :wrapperClosable="false" size="80%">
+		<el-drawer :visible.sync="show.drawer" :wrapperClosable="false" size="80%">
 			<el-form v-model="form">
 				<el-form-item label="名称" :label-width="formLabelWidth">
 					<el-input v-model="form.name" autocomplete="off" style="width: 30%" size="mini"></el-input>
@@ -31,6 +31,17 @@
 				</el-form-item>
 			</el-form>
 		</el-drawer>
+
+		<el-dialog title="设备信息" :visible.sync="show.dialog" width="80%">
+			<el-table :data="machinesData">
+				<el-table-column property="name" label="设备名"></el-table-column>
+				<el-table-column property="time" label="单次运行时长"></el-table-column>
+				<el-table-column property="timeCount" label="总运行时长"></el-table-column>
+				<el-table-column property="lineCount" label="总预约次数"></el-table-column>
+				<el-table-column property="useCount" label="总使用次数"></el-table-column>
+				<el-table-column property="updateTime" label="最后使用时间"></el-table-column>
+			</el-table>
+		</el-dialog>
 		<div style="margin-top: 10px">
 			<el-button type="primary" @click="addRooms()" size="mini">添加实训室</el-button>
 		</div>
@@ -43,6 +54,7 @@
             return {
                 formLabelWidth: '80px',
                 tableData: [],
+                machinesData: [],
                 machines: [],
                 machinesList: [],
                 form: {
@@ -51,17 +63,22 @@
                     machines: [],
                     createTime: '',
                 },
-                drawer: {
-                    show: false,
-                },
+                show: {
+                    drawer: false,
+                    dialog: false
+                }
             };
         },
         mounted() {
             this.getTableDataList()
         },
         methods: {
+            showMachines(scope) {
+                this.machinesData = scope.row.machines
+                this.show.dialog = true
+            },
             edit(scope) {
-                this.drawer.show = true
+                this.show.drawer = true
                 this.getDataById(scope.row.id)
                 this.getMachinesList()
             },
@@ -179,7 +196,7 @@
                         return
                     }
                     _this.$message.success(result.message);
-                    _this.drawer.show = false;
+                    _this.show.drawer = false;
                     _this.getTableDataList()
                 }).catch(function (error) {
                     window.location.reload();
@@ -187,7 +204,7 @@
                 });
             },
             formClose() {
-                this.drawer.show = false;
+                this.show.drawer = false;
                 this.getTableDataList();
             },
         }

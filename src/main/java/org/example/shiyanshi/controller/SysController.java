@@ -3,7 +3,6 @@ package org.example.shiyanshi.controller;
 import org.example.shiyanshi.config.base.BaseController;
 import org.example.shiyanshi.config.groups.IsLogin;
 import org.example.shiyanshi.config.base.ResponseDTO;
-import org.example.shiyanshi.entity.DatabaseBak;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.ResetPasswordForm;
 import org.example.shiyanshi.form.UserForm;
@@ -39,7 +38,7 @@ public class SysController extends BaseController {
     @PostMapping("/registryCheck")
     @ResponseBody
     public ResponseDTO registryCheck(@RequestBody Map<String, String> map) {
-//        super.validator(form, IsLogin.class);
+//        super.validator(form, IsAdd.class);
         logger.info("收到请求->用户注册[{}]", map);
         SysUser sysUser = sysService.registry(map);
         logger.info("注册验证结束->用户信息:[{}]", sysUser);

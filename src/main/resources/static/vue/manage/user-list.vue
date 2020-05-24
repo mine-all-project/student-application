@@ -7,16 +7,15 @@
 			<el-table-column prop="phone" label="手机号"></el-table-column>
 			<el-table-column prop="role" label="角色">
 				<template slot-scope="scope">
-					<el-tag type="success" effect="plain" v-if="scope.row.role === '0'">管理员</el-tag>
-					<el-tag type="primary" effect="plain" v-if="scope.row.role === '1'">采购员</el-tag>
-					<el-tag type="warning" effect="plain" v-if="scope.row.role === '2'">库存员</el-tag>
-					<el-tag type="info" effect="plain" v-if="scope.row.role === '3'">销售员</el-tag>
+					<el-tag size="mini" type="success" effect="plain" v-if="scope.row.role === '0'">管理员</el-tag>
+					<el-tag size="mini" type="primary" effect="plain" v-if="scope.row.role === '1'">学生</el-tag>
+					<el-tag size="mini" type="warning" effect="plain" v-if="scope.row.role === '2'">教师</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column label="状态">
 				<template slot-scope="scope">
-					<el-tag :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
-					<el-tag :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
+					<el-tag size="mini" :key="scope.row.id" type="success" effect="plain" v-if="scope.row.status === 0">正常</el-tag>
+					<el-tag size="mini" :key="scope.row.id" type="danger" effect="plain" v-else>禁用</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column label="操作" width="350">
@@ -26,7 +25,7 @@
 						<el-button type="success" @click="changeStatus(scope)" size="mini" v-else>启用</el-button>
 					</template>
 					<el-button type="primary" @click="remove(scope)" size="mini" v-if="!scope.row.admin">删除</el-button>
-					<el-button type="primary" @click="edit(scope)" size="mini">编辑</el-button>
+					<el-button type="primary" @click="edit(scope)" size="mini" v-if="!scope.row.admin">编辑</el-button>
 					<el-button type="primary" @click="changePassword(scope)" size="mini">修改密码</el-button>
 				</template>
 			</el-table-column>
@@ -48,9 +47,8 @@
 					</el-form-item>
 					<el-form-item label="用户权限" :label-width="formLabelWidth">
 						<el-radio-group v-model="form.role">
-							<el-radio label="1">采购员</el-radio>
-							<el-radio label="2">库存员</el-radio>
-							<el-radio label="3">销售员</el-radio>
+							<el-radio label="1">学生</el-radio>
+							<el-radio label="2">教师</el-radio>
 						</el-radio-group>
 					</el-form-item>
 				</el-form>
@@ -142,10 +140,10 @@
                         const result = response.data;
                         console.log('通过api获取到的数据:', result);
                         if (result.status !== 200) {
-                            _this.$message.error('数据加载失败');
+                            _this.$message.error(result.message);
                             return
                         }
-                        _this.$message.success('操作成功')
+                        _this.$message.success(result.message)
                     }).catch(function (error) {
                         _this.getTableDataList();
                         console.log('请求出现错误:', error);
@@ -158,7 +156,7 @@
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
+                        this.$message.error(result.message);
                         return;
                     }
                     _this.tableData = result.data;
@@ -184,7 +182,7 @@
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
+                        this.$message.error(result.message);
                         return
                     }
                     _this.form = result.data;
@@ -203,7 +201,7 @@
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
+                        this.$message.error(result.message);
                         return
                     }
                     _this.$message.success('操作成功');
