@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+// 注解
 @Controller
 public class IndexController extends BaseController {
     final
@@ -35,32 +36,56 @@ public class IndexController extends BaseController {
         return PAGE + dir + "/" + pageName;
     }
 
+    /**
+     * 进入首页
+     * @return
+     */
     @RequestMapping("/")
     public String index() {
         return "/index";
     }
 
+    /**
+     * 进入首页
+     * @return
+     */
     @RequestMapping("/index")
     public String toIndex() {
         return "/index";
     }
 
+    /**
+     * 进入登录页面
+     * @return
+     */
     @RequestMapping("/login")
     public String toLogin() {
         return "login";
     }
 
+    /**
+     * 进入注册页面
+     * @return
+     */
     @RequestMapping("/registry")
     public String registry() {
         return "registry";
     }
 
+    /**
+     * 退出登录
+     * @return
+     */
     @RequestMapping("/logOut")
     public String logOut() {
         indexService.logOut();
         return "/index";
     }
 
+    /**
+     * 获取用户信息
+     * @return
+     */
     @RequestMapping("/getUserInfo")
     @ResponseBody
     public ResponseDTO getUserInfo() {

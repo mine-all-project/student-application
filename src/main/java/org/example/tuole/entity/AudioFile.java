@@ -10,6 +10,9 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
+/**
+ * 媒体文件表
+ */
 public class AudioFile extends BaseEntity {
     private String title;
     @Column(columnDefinition = "longtext")

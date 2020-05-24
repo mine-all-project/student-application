@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Set;
-
+//公共     抽象    类    名字
 public abstract class BaseController {
-    private Logger logger = LoggerFactory.getLogger(BaseController.class);
+    private final Logger logger = LoggerFactory.getLogger(BaseController.class);
     @Autowired
     private Validator validator;
 

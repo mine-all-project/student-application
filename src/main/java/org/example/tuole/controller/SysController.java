@@ -17,8 +17,8 @@ import java.util.Map;
 @RequestMapping("/manage")
 public class SysController extends BaseController {
 
-    private Logger logger = LoggerFactory.getLogger(SysController.class);
-    private SysService sysService;
+    private final Logger logger = LoggerFactory.getLogger(SysController.class);
+    private final SysService sysService;
     private static final String MANAGE = "manage/";
 
     public SysController(SysService sysService) {
@@ -31,6 +31,11 @@ public class SysController extends BaseController {
         return MANAGE + pageName;
     }
 
+    /**
+     * 发送验证码
+     * @param mail
+     * @return
+     */
     @GetMapping("/getCodeByMail/{mail}")
     @ResponseBody
     public ResponseDTO getCodeByMail(@PathVariable("mail") String mail) {
@@ -39,6 +44,11 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess("验证码下发成功");
     }
 
+    /**
+     * 用户注册
+     * @param map
+     * @return
+     */
     @PostMapping("/registryCheck")
     @ResponseBody
     public ResponseDTO registryCheck(@RequestBody Map<String, String> map) {
@@ -50,7 +60,7 @@ public class SysController extends BaseController {
     }
 
     /**
-     * 发起登录请求
+     * 用户登录
      *
      * @param form 用户名和密码
      * @return 登录成功返回token

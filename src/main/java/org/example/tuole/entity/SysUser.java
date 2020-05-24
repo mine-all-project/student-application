@@ -17,6 +17,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+/**
+ * 用户表
+ */
 public class SysUser extends BaseEntity {
     public SysUser() {}
     public SysUser(String name, Integer age) {

@@ -14,6 +14,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+/**
+ * 订单表
+ */
 public class Orders extends BaseEntity {
 
     private String keyword;

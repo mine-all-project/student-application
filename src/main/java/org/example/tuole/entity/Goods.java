@@ -11,6 +11,9 @@ import java.math.BigDecimal;
 @Entity
 @Getter
 @Setter
+/**
+ * 商品表
+ */
 public class Goods extends BaseEntity {
     private String name;
     private BigDecimal sale;

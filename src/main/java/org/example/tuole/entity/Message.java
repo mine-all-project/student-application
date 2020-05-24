@@ -16,6 +16,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+/**
+ * 留言表
+ */
 public class Message extends BaseEntity{
     private Integer area;
     private Integer level;
