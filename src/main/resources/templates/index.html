@@ -70,7 +70,21 @@
 <div data-th-include="/base/page :: footer"></div>
 <div data-th-include="/base/page :: javascript"></div>
 <script>
+    /*
+    let user = {
+        name: '小明',
+        age: 19,
+        eat: function () {
+            console.log('eat apple')
+        }
+    }
+    user.name
+    user.eat()
+    */
+
+    //一般在所有的编程语言中"."表示取某内部的元素(没有括号的是取属性，有括号的就是调用函数)
     let vue = new Vue({
+        //当前Vue实例作用的范围(在page-index这个div内，超出范围后不生效)
         el: '#page-index',
         data() {
             return {
@@ -79,14 +93,33 @@
                 userInfo: null,
             }
         },
+        //这是一个函数，在vue加载完成之后会自动的执行这个函数
         mounted() {
+            //这个this表示的就是当前这个Vue实例，调用名字叫做getVideo的函数
             this.getVideo()
             this.getUserInfo()
         },
+        //这是一个对象（相当于是一个容器），里面存的是一些函数(方法)
         methods: {
             getVideo() {
+                /*
+			                let a = 1 //定义了一个名字叫做a的变量，值为1（变量的值可以在后期修改）
+							            a = 3
+							            const b = 2 //定义了一个名字叫做b的常量，值为2（常量的值不可以修改）
+							            b = 4
+				            */
                 const _this = this
-                axios.get('/api/getAudioFile/video').then(response => {
+                //使用axios向'/api/getAudioFile/video'发送一个get请求，如果请求被成功处理了
+                //就会执行then()函数，then函数需要一个函数作为参数，这个函数也有一个参数(response)
+                //这个response就是处理完成之后返回的结果
+                //定义一个名字叫做result的常量来接收返回的数据
+                //判断处理结果时候正常，如果result.status 不等于200 就显示一个错误信息，并且结束本次网络请求
+                //如果result.status 等于200 ，就把 _this.video的值改为处理之后返回的结果，这样页面就会被局部刷新。
+                //如果这次get请求没有被正确的接收或者处理，就会进入到cache()函数里面
+                //cache函数也需要一个函数作为参数，这个函数也有一个参数(error)这里面包含了详细的错误信息
+                //把错误信息打印显示出来，可以方便开发者快速的定位问题
+                axios.get('/api/getAudioFile/video').then(function (response) {
+                    // axios.get('/api/getAudioFile/video').then(response => {
                     const result = response.data
                     console.log('通过api获取到的数据:', result)
                     if (result.status !== 200) {
@@ -100,15 +133,13 @@
                 });
             },
             getUserInfo() {
+                //选择登陆和退出按钮的DIV并且隐藏
                 let login = document.querySelector('#login')
                 let logout = document.querySelector('#logout')
                 login.style.display = "none";
                 logout.style.display = "none";
-                console.log(login)
-                console.log(logout)
 
                 axios.get('getUserInfo').then(response => {
-
                     const result = response.data
                     console.log('通过api获取到的数据:', result)
                     if (result.status !== 200) {
@@ -116,9 +147,13 @@
                         return
                     }
                     this.userInfo = result.data
+                    //  0、-0、0.0、null、""、false、undefined、NaN(Not a Number) 这几个为假,其余为真
+                    // 判断用户信息是否存在
                     if (!result.data) {
+                        //如果不存在就把登录按钮显示出来
                         login.style.display = "block";
                     } else {
+                        //否则就把退出按钮显示出来
                         logout.style.display = "block";
                     }
                 }).catch(function (error) {
