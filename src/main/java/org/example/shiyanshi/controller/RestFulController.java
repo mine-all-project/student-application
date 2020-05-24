@@ -42,7 +42,30 @@ public class RestFulController extends BaseController {
         validator(form, IsAdd.class);
         logger.info("收到请求->保存预约信息:[{}]", form);
         restFulService.saveLineUps(form);
-        logger.info("返回结果保存预约信息完成");
+        logger.info("返回结果->保存预约信息完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/closeLineUpsById")
+    public ResponseDTO closeLineUpsById(String id) {
+        logger.info("收到请求->关闭预约,id:[{}]", id);
+        restFulService.closeLineUpsById(id);
+        logger.info("返回结果->关闭预约完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @RequestMapping("/startLineUpsById")
+    public ResponseDTO startLineUpsById(String id) {
+        logger.info("收到请求->开始使用,id:[{}]", id);
+        restFulService.startLineUpsById(id);
+        logger.info("返回结果->开始使用完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+    @RequestMapping("/endLineUpsById")
+    public ResponseDTO endLineUpsById(String id) {
+        logger.info("收到请求->结束使用,id:[{}]", id);
+        restFulService.endLineUpsById(id);
+        logger.info("返回结果->结束使用完成");
         return ResponseDTO.returnSuccess("操作成功");
     }
 

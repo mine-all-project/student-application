@@ -29,4 +29,7 @@ public class LineUpsDAO extends BaseDAO {
         lineUpsRepository.saveAndFlush(lineUps);
     }
 
+    public LineUps findById(String id) {
+        return lineUpsRepository.findById(id).orElse(new LineUps());
+    }
 }

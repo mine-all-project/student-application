@@ -13,9 +13,9 @@ import org.example.shiyanshi.service.RestFulService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -72,9 +72,47 @@ public class RestFulServiceImpl implements RestFulService {
             throw new ApplicationException("改设备已被预约");
         }
         machines.setStatus(1);
+        machines.setLineCount(machines.getLineCount() + 1);
         machinesDAO.saveData(machines);
+        lineUps.setMachines(machines);
         lineUps.setStatus(0);
         lineUps.setUser(user);
+        lineUpsDAO.saveData(lineUps);
+    }
+
+    @Override
+    public void closeLineUpsById(String id) {
+        LineUps lineUps = lineUpsDAO.findById(id);
+        Machines machines = lineUps.getMachines();
+        machines.setStatus(0);
+        machinesDAO.saveData(machines);
+        lineUps.setMachines(machines);
+        lineUps.setStatus(3);
+        lineUpsDAO.saveData(lineUps);
+    }
+
+    @Override
+    public void startLineUpsById(String id) {
+        LineUps lineUps = lineUpsDAO.findById(id);
+        Machines machines = lineUps.getMachines();
+        int time = machines.getTime();
+        machines.setUseCount(machines.getUseCount() + 1);
+        lineUps.setStatus(1);
+        LocalDateTime startTime = LocalDateTime.now();
+        LocalDateTime endTime = startTime.plusMinutes(time);
+        lineUps.setReallyStartTime(startTime);
+        lineUps.setReallyEndTime(endTime);
+        lineUpsDAO.saveData(lineUps);
+    }
+
+    @Override
+    public void endLineUpsById(String id) {
+        LineUps lineUps = lineUpsDAO.findById(id);
+        Machines machines = lineUps.getMachines();
+        machines.setStatus(0);
+        machinesDAO.saveData(machines);
+        lineUps.setMachines(machines);
+        lineUps.setStatus(2);
         lineUpsDAO.saveData(lineUps);
     }
 

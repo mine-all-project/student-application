@@ -57,8 +57,10 @@
                 formLabelWidth: '80px',
             };
         },
-        mounted() {
+        activated() {
             this.getTableDataList()
+        },
+        mounted() {
         },
         methods: {
             remove(scope) {

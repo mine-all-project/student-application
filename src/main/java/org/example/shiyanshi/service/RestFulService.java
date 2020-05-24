@@ -15,6 +15,9 @@ import java.util.List;
 public interface RestFulService extends BaseService {
     List<LineUps> getLineUpsListByUser();
     void saveLineUps(LineUpsForm form);
+    void closeLineUpsById(String id);
+    void startLineUpsById(String id);
+    void endLineUpsById(String id);
 
     List<Rooms> getRoomsList();
     void saveRoomsInfo(RoomsForm form);

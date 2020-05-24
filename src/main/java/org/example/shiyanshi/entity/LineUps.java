@@ -28,9 +28,11 @@ public class LineUps extends BaseEntity {
     @Column(columnDefinition = "varchar(32) comment '结束时间'")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime reallyStartTime;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime reallyEndTime;
-    @Column(columnDefinition = "tinyint(2) default 0 not null comment '状态标记 0:未开始 1:已开始 2:已结束'")
+    @Column(columnDefinition = "tinyint(2) default 0 not null comment '状态标记 0:未开始 1:已开始 2:已结束 3:已取消'")
     private Integer status;
 
     @Override
