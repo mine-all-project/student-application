@@ -28,6 +28,8 @@ public class Machines extends BaseEntity {
     private Integer lineCount;
     @Column(columnDefinition = "int(10) not null comment '使用次数'")
     private Integer useCount;
+    @Column(columnDefinition = "tinyint(1) not null default 0 comment '状态标记 0:正常 1:已被预约'")
+    private Integer status;
 
     @Override
     public String toString() {

@@ -1,6 +1,7 @@
 package org.example.shiyanshi.entity;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.shiyanshi.config.base.BaseEntity;
@@ -8,6 +9,7 @@ import org.example.shiyanshi.config.base.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,18 +19,18 @@ import javax.persistence.OneToOne;
  */
 public class LineUps extends BaseEntity {
     @OneToOne
-    private Rooms rooms;
+    private Machines machines;
     @OneToOne
     private SysUser user;
-    @Column(columnDefinition = "varchar(32) comment '产品名称'")
-    private String name;
-    @Column(columnDefinition = "varchar(32) comment '供应商'")
-    private String supply;
-    @Column(columnDefinition = "varchar(32) comment '联系电话'")
-    private String phone;
-    @Column(columnDefinition = "int(10) comment '数量'")
-    private Long counts;
-    @Column(columnDefinition = "tinyint(1) default 0 not null comment '状态标记 0:未入库 1:已入库'")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    @Column(columnDefinition = "varchar(32) comment '开始时间'")
+    private LocalDateTime startTime;
+    @Column(columnDefinition = "varchar(32) comment '结束时间'")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime endTime;
+    private LocalDateTime reallyStartTime;
+    private LocalDateTime reallyEndTime;
+    @Column(columnDefinition = "tinyint(2) default 0 not null comment '状态标记 0:未开始 1:已开始 2:已结束'")
     private Integer status;
 
     @Override

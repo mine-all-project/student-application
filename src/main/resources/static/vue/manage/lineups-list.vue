@@ -1,17 +1,25 @@
 <template>
 	<el-row>
-		<el-table :data="tableData" stripe style="width: 100%" height="100%">
+		<el-table :data="tableData" stripe style="width: 100%" :height="400">
 			<el-table-column prop="createTime" label="预约时间"></el-table-column>
-			<el-table-column prop="filePath" label="开始时间"></el-table-column>
-			<el-table-column prop="filePath" label="结束时间"></el-table-column>
-			<el-table-column prop="filePath" label="状态"></el-table-column>
+			<el-table-column prop="startTime" label="开始时间"></el-table-column>
+			<el-table-column prop="endTime" label="结束时间"></el-table-column>
+			<el-table-column prop="user.name" label="预约人"></el-table-column>
+			<el-table-column prop="status" label="状态">
+				<template slot-scope="scope">
+					<el-tag size="small" v-if="scope.row.status === 0">未开始</el-tag>
+					<el-tag size="small" v-if="scope.row.status === 1">使用中</el-tag>
+					<el-tag size="small" v-if="scope.row.status === 2">已结束</el-tag>
+					<el-tag size="small" v-if="scope.row.status === 4">已取消</el-tag>
+				</template>
+			</el-table-column>
 			<el-table-column label="操作" width="200">
 				<template slot-scope="scope">
-					<el-button type="danger" @click="remove(scope)" size="mini">撤销</el-button>
+					<el-button type="primary" @click="startUse(scope)" size="mini" v-if="scope.row.status === 0">开始</el-button>
+					<el-button type="danger" @click="remove(scope)" size="mini" v-if="scope.row.status === 0">撤销</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
-		<el-button type="primary" @click="add()" size="mini">发起预约</el-button>
 	</el-row>
 </template>
 
@@ -19,44 +27,15 @@
     module.exports = {
         data() {
             return {
-                formLabelWidth: '80px',
                 tableData: [],
-                form: {
-                    id: '',
-                    username: '',
-                    name: '',
-                    mail: '',
-                    phone: '',
-                },
-                drawer: {
-                    show: false,
-                },
             };
         },
         mounted() {
             this.getTableDataList()
         },
         methods: {
-            add() {
-                const _this = this
-                _this.$confirm('确定要执行数据库备份吗', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(() => {
-                    axios.post(`/manage/addDatabaseBak`).then(response => {
-                        const result = response.data;
-                        console.log('通过api获取到的数据:', result);
-                        if (result.status !== 200) {
-                            this.$message.error('数据加载失败');
-                            return
-                        }
-                        _this.$message.success('操作成功');
-                        _this.getTableDataList()
-                    }).catch(function (error) {
-                        window.location.reload();
-                        console.log('请求出现错误:', error);
-                    });
-                })
+            startUse(scope) {
+
             },
             remove(scope) {
                 const _this = this;

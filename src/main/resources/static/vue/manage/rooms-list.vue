@@ -32,7 +32,7 @@
 			</el-form>
 		</el-drawer>
 		<div style="margin-top: 10px">
-			<el-button type="primary" @click="addRooms(undefined)" size="mini">添加实训室</el-button>
+			<el-button type="primary" @click="addRooms()" size="mini">添加实训室</el-button>
 		</div>
 	</el-row>
 </template>
@@ -115,10 +115,9 @@
                     console.log('请求出现错误:', error);
                 });
             },
-            addRooms(scope) {
+            addRooms() {
                 const _this = this
                 _this.$nextTick(() => {
-                    _this.getDataById(scope ? scope.row.id : ' ');
                     _this.$prompt('请输入名称', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',

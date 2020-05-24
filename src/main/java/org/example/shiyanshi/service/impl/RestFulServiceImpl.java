@@ -6,6 +6,7 @@ import org.apache.shiro.subject.Subject;
 import org.example.shiyanshi.config.ApplicationException;
 import org.example.shiyanshi.dao.*;
 import org.example.shiyanshi.entity.*;
+import org.example.shiyanshi.form.LineUpsForm;
 import org.example.shiyanshi.form.MachinesForm;
 import org.example.shiyanshi.form.RoomsForm;
 import org.example.shiyanshi.service.RestFulService;
@@ -58,6 +59,23 @@ public class RestFulServiceImpl implements RestFulService {
     public List<LineUps> getLineUpsListByUser() {
         SysUser user = getUserInfo();
         return lineUpsDAO.findAllByUser(user);
+    }
+
+    @Override
+    public void saveLineUps(LineUpsForm form) {
+        SysUser user = getUserInfo();
+        LineUps lineUps = new LineUps();
+        BeanUtils.copyProperties(form, lineUps);
+        Machines machines = new Machines();
+        BeanUtils.copyProperties(lineUps.getMachines(), machines);
+        if (machinesDAO.findById(machines.getId()).getStatus() == 1) {
+            throw new ApplicationException("改设备已被预约");
+        }
+        machines.setStatus(1);
+        machinesDAO.saveData(machines);
+        lineUps.setStatus(0);
+        lineUps.setUser(user);
+        lineUpsDAO.saveData(lineUps);
     }
 
     @Override

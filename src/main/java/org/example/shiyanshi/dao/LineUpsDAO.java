@@ -25,30 +25,8 @@ public class LineUpsDAO extends BaseDAO {
         return lineUpsRepository.findAllByUser(sort, user);
     }
 
-//    public List<Purchases> getPurchasesListByStatus() {
-//        Sort sort = new Sort(Sort.Direction.ASC, "createTime");
-//        return purchasesRepository.findByStatusAndDelFlag(sort, 0, 0);
-//    }
-//
-//    public List<Purchases> getPurchasesListByStatusNot() {
-//        Sort sort = new Sort(Sort.Direction.ASC, "createTime");
-//        return purchasesRepository.findByStatusNotAndDelFlag(sort, 0, 0);
-//    }
-//
-//    public Purchases findById(String id) {
-//        return purchasesRepository.findById(id).orElse(new Purchases());
-//    }
-//
-//    public void saveData(Purchases purchases) {
-//        purchasesRepository.saveAndFlush(purchases);
-//    }
-//
-//    public void flagDelById(String id) {
-//        Purchases purchases = purchasesRepository.findById(id).orElse(null);
-//        assert purchases != null;
-//        purchases.setDelFlag(1);
-//        purchasesRepository.saveAndFlush(purchases);
-//    }
-
+    public void saveData(LineUps lineUps) {
+        lineUpsRepository.saveAndFlush(lineUps);
+    }
 
 }

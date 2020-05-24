@@ -1,11 +1,13 @@
 package org.example.shiyanshi.controller;
 
 import org.example.shiyanshi.config.base.BaseController;
+import org.example.shiyanshi.config.groups.IsAdd;
 import org.example.shiyanshi.config.groups.IsNotNull;
 import org.example.shiyanshi.config.base.ResponseDTO;
 import org.example.shiyanshi.entity.LineUps;
 import org.example.shiyanshi.entity.Machines;
 import org.example.shiyanshi.entity.Rooms;
+import org.example.shiyanshi.form.LineUpsForm;
 import org.example.shiyanshi.form.MachinesForm;
 import org.example.shiyanshi.form.RoomsForm;
 import org.example.shiyanshi.service.RestFulService;
@@ -35,6 +37,15 @@ public class RestFulController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", list);
     }
 
+    @RequestMapping("/saveLineUps")
+    public ResponseDTO saveLineUps(@RequestBody LineUpsForm form) {
+        validator(form, IsAdd.class);
+        logger.info("收到请求->保存预约信息:[{}]", form);
+        restFulService.saveLineUps(form);
+        logger.info("返回结果保存预约信息完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
     @RequestMapping("/getRoomsList")
     public ResponseDTO getRoomsList() {
         logger.info("收到请求->获取实验室列表");
@@ -59,6 +70,7 @@ public class RestFulController extends BaseController {
         logger.info("返回结果->删除实训室信息完成");
         return ResponseDTO.returnSuccess("操作成功");
     }
+
     @RequestMapping("/getRoomsById")
     public ResponseDTO getRoomsById(String id) {
         logger.info("收到请求->获取实训室数据,id:[{}]", id);
