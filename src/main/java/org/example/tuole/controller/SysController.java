@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 
@@ -32,29 +33,16 @@ public class SysController extends BaseController {
     }
 
     /**
-     * 发送验证码
-     * @param mail
-     * @return
-     */
-    @GetMapping("/getCodeByMail/{mail}")
-    @ResponseBody
-    public ResponseDTO getCodeByMail(@PathVariable("mail") String mail) {
-        logger.info("收到请求->进入发送验证码[{}]", mail);
-        sysService.sendCodeByMail(mail);
-        return ResponseDTO.returnSuccess("验证码下发成功");
-    }
-
-    /**
      * 用户注册
      * @param map
      * @return
      */
     @PostMapping("/registryCheck")
     @ResponseBody
-    public ResponseDTO registryCheck(@RequestBody Map<String, String> map) {
+    public ResponseDTO registryCheck(HttpServletRequest request, @RequestBody Map<String, String> map) {
 //        super.validator(form, IsLogin.class);
         logger.info("收到请求->用户注册[{}]", map);
-        SysUser sysUser = sysService.registry(map);
+        SysUser sysUser = sysService.registry(request,map);
         logger.info("注册验证结束->用户信息:[{}]", sysUser);
         return ResponseDTO.returnSuccess("注册成功，即将返回登录页面", sysUser);
     }
