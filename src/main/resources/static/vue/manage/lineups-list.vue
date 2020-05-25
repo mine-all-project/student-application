@@ -18,6 +18,7 @@
 			<el-table-column label="操作" width="200">
 				<template slot-scope="scope">
 					<el-button type="primary" @click="startUse(scope)" size="mini" v-if="scope.row.status === 0">开始</el-button>
+					<el-button type="primary" @click="endUse(scope)" size="mini" v-if="scope.row.status === 1">结束</el-button>
 					<el-button type="danger" @click="closeUse(scope)" size="mini" v-if="scope.row.status === 0">撤销</el-button>
 				</template>
 			</el-table-column>

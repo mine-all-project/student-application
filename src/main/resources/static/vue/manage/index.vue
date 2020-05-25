@@ -51,7 +51,9 @@
     module.exports = {
         data() {
             return {
-                userInfo: {},
+                userInfo: {
+                    name: ''
+                },
                 menus: {
                     menu: [
                         {
@@ -400,7 +402,7 @@
             };
         },
         mounted() {
-            this.getUserInfo()
+            // this.getUserInfo()
             router.push('/demo')
             // this.menus.menu = this.roleMenus[]
             // this.menus.menu = this.menus.storageMenu
@@ -419,13 +421,17 @@
             getUserInfo() {
                 axios.get('/getUserInfo').then(response => {
                     let result = response.data
-                    console.log(result)
                     if (result.status !== 200) {
-                        this.$message.error('用户信息获取失败');
+                        if (result.status === 401) {
+                            window.location.href = '/login'
+                        }
+                        this.$message.error(result.message);
                         return;
                     }
-                    this.userInfo = result.data;
-                    this.menus.menu = this.menus.roleMenus[this.userInfo.role]
+                    if (result.data !== null) {
+                        this.userInfo = result.data;
+                        this.menus.menu = this.menus.roleMenus[this.userInfo.role]
+                    }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });

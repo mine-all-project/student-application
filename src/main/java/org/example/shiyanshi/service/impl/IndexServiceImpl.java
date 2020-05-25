@@ -25,8 +25,6 @@ import java.util.UUID;
 
 @Service
 public class IndexServiceImpl implements IndexService {
-    @Value("${isDebug}")
-    private boolean isDebug;
     private final SysService sysService;
     private final SysUserDAO sysUserDAO;
     private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);

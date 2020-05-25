@@ -4,6 +4,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.example.shiyanshi.config.ApplicationConfigure;
@@ -105,7 +106,16 @@ public class SysServiceImpl implements SysService {
     public SysUser getUserInfo() {
         Subject subject = SecurityUtils.getSubject();
         SysUser user = (SysUser) subject.getPrincipal();
-        String username = isDebug ? "user" : user.getUsername();
+        String username;
+        if (user == null) {
+            if (isDebug) {
+                username = "admin";
+            } else {
+                throw new UnauthenticatedException("用户尚未登录");
+            }
+        } else {
+            username = user.getUsername();
+        }
         return sysUserDAO.findByUsername(username);
     }
 
