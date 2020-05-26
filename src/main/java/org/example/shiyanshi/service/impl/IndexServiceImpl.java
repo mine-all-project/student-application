@@ -9,10 +9,12 @@ import org.apache.shiro.subject.Subject;
 import org.example.shiyanshi.config.ApplicationConfigure;
 import org.example.shiyanshi.config.ApplicationException;
 import org.example.shiyanshi.dao.SysUserDAO;
+import org.example.shiyanshi.entity.AudioFile;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.UserForm;
 import org.example.shiyanshi.service.IndexService;
 import org.example.shiyanshi.service.SysService;
+import org.example.shiyanshi.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +32,10 @@ public class IndexServiceImpl implements IndexService {
     private static final Logger logger = LoggerFactory.getLogger(IndexServiceImpl.class);
     private final String salt;
 
+    @Value("${virtualPath}")
+    private String virtualPath;
+    @Value("${filePath}")
+    private String filePath;
 
     public IndexServiceImpl(SysService sysService, ApplicationConfigure applicationConfigure, SysUserDAO sysUserDAO) {
         this.sysService = sysService;
@@ -107,6 +113,14 @@ public class IndexServiceImpl implements IndexService {
         sysUserDAO.addUser(user);
     }
 
+    @Override
+    public AudioFile uploadFile(HttpServletRequest request) {
+        request.get
+        FileUtils fileUtils = new FileUtils(filePath, virtualPath);
+        fileUtils.saveFile()
+        return null;
+    }
+
     /**
      * shiro认证
      *
@@ -129,6 +143,4 @@ public class IndexServiceImpl implements IndexService {
         }
         return null;
     }
-
-
 }

@@ -5,6 +5,7 @@ import org.example.shiyanshi.config.groups.IsAdd;
 import org.example.shiyanshi.config.groups.IsEdit;
 import org.example.shiyanshi.config.groups.IsLogin;
 import org.example.shiyanshi.config.base.ResponseDTO;
+import org.example.shiyanshi.entity.AudioFile;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.UserForm;
 import org.example.shiyanshi.service.IndexService;
@@ -14,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class IndexController extends BaseController {
@@ -117,4 +120,15 @@ public class IndexController extends BaseController {
         logger.info("返回结果->退出登录结束");
         return "/login";
     }
+
+    @RequestMapping("/uploadFile")
+    @ResponseBody
+    public ResponseDTO uploadFile(HttpServletRequest request) {
+        logger.info("收到请求->上传文件");
+        AudioFile file = indexService.uploadFile(request);
+        logger.info("返回结果->上传文件结束");
+        return ResponseDTO.returnSuccess("上传成功", file);
+    }
+
+
 }

@@ -22,16 +22,23 @@ public class LineUps extends BaseEntity {
     private Machines machines;
     @OneToOne
     private SysUser user;
+
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    @Column(columnDefinition = "varchar(32) comment '开始时间'")
     private LocalDateTime startTime;
-    @Column(columnDefinition = "varchar(32) comment '结束时间'")
+
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
+
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime reallyStartTime;
+
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime reallyEndTime;
+
+
+    @OneToOne
+    private AudioFile img;
+
     @Column(columnDefinition = "tinyint(2) default 0 not null comment '状态标记 0:未开始 1:已开始 2:已结束 3:已取消'")
     private Integer status;
 

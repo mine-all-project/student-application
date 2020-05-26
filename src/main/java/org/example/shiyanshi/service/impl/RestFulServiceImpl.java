@@ -155,9 +155,7 @@ public class RestFulServiceImpl implements RestFulService {
 
     @Override
     public void saveMachinesInfo(MachinesForm form) {
-        Machines machines = new Machines();
-        machines.setLineCount(0);
-        machines.setUseCount(0);
+        Machines machines = machinesDAO.findById(form.getId());
         BeanUtils.copyProperties(form, machines);
         machinesDAO.saveData(machines);
     }

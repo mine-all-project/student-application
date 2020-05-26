@@ -16,6 +16,13 @@ import java.util.List;
  * 设备信息
  */
 public class Machines extends BaseEntity {
+    public Machines() {
+        this.lineCount = 0;
+        this.useCount = 0;
+        this.status = 0;
+        this.timeCount = 0;
+    }
+
     @ManyToMany
     private List<LineUps> lineUps;
     @Column(columnDefinition = "varchar(20) not null comment '设备名'")

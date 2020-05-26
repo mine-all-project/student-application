@@ -23,6 +23,13 @@
 				</template>
 			</el-table-column>
 		</el-table>
+		<el-dialog title="上传实验照片" :visible.sync="show.dialog" width="22%">
+			<el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
+			           :show-file-list="false" :on-success="handleAvatarSuccess">
+				<img v-if="imageUrl" :src="imageUrl" class="avatar">
+				<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+			</el-upload>
+		</el-dialog>
 	</el-row>
 </template>
 
@@ -31,6 +38,10 @@
         data() {
             return {
                 tableData: [],
+                imageUrl: '',
+                show: {
+                    dialog: false
+                }
             };
         },
         activated() {
@@ -39,6 +50,9 @@
         mounted() {
         },
         methods: {
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
             startUse(scope) {
                 const _this = this;
                 const id = scope.row.id;
@@ -58,21 +72,26 @@
                     });
                 });
             },
-            endUse(id) {
+            endUse(scope) {
                 const _this = this;
-                axios.get(`/api/endLineUpsById?id=${id}`).then(response => {
-                    _this.getTableDataList();
-                    const result = response.data;
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        _this.$message.error(result.message);
-                        return
-                    }
-                    _this.$message.success(result.message)
-                }).catch(function (error) {
-                    _this.getTableDataList();
-                    console.log('请求出现错误:', error);
-                });
+                _this.show.dialog = true
+                const id = scope.row.id;
+                _this.$confirm('确认要结束吗？').then(e => {
+                    return
+                    axios.get(`/api/endLineUpsById?id=${id}`).then(response => {
+                        _this.getTableDataList();
+                        const result = response.data;
+                        console.log('通过api获取到的数据:', result);
+                        if (result.status !== 200) {
+                            _this.$message.error(result.message);
+                            return
+                        }
+                        _this.$message.success(result.message)
+                    }).catch(function (error) {
+                        _this.getTableDataList();
+                        console.log('请求出现错误:', error);
+                    });
+                })
             },
             closeUse(scope) {
                 const _this = this;
@@ -103,18 +122,45 @@
                         return;
                     }
                     _this.tableData = result.data;
-                    result.data.forEach(e => {
-                        if (new moment() > new moment(e.reallyEndTime) && e.status === 1) {
-                            this.endUse(e.id)
-                        }
-                    })
+                    // result.data.forEach(e => {
+                    //     if (new moment() > new moment(e.reallyEndTime) && e.status === 1) {
+                    //         this.endUse(e.id)
+                    //     }
+                    // })
                 }).catch(function (error) {
                     console.error('请求出现错误:', error);
                 });
             },
-        }
+        },
+
     }
 </script>
 
 <style scoped>
+	.avatar-uploader .el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.avatar-uploader .el-upload:hover {
+		border-color: #409EFF;
+	}
+
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 178px;
+		height: 178px;
+		line-height: 178px;
+		text-align: center;
+	}
+
+	.avatar {
+		width: 178px;
+		height: 178px;
+		display: block;
+	}
 </style>
