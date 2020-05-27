@@ -35,9 +35,8 @@ public class LineUps extends BaseEntity {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime reallyEndTime;
 
-
-    @OneToOne
-    private AudioFile img;
+    @Column(columnDefinition = "varchar(128) comment '实验图片地址'")
+    private String imgSrc;
 
     @Column(columnDefinition = "tinyint(2) default 0 not null comment '状态标记 0:未开始 1:已开始 2:已结束 3:已取消'")
     private Integer status;

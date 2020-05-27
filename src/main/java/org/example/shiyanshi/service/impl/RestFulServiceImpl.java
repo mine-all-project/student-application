@@ -11,37 +11,35 @@ import org.example.shiyanshi.form.MachinesForm;
 import org.example.shiyanshi.form.RoomsForm;
 import org.example.shiyanshi.service.RestFulService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class RestFulServiceImpl implements RestFulService {
-    public SysUser getUserInfo() {
-        Subject subject = SecurityUtils.getSubject();
-        SysUser user = (SysUser) subject.getPrincipal();
-        String username;
-        if (user == null) {
-            if (isDebug) {
-                username = "admin";
-            } else {
-                throw new ApplicationException("用户未登录");
-            }
-        } else {
-            username = user.getUsername();
-        }
-        return sysUserDAO.findByUsername(username);
-    }
+//    public SysUser getUserInfo() {
+//        Subject subject = SecurityUtils.getSubject();
+//        SysUser user = (SysUser) subject.getPrincipal();
+//        String username;
+//        if (user == null) {
+//            if (isDebug) {
+//                username = "admin";
+//            } else {
+//                throw new ApplicationException("用户未登录");
+//            }
+//        } else {
+//            username = user.getUsername();
+//        }
+//        return sysUserDAO.findByUsername(username);
+//    }
 
     @Value("${isDebug}")
     private boolean isDebug;
-    @Value("${filePath}")
-    private String filePath;
-    @Value("${virtualPath}")
-    private String virtualPath;
     private final LineUpsDAO lineUpsDAO;
     private final SysUserDAO sysUserDAO;
     private final RoomsDAO roomsDAO;
@@ -54,16 +52,20 @@ public class RestFulServiceImpl implements RestFulService {
         this.roomsDAO = roomsDAO;
         this.machinesDAO = machinesDAO;
     }
+    @Override
+    public List<LineUps> getLineUpsList() {
+        return lineUpsDAO.findAll();
+    }
 
     @Override
     public List<LineUps> getLineUpsListByUser() {
-        SysUser user = getUserInfo();
+        SysUser user = getUserInfo(isDebug, sysUserDAO);
         return lineUpsDAO.findAllByUser(user);
     }
 
     @Override
     public void saveLineUps(LineUpsForm form) {
-        SysUser user = getUserInfo();
+        SysUser user = getUserInfo(isDebug, sysUserDAO);
         LineUps lineUps = new LineUps();
         BeanUtils.copyProperties(form, lineUps);
         Machines machines = new Machines();
@@ -95,25 +97,26 @@ public class RestFulServiceImpl implements RestFulService {
     public void startLineUpsById(String id) {
         LineUps lineUps = lineUpsDAO.findById(id);
         Machines machines = lineUps.getMachines();
-        int time = machines.getTime();
         machines.setUseCount(machines.getUseCount() + 1);
         machines.setTimeCount(machines.getTimeCount() + machines.getTime());
         lineUps.setStatus(1);
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = startTime.plusMinutes(time);
-        lineUps.setReallyStartTime(startTime);
-        lineUps.setReallyEndTime(endTime);
+        lineUps.setReallyStartTime(LocalDateTime.now());
         lineUpsDAO.saveData(lineUps);
     }
 
     @Override
-    public void endLineUpsById(String id) {
+    public void endLineUpsById(String id, String imgSrc) {
+        if (StringUtils.isEmpty(imgSrc)) {
+            throw new ApplicationException("请先上传实验图片");
+        }
         LineUps lineUps = lineUpsDAO.findById(id);
         Machines machines = lineUps.getMachines();
         machines.setStatus(0);
         machinesDAO.saveData(machines);
         lineUps.setMachines(machines);
         lineUps.setStatus(2);
+        lineUps.setImgSrc(imgSrc);
+        lineUps.setReallyEndTime(LocalDateTime.now());
         lineUpsDAO.saveData(lineUps);
     }
 

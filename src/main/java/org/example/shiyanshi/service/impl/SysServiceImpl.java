@@ -146,7 +146,7 @@ public class SysServiceImpl implements SysService {
     }
 
     @Override
-    public void savePassword(Map map) {
+    public void changePassword(Map map) {
         Subject subject = SecurityUtils.getSubject();
         SysUser sysUser = (SysUser) subject.getPrincipal();
         String password = sysUser.getPassword();

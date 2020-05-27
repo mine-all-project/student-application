@@ -9,6 +9,11 @@ const routes = [
 
     {path: '/rooms-list', name: 'roomsList', component: httpVueLoader('/vue/manage/rooms-list.vue')},
     {path: '/machines-list', name: 'machinesList', component: httpVueLoader('/vue/manage/machines-list.vue')},
+    {
+        path: '/lineups-list-teacher',
+        name: 'lineupsListTeacher',
+        component: httpVueLoader('/vue/manage/lineups-list-teacher.vue')
+    },
 
 
     {path: '/user-list', name: 'userList', component: httpVueLoader('/vue/manage/user-list.vue')},

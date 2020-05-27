@@ -1,12 +1,14 @@
 package org.example.shiyanshi.entity;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.shiyanshi.config.base.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 @Getter
@@ -25,6 +27,8 @@ public class SysUser extends BaseEntity {
     private String mail;
 
     @Column(columnDefinition = "varchar(11) comment '手机号'")
+    @Transient
+    @JSONField(serialize = false)
     private String phone;
 
     @Column(columnDefinition = "bit(1) default 0 not null comment '用户状态标记 0:正常 1:禁用'")

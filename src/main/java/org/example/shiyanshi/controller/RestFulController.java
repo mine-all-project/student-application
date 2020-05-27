@@ -29,8 +29,16 @@ public class RestFulController extends BaseController {
         this.restFulService = restFulService;
     }
 
-    @RequestMapping("/getLineUpsListByUser")
+    @RequestMapping("/getLineUpsList")
     public ResponseDTO getLineUpsList() {
+        logger.info("收到请求->获取预约列表");
+        List<LineUps> list = restFulService.getLineUpsList();
+        logger.info("返回结果-获取预约列表完成:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @RequestMapping("/getLineUpsListByUser")
+    public ResponseDTO getLineUpsListByUser() {
         logger.info("收到请求->获取我的预约列表");
         List<LineUps> list = restFulService.getLineUpsListByUser();
         logger.info("返回结果-获取我的预约列表完成:[{}]", list);
@@ -63,9 +71,9 @@ public class RestFulController extends BaseController {
     }
 
     @RequestMapping("/endLineUpsById")
-    public ResponseDTO endLineUpsById(String id) {
-        logger.info("收到请求->结束使用,id:[{}]", id);
-        restFulService.endLineUpsById(id);
+    public ResponseDTO endLineUpsById(String id, String imgSrc) {
+        logger.info("收到请求->结束使用,id:[{}],fileId:[{}]", id, imgSrc);
+        restFulService.endLineUpsById(id, imgSrc);
         logger.info("返回结果->结束使用完成");
         return ResponseDTO.returnSuccess("数据更新成功");
     }

@@ -5,14 +5,12 @@ import org.example.shiyanshi.config.groups.IsAdd;
 import org.example.shiyanshi.config.groups.IsEdit;
 import org.example.shiyanshi.config.groups.IsLogin;
 import org.example.shiyanshi.config.base.ResponseDTO;
-import org.example.shiyanshi.entity.AudioFile;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.UserForm;
 import org.example.shiyanshi.service.IndexService;
 import org.example.shiyanshi.service.SysService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -113,8 +111,8 @@ public class IndexController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @RequestMapping("/loginOut")
-    public String loginOut() {
+    @RequestMapping("/logout")
+    public String logout() {
         logger.info("收到请求->退出登录");
         indexService.logout();
         logger.info("返回结果->退出登录结束");
@@ -123,11 +121,11 @@ public class IndexController extends BaseController {
 
     @RequestMapping("/uploadFile")
     @ResponseBody
-    public ResponseDTO uploadFile(HttpServletRequest request) {
+    public String uploadFile(HttpServletRequest request) {
         logger.info("收到请求->上传文件");
-        AudioFile file = indexService.uploadFile(request);
-        logger.info("返回结果->上传文件结束");
-        return ResponseDTO.returnSuccess("上传成功", file);
+        String filePath = indexService.uploadFile(request);
+        logger.info("返回结果->上传文件结束:[{}]", filePath);
+        return filePath;
     }
 
 

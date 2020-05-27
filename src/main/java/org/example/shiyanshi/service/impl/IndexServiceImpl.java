@@ -9,16 +9,13 @@ import org.apache.shiro.subject.Subject;
 import org.example.shiyanshi.config.ApplicationConfigure;
 import org.example.shiyanshi.config.ApplicationException;
 import org.example.shiyanshi.dao.SysUserDAO;
-import org.example.shiyanshi.entity.AudioFile;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.UserForm;
 import org.example.shiyanshi.service.IndexService;
 import org.example.shiyanshi.service.SysService;
-import org.example.shiyanshi.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -114,11 +111,8 @@ public class IndexServiceImpl implements IndexService {
     }
 
     @Override
-    public AudioFile uploadFile(HttpServletRequest request) {
-        request.get
-        FileUtils fileUtils = new FileUtils(filePath, virtualPath);
-        fileUtils.saveFile()
-        return null;
+    public String uploadFile(HttpServletRequest request) {
+        return getFilePath(request, filePath, virtualPath);
     }
 
     /**

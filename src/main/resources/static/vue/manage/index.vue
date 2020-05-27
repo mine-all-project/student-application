@@ -1,20 +1,25 @@
 <template>
 	<el-container style=" border: 1px solid #eee">
-		<el-header width="100%" style="text-align: right; font-size: 12px">
-			<!--			<a href="/loginOut">退出登录</a>-->
-			<!--			<h1>管理平台</h1>-->
-			<el-dropdown>
-				<i class="el-icon-setting" style="margin-right: 15px"></i>
-				<el-dropdown-menu slot="dropdown">
-					<el-dropdown-item>查看</el-dropdown-item>
-					<el-dropdown-item>新增</el-dropdown-item>
-					<el-dropdown-item><span @click="logout">退出登录</span></el-dropdown-item>
-				</el-dropdown-menu>
-			</el-dropdown>
-			<span>{{userInfo.name}}</span>
+		<el-header width="100%" class="container-header">
+			<el-row>
+				<el-col :span="4">
+					<span style="font-size: 20px">实训室管理系统</span>
+				</el-col>
+				<el-col :span="3" :offset="17">
+					<el-dropdown>
+						<i class="el-icon-setting" style="margin-right: 15px"></i>
+						<el-dropdown-menu slot="dropdown">
+							<el-dropdown-item><span @click="changePassword">修改密码</span></el-dropdown-item>
+							<el-dropdown-item><span @click="logout">退出登录</span></el-dropdown-item>
+						</el-dropdown-menu>
+					</el-dropdown>
+					<span>{{userInfo.name}}</span>
+				</el-col>
+			</el-row>
 		</el-header>
+
 		<el-container>
-			<el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+			<el-aside width="200px">
 				<el-menu :default-openeds="['0']">
 					<template v-for="(item,index) in menus.menu">
 						<template v-if="item.children">
@@ -37,13 +42,27 @@
 				</el-menu>
 			</el-aside>
 			<el-main>
-				<!--				<p v-if="welcome">欢迎登录</p>-->
 				<keep-alive>
 					<router-view></router-view>
 				</keep-alive>
 
 			</el-main>
 		</el-container>
+		<el-dialog title="修改密码" :visible.sync="show.changePassword" width="40%">
+			<el-form :rules="rules" ref="changePassword" :model="form" size="mini" label-position="right" label-width="80px">
+
+				<el-form-item label="原密码" prop="password">
+					<el-input type="password" style=" width:70%" v-model="form.password"></el-input>
+				</el-form-item>
+				<el-form-item label="新密码" prop="newPassword">
+					<el-input type="password" style=" width:70%" v-model="form.newPassword"></el-input>
+				</el-form-item>
+				<el-form-item label="重复密码" prop="rePassword">
+					<el-input type="password" style=" width:70%" v-model="form.rePassword"></el-input>
+				</el-form-item>
+			</el-form>
+			<el-button @click="submitForm('changePassword')">提交</el-button>
+		</el-dialog>
 	</el-container>
 </template>
 
@@ -51,6 +70,31 @@
     module.exports = {
         data() {
             return {
+                rules: {
+                    password: [
+                        {required: true, message: '请输入原密码', trigger: 'blur'},
+                    ],
+                    newPassword: [
+                        {required: true, message: '请输入新密码', trigger: 'blur'},
+                    ],
+                    rePassword: [
+                        {
+                            validator: (rule, value, callback) => {
+                                if (value !== this.form.newPassword) {
+                                    callback(new Error('两次密码不一致'))
+                                } else {
+                                    callback()
+                                }
+                            }, trigger: 'blur'
+                        }
+                    ],
+                },
+                form: {
+                    password: ''
+                },
+                show: {
+                    changePassword: false
+                },
                 userInfo: {
                     name: ''
                 },
@@ -86,333 +130,125 @@
                             icon: 'el-icon-menu',
                             url: '/user-list'
                         }
-
                     ],
                     roleMenus: [
                         [
                             {
-                                id: '1',
-                                name: '数据备份',
-                                icon: 'el-icon-menu',
-                                url: '/database-list'
-                            },
-                            {
-                                id: '2',
-                                name: '用户管理',
-                                icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '3-1',
-                                        name: '用户列表',
-                                        icon: 'el-icon-menu',
-                                        url: '/user-list'
-                                    }
-                                ]
-                            },
-                        ],
-                        [
-                            {
-                                id: '1',
-                                name: '采购管理',
-                                icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '1-1',
-                                        name: '采购计划登记',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-add'
-                                    },
-                                    {
-                                        id: '1-2',
-                                        name: '采购记录查询',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-list'
-                                    },
-                                ]
-                            },
-                            {
-                                id: '2',
-                                name: '消息列表',
-                                icon: 'el-icon-menu',
-                                url: '/message-list'
-                            },
-
-                        ],
-                        [
-                            {
-                                id: '1',
-                                name: '库存管理',
-                                icon: 'el-icon-menu',
-                                url: 'goods-list',
-                            },
-                            {
-                                id: '2',
-                                name: '入库验收',
-                                icon: 'el-icon-menu',
-                                url: '/goods-input'
-                            },
-                            {
-                                id: '3',
-                                name: '药品出库',
-                                icon: 'el-icon-menu',
-                                url: '/goods-output'
-                            },
-                        ],
-                        [
-                            {
-                                id: '1',
-                                name: '销售记录',
-                                icon: 'el-icon-menu',
-                                url: '/sales-list'
-                            },
-                        ],
-                    ],
-                    bak: {
-                        manageMenu: [
-                            {
-                                id: '1',
-                                name: '系统设置',
-                                icon: 'el-icon-menu',
-                                url: '/demo'
-                            },
-                            {
-                                id: '2',
+                                id: '6',
                                 name: '用户管理',
                                 icon: 'el-icon-menu',
                                 url: '/user-list'
-                            },
+                            }
                         ],
-                        buyMenu: [
+                        [
                             {
                                 id: '1',
-                                name: '采购管理',
+                                name: '我的预约',
                                 icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '1-1',
-                                        name: '采购计划登记',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-add'
-                                    },
-                                    {
-                                        id: '1-2',
-                                        name: '采购记录查询',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-list'
-                                    },
-                                ]
+                                url: '/lineups-list'
                             },
                             {
                                 id: '2',
-                                name: '消息列表',
+                                name: '发起预约',
                                 icon: 'el-icon-menu',
-                                url: '/message-list'
-                            },
-
-                        ],
-                        storageMenu: [
-                            {
-                                id: 'demo3',
-                                name: '库存管理',
-                                icon: 'el-icon-menu',
-                                url: 'goods-list',
-                            },
-                            {
-                                id: 'demo4',
-                                name: '入库验收',
-                                icon: 'el-icon-menu',
-                                url: '/goods-input'
-                            },
-                            {
-                                id: 'demo5',
-                                name: '药品出库',
-                                icon: 'el-icon-menu',
-                                url: '/goods-output'
+                                url: '/lineups-add'
                             },
                         ],
-                        saleMenu: [
-                            {
-                                id: 'demo1',
-                                name: '采购管理',
-                                icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '1-1',
-                                        name: '采购计划登记',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-add'
-                                    },
-                                    {
-                                        id: '1-2',
-                                        name: '采购记录查询',
-                                        icon: 'el-icon-menu',
-                                        url: '/purchases-list'
-                                    },
-                                ]
-                            },
-                            {
-                                id: 'demo2',
-                                name: '消息列表',
-                                icon: 'el-icon-menu',
-                                url: '/message-list'
-                            },
-
-                            {
-                                id: 'demo3',
-                                name: '库存管理',
-                                icon: 'el-icon-menu',
-                                url: 'goods-list',
-                            },
-                            {
-                                id: 'demo4',
-                                name: '入库验收',
-                                icon: 'el-icon-menu',
-                                url: '/goods-input'
-                            },
-                            {
-                                id: 'demo5',
-                                name: '药品出库',
-                                icon: 'el-icon-menu',
-                                url: '/goods-output'
-                            },
-
-                            {
-                                id: '1',
-                                name: '销售记录',
-                                icon: 'el-icon-menu',
-                                url: '/sales-list'
-                            },
-                            {
-                                id: '---------',
-                                name: '-----------------',
-                            },
-                            {
-                                id: '2',
-                                name: '数据管理',
-                                icon: 'el-icon-menu',
-                                url: '/database-list'
-                            },
+                        [
                             {
                                 id: '3',
-                                name: '用户管理',
+                                name: '实训室列表',
                                 icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '3-1',
-                                        name: '用户列表',
-                                        icon: 'el-icon-menu',
-                                        url: '/user-list'
-                                    }
-                                ]
+                                url: '/rooms-list'
+                            },
+                            {
+                                id: '4',
+                                name: '设备列表',
+                                icon: 'el-icon-menu',
+                                url: '/machines-list'
+                            },
+                            {
+                                id: '5',
+                                name: '预约列表',
+                                icon: 'el-icon-menu',
+                                url: '/lineups-list-teacher'
                             },
                         ],
-                        menuBak: [
-                            {
-                                id: '1',
-                                name: '公交管理',
-                                icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '1-1',
-                                        name: '公交线路管理',
-                                        icon: '',
-                                        url: '/demo'
-                                    },
-                                    {
-                                        id: '1-2',
-                                        name: '公交站点管理',
-                                        icon: 'el-icon-menu',
-                                        url: '/manage/stands'
-                                    },
-                                ]
-                            },
-                            {
-                                id: '2',
-                                name: '信息管理',
-                                icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '2-1',
-                                        name: '公交动态管理',
-                                        icon: '',
-                                        url: '/manage/dynamic'
-                                    },
-                                    {
-                                        id: '2-2',
-                                        name: '公告管理',
-                                        icon: 'el-icon-menu',
-                                        url: '/manage/notice'
-                                    },
-                                ]
-                            },
-                            {
-                                id: '3',
-                                name: '用户管理',
-                                icon: 'el-icon-menu',
-                                children: [
-                                    {
-                                        id: '3-1',
-                                        name: '用户列表',
-                                        icon: 'el-icon-menu',
-                                        url: '/manage/user-list'
-                                    }
-                                ]
-                            },
-                            // {
-                            //     id: 'demo',
-                            //     name: '测试菜单',
-                            //     icon: 'el-icon-menu',
-                            //     children: [
-                            //         {
-                            //             id: 'demo-1',
-                            //             name: '表格列表(富文本)',
-                            //             icon: 'el-icon-menu',
-                            //             url: '/demo/demo1'
-                            //         },
-                            //         {
-                            //             id: 'demo-2',
-                            //             name: '表格列表(文本域)',
-                            //             icon: 'el-icon-menu',
-                            //             url: '/demo/demo2'
-                            //         },
-                            //         {
-                            //             id: 'demo-3',
-                            //             name: '照片墙',
-                            //             icon: 'el-icon-menu',
-                            //             url: '/demo/demo3'
-                            //         },
-                            //         {
-                            //             id: 'demo-4',
-                            //             name: '富文本页面',
-                            //             icon: 'el-icon-menu',
-                            //             url: '/demo/demo4'
-                            //         },
-                            //         {
-                            //             id: 'demo-5',
-                            //             name: '表格列表(带图片)',
-                            //             icon: 'el-icon-menu',
-                            //             url: '/demo/demo5'
-                            //         }
-                            //     ]
-                            // },
-                        ],
-                    }
+                    ],
+                    demoMenus: [
+                        {
+                            id: 'demo',
+                            name: '测试菜单',
+                            icon: 'el-icon-menu',
+                            children: [
+                                {
+                                    id: 'demo-1',
+                                    name: '表格列表(富文本)',
+                                    icon: 'el-icon-menu',
+                                    url: '/demo/demo1'
+                                },
+                                {
+                                    id: 'demo-2',
+                                    name: '表格列表(文本域)',
+                                    icon: 'el-icon-menu',
+                                    url: '/demo/demo2'
+                                },
+                                {
+                                    id: 'demo-3',
+                                    name: '照片墙',
+                                    icon: 'el-icon-menu',
+                                    url: '/demo/demo3'
+                                },
+                                {
+                                    id: 'demo-4',
+                                    name: '富文本页面',
+                                    icon: 'el-icon-menu',
+                                    url: '/demo/demo4'
+                                },
+                                {
+                                    id: 'demo-5',
+                                    name: '表格列表(带图片)',
+                                    icon: 'el-icon-menu',
+                                    url: '/demo/demo5'
+                                }
+                            ]
+                        },
+                    ],
                 },
 
             };
         },
         mounted() {
-            // this.getUserInfo()
-            router.push('/demo')
-            // this.menus.menu = this.roleMenus[]
-            // this.menus.menu = this.menus.storageMenu
-            // this.menus.menu = this.menus.saleMenu
-            // this.menus.menu = this.menus.manageMenu
-            // this.getTableDataList()
+            this.getUserInfo()
+            this.$router.push({name: 'welcome'})
         },
         methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axios.post('/manage/changePassword', this.form).then(response => {
+                            let result = response.data
+                            if (result.status !== 200) {
+                                this.$message.error(result.message);
+                                return;
+                            }
+                            this.$message.success(result.message);
+                            this.form = {}
+                            this.show.changePassword = false
+                        }).catch(function (error) {
+                            console.error('出现错误:', error);
+                        });
+                    } else {
+                        console.log('验证失败');
+                        return false;
+                    }
+                });
+            },
+            changePassword() {
+                this.show.changePassword = true
+            },
             logout() {
-                alert(1)
+                window.location.href = '/logout'
             },
             clickMenu(url) {
                 router.push(url)
@@ -441,13 +277,15 @@
 </script>
 
 <style>
-	.el-header {
-		background-color: #B3C0D1;
+	.container-header {
+		font-size: 12px;
+		background-color: #97baea;
 		color: #333;
 		line-height: 60px;
 	}
 
 	.el-aside {
+		background-color: rgb(238, 241, 246);
 		color: #333;
 	}
 

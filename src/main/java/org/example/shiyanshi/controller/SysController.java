@@ -107,11 +107,11 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @PostMapping("/savePassword")
+    @PostMapping("/changePassword")
     @ResponseBody
     public ResponseDTO savePassword(@RequestBody Map map) {
         logger.info("收到请求->修改用户密码");
-        sysService.savePassword(map);
+        sysService.changePassword(map);
         logger.info("返回结果->修改用户密码结束");
         return ResponseDTO.returnSuccess("操作成功");
     }

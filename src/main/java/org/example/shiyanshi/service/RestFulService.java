@@ -13,11 +13,12 @@ import java.util.List;
 
 
 public interface RestFulService extends BaseService {
+    List<LineUps> getLineUpsList();
     List<LineUps> getLineUpsListByUser();
     void saveLineUps(LineUpsForm form);
     void closeLineUpsById(String id);
     void startLineUpsById(String id);
-    void endLineUpsById(String id);
+    void endLineUpsById(String id, String imgSrc);
 
     List<Rooms> getRoomsList();
     void saveRoomsInfo(RoomsForm form);
@@ -29,4 +30,5 @@ public interface RestFulService extends BaseService {
     List<Machines> getMachinesList();
     void saveMachinesInfo(MachinesForm form);
     void delMachinesById(String id);
+
 }

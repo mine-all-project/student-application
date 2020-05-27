@@ -32,4 +32,8 @@ public class LineUpsDAO extends BaseDAO {
     public LineUps findById(String id) {
         return lineUpsRepository.findById(id).orElse(new LineUps());
     }
+
+    public List<LineUps> findAll() {
+        return lineUpsRepository.findAll();
+    }
 }

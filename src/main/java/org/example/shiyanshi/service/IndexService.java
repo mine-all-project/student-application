@@ -1,7 +1,6 @@
 package org.example.shiyanshi.service;
 
 import org.example.shiyanshi.config.base.BaseService;
-import org.example.shiyanshi.entity.AudioFile;
 import org.example.shiyanshi.entity.SysUser;
 import org.example.shiyanshi.form.UserForm;
 
@@ -19,5 +18,5 @@ public interface IndexService extends BaseService {
 
     void addUser(UserForm form);
 
-    AudioFile uploadFile(HttpServletRequest request);
+    String uploadFile(HttpServletRequest request);
 }
