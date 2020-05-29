@@ -1,7 +1,7 @@
-package com.example.hzj.service;
+package com.example.demo.service;
 
-import com.example.hzj.dao.UserDao;
-import com.example.hzj.entity.User;
+import com.example.demo.dao.UserDao;
+import com.example.demo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;

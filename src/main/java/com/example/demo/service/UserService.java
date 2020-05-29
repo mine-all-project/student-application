@@ -1,13 +1,13 @@
-package com.example.hzj.service;
+package com.example.demo.service;
 
-import com.example.hzj.dao.MessageDao;
-import com.example.hzj.dao.MineInfoDao;
-import com.example.hzj.dao.OrgInfoDao;
-import com.example.hzj.dao.UserDao;
-import com.example.hzj.entity.Message;
-import com.example.hzj.entity.MineInfo;
-import com.example.hzj.entity.OrgInfo;
-import com.example.hzj.entity.User;
+import com.example.demo.dao.MessageDao;
+import com.example.demo.dao.MineInfoDao;
+import com.example.demo.dao.OrgInfoDao;
+import com.example.demo.dao.UserDao;
+import com.example.demo.entity.Message;
+import com.example.demo.entity.MineInfo;
+import com.example.demo.entity.OrgInfo;
+import com.example.demo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;

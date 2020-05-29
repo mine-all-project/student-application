@@ -1,10 +1,11 @@
-package com.example.hzj.dao;
+package com.example.demo.dao;
 
-import com.example.hzj.entity.User;
+import com.example.demo.entity.OrgInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import java.io.Serializable;
 
 @Repository
-public interface UserDao extends JpaRepository<User, Serializable> {
+public interface OrgInfoDao extends JpaRepository<OrgInfo, Serializable> {
 }

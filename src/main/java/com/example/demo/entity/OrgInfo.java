@@ -1,4 +1,4 @@
-package com.example.hzj.entity;
+package com.example.demo.entity;
 
 import com.google.gson.Gson;
 

@@ -1,11 +1,10 @@
-package com.example.hzj.entity;
+package com.example.demo.entity;
 
 
 import com.google.gson.Gson;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class User extends BaseEntity {
