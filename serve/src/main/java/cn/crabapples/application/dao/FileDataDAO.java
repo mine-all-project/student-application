@@ -1,8 +1,8 @@
-package cn.crabapples.system.dao;
+package cn.crabapples.application.dao;
 
-import cn.crabapples.system.dao.jpa.FileDataRepository;
-import cn.crabapples.system.entity.FileData;
-import cn.crabapples.system.form.FileForm;
+import cn.crabapples.application.dao.jpa.FileDataRepository;
+import cn.crabapples.application.entity.FileData;
+import cn.crabapples.application.form.FileForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;

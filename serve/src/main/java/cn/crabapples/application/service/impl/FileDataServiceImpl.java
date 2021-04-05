@@ -1,7 +1,7 @@
-package cn.crabapples.system.service.impl;
+package cn.crabapples.application.service.impl;
 
-import cn.crabapples.system.dao.FileDataDAO;
-import cn.crabapples.system.service.FileDataService;
+import cn.crabapples.application.dao.FileDataDAO;
+import cn.crabapples.application.service.FileDataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
-package cn.crabapples.system.dao;
+package cn.crabapples.application.dao;
 
-import cn.crabapples.system.dao.jpa.TagsRepository;
-import cn.crabapples.system.entity.Tags;
-import cn.crabapples.system.form.TagsForm;
+import cn.crabapples.application.dao.jpa.TagsRepository;
+import cn.crabapples.application.entity.Tags;
+import cn.crabapples.application.form.TagsForm;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;

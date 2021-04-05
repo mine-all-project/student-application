@@ -1,9 +1,9 @@
-package cn.crabapples.system.controller;
+package cn.crabapples.application.controller;
 
+import cn.crabapples.application.service.FileDataService;
 import cn.crabapples.common.BaseController;
 import cn.crabapples.common.utils.jwt.JwtIgnore;
 import cn.crabapples.system.dto.ResponseDTO;
-import cn.crabapples.system.service.FileDataService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +28,7 @@ import java.util.Map;
 @RequestMapping("/api")
 public class FileDataController extends BaseController {
 
-    private final FileDataService fileDataService;
+    private final cn.crabapples.application.service.FileDataService fileDataService;
 
     public FileDataController(FileDataService fileDataService) {
         this.fileDataService = fileDataService;

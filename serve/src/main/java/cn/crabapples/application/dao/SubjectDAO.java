@@ -1,9 +1,9 @@
-package cn.crabapples.system.dao;
+package cn.crabapples.application.dao;
 
-import cn.crabapples.system.dao.jpa.Subject$StepRepository;
-import cn.crabapples.system.dao.jpa.SubjectRepository;
-import cn.crabapples.system.entity.Subject;
-import cn.crabapples.system.form.SubjectForm;
+import cn.crabapples.application.dao.jpa.Subject$StepRepository;
+import cn.crabapples.application.dao.jpa.SubjectRepository;
+import cn.crabapples.application.entity.Subject;
+import cn.crabapples.application.form.SubjectForm;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;

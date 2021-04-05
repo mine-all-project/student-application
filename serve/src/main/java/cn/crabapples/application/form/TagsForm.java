@@ -1,4 +1,4 @@
-package cn.crabapples.system.form;
+package cn.crabapples.application.form;
 
 import cn.crabapples.common.BaseForm;
 import cn.crabapples.common.groups.IsAdd;

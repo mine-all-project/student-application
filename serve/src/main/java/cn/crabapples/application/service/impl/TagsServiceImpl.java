@@ -1,11 +1,9 @@
-package cn.crabapples.system.service.impl;
+package cn.crabapples.application.service.impl;
 
-import cn.crabapples.system.dao.SubjectDAO;
-import cn.crabapples.system.dao.TagsDAO;
-import cn.crabapples.system.entity.Tags;
-import cn.crabapples.system.form.SubjectForm;
-import cn.crabapples.system.form.TagsForm;
-import cn.crabapples.system.service.TagsService;
+import cn.crabapples.application.dao.TagsDAO;
+import cn.crabapples.application.entity.Tags;
+import cn.crabapples.application.form.TagsForm;
+import cn.crabapples.application.service.TagsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

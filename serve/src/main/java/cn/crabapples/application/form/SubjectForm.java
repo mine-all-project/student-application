@@ -1,11 +1,11 @@
-package cn.crabapples.system.form;
+package cn.crabapples.application.form;
 
+import cn.crabapples.application.entity.Subject;
+import cn.crabapples.application.entity.Tags;
 import cn.crabapples.common.BaseForm;
 import cn.crabapples.common.groups.IsAdd;
 import cn.crabapples.common.groups.IsEdit;
-import cn.crabapples.system.entity.Subject;
 import cn.crabapples.system.entity.SysUser;
-import cn.crabapples.system.entity.Tags;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;

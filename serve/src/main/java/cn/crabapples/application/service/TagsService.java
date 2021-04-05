@@ -1,8 +1,8 @@
-package cn.crabapples.system.service;
+package cn.crabapples.application.service;
 
 
-import cn.crabapples.system.entity.Tags;
-import cn.crabapples.system.form.TagsForm;
+import cn.crabapples.application.entity.Tags;
+import cn.crabapples.application.form.TagsForm;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
-package cn.crabapples.system.service.impl;
+package cn.crabapples.application.service.impl;
 
-import cn.crabapples.system.dao.SubjectDAO;
-import cn.crabapples.system.entity.Subject;
-import cn.crabapples.system.form.SubjectForm;
-import cn.crabapples.system.service.SubjectService;
+import cn.crabapples.application.dao.SubjectDAO;
+import cn.crabapples.application.entity.Subject;
+import cn.crabapples.application.form.SubjectForm;
+import cn.crabapples.application.service.SubjectService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject saveSubject(SubjectForm form) {
+    public cn.crabapples.application.entity.Subject saveSubject(SubjectForm form) {
         return subjectDAO.save(form);
     }
 
