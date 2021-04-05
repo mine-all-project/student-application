@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,7 +26,7 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableJpaAuditing
 @SpringBootApplication
-@ComponentScan(basePackages = {"cn.crabapples.application.*"})
+//@ComponentScan(basePackages = {"cn.crabapples.application.*"})
 //@Import({DynamicDataSourceRegister.class})
 //@EnableNacosConfig(globalProperties = @NacosProperties(serverAddr = "192.168.3.20:8848"))
 //@NacosPropertySource(dataId = "learn-dev.yml", autoRefreshed = true)

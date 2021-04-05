@@ -4,7 +4,6 @@ import cn.crabapples.application.custom.service.FileDataService;
 import cn.crabapples.application.common.BaseController;
 import cn.crabapples.application.common.utils.jwt.JwtIgnore;
 import cn.crabapples.application.system.dto.ResponseDTO;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +22,6 @@ import java.util.Map;
  */
 
 @RestController
-@Api("文件接口")
 @Slf4j
 @RequestMapping("/api")
 public class FileDataController extends BaseController {

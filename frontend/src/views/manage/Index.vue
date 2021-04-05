@@ -120,6 +120,12 @@ export default {
               icon: 'appstore',
               url: '/manage-index/sub-apply',
             },
+            {
+              key: '2',
+              name: '标签管理',
+              icon: 'appstore',
+              url: '/manage-index/tags',
+            },
           ]
         },
         {

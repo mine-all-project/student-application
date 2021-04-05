@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 //@CacheConfig(cacheNames = "user:")
 public class TagsServiceImpl implements TagsService {
-    private TagsDAO tagsDAO;
+    private final TagsDAO tagsDAO;
 
     public TagsServiceImpl(TagsDAO tagsDAO) {
         this.tagsDAO = tagsDAO;
@@ -35,5 +35,10 @@ public class TagsServiceImpl implements TagsService {
     @Override
     public List<Tags> getAll() {
         return tagsDAO.getAll();
+    }
+
+    @Override
+    public void removeById(String id) {
+        tagsDAO.removeById(id);
     }
 }

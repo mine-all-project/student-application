@@ -38,12 +38,11 @@ public class Subject extends BaseEntity {
 
     @Column(columnDefinition = "timestamp default current_timestamp comment '开始时间'")
     @CreatedDate
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss E")
-    private LocalDateTime startTime;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss ")
+    private LocalDateTime beginTime;
 
     @Column(columnDefinition = "timestamp comment '结束时间'")
-    @CreatedDate
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss E")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss ")
     private LocalDateTime endTime;
 
     @OneToMany
@@ -65,8 +64,5 @@ public class Subject extends BaseEntity {
         @Column(columnDefinition = "longtext comment '阶段内容'")
         private String content;
 
-        @Column(columnDefinition = "timestamp comment '完成时间'")
-        @JSONField(format = "yyyy-MM-dd HH:mm:ss E")
-        private LocalDateTime endTime;
     }
 }

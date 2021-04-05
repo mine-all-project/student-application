@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
@@ -12,7 +13,10 @@ import javax.persistence.Entity;
 @Setter
 //@Document("FileData")
 public class Tags extends BaseEntity {
+    @Column(columnDefinition = "varchar(64) comment '标签名称'")
     private String name;
+    @Column(columnDefinition = "varchar(64) comment '标签样式'")
+    private String color;
 
     @Override
     public String toString() {

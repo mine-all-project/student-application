@@ -1,8 +1,6 @@
 package cn.crabapples.application.system.form;
 
 import cn.crabapples.application.common.groups.*;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -18,7 +16,6 @@ import javax.validation.constraints.*;
  * pc-name 29404
  */
 @Data
-@ApiModel("登录")
 public class UserForm {
     @NotBlank(message = "id不能为空", groups = IsEdit.class)
     @NotBlank(message = "id不能为空", groups = IsStatusChange.class)
@@ -27,12 +24,10 @@ public class UserForm {
 
     @Length(max = 32 ,message = "长度错误",groups = {IsCheckLength.class, IsLogin.class})
     @NotBlank(message = "用户名不能为空", groups = {IsNotNull.class, IsLogin.class})
-    @ApiModelProperty(example = "admin")
     private String username;
 
     @Length(max = 32 ,message = "长度错误",groups = {IsCheckLength.class, IsLogin.class})
     @NotBlank(message = "密码不能为空", groups = {IsNotNull.class, IsLogin.class})
-    @ApiModelProperty(example = "123456")
     private String password;
 
     @Length(max = 32)

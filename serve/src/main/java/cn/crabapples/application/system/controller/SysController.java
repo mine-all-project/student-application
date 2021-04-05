@@ -1,15 +1,13 @@
 package cn.crabapples.application.system.controller;
 
 import cn.crabapples.application.common.BaseController;
-import cn.crabapples.application.common.utils.jwt.JwtIgnore;
 import cn.crabapples.application.common.groups.IsLogin;
+import cn.crabapples.application.common.utils.jwt.JwtIgnore;
 import cn.crabapples.application.system.dto.ResponseDTO;
 import cn.crabapples.application.system.entity.SysMenu;
 import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.SysService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +25,6 @@ import java.util.List;
  */
 
 @RestController
-@Api("系统管理")
 @Slf4j
 @RequestMapping("/api")
 public class SysController extends BaseController {
@@ -46,7 +43,6 @@ public class SysController extends BaseController {
      */
     @JwtIgnore
     @PostMapping("/login")
-    @ApiOperation(value = "用户登陆", notes = "用户登陆接口")
     public ResponseDTO loginCheck(@RequestBody UserForm form) {
         log.info("收到请求->用户登陆验证:[{}]", form);
         super.validator(form, IsLogin.class);

@@ -28,7 +28,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public cn.crabapples.application.custom.entity.Subject saveSubject(SubjectForm form) {
+    public Subject saveSubject(SubjectForm form) {
         return subjectDAO.save(form);
     }
 

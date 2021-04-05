@@ -1,14 +1,12 @@
 package cn.crabapples.application.custom.controller;
 
-import cn.crabapples.application.custom.entity.Subject;
-import cn.crabapples.application.custom.form.SubjectForm;
-import cn.crabapples.application.custom.service.SubjectService;
 import cn.crabapples.application.common.BaseController;
 import cn.crabapples.application.common.groups.IsLogin;
 import cn.crabapples.application.common.utils.jwt.JwtIgnore;
+import cn.crabapples.application.custom.entity.Subject;
+import cn.crabapples.application.custom.form.SubjectForm;
+import cn.crabapples.application.custom.service.SubjectService;
 import cn.crabapples.application.system.dto.ResponseDTO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +23,6 @@ import java.util.List;
  */
 
 @RestController
-@Api("系统管理")
 @Slf4j
 @RequestMapping("/api/subject")
 public class SubjectController extends BaseController {
@@ -38,7 +35,6 @@ public class SubjectController extends BaseController {
 
     @JwtIgnore
     @PostMapping("/save")
-    @ApiOperation(value = "保存", notes = "保存课题接口")
     public ResponseDTO save(@RequestBody SubjectForm form) {
         log.info("收到请求->保存课题:[{}]", form);
         super.validator(form, IsLogin.class);
@@ -49,7 +45,6 @@ public class SubjectController extends BaseController {
 
     @JwtIgnore
     @GetMapping("/list")
-    @ApiOperation(value = "获取列表", notes = "获取课题列表接口")
     public ResponseDTO list() {
         log.info("收到请求->获取列表");
         List<Subject> resultList = subjectService.getAll();

@@ -5,13 +5,20 @@
     <a-modal :visible="show.addSub" @cancel="closeAddSub" @ok="submitSubject" cancelText="取消" okText="保存">
       <a-form-model ref="ruleForm" :model="form.addSub" :rules="rules.addSub" :label-col="labelCol"
                     :wrapper-col="wrapperCol">
-        <a-form-model-item ref="password" label="课题名称" prop="title">
+        <a-form-model-item label="课题名称" prop="title">
           <a-input v-model="form.addSub.title" placeholder="请输入课题名称"/>
         </a-form-model-item>
-        <a-form-model-item ref="personList" label="科研人员" prop="personList">
+        <a-form-model-item label="科研人员" prop="personList">
           <a-select mode="multiple" :default-value="[]" v-model="form.addSub.personList" placeholder="请选择参与的科研人员">
             <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">
               {{ (i + 9).toString(36) + i }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+        <a-form-model-item label="标签" prop="tagsList">
+          <a-select mode="multiple" :default-value="[]" v-model="form.addSub.tagsList" placeholder="请选择标签">
+            <a-select-option v-for="item in tagsOptions" :key="item.id">
+              {{ item.name }}
             </a-select-option>
           </a-select>
         </a-form-model-item>
@@ -32,7 +39,7 @@
       </a-form-model>
     </a-modal>
     <a-modal :visible="show.resultList" @cancel="closeAddSub" cancelText="关闭">
-      <a-table :columns="columns" :data-source="dataSource">
+      <a-table :columns="columns" :data-source="dataSource" rowKey="id">
         <span slot="customTitle"> 课题名称</span>
         <span slot="name" slot-scope="text">{{ text }}</span>
         <span slot="tags" slot-scope="tags">
@@ -42,11 +49,11 @@
         <span slot="endTime" slot-scope="text">{{ text }}</span>
       </a-table>
     </a-modal>
-    <a-table :columns="columns" :data-source="dataSource">
+    <a-table :columns="columns" :data-source="dataSource" rowKey="id">
       <span slot="customTitle"> 课题名称</span>
       <span slot="name" slot-scope="text">{{ text }}</span>
       <span slot="tags" slot-scope="tags">
-      <a-tag v-for="tag in tags" :key="tag" color="red">{{ tag }}</a-tag>
+      <a-tag v-for="tag in tags" :rowKey="tag.id" color="red">{{ tag }}</a-tag>
     </span>
       <span slot="status" slot-scope="status">
       <a-tag v-if="status === 0" color="green">{{ status }}</a-tag>
@@ -97,6 +104,9 @@ export default {
           personList: [
             // {required: true, message: '请选择参与科研人员', trigger: 'change'},
           ],
+          tagsList: [
+            // {required: true, message: '请选择参与科研人员', trigger: 'change'},
+          ],
           stepList: [
             {required: true, message: '阶段目标至少有一个', trigger: 'change'},
           ],
@@ -107,70 +117,37 @@ export default {
       },
       columns: [
         {
-          dataIndex: 'name',
-          key: 'name',
+          dataIndex: 'title',
           slots: {title: 'customTitle'},
-          scopedSlots: {customRender: 'name'},
+          scopedSlots: {customRender: 'title'},
         },
         {
-          title: '状态',
           dataIndex: 'status',
-          key: 'status',
+          title: '状态',
           scopedSlots: {customRender: 'status'},
         },
         {
-          title: '标签',
-          key: 'tags',
           dataIndex: 'tags',
+          title: '标签',
           scopedSlots: {customRender: 'tags'},
         },
         {
-          title: '开始时间',
-          key: 'beginTime',
           dataIndex: 'beginTime',
+          title: '开始时间',
           scopedSlots: {customRender: 'beginTime'},
         },
         {
-          title: '结束时间',
-          key: 'endTime',
           dataIndex: 'endTime',
+          title: '结束时间',
           scopedSlots: {customRender: 'endTime'},
         },
         {
+          dataIndex: 'action',
           title: '操作',
-          key: 'action',
           scopedSlots: {customRender: 'action'},
         },
       ],
-      dataSource: [
-        {
-          id: '1',
-          key: '1',
-          name: '课题1',
-          beginTime: '2020-11-12',
-          endTime: '2020-11-12',
-          status: 0,
-          tags: ['nice', 'developer'],
-        },
-        {
-          id: '2',
-          key: '2',
-          name: '课题2',
-          beginTime: '2020-11-12',
-          endTime: '2020-11-12',
-          status: 1,
-          tags: ['loser'],
-        },
-        {
-          id: '3',
-          key: '3',
-          name: '课题3',
-          beginTime: '2020-11-12',
-          endTime: '2020-11-12',
-          status: 2,
-          tags: ['cool', 'teacher'],
-        },
-      ],
+      dataSource: [],
 
       labelCol: {span: 5},
       wrapperCol: {span: 16},
@@ -184,13 +161,16 @@ export default {
               indexNum: 0,
               content: '',
             }
-          ]
+          ],
+          tagsList: []
         },
       },
       show: {
         addSub: false,
         resultList: false,
       },
+      tagsOptions: [],
+      tags: [],
       userInfo: {
         name: ''
       },
@@ -202,6 +182,20 @@ export default {
     // this.$router.push({name: 'welcome'})
   },
   methods: {
+    getTagsList() {
+      this.$http.get('/api/tags/list').then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        if (result.data !== null) {
+          this.tagsOptions = result.data;
+          this.tags = result.data;
+        }
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
     getList() {
       this.$http.get('/api/subject/list').then(result => {
         if (result.status !== 200) {
@@ -231,22 +225,31 @@ export default {
     },
     addSub() {
       this.show.addSub = true
+      this.getTagsList()
     },
     closeAddSub() {
       this.show.addSub = false
       this.resetSubForm()
     },
     submitSubject() {
-      console.log(this.form.addSub)
+      // let ids = this.form.addSub.tagsList
+      // let tags = []
+      // this.tagsOptions.forEach(e => {
+      //   ids.forEach(id => {
+      //     if (e.id === id) {
+      //       tags.push(e)
+      //     }
+      //   })
+      // })
+      // console.log(tags)
+      // this.form.addSub.tagsList = tags
+      console.log(this.form.addSub.tagsList)
       this.$http.post('/api/subject/save', this.form.addSub).then(result => {
         if (result.status !== 200) {
           this.$message.error(result.message);
           return;
         }
         console.log(result)
-        if (result.data !== null) {
-          // this.userInfo = result.data;
-        }
       }).catch(function (error) {
         console.error('出现错误:', error);
       });
@@ -297,10 +300,6 @@ export default {
       // this.$refs.ruleForm.resetFields();
     },
 
-    clickMenu(url) {
-      this.$router.push({path: url})
-      console.log(url)
-    },
     getUserInfo() {
       this.$http.get('/api/getUserInfo').then(result => {
         if (result.status !== 200) {
@@ -319,34 +318,4 @@ export default {
 </script>
 
 <style scoped>
-
-.ant-layout-header, .ant-layout-footer {
-  background: #7dbcea;
-  color: #fff;
-}
-
-.ant-layout-footer {
-  line-height: 1.5;
-}
-
-.ant-layout-sider {
-  width: 100%;
-  height: 823px;
-  /*background: #ffffff;*/
-  /*color: #fff;*/
-  /*line-height: 120px;*/
-}
-
-.ant-layout-content {
-  /*padding: 16px;*/
-  background: #fff;
-  color: #fff;
-  min-height: 120px;
-  line-height: 120px;
-  height: 823px;
-}
-
-.container-parent {
-  padding: 16px;
-}
 </style>

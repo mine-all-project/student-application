@@ -20,4 +20,6 @@ public interface TagsService {
     Tags saveTags(TagsForm form);
 
     List<Tags> getAll();
+
+    void removeById(String id);
 }

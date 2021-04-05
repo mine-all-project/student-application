@@ -8,8 +8,6 @@ import cn.crabapples.application.system.dto.ResponseDTO;
 import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping(value = "/api/user")
-@Api("用户管理")
 public class UserController extends BaseController {
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
@@ -36,7 +33,6 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/addUser")
-    @ApiOperation(value = "添加用户", notes = "添加用户接口")
     public ResponseDTO addUser(@RequestBody UserForm form) {
         logger.info("收到请求->添加用户:[{}]", form);
         super.validator(form, IsAdd.class);
@@ -46,7 +42,6 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/editUser")
-    @ApiOperation(value = "修改用户", notes = "修改用户接口")
     public ResponseDTO editUser(@RequestBody UserForm form) {
         logger.info("收到请求->修改用户:[{}]", form);
         super.validator(form, IsEdit.class);
@@ -56,7 +51,6 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/delUser")
-    @ApiOperation(value = "删除用户", notes = "删除用户接口")
     public ResponseDTO delUser(@RequestBody UserForm form) {
         super.validator(form, cn.crabapples.application.common.groups.IsStatusChange.class);
         logger.info("收到请求->删除用户:[{}]", form.getId());
@@ -66,7 +60,6 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/changeStatus")
-    @ApiOperation(value = "修改用户状态", notes = "修改用户状态接口")
     public ResponseDTO changeStatus(@RequestBody UserForm form) {
         super.validator(form, IsStatusChange.class);
         logger.info("收到请求->修改用户状态,id:[{}]", form.getId());
@@ -76,7 +69,6 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/getUserInfo")
-    @ApiOperation(value = "获取当前用户信息", notes = "获取当前用户信息接口")
     public ResponseDTO getUserInfo() {
         logger.info("收到请求->获取当前用户信息");
         SysUser sysUser = userService.getUserInfo();

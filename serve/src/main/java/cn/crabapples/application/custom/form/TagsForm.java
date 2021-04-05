@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 public class TagsForm extends BaseForm {
     @NotNull(message = "名称不能为空", groups = {IsAdd.class, IsEdit.class})
     private String name;
+    private String color;
 
     @Override
     public String toString() {

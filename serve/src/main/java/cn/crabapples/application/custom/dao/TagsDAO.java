@@ -1,17 +1,17 @@
 package cn.crabapples.application.custom.dao;
 
+import cn.crabapples.application.common.BaseDAO;
+import cn.crabapples.application.common.utils.AssertUtils;
 import cn.crabapples.application.custom.dao.jpa.TagsRepository;
 import cn.crabapples.application.custom.entity.Tags;
 import cn.crabapples.application.custom.form.TagsForm;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class TagsDAO {
-    private final Sort sort = Sort.by("createTime").descending();
+public class TagsDAO extends BaseDAO {
     private final TagsRepository tagsRepository;
 
     public TagsDAO(TagsRepository tagsRepository) {
@@ -30,6 +30,13 @@ public class TagsDAO {
     }
 
     public List<Tags> getAll() {
-        return tagsRepository.findAll(sort);
+        return tagsRepository.findAllByDelFlagNot(desByCreateTime, IS_DEL);
+    }
+
+    public void removeById(String id) {
+        Tags tags = tagsRepository.findByIdAndDelFlag(id, NOT_DEL);
+        AssertUtils.notNull(tags, "删除失败");
+        tags.setDelFlag(1);
+        tagsRepository.saveAndFlush(tags);
     }
 }

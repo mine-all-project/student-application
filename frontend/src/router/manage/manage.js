@@ -1,5 +1,6 @@
 import Index from '@/views/manage/Index'
 import subApply from '@/views/manage/sub-apply'
+import tags from '@/views/manage/tags'
 
 const manageRouter = {
     path: '/manage-index',
@@ -11,6 +12,11 @@ const manageRouter = {
             path: 'sub-apply',
             components: {innerView: subApply},
             name: 'sub-apply',
+        },
+        {
+            path: 'tags',
+            components: {innerView: tags},
+            name: 'tags',
         },
     ]
 }

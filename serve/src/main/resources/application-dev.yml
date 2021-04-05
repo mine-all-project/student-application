@@ -65,10 +65,16 @@ spring:
         max-active: 10
   datasource:
     druid:
-      driverClassName: ${dataBaseDriveV8} #数据库驱动
-      url: jdbc:mysql://${dadaBaseUrl}:3306/learn?useSSL=false&${dataBaseParam} #数据库地址
-      username: root #数据库用户名
-      password: root #数据库密码
+      first:
+        driverClassName: ${dataBaseDriveV8} #数据库驱动
+        url: jdbc:mysql://${dadaBaseUrl}:3306/learn?useSSL=false&${dataBaseParam} #数据库地址
+        username: root #数据库用户名
+        password: root #数据库密码
+      second:
+        driverClassName: ${dataBaseDriveV8} #数据库驱动
+        url: jdbc:mysql://${dadaBaseUrl}:3306/learn?useSSL=false&${dataBaseParam} #数据库地址
+        username: root #数据库用户名
+        password: root #数据库密码
       connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
       filters: stat,wall,slf4j
       initial-size: 5
