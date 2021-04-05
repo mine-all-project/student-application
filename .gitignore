@@ -1,5 +1,5 @@
 HELP.md
-/target/
+*/target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -27,3 +27,15 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+
+### Custom ###
+/SingletonDemoFile.temp
+#*-pro*.yml
+#*-pro*.properties
+
+### Frontend ###
+package-lock.json
+yarn.lock
+
+### log ###
+*.log
