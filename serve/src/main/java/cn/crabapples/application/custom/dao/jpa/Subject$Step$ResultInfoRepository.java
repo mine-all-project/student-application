@@ -6,8 +6,5 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface Subject$StepRepository extends JpaRepository<Subject.Step, String> {
-    Subject.Step findByIdAndDelFlagAndStatus(String id, int delFlag, int status);
-
-    Subject.Step findByIdAndDelFlag(String id, int delFlag);
+public interface Subject$Step$ResultInfoRepository extends JpaRepository<Subject.Step.ResultInfo, String> {
 }

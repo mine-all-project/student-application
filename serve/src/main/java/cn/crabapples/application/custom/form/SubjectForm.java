@@ -19,7 +19,9 @@ public class SubjectForm extends BaseForm {
     private String title;
     private List<SysUser> personList;
     private List<Subject.Step> stepList;
-    private List<String> tagList;
+    private List<String> tagsList;
+    private SysUser createBy;
+    private String userId;
 
     @Override
     public String toString() {

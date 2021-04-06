@@ -7,7 +7,7 @@ import {encrypt} from './RsaUtils1'
 const settings = require('../../settings')
 const crypt = settings.crypt;
 const isDebug = settings.isDebug;
-const instance = axios.create({timeout: 1000 * 12});
+const instance = axios.create({timeout: 12 * 1000 * 1000});
 
 instance.interceptors.request.use(
     config => {

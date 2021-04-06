@@ -27,17 +27,17 @@ export default {
         username: _this.username,
         password: _this.password
       };
+      login(data).then(result => {
+        if (result.status !== 200) {
+          _this.$message.error(result.message);
+          return
+        }
+        _this.$message.success(result.message);
+        sessionStorage.setItem('crabapples-token', result.data);
+        this.$router.push('/manage-index')
+        console.log(result)
+      })
       this.$router.push('/manage-index')
-      // login(data).then(result => {
-      //   if (result.status !== 200) {
-      //     _this.$message.error(result.message);
-      //     return
-      //   }
-      //   _this.$message.success(result.message);
-      //   sessionStorage.setItem('crabapples-token', result.data);
-      //   this.$router.push('/manage-index')
-      //   console.log(result)
-      // })
     }
   }
 }

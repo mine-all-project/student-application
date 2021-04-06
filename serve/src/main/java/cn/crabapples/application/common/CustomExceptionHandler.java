@@ -29,6 +29,6 @@ public class CustomExceptionHandler {
         if (e instanceof HttpMessageNotReadableException) {
             return ResponseDTO.returnError("参数错误");
         }
-        return ResponseDTO.returnError("操作失败", e.getMessage());
+        return ResponseDTO.returnError(e.getMessage(), "操作失败");
     }
 }
