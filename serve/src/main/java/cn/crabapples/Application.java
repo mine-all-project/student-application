@@ -21,13 +21,10 @@ import org.springframework.web.client.RestTemplate;
  * EnableJpaAuditing 开启jpa审计
  * EnableNacosConfig 开启nacos配置管理 [可在配置文件中配置,且注解会覆盖配置文件] (springBoot)
  * NacosPropertySource 读取的nacos配置文件Id(springBoot)
- * EnableDiscoveryClient 开启服务注册发现功能(springCloud)
  */
 
 @EnableJpaAuditing
 @SpringBootApplication
-//@ComponentScan(basePackages = {"cn.crabapples.application.*"})
-//@Import({DynamicDataSourceRegister.class})
 //@EnableNacosConfig(globalProperties = @NacosProperties(serverAddr = "192.168.3.20:8848"))
 //@NacosPropertySource(dataId = "learn-dev.yml", autoRefreshed = true)
 public class Application {
@@ -35,7 +32,7 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        logger.info(">>>>>>>>服务启动成功 [nacos] [jpa] [shiro] >>>>>>>>>");
+        logger.info(">>>>>>>>服务启动成功 [jpa] [shiro] >>>>>>>>>");
     }
 
     @Bean
