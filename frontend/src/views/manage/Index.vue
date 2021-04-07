@@ -146,6 +146,12 @@ export default {
               icon: 'appstore',
               url: '/manage-index/mine-pull',
             },
+            {
+              key: '23',
+              name: '共享审核',
+              icon: 'appstore',
+              url: '/manage-index/request-pull-list',
+            },
           ]
         },
         {

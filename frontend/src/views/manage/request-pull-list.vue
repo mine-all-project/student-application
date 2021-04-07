@@ -1,53 +1,5 @@
 <template>
   <div>
-    <a-modal :visible="show.stepList" @cancel="closeStepList" :footer="null" width="70%">
-      <a-table :columns="stepColumns" :data-source="stepDataSource" rowKey="id">
-        <span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
-        <span slot="content" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-        <span slot="status" slot-scope="text">
-          <a-tag :color="!text ?'green':'red'">{{ !text ? '进行中' : '已结束' }}</a-tag>
-        </span>
-        <span slot="resultInfos" slot-scope="record">
-          <template v-if="record.length>0">
-            <a-popover placement="topLeft">
-              <template slot="content">
-                <p v-for="item in record">{{ item.content }}</p>
-              </template>
-              <a-tag>预览</a-tag>
-            </a-popover>
-          </template>
-          <template v-else>
-            <a-tag>暂无成果</a-tag>
-          </template>
-        </span>
-        <span slot="action" slot-scope="text, record">
-        <a-button type="default" size="small" @click="showResultList(record)">查看成果</a-button>
-      </span>
-      </a-table>
-    </a-modal>
-    <a-modal :visible="show.resultList" @cancel="closeResultList" :footer="null" width="60%">
-      <a-table :columns="resultColumns" :data-source="resultDataSource" rowKey="id">
-        <span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
-        <span slot="content" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-        <span slot="action" slot-scope="text, record">
-          <a-button type="primary" size="small" @click="downloadFile(record)">下载附件</a-button>
-        </span>
-      </a-table>
-    </a-modal>
     <a-table :columns="columns" :data-source="dataSource" rowKey="id">
       <span slot="customTitle"> 课题名称</span>
       <span slot="name" slot-scope="text">{{ text }}</span>
@@ -64,12 +16,13 @@
         <a-tag v-if="isShare === 1" color="blue">未共享</a-tag>
       </span>
       <span slot="createBy" slot-scope="createBy">{{ createBy.name }}</span>
+      <span slot="requestBy" slot-scope="requestBy">{{ requestBy.name }}</span>
       <span slot="beginTime" slot-scope="text">{{ text }}</span>
       <span slot="endTime" slot-scope="text">{{ text }}</span>
       <span slot="action" slot-scope="text, record">
-        <a-button type="primary" size="small" @click="showStepList(record)"
-                  v-if="record.userListId.includes(userInfo.id)">查看详情</a-button>
-        <a-button type="primary" size="small" @click="requestPull(record)" v-else>申请查看</a-button>
+        <a-button type="primary" size="small" @click="acceptRequest(record)">同意</a-button>
+        <a-divider type="vertical"/>
+        <a-button type="danger" size="small" @click="unAcceptedRequest(record)">拒绝</a-button>
       </span>
     </a-table>
   </div>
@@ -113,6 +66,11 @@ export default {
           dataIndex: 'subject.createBy',
           title: '创建人',
           scopedSlots: {customRender: 'createBy'},
+        },
+        {
+          dataIndex: 'user.name',
+          title: '申请人',
+          scopedSlots: {customRender: 'user'},
         },
         {
           dataIndex: 'action',
@@ -178,10 +136,6 @@ export default {
       resultDataSource: [],
       labelCol: {span: 5},
       wrapperCol: {span: 16},
-      show: {
-        stepList: false,
-        resultList: false,
-      },
     };
   },
   mounted() {
@@ -189,35 +143,18 @@ export default {
   },
   methods: {
     initData() {
-      commonApi.getUserInfo().then((result) => {
-        if (result.status !== 200) {
-          this.$message.error(result.message);
-          return;
-        }
-        this.userInfo = result.data;
-        this.getList()
-      }).catch(function (error) {
-        console.error('出现错误:', error);
-      });
+      this.getList()
     },
     refreshData() {
       this.getList()
-      this.show = {
-        stepList: false,
-        resultList: false,
-      }
     },
     getList() {
-      this.$http.get('/api/subject/mine-pull').then(result => {
+      this.$http.get('/api/request-pull/list').then(result => {
         if (result.status !== 200) {
           this.$message.error(result.message);
           return;
         }
-        result.data.forEach((e) => {
-          e.userListId = e.shareUserList.map((r => {
-            return r.id
-          }))
-        })
+        console.log(result.data)
         this.dataSource = result.data;
       }).catch(function (error) {
         console.error('出现错误:', error);
@@ -225,44 +162,39 @@ export default {
     },
     requestPull(e) {
       console.log(e)
-      this.$http.get(`/api/request-pull/save/${e.subject.id}`).then(result => {
+      this.$http.get(`/api/subject/request-pull/${e.subject.id}`).then(result => {
         if (result.status !== 200) {
           this.$message.error(result.message);
           return;
         }
-        this.$message.success('申请成功，请等待审核 ');
       }).catch(function (error) {
         console.error('出现错误:', error);
       });
     },
-    showStepList(e) {
+    acceptRequest(e) {
       console.log(e)
-      this.stepDataSource = e.subject.stepList
-      this.show.stepList = true
-    },
-    closeStepList() {
-      this.show.stepList = false
-    },
-    showResultList(e) {
-      this.resultDataSource = e.resultInfos
-      this.show.resultList = true
-    },
-    closeResultList() {
-      this.show.resultList = false
-    },
-    downloadFile(e) {
-      let fileName = e.fileName
-      this.$http.get(e.url, {responseType: 'blob'}).then((res) => {
-        let reader = new FileReader();
-        reader.readAsDataURL(res);
-        reader.onload = function (e) {
-          let a = document.createElement('a');
-          a.download = fileName;
-          a.href = e.target.result;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+      this.$http.get(`/api/request-pull/accept/${e.id}`).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
         }
+        this.$message.success(result.message);
+        this.refreshData()
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
+    unAcceptedRequest(e) {
+      console.log(e)
+      this.$http.get(`/api/request-pull/unaccepted/${e.id}`).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        this.$message.success(result.message);
+        this.refreshData()
+      }).catch(function (error) {
+        console.error('出现错误:', error);
       });
     },
   }

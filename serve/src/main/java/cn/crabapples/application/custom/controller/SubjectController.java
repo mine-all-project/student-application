@@ -73,14 +73,6 @@ public class SubjectController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", resultList);
     }
 
-    @GetMapping("/request-pull/{id}")
-    public ResponseDTO requestPull(HttpServletRequest request, @PathVariable String id) {
-        log.info("收到请求->发起浏览申请,id:[{}]", id);
-        requestPullService.requestPull(request, id);
-        log.info("返回结果->发起浏览申请完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
-
     @GetMapping("/end/{id}")
     public ResponseDTO endById(@PathVariable String id) {
         log.info("收到请求->结束当前课题:[{}]", id);

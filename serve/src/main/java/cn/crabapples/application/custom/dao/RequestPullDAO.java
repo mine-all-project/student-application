@@ -7,10 +7,12 @@ import cn.crabapples.application.custom.entity.Subject;
 import cn.crabapples.application.system.entity.SysUser;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class RequestPullDAO extends BaseDAO {
-private final RequestPullRepository requestPullRepository;
-private final SubjectDAO subjectDAO;
+    private final RequestPullRepository requestPullRepository;
+    private final SubjectDAO subjectDAO;
 
     public RequestPullDAO(RequestPullRepository requestPullRepository, SubjectDAO subjectDAO) {
         this.requestPullRepository = requestPullRepository;
@@ -19,9 +21,21 @@ private final SubjectDAO subjectDAO;
 
     public void requestPull(SysUser user, String id) {
         Subject subject = subjectDAO.findById(id);
-        RequestPull requestPull = new RequestPull(user,subject);
+        RequestPull requestPull = new RequestPull(user, subject);
         requestPull.setStatus(1);
         requestPullRepository.saveAndFlush(requestPull);
 
+    }
+
+    public List<RequestPull> findAll() {
+        return requestPullRepository.findAllByStatusAndDelFlag(1, NOT_DEL);
+    }
+
+    public RequestPull findById(String id) {
+        return requestPullRepository.findByIdAndDelFlag(id, NOT_DEL);
+    }
+
+    public void save(RequestPull requestPull) {
+        requestPullRepository.saveAndFlush(requestPull);
     }
 }

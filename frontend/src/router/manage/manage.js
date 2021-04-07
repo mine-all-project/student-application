@@ -3,6 +3,7 @@ import SubApply from '@/views/manage/sub-apply'
 import Tags from '@/views/manage/tags'
 import MineSubject from '@/views/manage/mine-subject'
 import MinePull from '@/views/manage/mine-pull'
+import RequestPullList from '@/views/manage/request-pull-list'
 
 const manageRouter = {
     path: '/manage-index',
@@ -29,6 +30,11 @@ const manageRouter = {
             path: 'mine-pull',
             components: {innerView: MinePull},
             name: 'mine-pull',
+        },
+        {
+            path: 'request-pull-list',
+            components: {innerView: RequestPullList},
+            name: 'request-pull-list',
         },
     ]
 }
