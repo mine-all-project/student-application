@@ -5,12 +5,16 @@ import cn.crabapples.application.common.groups.IsAdd;
 import cn.crabapples.application.common.groups.IsEdit;
 import cn.crabapples.application.common.groups.IsStatusChange;
 import cn.crabapples.application.system.dto.ResponseDTO;
+import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 /**
@@ -69,11 +73,26 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/getUserInfo")
-    public ResponseDTO getUserInfo() {
+    public ResponseDTO getUserInfo(HttpServletRequest request) {
         logger.info("收到请求->获取当前用户信息");
-        SysUser sysUser = userService.getUserInfo();
+        SysUser sysUser = userService.getUserInfo(request);
         logger.info("返回结果->获取当前用户信息结束:[{}]", sysUser);
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
 
+    @GetMapping("/getUserListDTO")
+    public ResponseDTO getUserListDTO(HttpServletRequest request) {
+        logger.info("收到请求->获取用户列表DTO");
+        List<SysUserDTO> list = userService.getUserListDTO(request);
+        logger.info("返回结果->获取用户列表DTO结束:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @GetMapping("/list")
+    public ResponseDTO getUserList() {
+        logger.info("收到请求->获取用户列表");
+        List<SysUser> list = userService.findAll();
+        logger.info("返回结果->获取用户列表结束:[{}]", list);
+        return ResponseDTO.returnSuccess("操作成功", list);
+    }
 }

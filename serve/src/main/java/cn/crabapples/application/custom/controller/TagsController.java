@@ -2,7 +2,6 @@ package cn.crabapples.application.custom.controller;
 
 import cn.crabapples.application.common.BaseController;
 import cn.crabapples.application.common.groups.IsLogin;
-import cn.crabapples.application.common.utils.jwt.JwtIgnore;
 import cn.crabapples.application.custom.entity.Tags;
 import cn.crabapples.application.custom.form.TagsForm;
 import cn.crabapples.application.custom.service.TagsService;
@@ -33,7 +32,6 @@ public class TagsController extends BaseController {
         this.tagsService = tagsService;
     }
 
-    @JwtIgnore
     @PostMapping("/save")
     public ResponseDTO save(@RequestBody TagsForm form) {
         log.info("收到请求->保存标签:[{}]", form);
@@ -43,7 +41,6 @@ public class TagsController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @JwtIgnore
     @GetMapping("/list")
     public ResponseDTO list() {
         log.info("收到请求->获取列表");
@@ -52,7 +49,6 @@ public class TagsController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", resultList);
     }
 
-    @JwtIgnore
     @GetMapping("/removeById/{id}")
     public ResponseDTO removeById(@PathVariable("id") String id) {
         log.info("收到请求->删除标签");

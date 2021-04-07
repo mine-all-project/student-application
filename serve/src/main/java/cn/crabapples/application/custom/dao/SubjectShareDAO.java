@@ -3,38 +3,39 @@ package cn.crabapples.application.custom.dao;
 import cn.crabapples.application.common.ApplicationException;
 import cn.crabapples.application.common.BaseDAO;
 import cn.crabapples.application.common.utils.AssertUtils;
-import cn.crabapples.application.custom.dao.jpa.*;
-import cn.crabapples.application.custom.entity.*;
+import cn.crabapples.application.custom.dao.jpa.SubjectRepository;
+import cn.crabapples.application.custom.dao.jpa.SubjectStepRepository;
+import cn.crabapples.application.custom.dao.jpa.SubjectStepResultInfoRepository;
+import cn.crabapples.application.custom.dao.jpa.TagsRepository;
+import cn.crabapples.application.custom.entity.Subject;
+import cn.crabapples.application.custom.entity.SubjectStep;
+import cn.crabapples.application.custom.entity.SubjectStepResultInfo;
+import cn.crabapples.application.custom.entity.Tags;
 import cn.crabapples.application.custom.form.SubjectForm;
 import cn.crabapples.application.custom.form.SubjectStepResultInfoForm;
 import cn.crabapples.application.system.dao.UserDAO;
-import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SubjectDAO extends BaseDAO {
+public class SubjectShareDAO extends BaseDAO {
     private final SubjectRepository subjectRepository;
     private final SubjectStepRepository subjectStepRepository;
     private final SubjectStepResultInfoRepository subjectStepResultInfoRepository;
-    private final SubjectShareRepository subjectShareRepository;
     private final TagsRepository tagsRepository;
     private final UserDAO userDAO;
 
-    public SubjectDAO(SubjectRepository subjectRepository,
-                      SubjectStepRepository subjectStepRepository,
-                      SubjectStepResultInfoRepository subjectStepResultInfoRepository,
-                      SubjectShareRepository subjectShareRepository,
-                      TagsRepository tagsRepository, UserDAO userDAO) {
+    public SubjectShareDAO(SubjectRepository subjectRepository,
+                           SubjectStepRepository subjectStepRepository,
+                           SubjectStepResultInfoRepository subjectStepResultInfoRepository,
+                           TagsRepository tagsRepository, UserDAO userDAO) {
         this.subjectRepository = subjectRepository;
         this.subjectStepRepository = subjectStepRepository;
         this.subjectStepResultInfoRepository = subjectStepResultInfoRepository;
-        this.subjectShareRepository = subjectShareRepository;
         this.tagsRepository = tagsRepository;
         this.userDAO = userDAO;
     }
@@ -114,46 +115,22 @@ public class SubjectDAO extends BaseDAO {
         return subjectRepository.findByCreateByAndDelFlag(desByCreateTime, createBy, NOT_DEL);
     }
 
-    public void shareById(String id, SysUser sysUser) {
+    public void shareById(String id) {
         Subject subject = subjectRepository.findByIdAndDelFlag(id, NOT_DEL);
         subject.setIsShare(0);
         subjectRepository.saveAndFlush(subject);
-        SubjectShare share = subjectShareRepository.findBySubjectAndStatus(subject, 0).orElse(new SubjectShare());
-        share.setSubject(subject);
-        share.setStatus(0);
-        share.setShareBy(sysUser);
-        subjectShareRepository.saveAndFlush(share);
     }
 
     public void closeShareById(String id) {
         Subject subject = subjectRepository.findByIdAndDelFlag(id, NOT_DEL);
-        SubjectShare share = subjectShareRepository.findBySubjectAndStatus(subject, 1).get();
-        AssertUtils.notNull(share, "分享状态异常");
         subject.setIsShare(1);
-        share.setStatus(1);
-        subjectShareRepository.saveAndFlush(share);
         subjectRepository.saveAndFlush(subject);
     }
 
-    public List<SubjectShare> getMinePull(SysUser createBy) {
-//        List<SubjectShare> share = subjectShareRepository.findByStatusAndShareByNot(0, createBy);
-        List<SubjectShare> share = subjectShareRepository.findByStatus(0);
-        share.forEach((e) -> {
-            List<SysUserDTO> shareUsers = new ArrayList<>();
-            e.getShareUser().forEach(r -> {
-                SysUserDTO shareUser = new SysUserDTO();
-                BeanUtils.copyProperties(r, shareUser);
-                shareUsers.add(shareUser);
-            });
-            SysUserDTO shareBy = new SysUserDTO();
-            BeanUtils.copyProperties(e.getShareBy(), shareBy);
-            e.setShareByUser(shareBy);
-            e.setShareUserList(shareUsers);
-        });
-        return share;
+    public List<Subject> getMinePull(SysUser createBy) {
+        List<Subject> subjects = subjectRepository.findByCreateByNotAndDelFlagAndIsShare(desByCreateTime, createBy, NOT_DEL, 0);
+        subjects.forEach(System.err::println);
+        return subjects;
     }
 
-    public Subject findById(String id) {
-        return subjectRepository.findByIdAndDelFlag(id, NOT_DEL);
-    }
 }

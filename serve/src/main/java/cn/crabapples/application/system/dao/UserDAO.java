@@ -1,5 +1,6 @@
 package cn.crabapples.application.system.dao;
 
+import cn.crabapples.application.common.BaseDAO;
 import cn.crabapples.application.system.dao.jpa.UserRepository;
 import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
@@ -10,7 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Component
-public class UserDAO {
+public class UserDAO extends BaseDAO {
     private final UserRepository userRepository;
 
     public UserDAO(UserRepository userRepository) {
@@ -33,6 +34,10 @@ public class UserDAO {
 
     public SysUser findById(String id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    public List<SysUser> findByIds(List<String> ids) {
+        return userRepository.findByIdInAndStatusAndDelFlag(ids, 0, NOT_DEL);
     }
 
     @Transactional
@@ -60,5 +65,10 @@ public class UserDAO {
 
     public List<SysUser> findAll() {
         return userRepository.findAll();
+
+    }
+
+    public List<SysUser> getUserList(String userId, int status) {
+        return userRepository.findByIdNotAndStatusAndDelFlag(userId, status, NOT_DEL);
     }
 }

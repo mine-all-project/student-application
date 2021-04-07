@@ -3,6 +3,7 @@ package cn.crabapples.application.common.utils.jwt;
 import cn.crabapples.application.common.ApplicationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -23,7 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @Component
 public class JwtInterceptor extends HandlerInterceptorAdapter {
-
+    @Value("${isDebug}")
+    private boolean isDebug;
     private final JwtConfigure jwtConfigure;
 
     public JwtInterceptor(JwtConfigure jwtConfigure) {
@@ -32,6 +34,7 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (isDebug) return true;
         // 忽略带JwtIgnore注解的请求, 不做后续token认证校验
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;

@@ -1,8 +1,10 @@
 package cn.crabapples.application.system.service;
 
+import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -69,11 +71,13 @@ public interface UserService {
 
     List<SysUser> findAll();
 
+
+    List<SysUserDTO> getUserListDTO(HttpServletRequest request);
+
     /**
      * 获取当前用户信息
      *
      * @return 当前用户信息
      */
-    SysUser getUserInfo();
-
+    SysUser getUserInfo(HttpServletRequest request);
 }

@@ -1,6 +1,8 @@
 package cn.crabapples.application.system.service.impl;
 
+import cn.crabapples.application.common.ApplicationException;
 import cn.crabapples.application.common.config.ApplicationConfigure;
+import cn.crabapples.application.common.utils.AssertUtils;
 import cn.crabapples.application.common.utils.jwt.JwtConfigure;
 import cn.crabapples.application.common.utils.jwt.JwtTokenUtils;
 import cn.crabapples.application.system.dao.jpa.SysMenuRepository;
@@ -9,17 +11,15 @@ import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.SysService;
 import cn.crabapples.application.system.service.UserService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.Md5Hash;
-import org.apache.shiro.subject.Subject;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 
@@ -83,24 +83,14 @@ public class SysServiceImpl implements SysService {
     @Override
     public String loginCheck(UserForm form) {
         String username = form.getUsername();
-        String password = String.valueOf(new Md5Hash(form.getPassword(), salt));
+        String password = Md5Crypt.md5Crypt(form.getPassword().getBytes(StandardCharsets.UTF_8), salt);
         logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
-        SysUser sysUser = shiroCheckLogin(username, password);
-        return JwtTokenUtils.createJWT(sysUser.getId(), sysUser.getUsername(), jwtConfigure);
-    }
-
-    /**
-     * shiro认证
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return 认证成功后的用户对象
-     */
-    private SysUser shiroCheckLogin(String username, String password) {
-        AuthenticationToken token = new UsernamePasswordToken(username, password);
-        Subject subject = SecurityUtils.getSubject();
-        subject.login(token);
-        return (SysUser) subject.getPrincipal();
+        SysUser sysUser = userService.findByUsername(username);
+        AssertUtils.notNull(sysUser, "用户名不存在");
+        if (sysUser.getPassword().equals(password)) {
+            return JwtTokenUtils.createJWT(sysUser.getId(), sysUser.getUsername(), jwtConfigure);
+        }
+        throw new ApplicationException("密码错误");
     }
 
     /**
@@ -110,10 +100,8 @@ public class SysServiceImpl implements SysService {
      */
     //    @Cacheable(value = "crabapples:sysMenus", key = "#auth")
     @Override
-    public List<SysMenu> getSysMenus(SysUser user) {
-//        Subject subject = SecurityUtils.getSubject();
-//        Object object = subject.getSession().getAttribute("user");
-//        System.err.println(object);
+    public List<SysMenu> getSysMenus(HttpServletRequest request) {
+        SysUser user = userService.getUserInfo(request);
         List<SysMenu> menus = sysMenuRepository.findByParentIdIsNull();
         insertChildrenMenus(menus);
         menus.forEach(System.err::println);

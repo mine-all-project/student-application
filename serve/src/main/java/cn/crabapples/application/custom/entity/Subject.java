@@ -5,13 +5,9 @@ import cn.crabapples.application.system.entity.SysUser;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,11 +27,11 @@ public class Subject extends BaseEntity {
     @Column(columnDefinition = "varchar(64) comment '标题'")
     private String title;
 
-    @Column(columnDefinition = "tinyint(5) default 0 comment '状态 '")
-    private int status;
+    @Column(columnDefinition = "tinyint(1) default 0 comment '状态 0:立项 1:在研 2:结题'")
+    private Integer status;
 
-    @OneToMany
-    private List<Tags> tags;
+    @Column(columnDefinition = "tinyint(1) default 1 comment '是否共享 0:是 1:否'")
+    private Integer isShare;
 
     @Column(columnDefinition = "timestamp default current_timestamp comment '开始时间'")
     @CreatedDate
@@ -46,47 +42,18 @@ public class Subject extends BaseEntity {
     @JSONField(format = "yyyy-MM-dd HH:mm:ss ")
     private LocalDateTime endTime;
 
-    @OneToMany
+    @ManyToMany
     private List<SysUser> personList;
 
     @OneToMany
-    private List<Step> stepList;
+    private List<SubjectStep> stepList;
 
-    @CreatedBy
-    private String userId;
+    @OneToMany
+    private List<Tags> tags;
 
-    @OneToOne
+    @ManyToOne
+//    @JoinColumn(name = "")
     private SysUser createBy;
 
-    @Setter
-    @Getter
-    @Entity
-    public static class Step extends BaseEntity {
-        @Column(columnDefinition = "int(3) comment '阶段数'")
-        private int indexNum;
 
-        @Column(columnDefinition = "longtext comment '阶段内容'")
-        private String content;
-
-        @Column(columnDefinition = "tinyint(5) default comment 0 '状态 0:正常 1:已结束'")
-        private int status;
-
-        @OneToMany
-        private List<ResultInfo> resultInfos;
-
-        @Setter
-        @Getter
-        @Entity
-        public static class ResultInfo extends BaseEntity {
-            @Column(columnDefinition = "longtext comment '附件地址'")
-            private String url;
-
-            @Column(columnDefinition = "longtext comment '描述'")
-            private String content;
-
-            @Column(columnDefinition = "longtext comment '文件名'")
-            private String fileName;
-        }
-
-    }
 }

@@ -18,7 +18,7 @@
       </a-form-model>
     </a-modal>
 
-    <a-table :columns="columns" :data-source="dataSource">
+    <a-table :columns="columns" :data-source="dataSource" key="id">
       <span slot="name" slot-scope="text">{{ text }}</span>
       <span slot="color" slot-scope="color,record">
         <a-tag :color="color">{{ record.name }}</a-tag>
@@ -46,7 +46,7 @@ export default {
       rules: {
         tags: {
           name: [
-            {required: true, message: '请输入课题名称', trigger: 'change'},
+            {required: true, message: '请输入标签名称', trigger: 'change'},
             {min: 2, max: 16, message: '长度为2-16个字符', trigger: 'change'},
           ],
         },
@@ -137,6 +137,7 @@ export default {
           this.$message.error(result.message);
           return;
         }
+        this.show.tags = false
         this.resetTagsForm()
         this.refreshData()
       }).catch(function (error) {

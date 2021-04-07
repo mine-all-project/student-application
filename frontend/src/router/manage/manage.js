@@ -1,6 +1,8 @@
 import Index from '@/views/manage/Index'
-import subApply from '@/views/manage/sub-apply'
-import tags from '@/views/manage/tags'
+import SubApply from '@/views/manage/sub-apply'
+import Tags from '@/views/manage/tags'
+import MineSubject from '@/views/manage/mine-subject'
+import MinePull from '@/views/manage/mine-pull'
 
 const manageRouter = {
     path: '/manage-index',
@@ -10,13 +12,23 @@ const manageRouter = {
     children: [
         {
             path: 'sub-apply',
-            components: {innerView: subApply},
+            components: {innerView: SubApply},
             name: 'sub-apply',
         },
         {
             path: 'tags',
-            components: {innerView: tags},
+            components: {innerView: Tags},
             name: 'tags',
+        },
+        {
+            path: 'mine-subject',
+            components: {innerView: MineSubject},
+            name: 'mine-subject',
+        },
+        {
+            path: 'mine-pull',
+            components: {innerView: MinePull},
+            name: 'mine-pull',
         },
     ]
 }

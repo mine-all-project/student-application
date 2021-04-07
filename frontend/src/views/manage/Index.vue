@@ -116,12 +116,12 @@ export default {
           children: [
             {
               key: '11',
-              name: '课题申报管理',
+              name: '项目申报',
               icon: 'appstore',
               url: '/manage-index/sub-apply',
             },
             {
-              key: '2',
+              key: '12',
               name: '标签管理',
               icon: 'appstore',
               url: '/manage-index/tags',
@@ -132,31 +132,19 @@ export default {
           key: '2',
           name: '数据共享',
           icon: 'appstore',
-          url: '/',
+          url: '',
           children: [
             {
               key: '21',
-              name: '锦途工程介绍',
+              name: '我的项目',
               icon: 'appstore',
-              url: '/jingtu-projects/info',
+              url: '/manage-index/mine-subject',
             },
             {
               key: '22',
-              name: '国际本科4+0模式介绍',
+              name: '共享项目',
               icon: 'appstore',
-              url: '/jingtu-projects/4and0',
-            },
-            {
-              key: '23',
-              name: '全日制本科4+1模式介绍',
-              icon: 'appstore',
-              url: '/jingtu-projects/4and1',
-            },
-            {
-              key: '24 ',
-              name: '重点国防生定向培养',
-              icon: 'appstore',
-              url: '/jingtu-projects/countries',
+              url: '/manage-index/mine-pull',
             },
           ]
         },

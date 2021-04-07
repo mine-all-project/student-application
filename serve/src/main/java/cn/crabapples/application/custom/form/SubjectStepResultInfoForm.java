@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-public class Subject$Step$ResultInfoForm extends BaseForm {
+public class SubjectStepResultInfoForm extends BaseForm {
     @NotBlank(message = "阶段id不能为空", groups = {IsAdd.class})
     private String stepId;
     @NotBlank(message = "成果url不能为空", groups = {IsAdd.class, IsEdit.class})

@@ -1,8 +1,7 @@
 package cn.crabapples.application.custom.controller;
 
-import cn.crabapples.application.custom.service.FileDataService;
 import cn.crabapples.application.common.BaseController;
-import cn.crabapples.application.common.utils.jwt.JwtIgnore;
+import cn.crabapples.application.custom.service.FileDataService;
 import cn.crabapples.application.system.dto.ResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +31,6 @@ public class FileDataController extends BaseController {
         this.fileDataService = fileDataService;
     }
 
-    @JwtIgnore
     @RequestMapping("/uploadFile")
     public ResponseDTO uploadFile(HttpServletRequest request) {
         log.info("收到请求->上传文件");

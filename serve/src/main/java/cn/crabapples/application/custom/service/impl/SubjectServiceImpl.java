@@ -1,14 +1,15 @@
 package cn.crabapples.application.custom.service.impl;
 
 import cn.crabapples.application.common.utils.jwt.JwtConfigure;
-import cn.crabapples.application.common.utils.jwt.JwtTokenUtils;
 import cn.crabapples.application.custom.dao.SubjectDAO;
+import cn.crabapples.application.custom.dao.SubjectShareDAO;
 import cn.crabapples.application.custom.entity.Subject;
-import cn.crabapples.application.custom.form.Subject$Step$ResultInfoForm;
+import cn.crabapples.application.custom.entity.SubjectShare;
 import cn.crabapples.application.custom.form.SubjectForm;
+import cn.crabapples.application.custom.form.SubjectStepResultInfoForm;
 import cn.crabapples.application.custom.service.SubjectService;
 import cn.crabapples.application.system.dao.UserDAO;
-import io.jsonwebtoken.Claims;
+import cn.crabapples.application.system.entity.SysUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -31,27 +32,26 @@ public class SubjectServiceImpl implements SubjectService {
     private final JwtConfigure jwtConfigure;
     private final SubjectDAO subjectDAO;
     private final UserDAO userDAO;
+    private final SubjectShareDAO subjectShareDAO;
     @Value("${isDebug}")
     private boolean isDebug;
 
-    public SubjectServiceImpl(JwtConfigure jwtConfigure, SubjectDAO subjectDAO, UserDAO userDAO) {
+    public SubjectServiceImpl(JwtConfigure jwtConfigure, SubjectDAO subjectDAO,
+                              UserDAO userDAO, SubjectShareDAO subjectShareDAO) {
         this.jwtConfigure = jwtConfigure;
         this.subjectDAO = subjectDAO;
         this.userDAO = userDAO;
+        this.subjectShareDAO = subjectShareDAO;
     }
 
     @Override
     public Subject saveSubject(HttpServletRequest request, SubjectForm form) {
-        String userId = "admin";
-        if (!isDebug) {
-            final String authHeader = request.getHeader(jwtConfigure.getAuthKey());
-            Claims claims = JwtTokenUtils.parseJWT(authHeader, jwtConfigure.getBase64Secret());
-            userId = String.valueOf(claims.get("userId"));
-        }
-        form.setUserId(userId);
-        form.setCreateBy(userDAO.findByUsername(userId));
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        form.setUserId(user.getId());
+        form.setCreateBy(user);
         return subjectDAO.save(form);
     }
+
 
     @Override
     public List<Subject> getAll() {
@@ -59,12 +59,17 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public List<Subject.Step> getStepList(String subjectId) {
-        return subjectDAO.getStepList(subjectId);
+    public List<Subject> getMineAll(HttpServletRequest request) {
+        return subjectDAO.getMineAll(getUserInfo(request, jwtConfigure, userDAO, isDebug));
     }
 
     @Override
-    public void saveResultInfo(Subject$Step$ResultInfoForm form) {
+    public List<SubjectShare> getMinePull(HttpServletRequest request) {
+        return subjectDAO.getMinePull(getUserInfo(request, jwtConfigure, userDAO, isDebug));
+    }
+
+    @Override
+    public void saveResultInfo(SubjectStepResultInfoForm form) {
         subjectDAO.saveResultInfo(form);
     }
 
@@ -76,5 +81,16 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public void endSubjectById(String id) {
         subjectDAO.endSubjectById(id);
+    }
+
+    @Override
+    public void shareById(String id, HttpServletRequest request) {
+        SysUser sysUser = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        subjectDAO.shareById(id, sysUser);
+    }
+
+    @Override
+    public void closeShareById(String id) {
+        subjectDAO.closeShareById(id);
     }
 }

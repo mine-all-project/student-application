@@ -5,13 +5,12 @@ import cn.crabapples.application.common.groups.IsLogin;
 import cn.crabapples.application.common.utils.jwt.JwtIgnore;
 import cn.crabapples.application.system.dto.ResponseDTO;
 import cn.crabapples.application.system.entity.SysMenu;
-import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.SysService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -51,17 +50,6 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess("登录成功", token);
     }
 
-    /**
-     * 进入主页面
-     *
-     * @return 登录后的主页面
-     */
-    @GetMapping("/index")
-//    @RequiresPermissions("abc:wewe")
-    public String index() {
-        log.info("收到请求->进入主页");
-        return "index";
-    }
 
     /**
      * 获取系统菜单
@@ -70,10 +58,9 @@ public class SysController extends BaseController {
      */
     @GetMapping("/getSysMenus")
     @ResponseBody
-    public ResponseDTO getSysMenus() {
-        SysUser user = (SysUser) SecurityUtils.getSubject().getPrincipal();
-        log.info("收到请求->获取用户[{}]的菜单列表", user.getId());
-        List<SysMenu> menus = sysService.getSysMenus(user);
+    public ResponseDTO getSysMenus(HttpServletRequest request) {
+        log.info("收到请求->获取用户菜单列表");
+        List<SysMenu> menus = sysService.getSysMenus(request);
         log.info("获取菜单列表成功:[{}]", menus);
         return ResponseDTO.returnSuccess("操作成功", menus);
     }

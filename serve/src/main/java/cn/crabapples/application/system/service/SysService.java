@@ -1,9 +1,9 @@
 package cn.crabapples.application.system.service;
 
 import cn.crabapples.application.system.entity.SysMenu;
-import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -26,5 +26,5 @@ public interface SysService {
      * 获取当前用户系统菜单
      * @return 当前用户拥有的菜单
      */
-    List<SysMenu> getSysMenus(SysUser user);
+    List<SysMenu> getSysMenus(HttpServletRequest request);
 }

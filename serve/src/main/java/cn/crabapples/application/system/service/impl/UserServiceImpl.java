@@ -1,18 +1,22 @@
 package cn.crabapples.application.system.service.impl;
 
 import cn.crabapples.application.common.utils.AssertUtils;
+import cn.crabapples.application.common.utils.jwt.JwtConfigure;
+import cn.crabapples.application.common.utils.jwt.JwtTokenUtils;
 import cn.crabapples.application.system.dao.UserDAO;
+import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.UserService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.UnauthenticatedException;
-import org.apache.shiro.subject.Subject;
+import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,13 +30,15 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+    private final JwtConfigure jwtConfigure;
     @Value("${isDebug}")
     private boolean isDebug;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserDAO userDAO;
 
-    public UserServiceImpl(UserDAO userDAO) {
+    public UserServiceImpl(JwtConfigure jwtConfigure, UserDAO userDAO) {
+        this.jwtConfigure = jwtConfigure;
         this.userDAO = userDAO;
     }
 
@@ -99,21 +105,28 @@ public class UserServiceImpl implements UserService {
         return userDAO.findByUsernameAndPasswordAndStatusNotAndDelFlagNot(username, password, status, delFlag);
     }
 
+
     @Override
-    public SysUser getUserInfo() {
-        Subject subject = SecurityUtils.getSubject();
-        SysUser user = (SysUser) subject.getPrincipal();
-        String username;
-        if (user == null) {
-            if (isDebug) {
-                username = "admin";
-            } else {
-                throw new UnauthenticatedException("用户尚未登录");
-            }
-        } else {
-            username = user.getUsername();
-        }
-        return userDAO.findByUsername(username);
+    public List<SysUserDTO> getUserListDTO(HttpServletRequest request) {
+        String userId = getUserInfo(request).getId();
+        List<SysUser> userList = userDAO.getUserList(userId, 0);
+        List<SysUserDTO> userDTOS = new ArrayList<>(userList.size());
+        userList.forEach(e -> {
+            SysUserDTO sysUserDTO = new SysUserDTO();
+            BeanUtils.copyProperties(e, sysUserDTO);
+            userDTOS.add(sysUserDTO);
+        });
+        return userDTOS;
     }
 
+    @Override
+    public SysUser getUserInfo(HttpServletRequest request) {
+        String userId = "001";
+        if (!isDebug) {
+            final String authHeader = request.getHeader(jwtConfigure.getAuthKey());
+            Claims claims = JwtTokenUtils.parseJWT(authHeader, jwtConfigure.getBase64Secret());
+            userId = String.valueOf(claims.get("userId"));
+        }
+        return userDAO.findById(userId);
+    }
 }

@@ -2,6 +2,7 @@ package cn.crabapples.application.system.entity;
 
 import cn.crabapples.application.common.BaseEntity;
 import cn.crabapples.application.common.groups.IsNotNull;
+import cn.crabapples.application.custom.entity.Tags;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
@@ -21,20 +22,22 @@ import java.util.List;
  * e-mail crabapples.cn@gmail.com
  * qq 294046317
  * pc-name 29404
- *
+ * <p>
  * Entity 表示这是一个和数据库表相关联的类
  */
 @Entity
 @Getter
 @Setter
 public class SysUser extends BaseEntity {
-    public SysUser() {}
+    public SysUser() {
+    }
+
     public SysUser(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
 
-    @Column(columnDefinition = "varchar(32) comment '用户名'",unique=true)
+    @Column(columnDefinition = "varchar(32) comment '用户名'", unique = true)
     @NotBlank(message = "用户名不能为空", groups = IsNotNull.class)
     private String username;
 
@@ -60,6 +63,9 @@ public class SysUser extends BaseEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @JSONField(serialize = false)
     private List<SysRole> sysRoles;
+
+    @OneToMany
+    private List<Tags> tags;
 
     @Column(columnDefinition = "bit(1) default 0 not null comment '用户状态标记 0:正常 1:禁用'")
     @NotBlank(message = "状态不能为空", groups = IsNotNull.class)

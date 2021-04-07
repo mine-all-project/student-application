@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {login} from '@/api/loginApi'
+import commonApi from '@/api/CommonApi'
 
 export default {
   name: 'Login',
@@ -27,7 +27,7 @@ export default {
         username: _this.username,
         password: _this.password
       };
-      login(data).then(result => {
+      commonApi.login(data).then(result => {
         if (result.status !== 200) {
           _this.$message.error(result.message);
           return

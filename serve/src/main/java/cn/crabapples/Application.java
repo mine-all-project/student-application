@@ -32,7 +32,7 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        logger.info(">>>>>>>>服务启动成功 [jpa] [shiro] >>>>>>>>>");
+        logger.info(">>>>>>>>服务启动成功 [jpa] [jwt] >>>>>>>>>");
     }
 
     @Bean
