@@ -1,6 +1,7 @@
 package cn.crabapples.application.custom.dao;
 
 import cn.crabapples.application.common.BaseDAO;
+import cn.crabapples.application.common.utils.AssertUtils;
 import cn.crabapples.application.custom.dao.jpa.RequestPullRepository;
 import cn.crabapples.application.custom.entity.RequestPull;
 import cn.crabapples.application.custom.entity.Subject;
@@ -21,6 +22,8 @@ public class RequestPullDAO extends BaseDAO {
 
     public void requestPull(SysUser user, String id) {
         Subject subject = subjectDAO.findById(id);
+        RequestPull exist = requestPullRepository.findBySysUserAndSubjectAndDelFlag(user, subject, NOT_DEL);
+        AssertUtils.isNull(exist, "请勿重复申请");
         RequestPull requestPull = new RequestPull(user, subject);
         requestPull.setStatus(1);
         requestPullRepository.saveAndFlush(requestPull);

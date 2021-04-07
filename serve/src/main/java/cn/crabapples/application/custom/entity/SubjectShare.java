@@ -26,17 +26,16 @@ public class SubjectShare extends BaseEntity {
     @OneToOne
     private Subject subject;
 
-    @OneToMany
+    @ManyToMany
     @JSONField(serialize = false)
     private List<SysUser> shareUser;
 
-    @Transient
-    private List<SysUserDTO> shareUserList;
-
     @ManyToOne
     @JSONField(serialize = false)
-
     private SysUser shareBy;
+
+    @Transient
+    private List<SysUserDTO> shareUserList;
 
     @Transient
     private SysUserDTO shareByUser;

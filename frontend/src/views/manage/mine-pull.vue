@@ -69,7 +69,7 @@
       <span slot="action" slot-scope="text, record">
         <a-button type="primary" size="small" @click="showStepList(record)"
                   v-if="record.userListId.includes(userInfo.id)">查看详情</a-button>
-        <a-button type="primary" size="small" @click="requestPull(record)" v-else>申请查看</a-button>
+        <a-button type="default" size="small" @click="requestPull(record)" v-else>申请查看</a-button>
       </span>
     </a-table>
   </div>
