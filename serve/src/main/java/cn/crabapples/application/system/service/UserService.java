@@ -1,5 +1,6 @@
 package cn.crabapples.application.system.service;
 
+import cn.crabapples.application.common.BaseService;
 import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
@@ -17,7 +18,7 @@ import java.util.List;
  * qq 294046317
  * pc-name 29404
  */
-public interface UserService {
+public interface UserService extends BaseService {
 
     /**
      * 根据 [用户名] 查询用户
@@ -74,10 +75,5 @@ public interface UserService {
 
     List<SysUserDTO> getUserListDTO(HttpServletRequest request);
 
-    /**
-     * 获取当前用户信息
-     *
-     * @return 当前用户信息
-     */
     SysUser getUserInfo(HttpServletRequest request);
 }

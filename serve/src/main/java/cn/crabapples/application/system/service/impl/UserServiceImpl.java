@@ -2,13 +2,11 @@ package cn.crabapples.application.system.service.impl;
 
 import cn.crabapples.application.common.utils.AssertUtils;
 import cn.crabapples.application.common.utils.jwt.JwtConfigure;
-import cn.crabapples.application.common.utils.jwt.JwtTokenUtils;
 import cn.crabapples.application.system.dao.UserDAO;
 import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.UserService;
-import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -108,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<SysUserDTO> getUserListDTO(HttpServletRequest request) {
-        String userId = getUserInfo(request).getId();
+        String userId = getUserInfo(request, jwtConfigure, userDAO, isDebug).getId();
         List<SysUser> userList = userDAO.getUserList(userId, 0);
         List<SysUserDTO> userDTOS = new ArrayList<>(userList.size());
         userList.forEach(e -> {
@@ -121,12 +119,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SysUser getUserInfo(HttpServletRequest request) {
-        String userId = "001";
-        if (!isDebug) {
-            final String authHeader = request.getHeader(jwtConfigure.getAuthKey());
-            Claims claims = JwtTokenUtils.parseJWT(authHeader, jwtConfigure.getBase64Secret());
-            userId = String.valueOf(claims.get("userId"));
-        }
-        return userDAO.findById(userId);
+        return getUserInfo(request, jwtConfigure, userDAO, isDebug);
     }
 }

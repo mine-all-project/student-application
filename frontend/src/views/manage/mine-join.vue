@@ -43,8 +43,6 @@
           </template>
         </span>
         <span slot="action" slot-scope="text, record">
-        <a-button type="primary" size="small" @click="endStep(record)" v-if="record.status === 0">结束</a-button>
-        <a-divider type="vertical" v-if="record.status === 0"/>
         <a-button type="default" size="small" @click="showResultList(record)">查看成果</a-button>
         <a-divider type="vertical" v-if="record.status === 0"/>
         <a-upload name="file" :multiple="true" action="/api/uploadFile" :headers="headers"
@@ -94,32 +92,7 @@
       <span slot="beginTime" slot-scope="text">{{ text }}</span>
       <span slot="endTime" slot-scope="text">{{ text }}</span>
       <span slot="action" slot-scope="text, record">
-        <a-button type="danger" size="small" @click="endSub(record)" v-if="record.status === 1">申请结题</a-button>
-        <a-divider type="vertical" v-if="record.status === 1"/>
-        <a-button type="primary" style="border:none;background-color:#ea990d;" size="small" @click="share(record)"
-                  v-if="record.isShare === 1">发起共享</a-button>
-        <a-button type="primary" style="border:none;background-color:#27ac05;" size="small" @click="closeShare(record)"
-                  v-if="record.isShare === 0">取消共享</a-button>
-        <a-divider type="vertical"/>
         <a-button type="primary" size="small" @click="showStepList(record)">查看详情</a-button>
-        <!--        <a-dropdown>-->
-        <!--          <a-button type="default" size="small">成果-->
-        <!--            <a class="ant-dropdown-link"><a-icon type="down" :style="{color:'#000'}"/></a>-->
-        <!--          </a-button>-->
-        <!--          <a-menu slot="overlay">-->
-        <!--                <a-menu-item key="1">-->
-        <!--                   <a-upload name="file" :multiple="true" action="/api/uploadFile" :headers="headers">-->
-        <!--                      <a-button type="default" size="small">添加</a-button>-->
-        <!--                   </a-upload>-->
-        <!--                </a-menu-item>-->
-        <!--                <a-menu-item key="2" @click="showResultList(record)">-->
-        <!--                  <a-button type="default" size="small">查看</a-button>-->
-        <!--                </a-menu-item>-->
-        <!--              </a-menu>-->
-        <!--          <a-button style="margin-left: 8px"> Button-->
-        <!--            <a-icon type="down"/>-->
-        <!--          </a-button>-->
-        <!--        </a-dropdown>-->
       </span>
     </a-table>
   </div>
@@ -127,7 +100,7 @@
 
 <script>
 export default {
-  name: "mine-subject",
+  name: "mine-join",
   data() {
     return {
       rules: {
@@ -289,7 +262,7 @@ export default {
       }
     },
     getList() {
-      this.$http.get('/api/subject/mine-list').then(result => {
+      this.$http.get('/api/subject/mine-join').then(result => {
         if (result.status !== 200) {
           this.$message.error(result.message);
           return;
@@ -300,6 +273,7 @@ export default {
       }).catch(function (error) {
         console.error('出现错误:', error);
       });
+      // this.resetSubForm()
     },
     addResult(e) {
       this.form.addResultInfo.stepId = e.id
@@ -371,32 +345,6 @@ export default {
     closeResultList() {
       this.show.resultList = false
     },
-    endStep(e) {
-      const _this = this
-      this.$confirm({
-        title: '确定要结束该阶段吗吗?',
-        content: '如您已完成该阶段目标可点击确定',
-        cancelText: '取消',
-        okText: '确定',
-        onOk() {
-          _this.$http.get(`/api/subject/step/end/${e.id}`).then(result => {
-            if (result.status !== 200) {
-              _this.$message.error(result.message);
-              return;
-            }
-            if (result.data !== null) {
-              _this.dataSource = result.data;
-            }
-            _this.$message.success(result.message);
-            _this.refreshData()
-          }).catch(function (error) {
-            console.error('出现错误:', error);
-          });
-        },
-        onCancel() {
-        },
-      });
-    },
     downloadFile(e) {
       let fileName = e.fileName
       this.$http.get(e.url, {responseType: 'blob'}).then((res) => {
@@ -410,78 +358,6 @@ export default {
           a.click();
           document.body.removeChild(a);
         }
-      });
-    },
-    endSub(e) {
-      const _this = this
-      this.$confirm({
-        title: '确定要结束课题吗?',
-        content: '确定要结束课题吗?结束后无法继续！',
-        cancelText: '取消',
-        okText: '确定',
-        onOk() {
-          _this.$http.get(`/api/subject/end/${e.id}`).then(result => {
-            if (result.status !== 200) {
-              _this.$message.error(result.message);
-              return;
-            }
-            if (result.data !== null) {
-              _this.dataSource = result.data;
-            }
-            _this.$message.success(result.message);
-            _this.refreshData()
-          }).catch(function (error) {
-            console.error('出现错误:', error);
-          });
-        },
-      });
-    },
-    share(e) {
-      const _this = this
-      this.$confirm({
-        title: '确定要共享吗?',
-        content: '确定要与全员共享研究成果吗，您的数据可能会有泄露风险，请谨慎考虑',
-        cancelText: '取消',
-        okText: '确定',
-        onOk() {
-          _this.$http.get(`/api/subject/share/${e.id}`).then(result => {
-            if (result.status !== 200) {
-              _this.$message.error(result.message);
-              return;
-            }
-            if (result.data !== null) {
-              _this.dataSource = result.data;
-            }
-            _this.$message.success(result.message);
-            _this.refreshData()
-          }).catch(function (error) {
-            console.error('出现错误:', error);
-          });
-        },
-      });
-    },
-    closeShare(e) {
-      const _this = this
-      this.$confirm({
-        title: '确定要取消共享吗?',
-        content: '确定要取消与全员共享研究成果吗',
-        cancelText: '取消',
-        okText: '确定',
-        onOk() {
-          _this.$http.get(`/api/subject/close-share/${e.id}`).then(result => {
-            if (result.status !== 200) {
-              _this.$message.error(result.message);
-              return;
-            }
-            if (result.data !== null) {
-              _this.dataSource = result.data;
-            }
-            _this.$message.success(result.message);
-            _this.refreshData()
-          }).catch(function (error) {
-            console.error('出现错误:', error);
-          });
-        },
       });
     },
   }

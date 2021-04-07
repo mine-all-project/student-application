@@ -114,6 +114,10 @@ public class SubjectDAO extends BaseDAO {
         return subjectRepository.findByCreateByAndDelFlag(desByCreateTime, createBy, NOT_DEL);
     }
 
+    public List<Subject> getMineJoin(SysUser sysUser) {
+        return subjectRepository.findByPersonListContainsAndDelFlag(desByCreateTime, sysUser, NOT_DEL);
+    }
+
     public void shareById(String id, SysUser sysUser) {
         Subject subject = subjectRepository.findByIdAndDelFlag(id, NOT_DEL);
         subject.setIsShare(0);
@@ -156,4 +160,6 @@ public class SubjectDAO extends BaseDAO {
     public Subject findById(String id) {
         return subjectRepository.findByIdAndDelFlag(id, NOT_DEL);
     }
+
+
 }

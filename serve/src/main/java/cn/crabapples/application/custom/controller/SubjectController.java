@@ -65,6 +65,14 @@ public class SubjectController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", resultList);
     }
 
+    @GetMapping("/mine-join")
+    public ResponseDTO mineJoin(HttpServletRequest request) {
+        log.info("收到请求->获取我参与的课题列表");
+        List<Subject> resultList = subjectService.getMineJoin(request);
+        log.info("返回结果->获取我参与的课题列表完成:[{}]", resultList);
+        return ResponseDTO.returnSuccess("操作成功", resultList);
+    }
+
     @GetMapping("/mine-pull")
     public ResponseDTO minePull(HttpServletRequest request) {
         log.info("收到请求->获取我的收到的共享列表");

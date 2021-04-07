@@ -5,6 +5,7 @@ import cn.crabapples.application.common.config.ApplicationConfigure;
 import cn.crabapples.application.common.utils.AssertUtils;
 import cn.crabapples.application.common.utils.jwt.JwtConfigure;
 import cn.crabapples.application.common.utils.jwt.JwtTokenUtils;
+import cn.crabapples.application.system.dao.UserDAO;
 import cn.crabapples.application.system.dao.jpa.SysMenuRepository;
 import cn.crabapples.application.system.entity.SysMenu;
 import cn.crabapples.application.system.entity.SysUser;
@@ -45,6 +46,7 @@ public class SysServiceImpl implements SysService {
     private boolean isDebug;
 
     private final UserService userService;
+    private final UserDAO userDAO;
 
     private final SysMenuRepository sysMenuRepository;
 
@@ -53,10 +55,11 @@ public class SysServiceImpl implements SysService {
 
     public SysServiceImpl(ApplicationConfigure applicationConfigure,
                           UserService userService,
-                          SysMenuRepository sysMenuRepository,
+                          UserDAO userDAO, SysMenuRepository sysMenuRepository,
                           RedisTemplate<String, Object> redisTemplate,
                           JwtConfigure jwtConfigure) {
         this.userService = userService;
+        this.userDAO = userDAO;
         this.sysMenuRepository = sysMenuRepository;
         this.redisTemplate = redisTemplate;
         this.aesKey = applicationConfigure.aesKey;
@@ -101,7 +104,7 @@ public class SysServiceImpl implements SysService {
     //    @Cacheable(value = "crabapples:sysMenus", key = "#auth")
     @Override
     public List<SysMenu> getSysMenus(HttpServletRequest request) {
-        SysUser user = userService.getUserInfo(request);
+        SysUser user = userService.getUserInfo(request, jwtConfigure, userDAO, isDebug);
         List<SysMenu> menus = sysMenuRepository.findByParentIdIsNull();
         insertChildrenMenus(menus);
         menus.forEach(System.err::println);

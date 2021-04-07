@@ -25,6 +25,7 @@ public interface BaseService {
             Claims claims = JwtTokenUtils.parseJWT(authHeader, configure.getBase64Secret());
             userId = String.valueOf(claims.get("userId"));
         }
+        System.err.println(userDAO.findById(userId));
         return userDAO.findById(userId);
     }
 }

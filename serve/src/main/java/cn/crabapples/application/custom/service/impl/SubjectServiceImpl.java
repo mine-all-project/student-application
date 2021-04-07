@@ -64,6 +64,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public List<Subject> getMineJoin(HttpServletRequest request) {
+        return subjectDAO.getMineJoin(getUserInfo(request, jwtConfigure, userDAO, isDebug));
+    }
+
+    @Override
     public List<SubjectShare> getMinePull(HttpServletRequest request) {
         return subjectDAO.getMinePull(getUserInfo(request, jwtConfigure, userDAO, isDebug));
     }

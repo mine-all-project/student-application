@@ -142,12 +142,18 @@ export default {
             },
             {
               key: '22',
+              name: '我参与的',
+              icon: 'appstore',
+              url: '/manage-index/mine-join',
+            },
+            {
+              key: '23',
               name: '共享项目',
               icon: 'appstore',
               url: '/manage-index/mine-pull',
             },
             {
-              key: '23',
+              key: '24',
               name: '共享审核',
               icon: 'appstore',
               url: '/manage-index/request-pull-list',

@@ -28,4 +28,5 @@ public interface SubjectService extends BaseService {
 
     List<SubjectShare> getMinePull(HttpServletRequest request);
 
+    List<Subject> getMineJoin(HttpServletRequest request);
 }

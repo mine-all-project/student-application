@@ -17,6 +17,8 @@ public interface SubjectRepository extends JpaRepository<Subject, String> {
 
     List<Subject> findByCreateByAndDelFlag(Sort sort, SysUser createById, int delFlag);
 
+    List<Subject> findByPersonListContainsAndDelFlag(Sort sort, SysUser sysUser, int delFlag);
+
     List<Subject> findByCreateByNotAndDelFlagAndIsShare(Sort sort, SysUser createById, int delFlag, int isShare);
 
 }
