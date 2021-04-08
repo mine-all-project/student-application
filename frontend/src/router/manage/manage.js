@@ -5,6 +5,8 @@ import MineSubject from '@/views/manage/mine-subject'
 import MineJoin from '@/views/manage/mine-join'
 import MinePull from '@/views/manage/mine-pull'
 import RequestPullList from '@/views/manage/request-pull-list'
+import DataStatistical from '@/views/manage/data-statistical'
+import SubjectDiscuss from '@/views/manage/subject-discuss'
 
 const manageRouter = {
     path: '/manage-index',
@@ -42,6 +44,17 @@ const manageRouter = {
             components: {innerView: RequestPullList},
             name: 'request-pull-list',
         },
+        {
+            path: 'data-statistical',
+            components: {innerView: DataStatistical},
+            name: 'data-statistical',
+        },
+        {
+            path: 'subject-discuss',
+            components: {innerView: SubjectDiscuss},
+            name: 'subject-discuss',
+        },
+
     ]
 }
 

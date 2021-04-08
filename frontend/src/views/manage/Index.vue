@@ -164,7 +164,20 @@ export default {
           key: '3',
           name: '科研分析',
           icon: 'appstore',
-          url: '/really-projects/list',
+          children: [
+            {
+              key: '31',
+              name: '数据统计',
+              icon: 'appstore',
+              url: '/manage-index/data-statistical',
+            },
+            {
+              key: '32',
+              name: '工作评价',
+              icon: 'appstore',
+              url: '/manage-index/subject-discuss',
+            },
+          ]
         },
         {
           key: '4',
