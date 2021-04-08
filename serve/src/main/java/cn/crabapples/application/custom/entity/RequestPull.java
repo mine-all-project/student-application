@@ -12,6 +12,15 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+/**
+ * TODO
+ *
+ * @author Mr.He
+ * 2021/4/9 1:46
+ * e-mail crabapples.cn@gmail.com
+ * qq 294046317
+ * pc-name mrhe
+ */
 @Setter
 @Getter
 @Entity

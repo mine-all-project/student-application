@@ -8,6 +8,15 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+/**
+ * TODO 
+ *
+ * @author Mr.He
+ * 2021/4/9 1:48
+ * e-mail crabapples.cn@gmail.com
+ * qq 294046317
+ * pc-name mrhe
+ */
 @Entity
 @Getter
 @Setter

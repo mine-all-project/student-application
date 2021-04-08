@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * TODO 请求入参基本DTO
+ * TODO 返回结果基本DTO
  *
  * @author Mr.He
  * 2019/9/21 17:47

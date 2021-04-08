@@ -3,7 +3,7 @@ package cn.crabapples.application.common;
 import lombok.Getter;
 
 /**
- * TODO http请求返回状态骂
+ * TODO http请求返回状态码
  *
  * @author Mr.He
  * 8/29/20 11:50 PM

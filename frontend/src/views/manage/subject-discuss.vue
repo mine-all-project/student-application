@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-modal :visible="show.itemCharts" @cancel="closeItemCharts" :footer="null" width="70%">
+    <a-modal :visible="show.discuss" @cancel="closeDiscuss" :footer="null" width="70%">
       <div id="item-charts" style="width: 100%;height:400px;"></div>
     </a-modal>
     <a-modal :visible="show.stepList" @cancel="closeStepList" :footer="null" width="70%">
@@ -71,7 +71,7 @@
       <span slot="beginTime" slot-scope="text">{{ text }}</span>
       <span slot="endTime" slot-scope="text">{{ text }}</span>
       <span slot="action" slot-scope="text, record">
-        <a-button type="primary" size="small" @click="showItemCharts(record)">查看分析</a-button>
+        <a-button type="primary" size="small" @click="showDiscuss(record)">查看评论</a-button>
         <a-divider type="vertical"/>
         <a-button type="primary" size="small" @click="showStepList(record)">查看详情</a-button>
         <a-divider type="vertical"/>
@@ -186,8 +186,7 @@ export default {
       show: {
         stepList: false,
         resultList: false,
-        itemCharts: false,
-        baseCharts: false,
+        discuss: false,
       },
       userInfo: {
         name: ''
@@ -198,56 +197,12 @@ export default {
     this.getList()
   },
   methods: {
-    showItemCharts(e) {
-      this.show.itemCharts = true
-      this.$nextTick(() => {
-        let xData = []
-        let yData = []
-        let seriesData = []
-        e.stepList.forEach((r => {
-          console.log(r)
-          xData.push(r.content)
-          seriesData.push(r.resultInfos.length)
-        }))
-        let myChart = echarts.init(document.getElementById('item-charts'));
-        let option = {
-          legend: {},
-          color: ["#3398DB"],
-          tooltip: {
-            trigger: "axis",
-            axisPointer: {
-              type: "shadow"
-            },
-            formatter: ((e) => {
-              console.log(e[0])
-              return `<p><b>阶段目标：</b>${e[0].axisValue}</p><p><b>成果：</b>${e[0].data}</p>`
-            })
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: true,
-            data: xData,
-            name: '阶段目标',
-            nameLocation: 'end',
-          },
-          yAxis: {
-            type: 'value',
-            name: '成果',
-            show: true,
-            minInterval: 1,
-          },
-          series: [{
-            data: seriesData,
-            type: 'bar',
-            areaStyle: {},
-          }]
-        };
-        console.log(myChart)
-        myChart.setOption(option);
-      })
+    showDiscuss(e) {
+      this.show.discuss = true
+      console.log()
     },
-    closeItemCharts() {
-      this.show.itemCharts = false
+    closeDiscuss() {
+      this.show.discuss = false
     },
     getList() {
       this.$http.get('/api/subject/list').then(result => {

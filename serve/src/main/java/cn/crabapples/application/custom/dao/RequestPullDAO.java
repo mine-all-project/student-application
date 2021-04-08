@@ -9,7 +9,15 @@ import cn.crabapples.application.system.entity.SysUser;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+/**
+ * TODO
+ *
+ * @author Mr.He
+ * 2021/4/9 1:50
+ * e-mail crabapples.cn@gmail.com
+ * qq 294046317
+ * pc-name mrhe
+ */
 @Component
 public class RequestPullDAO extends BaseDAO {
     private final RequestPullRepository requestPullRepository;

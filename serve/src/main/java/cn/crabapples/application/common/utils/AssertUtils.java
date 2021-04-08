@@ -5,6 +5,15 @@ import cn.crabapples.application.common.ApplicationException;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+/**
+ * TODO 断言工具类
+ *
+ * @author Mr.He
+ * 2021/4/9 1:52
+ * e-mail crabapples.cn@gmail.com
+ * qq 294046317
+ * pc-name mrhe
+ */
 public abstract class AssertUtils {
     /**
      * 断言为null,如果不为null则抛出异常

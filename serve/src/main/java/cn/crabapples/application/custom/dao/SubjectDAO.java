@@ -16,7 +16,15 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * TODO
+ *
+ * @author Mr.He
+ * 2021/4/9 1:50
+ * e-mail crabapples.cn@gmail.com
+ * qq 294046317
+ * pc-name mrhe
+ */
 @Component
 public class SubjectDAO extends BaseDAO {
     private final SubjectRepository subjectRepository;

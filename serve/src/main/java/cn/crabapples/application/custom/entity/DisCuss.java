@@ -11,10 +11,10 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * TODO 
+ * TODO
  *
  * @author Mr.He
- * 2021/4/9 1:48
+ * 2021/4/4 23:14
  * e-mail crabapples.cn@gmail.com
  * qq 294046317
  * pc-name mrhe
@@ -22,7 +22,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-public class SubjectShare extends BaseEntity {
+public class DisCuss extends BaseEntity {
     @OneToOne
     private Subject subject;
 
