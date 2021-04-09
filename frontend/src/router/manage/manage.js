@@ -7,6 +7,7 @@ import MinePull from '@/views/manage/mine-pull'
 import RequestPullList from '@/views/manage/request-pull-list'
 import DataStatistical from '@/views/manage/data-statistical'
 import SubjectDiscuss from '@/views/manage/subject-discuss'
+import PaperList from '@/views/manage/paper-list'
 
 const manageRouter = {
     path: '/manage-index',
@@ -54,7 +55,11 @@ const manageRouter = {
             components: {innerView: SubjectDiscuss},
             name: 'subject-discuss',
         },
-
+        {
+            path: 'paper-list',
+            components: {innerView: PaperList},
+            name: 'paper-list',
+        },
     ]
 }
 

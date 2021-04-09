@@ -184,7 +184,20 @@ export default {
           name: '数据对接',
           icon: 'appstore',
           url: '/school-org/list',
-          children: []
+          children: [
+            {
+              key: '41',
+              name: '信息发布',
+              icon: 'appstore',
+              url: '/manage-index/paper-list',
+            },
+            {
+              key: '42',
+              name: '工作评价',
+              icon: 'appstore',
+              url: '/manage-index/subject-discuss',
+            },
+          ]
         },
         // {
         //   key: '99',

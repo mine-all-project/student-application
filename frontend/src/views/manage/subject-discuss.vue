@@ -98,7 +98,6 @@
 </template>
 
 <script>
-
 export default {
   name: "subject-discuss",
   data() {
