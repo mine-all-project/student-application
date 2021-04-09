@@ -22,25 +22,17 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-public class DisCuss extends BaseEntity {
-    @OneToOne
+public class Discuss extends BaseEntity {
+    @ManyToOne
     private Subject subject;
-
-    @ManyToMany
-    @JSONField(serialize = false)
-    private List<SysUser> shareUser;
-
     @ManyToOne
     @JSONField(serialize = false)
-    private SysUser shareBy;
-
+    private SysUser sysUser;
     @Transient
-    private List<SysUserDTO> shareUserList;
-
-    @Transient
-    private SysUserDTO shareByUser;
-
-    @Column(columnDefinition = "tinyint(1) default 0 comment '状态 0:生效 1:未生效'")
-    private int status;
+    private SysUserDTO user;
+    @Column(columnDefinition = "longtext comment '内容'")
+    private String content;
+    @OneToMany
+    private List<Discuss> children;
 
 }

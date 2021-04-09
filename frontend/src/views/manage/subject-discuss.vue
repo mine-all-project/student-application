@@ -1,7 +1,29 @@
 <template>
   <div>
-    <a-modal :visible="show.discuss" @cancel="closeDiscuss" :footer="null" width="70%">
-      <div id="item-charts" style="width: 100%;height:400px;"></div>
+    <a-modal :visible="show.discuss" @cancel="closeDiscuss" :footer="null" width="50%">
+      <div class="discuss">
+        <a-comment v-for="item in discussList">
+          <span slot="actions" @click="reply(item)">回复</span>
+          <span slot="actions" @click="removeDiscuss(item)">删除</span>
+          <p slot="author">{{ item.user.name }} <span>{{ item.createTime }}</span></p>
+          <p slot="content"> {{ item.content }} </p>
+          <a-comment v-for="item in item.children">
+            <span slot="actions" @click="removeDiscuss(item)">删除</span>
+            <p slot="author">{{ item.user.name }} <span>{{ item.createTime }}</span></p>
+            <p slot="content"> {{ item.content }} </p>
+          </a-comment>
+        </a-comment>
+      </div>
+      <a-comment>
+        <div slot="content">
+          <a-form-item>
+            <a-textarea :rows="4" v-model="form.content" :placeholder="contentPlaceholder"/>
+          </a-form-item>
+          <a-form-item>
+            <a-button html-type="submit" :loading="false" type="primary" @click="submitDiscuss">发表</a-button>
+          </a-form-item>
+        </div>
+      </a-comment>
     </a-modal>
     <a-modal :visible="show.stepList" @cancel="closeStepList" :footer="null" width="70%">
       <a-table :columns="stepColumns" :data-source="stepDataSource" rowKey="id">
@@ -48,11 +70,6 @@
         </span>
         <span slot="action" slot-scope="text, record">
         <a-button type="primary" size="small" @click="downloadFile(record)">下载附件</a-button>
-        <a-divider type="vertical"/>
-        <a-upload name="file" :multiple="true" action="/api/uploadFile" :headers="headers"
-                  :showUploadList="false" @change="uploadResultFile">
-          <a-button type="default" size="small" @click="updateResult(record)">更新</a-button>
-        </a-upload>
       </span>
       </a-table>
     </a-modal>
@@ -81,7 +98,6 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
 
 export default {
   name: "subject-discuss",
@@ -182,7 +198,8 @@ export default {
       resultDataSource: [],
       labelCol: {span: 5},
       wrapperCol: {span: 16},
-      stepId: '',
+      subjectId: '',
+      parentId: '',
       show: {
         stepList: false,
         resultList: false,
@@ -191,15 +208,104 @@ export default {
       userInfo: {
         name: ''
       },
+      form: {
+        type: 0,
+        subjectId: '',
+        parentId: '',
+        content: '',
+      },
+      discussList: [],
+      contentPlaceholder: '新留言'
     };
   },
   mounted() {
     this.getList()
   },
   methods: {
+    refreshDiscuss() {
+      this.$http.get(`/api/discuss/list/${this.subjectId}`).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        if (result.data !== null) {
+          this.discussList = result.data;
+          console.log('data--->', result.data)
+        }
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
+    removeDiscuss(e) {
+      this.$http.get(`/api/discuss/removeById/${e.id}`).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        this.$message.success(result.message);
+        this.refreshDiscuss()
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
+    resetForm() {
+      this.form.type = 0
+      this.form.content = ''
+      this.contentPlaceholder = '新留言'
+      this.$http.get(`/api/discuss/list/${this.subjectId}`).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        if (result.data !== null) {
+          this.discussList = result.data;
+          console.log('data--->', result.data)
+        }
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
+    reply(e) {
+      this.contentPlaceholder = `回复${e.user.name}`
+      this.parentId = e.id
+      this.form.type = 1
+    },
+    submitDiscuss() {
+      if (this.form.type === 0) {
+        this.form.subjectId = this.subjectId
+        this.form.parentId = ''
+      } else {
+        this.form.parentId = this.parentId
+        this.form.subjectId = ''
+      }
+      this.$http.post(`/api/discuss/save`, this.form).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        this.$message.success(result.message);
+        this.resetForm()
+        this.refreshDiscuss()
+        console.log('add--->', result.data)
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
     showDiscuss(e) {
+      this.subjectId = e.id
       this.show.discuss = true
-      console.log()
+      this.$http.get(`/api/discuss/list/${e.id}`).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        if (result.data !== null) {
+          this.discussList = result.data;
+          console.log('data--->', result.data)
+        }
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
     },
     closeDiscuss() {
       this.show.discuss = false
@@ -225,7 +331,6 @@ export default {
       this.show.stepList = false
     },
     showResultList(e) {
-      this.stepId = e.id
       this.resultDataSource = e.resultInfos
       this.show.resultList = true
     },
@@ -234,13 +339,10 @@ export default {
     },
     downloadFile(e) {
       let fileName = e.fileName
-      // window.location.href = e.url
       this.$http.get(e.url, {responseType: 'blob'}).then((res) => {
         let blob = res;
-        // FileReader主要用于将文件内容读入内存
         let reader = new FileReader();
         reader.readAsDataURL(blob);
-        // onload当读取操作成功完成时调用
         reader.onload = function (e) {
           let a = document.createElement('a');
           a.download = fileName;
@@ -258,4 +360,27 @@ export default {
 </script>
 
 <style scoped>
+.discuss {
+  height: 50vh;
+  overflow: auto;
+  margin: 10px 10px 0 10px;
+}
+
+.discuss::-webkit-scrollbar { /*滚动条整体样式*/
+  width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+  margin-right: 10px;
+}
+
+.discuss::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #535353;
+}
+
+.discuss::-webkit-scrollbar-track { /*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: #EDEDED;
+}
 </style>
