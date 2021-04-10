@@ -172,8 +172,9 @@ public class UserServiceImpl implements UserService {
         }
         SysUser user = userDAO.findById(form.getId());
         AssertUtils.notNull(user, "用户不存在");
-        password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
-        if (user.getPassword().equals(password)) {
+        String oldPassword = MD5.create().digestHex(form.getOldPassword().getBytes(StandardCharsets.UTF_8));
+        if (user.getPassword().equals(oldPassword)) {
+            password = MD5.create().digestHex(password.getBytes(StandardCharsets.UTF_8));
             user.setPassword(password);
             userDAO.save(user);
             return;

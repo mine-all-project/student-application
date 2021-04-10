@@ -82,7 +82,7 @@ public class UserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @PostMapping("updatePassword")
+    @PostMapping("/updatePassword")
     public ResponseDTO updatePassword(@RequestBody ResetPasswordForm form) {
         super.validator(form, IsNotNull.class);
         logger.info("收到请求->修改密码,id:[{}]", form.getId());

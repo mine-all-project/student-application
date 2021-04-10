@@ -114,6 +114,7 @@ export default {
       },
       tagsOptions: [],
       form: {
+        id: '',
         password: '',
         newPassword: '',
         rePassword: '',
@@ -231,6 +232,130 @@ export default {
           url: '/manage-index/user-list',
         },
       ],
+      userMenu: [
+        {
+          key: '1',
+          name: '科研管理',
+          icon: 'appstore',
+          url: '',
+          children: [
+            {
+              key: '11',
+              name: '项目申报',
+              icon: 'appstore',
+              url: '/manage-index/sub-apply',
+            },
+          ]
+        },
+        {
+          key: '2',
+          name: '数据共享',
+          icon: 'appstore',
+          url: '',
+          children: [
+            {
+              key: '21',
+              name: '我的项目',
+              icon: 'appstore',
+              url: '/manage-index/mine-subject',
+            },
+            {
+              key: '22',
+              name: '我参与的',
+              icon: 'appstore',
+              url: '/manage-index/mine-join',
+            },
+            {
+              key: '23',
+              name: '共享项目',
+              icon: 'appstore',
+              url: '/manage-index/mine-pull',
+            },
+          ]
+        },
+        {
+          key: '3',
+          name: '科研分析',
+          icon: 'appstore',
+          children: [
+            {
+              key: '31',
+              name: '数据统计',
+              icon: 'appstore',
+              url: '/manage-index/data-statistical',
+            },
+            {
+              key: '32',
+              name: '工作评价',
+              icon: 'appstore',
+              url: '/manage-index/subject-discuss',
+            },
+          ]
+        },
+      ],
+      managerMenu: [
+        {
+          key: '1',
+          name: '科研管理',
+          icon: 'appstore',
+          url: '',
+          children: [
+            {
+              key: '12',
+              name: '标签管理',
+              icon: 'appstore',
+              url: '/manage-index/tags',
+            },
+          ]
+        },
+        {
+          key: '2',
+          name: '数据共享',
+          icon: 'appstore',
+          url: '',
+          children: [
+            {
+              key: '24',
+              name: '共享审核',
+              icon: 'appstore',
+              url: '/manage-index/request-pull-list',
+            },
+          ]
+        },
+        {
+          key: '3',
+          name: '科研分析',
+          icon: 'appstore',
+          children: [
+            {
+              key: '31',
+              name: '数据统计',
+              icon: 'appstore',
+              url: '/manage-index/data-statistical',
+            },
+            {
+              key: '32',
+              name: '工作评价',
+              icon: 'appstore',
+              url: '/manage-index/subject-discuss',
+            },
+          ]
+        },
+        {
+          key: '4',
+          name: '数据对接',
+          icon: 'appstore',
+          url: '/school-org/list',
+          children: [
+            {
+              key: '41-1',
+              name: '信息发布',
+              icon: 'appstore',
+              url: '/manage-index/paper-list1',
+            },
+          ]
+        },
+      ],
     };
   },
   mounted() {
@@ -312,11 +437,12 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           console.info('success', this.form);
-          if (this.form.newPassword !== this.form.rePassword) {
+          if (this.form.password !== this.form.rePassword) {
             this.$message.error('两次密码不一致');
             return
           }
-          this.$http.post('/api/updatePassword', this.form).then(result => {
+          this.form.id = this.userInfo.id
+          this.$http.post('/api/user/updatePassword', this.form).then(result => {
             if (result.status !== 200) {
               this.$message.error(result.message);
               return;
