@@ -14,6 +14,7 @@
         <a-divider type="vertical"/>
         <a-button type="primary" size="small" @click="showPaperInfo(record)">查看详情</a-button>
         <a-divider type="vertical"/>
+        <a-button type="danger" size="small" @click="removePaper(record)">删除</a-button>
       </span>
     </a-table>
     <a-drawer title="发布信息" width="60%" :visible="show.addPaper" @close="closeForm">
@@ -29,8 +30,7 @@
           </a-select>
         </a-form-model-item>
         <a-form-model-item label="附件">
-          <a-upload name="file" :multiple="true" action="/api/uploadFile" :headers="headers" @change="uploadFile"
-                    :default-file-list="form.addPaper.fileList">
+          <a-upload name="file" :multiple="true" action="/api/uploadFile" :headers="headers" @change="uploadFile">
             <a-button type="dashed" size="small">添加附件</a-button>
           </a-upload>
         </a-form-model-item>
@@ -174,9 +174,20 @@ export default {
         _this.editor.create()
       })
     },
+    removePaper(e) {
+      this.$http.get(`/api/paper1/removeById/${e.id}`).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        this.refreshData()
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
     editPaper(e) {
       const _this = this
-      _this.form.addPaper.fileList = e.fileList.map(r =>  {
+      _this.form.addPaper.fileList = e.fileList.map(r => {
         return {
           uid: r.id,
           name: r.name,
@@ -223,12 +234,15 @@ export default {
           this.$message.error(result.message);
           return;
         }
+        this.resetPaperForm()
+        this.closeForm()
         this.refreshData()
+        // window.location.reload()
       }).catch(function (error) {
         console.error('出现错误:', error);
       });
-      this.resetPaperForm()
-      this.closeForm()
+
+
     },
     showPaperInfo(e) {
     },

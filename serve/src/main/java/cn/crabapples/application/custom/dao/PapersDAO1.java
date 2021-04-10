@@ -34,7 +34,7 @@ public class PapersDAO1 extends BaseDAO {
         papersRepository.saveAndFlush(papers);
     }
 
-    public void savePapers(Papers1 entity) {
-        papersRepository.saveAndFlush(entity);
+    public Papers1 savePapers(Papers1 entity) {
+        return papersRepository.saveAndFlush(entity);
     }
 }

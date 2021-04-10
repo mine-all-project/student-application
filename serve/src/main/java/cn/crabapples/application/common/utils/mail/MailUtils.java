@@ -111,8 +111,9 @@ public class MailUtils {
      * @param multipart   邮件数据信息
      * @param contentText 邮件正文
      * @throws MessagingException 邮件相关异常
+     * @return
      */
-    public void addMailContentText(Multipart multipart, String contentText) throws MessagingException {
+    public Multipart addMailContentText(Multipart multipart, String contentText) throws MessagingException {
         /*
          * BodyPart类型对象用来存储邮件Body相关信息
          */
@@ -120,6 +121,7 @@ public class MailUtils {
         logger.debug("设置邮件正文:[{}]", contentText);
         content.setText(contentText);
         multipart.addBodyPart(content);
+        return multipart;
     }
 
     /**

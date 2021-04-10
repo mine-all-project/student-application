@@ -204,15 +204,15 @@ export default {
           icon: 'appstore',
           url: '/school-org/list',
           children: [
-            {
-              key: '41',
-              name: '信息发布',
-              icon: 'appstore',
-              url: '/manage-index/paper-list',
-            },
+            // {
+            //   key: '41',
+            //   name: '信息发布',
+            //   icon: 'appstore',
+            //   url: '/manage-index/paper-list',
+            // },
             {
               key: '41-1',
-              name: '信息发布1',
+              name: '信息发布',
               icon: 'appstore',
               url: '/manage-index/paper-list1',
             },

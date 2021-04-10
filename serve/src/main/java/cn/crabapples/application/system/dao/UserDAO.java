@@ -20,12 +20,6 @@ public class UserDAO extends BaseDAO {
         return userRepository.findByUsername(username).orElse(null);
     }
 
-//    public SysUser save(UserForm form) {
-//        SysUser user = new SysUser();
-//        BeanUtils.copyProperties(form, user);
-//        return save(user);
-//    }
-
     public SysUser save(SysUser user) {
         return userRepository.save(user);
     }

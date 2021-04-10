@@ -1,6 +1,7 @@
 package cn.crabapples.application.custom.service.impl;
 
 import cn.crabapples.application.common.utils.jwt.JwtConfigure;
+import cn.crabapples.application.common.utils.mail.MailUtils;
 import cn.crabapples.application.custom.dao.PaperFileInfoDAO;
 import cn.crabapples.application.custom.dao.PapersDAO1;
 import cn.crabapples.application.custom.entity.PaperFileInfo;
@@ -16,8 +17,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * TODO
@@ -36,17 +44,19 @@ public class PapersServiceImpl1 implements PapersService1 {
     private final PaperFileInfoDAO paperFileInfoDAO;
     private final JwtConfigure jwtConfigure;
     private final UserDAO userDAO;
+    private final MailUtils mailUtils;
     @Value("${isDebug}")
     private boolean isDebug;
 
     public PapersServiceImpl1(PapersDAO1 papersDAO, TagsService tagsService,
                               PaperFileInfoDAO paperFileInfoDAO, JwtConfigure jwtConfigure,
-                              UserDAO userDAO) {
+                              UserDAO userDAO, MailUtils mailUtils) {
         this.papersDAO = papersDAO;
         this.tagsService = tagsService;
         this.paperFileInfoDAO = paperFileInfoDAO;
         this.jwtConfigure = jwtConfigure;
         this.userDAO = userDAO;
+        this.mailUtils = mailUtils;
     }
 
     @Override
@@ -61,6 +71,7 @@ public class PapersServiceImpl1 implements PapersService1 {
 
     @Override
     public void savePapers(HttpServletRequest request, PapersForm1 form) {
+        String id = form.getId();
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         Papers1 entity = new Papers1();
         BeanUtils.copyProperties(form, entity);
@@ -73,6 +84,43 @@ public class PapersServiceImpl1 implements PapersService1 {
         List<PaperFileInfo> fileList = form.getFileList();
         paperFileInfoDAO.saveAll(fileList);
         entity.setFileList(fileList);
-        papersDAO.savePapers(entity);
+        Papers1 papers = papersDAO.savePapers(entity);
+        noticeUser(id, papers, tagsList);
+    }
+
+    void noticeUser(String id, Papers1 papers, List<Tags> tagsList) {
+        List<String> send = new ArrayList<>();
+        if (id.length() <= 0) {
+            List<SysUser> userList = userDAO.findAll();
+            userList.forEach(user -> {
+                AtomicBoolean isSend = new AtomicBoolean(false);
+                user.getTags().forEach(tags -> {
+                    tagsList.forEach(e -> {
+                        if (e.getId().equals(tags.getId())) {
+                            isSend.set(true);
+                        }
+                    });
+                });
+                if (isSend.get()) {
+                    send.add(user.getMail());
+                }
+            });
+            if (send.size() > 0) {
+                try {
+                    Session session = mailUtils.initSession();
+                    String[] target = new String[send.size()];
+                    MimeMessage message = mailUtils.initMessage(session, "科研项目通知", send.toArray(target));
+                    Multipart multipart = new MimeMultipart();
+                    String content = "有一个新的科研项目" +
+                            "[" + papers.getTitle() + "]" +
+                            "与你设置的标签匹配成功，您可以登录查看详细信息";
+                    mailUtils.addMailContentText(multipart, content);
+                    message.setContent(multipart);
+                    mailUtils.sendEmail(session, message);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
