@@ -8,12 +8,13 @@
         <a-form-model-item label="标签名称" prop="name">
           <a-input v-model="form.tags.name" placeholder="请输入标签名称"/>
         </a-form-model-item>
-        <a-form-model-item label="显示样式" prop="color">
-          <a-select :default-value="[]" v-model="form.tags.color" placeholder="请选择标签样式">
-            <a-select-option v-for="item in tagsColors" :key="item.key" :value="item.value">
-              {{ item.key }}
-            </a-select-option>
-          </a-select>
+        <a-form-model-item label="标签颜色" prop="color">
+          <a-input v-model="form.tags.color" placeholder="请输入十六进制颜色代码"/>
+<!--          <a-select :default-value="[]" v-model="form.tags.color" placeholder="请选择标签样式">-->
+<!--            <a-select-option v-for="item in tagsColors" :key="item.key" :value="item.value">-->
+<!--              {{ item.key }}-->
+<!--            </a-select-option>-->
+<!--          </a-select>-->
         </a-form-model-item>
       </a-form-model>
     </a-modal>

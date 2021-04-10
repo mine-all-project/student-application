@@ -7,6 +7,7 @@ import cn.crabapples.application.common.groups.IsStatusChange;
 import cn.crabapples.application.system.dto.ResponseDTO;
 import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
+import cn.crabapples.application.system.form.TagListForm;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.UserService;
 import org.slf4j.Logger;
@@ -94,5 +95,13 @@ public class UserController extends BaseController {
         List<SysUser> list = userService.findAll();
         logger.info("返回结果->获取用户列表结束:[{}]", list);
         return ResponseDTO.returnSuccess("操作成功", list);
+    }
+
+    @PostMapping("/updateTags")
+    public ResponseDTO updateTags(HttpServletRequest request,@RequestBody TagListForm form) {
+        logger.info("收到请求->修改用户标签");
+        userService.updateTags(request,form);
+        logger.info("返回结果->修改用户标签");
+        return ResponseDTO.returnSuccess("操作成功");
     }
 }

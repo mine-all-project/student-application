@@ -2,9 +2,12 @@ package cn.crabapples.application.system.service.impl;
 
 import cn.crabapples.application.common.utils.AssertUtils;
 import cn.crabapples.application.common.utils.jwt.JwtConfigure;
+import cn.crabapples.application.custom.entity.Tags;
+import cn.crabapples.application.custom.service.TagsService;
 import cn.crabapples.application.system.dao.UserDAO;
 import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
+import cn.crabapples.application.system.form.TagListForm;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.UserService;
 import org.slf4j.Logger;
@@ -29,14 +32,16 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final JwtConfigure jwtConfigure;
+    private final TagsService tagsService;
     @Value("${isDebug}")
     private boolean isDebug;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserDAO userDAO;
 
-    public UserServiceImpl(JwtConfigure jwtConfigure, UserDAO userDAO) {
+    public UserServiceImpl(JwtConfigure jwtConfigure, TagsService tagsService, UserDAO userDAO) {
         this.jwtConfigure = jwtConfigure;
+        this.tagsService = tagsService;
         this.userDAO = userDAO;
     }
 
@@ -67,7 +72,8 @@ public class UserServiceImpl implements UserService {
     public void delUser(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
-        userDAO.delUser(id);
+        user.setDelFlag(1);
+        userDAO.save(user);
     }
 
     @Override
@@ -120,5 +126,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public SysUser getUserInfo(HttpServletRequest request) {
         return getUserInfo(request, jwtConfigure, userDAO, isDebug);
+    }
+
+    @Override
+    public void updateTags(HttpServletRequest request, TagListForm form) {
+        SysUser user = getUserInfo(request);
+        List<Tags> tagsList = tagsService.findByIds(form.getTagsList());
+        user.setTags(tagsList);
+        userDAO.save(user);
     }
 }

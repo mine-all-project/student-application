@@ -64,7 +64,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public List<SysUser> findAll() {
-        return userRepository.findAll();
+        return userRepository.findByDelFlag(NOT_DEL);
 
     }
 

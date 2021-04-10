@@ -69,17 +69,15 @@
             </a-form-model-item>
           </a-form-model>
         </a-modal>
-        <a-modal title="我的标签" :visible.sync="show.changeTags" width="25%" ok-text="确认" cancel-text="取消"
-                 @ok="submitForm" @cancel="choseChangeTags">
+        <a-modal title="我的标签" :visible.sync="show.changeTags" width="40%" ok-text="保存" cancel-text="取消"
+                 @ok="submitTags" @cancel="closeChangeTags">
           <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-            <a-form-model-item ref="password" label="原密码" prop="password">
-              <a-input-password v-model="form.password"/>
-            </a-form-model-item>
-            <a-form-model-item ref="newPassword" label="新密码" prop="newPassword">
-              <a-input-password v-model="form.newPassword"/>
-            </a-form-model-item>
-            <a-form-model-item ref="rePassword" label="重复密码" prop="rePassword">
-              <a-input-password v-model="form.rePassword"/>
+            <a-form-model-item label="标签" prop="tagsList">
+              <a-select mode="multiple" :default-value="[]" v-model="form.tagsList" placeholder="请选择标签">
+                <a-select-option v-for="item in tagsOptions" :key="item.id">
+                  {{ item.name }}
+                </a-select-option>
+              </a-select>
             </a-form-model-item>
           </a-form-model>
         </a-modal>
@@ -114,10 +112,12 @@ export default {
           {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
         ],
       },
+      tagsOptions: [],
       form: {
         password: '',
         newPassword: '',
-        rePassword: ''
+        rePassword: '',
+        tagsList: []
       },
       show: {
         changePassword: false,
@@ -224,29 +224,33 @@ export default {
             // },
           ]
         },
-        // {
-        //   key: '99',
-        //   name: '系统管理',
-        //   icon: 'appstore',
-        //   url: '/',
-        //   children: [
-        //     {
-        //       key: '12331',
-        //       name: '菜单管理',
-        //       icon: 'appstore',
-        //       url: '/settings-menu',
-        //     }
-        //   ]
-        // },
+        {
+          key: '99',
+          name: '用户管理',
+          icon: 'appstore',
+          url: '/manage-index/user-list',
+        },
       ],
     };
   },
   mounted() {
     let token = sessionStorage.getItem('crabapples-token')
-    // this.getUserInfo()
+    this.getUserInfo()
     // this.$router.push({name: 'welcome'})
   },
   methods: {
+    submitTags() {
+      this.$http.post('/api/user/updateTags', this.form).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        this.$message.success(result.message);
+        this.closeChangeTags()
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
     getTagsList() {
       this.$http.get('/api/tags/list').then(result => {
         if (result.status !== 200) {
@@ -264,8 +268,13 @@ export default {
     changeTags() {
       this.getTagsList()
       this.show.changeTags = true
+      console.log(this.userInfo)
+      this.form.tagsList = this.userInfo.tags.map(e => {
+        return e.id
+      })
     },
-    choseChangeTags() {
+    closeChangeTags() {
+      this.form.tagsList = []
       this.show.changeTags = false
     },
     titleClick(e) {
@@ -281,13 +290,12 @@ export default {
     logout() {
       this.$http.logout()
     },
-
     clickMenu(url) {
       this.$router.push({path: url})
       console.log(url)
     },
     getUserInfo() {
-      this.$http.get('/api/getUserInfo').then(result => {
+      this.$http.get('/api/user/getUserInfo').then(result => {
         if (result.status !== 200) {
           this.$message.error(result.message);
           return;

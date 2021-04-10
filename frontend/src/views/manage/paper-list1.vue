@@ -52,7 +52,7 @@
 import Editor from 'wangeditor'
 
 export default {
-  name: "paper-list",
+  name: "user-list",
   data() {
     return {
       rules: {

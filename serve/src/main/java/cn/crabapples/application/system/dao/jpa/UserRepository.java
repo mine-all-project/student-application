@@ -88,4 +88,7 @@ public interface UserRepository extends JpaRepository<SysUser, String> {
 
     List<SysUser> findByIdInAndStatusAndDelFlag(List<String> ids, int status, int delFlag);
 
+    List<SysUser> findByDelFlag(int delFlag);
+
+
 }

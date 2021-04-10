@@ -35,6 +35,9 @@ public class SysUser extends BaseEntity {
     @Column(columnDefinition = "varchar(32) comment '姓名'")
     private String name;
 
+    @Column(columnDefinition = "tinyint(1) comment '角色'")
+    private int role;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JSONField(serialize = false)
     private List<SysRole> sysRoles;

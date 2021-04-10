@@ -9,6 +9,7 @@ import DataStatistical from '@/views/manage/data-statistical'
 import SubjectDiscuss from '@/views/manage/subject-discuss'
 import PaperList from '@/views/manage/paper-list'
 import PaperList1 from '@/views/manage/paper-list1'
+import UserList from '@/views/manage/user-list'
 
 const manageRouter = {
     path: '/manage-index',
@@ -65,6 +66,11 @@ const manageRouter = {
             path: 'paper-list1',
             components: {innerView: PaperList1},
             name: 'paper-list1',
+        },
+        {
+            path: 'user-list',
+            components: {innerView: UserList},
+            name: 'user-list',
         },
     ]
 }
