@@ -35,18 +35,25 @@ public class SysUser extends BaseEntity {
     @Column(columnDefinition = "varchar(32) comment '姓名'")
     private String name;
 
-    @Column(columnDefinition = "tinyint(1) comment '角色'")
+    @Column(columnDefinition = "varchar(64) comment '邮箱'")
+    private String mail;
+
+    @Column(columnDefinition = "tinyint(4) comment '年龄'")
+    private int age;
+
+
+    @Column(columnDefinition = "tinyint(1) comment '角色 0:超级管理员 1:科研人员 2: 科研管理员'")
     private int role;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JSONField(serialize = false)
     private List<SysRole> sysRoles;
 
-    @OneToMany
+    @ManyToMany
     private List<Tags> tags;
 
     @Column(columnDefinition = "bit(1) default 0 not null comment '用户状态标记 0:正常 1:禁用'")
-    private Integer status;
+    private int status;
 
     @Override
     public String toString() {

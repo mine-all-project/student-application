@@ -1,12 +1,13 @@
 package cn.crabapples.application.system.controller;
 
 import cn.crabapples.application.common.BaseController;
-import cn.crabapples.application.common.groups.IsAdd;
 import cn.crabapples.application.common.groups.IsEdit;
+import cn.crabapples.application.common.groups.IsNotNull;
 import cn.crabapples.application.common.groups.IsStatusChange;
 import cn.crabapples.application.system.dto.ResponseDTO;
 import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
+import cn.crabapples.application.system.form.ResetPasswordForm;
 import cn.crabapples.application.system.form.TagListForm;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.UserService;
@@ -40,7 +41,6 @@ public class UserController extends BaseController {
     @PostMapping("/addUser")
     public ResponseDTO addUser(@RequestBody UserForm form) {
         logger.info("收到请求->添加用户:[{}]", form);
-        super.validator(form, IsAdd.class);
         SysUser user = userService.addUser(form);
         logger.info("返回结果->用户添加完成:[{}]", user);
         return ResponseDTO.returnSuccess("操作成功", user);
@@ -73,6 +73,15 @@ public class UserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
+    @PostMapping("/resetPassword")
+    public ResponseDTO resetPassword(@RequestBody ResetPasswordForm form) {
+        super.validator(form, IsNotNull.class);
+        logger.info("收到请求->重置密码,id:[{}]", form.getId());
+        userService.resetPassword(form);
+        logger.info("返回结果->重置密码完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
     @GetMapping("/getUserInfo")
     public ResponseDTO getUserInfo(HttpServletRequest request) {
         logger.info("收到请求->获取当前用户信息");
@@ -98,9 +107,9 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/updateTags")
-    public ResponseDTO updateTags(HttpServletRequest request,@RequestBody TagListForm form) {
+    public ResponseDTO updateTags(HttpServletRequest request, @RequestBody TagListForm form) {
         logger.info("收到请求->修改用户标签");
-        userService.updateTags(request,form);
+        userService.updateTags(request, form);
         logger.info("返回结果->修改用户标签");
         return ResponseDTO.returnSuccess("操作成功");
     }

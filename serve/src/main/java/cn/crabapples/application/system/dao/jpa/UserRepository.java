@@ -1,6 +1,7 @@
 package cn.crabapples.application.system.dao.jpa;
 
 import cn.crabapples.application.system.entity.SysUser;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -88,7 +89,7 @@ public interface UserRepository extends JpaRepository<SysUser, String> {
 
     List<SysUser> findByIdInAndStatusAndDelFlag(List<String> ids, int status, int delFlag);
 
-    List<SysUser> findByDelFlag(int delFlag);
+    List<SysUser> findByDelFlag(Sort sort, int delFlag);
 
 
 }

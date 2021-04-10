@@ -1,5 +1,7 @@
 package cn.crabapples.application.system.service.impl;
 
+import cn.crabapples.application.common.ApplicationException;
+import cn.crabapples.application.common.config.ApplicationConfigure;
 import cn.crabapples.application.common.utils.AssertUtils;
 import cn.crabapples.application.common.utils.jwt.JwtConfigure;
 import cn.crabapples.application.custom.entity.Tags;
@@ -7,9 +9,11 @@ import cn.crabapples.application.custom.service.TagsService;
 import cn.crabapples.application.system.dao.UserDAO;
 import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
+import cn.crabapples.application.system.form.ResetPasswordForm;
 import cn.crabapples.application.system.form.TagListForm;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.UserService;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,16 +38,19 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final JwtConfigure jwtConfigure;
     private final TagsService tagsService;
+    private final String salt;
     @Value("${isDebug}")
     private boolean isDebug;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserDAO userDAO;
 
-    public UserServiceImpl(JwtConfigure jwtConfigure, TagsService tagsService, UserDAO userDAO) {
+    public UserServiceImpl(ApplicationConfigure applicationConfigure,
+                           JwtConfigure jwtConfigure, TagsService tagsService, UserDAO userDAO) {
         this.jwtConfigure = jwtConfigure;
         this.tagsService = tagsService;
         this.userDAO = userDAO;
+        this.salt = applicationConfigure.salt;
     }
 
     /**
@@ -58,14 +66,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SysUser addUser(UserForm form) {
-        return userDAO.save(form);
+        SysUser entity = new SysUser();
+        BeanUtils.copyProperties(form, entity);
+        entity.setTags(tagsService.findByIds(form.getTags()));
+        return userDAO.save(entity);
     }
 
     @Override
     public SysUser editUser(UserForm form) {
-        SysUser user = userDAO.findById(form.getId());
-        AssertUtils.notNull(user, "用户不存在");
-        return userDAO.save(form);
+        SysUser entity = userDAO.findById(form.getId());
+        AssertUtils.notNull(entity, "用户不存在");
+        BeanUtils.copyProperties(form, entity);
+        entity.setTags(tagsService.findByIds(form.getTags()));
+        return userDAO.save(entity);
     }
 
     @Override
@@ -133,6 +146,20 @@ public class UserServiceImpl implements UserService {
         SysUser user = getUserInfo(request);
         List<Tags> tagsList = tagsService.findByIds(form.getTagsList());
         user.setTags(tagsList);
+        userDAO.save(user);
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordForm form) {
+        String password = form.getPassword();
+        String rePassword = form.getRePassword();
+        if (!password.equals(rePassword)) {
+            throw new ApplicationException("两次密码不一致");
+        }
+        SysUser user = userDAO.findById(form.getId());
+        AssertUtils.notNull(user, "用户不存在");
+        password = Md5Crypt.md5Crypt(form.getPassword().getBytes(StandardCharsets.UTF_8));
+        user.setPassword(password);
         userDAO.save(user);
     }
 }

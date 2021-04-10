@@ -86,7 +86,7 @@ public class SysServiceImpl implements SysService {
     @Override
     public String loginCheck(UserForm form) {
         String username = form.getUsername();
-        String password = Md5Crypt.md5Crypt(form.getPassword().getBytes(StandardCharsets.UTF_8), salt);
+        String password = Md5Crypt.md5Crypt(form.getPassword().getBytes(StandardCharsets.UTF_8));
         logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
         SysUser sysUser = userService.findByUsername(username);
         AssertUtils.notNull(sysUser, "用户名不存在");

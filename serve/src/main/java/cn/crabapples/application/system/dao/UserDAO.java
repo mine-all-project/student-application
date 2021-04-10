@@ -3,8 +3,6 @@ package cn.crabapples.application.system.dao;
 import cn.crabapples.application.common.BaseDAO;
 import cn.crabapples.application.system.dao.jpa.UserRepository;
 import cn.crabapples.application.system.entity.SysUser;
-import cn.crabapples.application.system.form.UserForm;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -22,11 +20,11 @@ public class UserDAO extends BaseDAO {
         return userRepository.findByUsername(username).orElse(null);
     }
 
-    public SysUser save(UserForm form) {
-        SysUser user = new SysUser();
-        BeanUtils.copyProperties(form, user);
-        return save(user);
-    }
+//    public SysUser save(UserForm form) {
+//        SysUser user = new SysUser();
+//        BeanUtils.copyProperties(form, user);
+//        return save(user);
+//    }
 
     public SysUser save(SysUser user) {
         return userRepository.save(user);
@@ -64,7 +62,7 @@ public class UserDAO extends BaseDAO {
     }
 
     public List<SysUser> findAll() {
-        return userRepository.findByDelFlag(NOT_DEL);
+        return userRepository.findByDelFlag(ascByCreateTime, NOT_DEL);
 
     }
 

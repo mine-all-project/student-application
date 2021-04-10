@@ -3,6 +3,7 @@ package cn.crabapples.application.system.service;
 import cn.crabapples.application.common.BaseService;
 import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
+import cn.crabapples.application.system.form.ResetPasswordForm;
 import cn.crabapples.application.system.form.TagListForm;
 import cn.crabapples.application.system.form.UserForm;
 
@@ -79,4 +80,6 @@ public interface UserService extends BaseService {
     SysUser getUserInfo(HttpServletRequest request);
 
     void updateTags(HttpServletRequest request, TagListForm form);
+
+    void resetPassword(ResetPasswordForm form);
 }
