@@ -82,6 +82,15 @@ public class UserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
+    @PostMapping("updatePassword")
+    public ResponseDTO updatePassword(@RequestBody ResetPasswordForm form) {
+        super.validator(form, IsNotNull.class);
+        logger.info("收到请求->修改密码,id:[{}]", form.getId());
+        userService.updatePassword(form);
+        logger.info("返回结果->修改密码完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
     @GetMapping("/getUserInfo")
     public ResponseDTO getUserInfo(HttpServletRequest request) {
         logger.info("收到请求->获取当前用户信息");

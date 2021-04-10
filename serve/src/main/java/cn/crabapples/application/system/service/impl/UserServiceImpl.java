@@ -13,7 +13,7 @@ import cn.crabapples.application.system.form.ResetPasswordForm;
 import cn.crabapples.application.system.form.TagListForm;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.UserService;
-import org.apache.commons.codec.digest.Md5Crypt;
+import cn.hutool.crypto.digest.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -158,8 +158,26 @@ public class UserServiceImpl implements UserService {
         }
         SysUser user = userDAO.findById(form.getId());
         AssertUtils.notNull(user, "用户不存在");
-        password = Md5Crypt.md5Crypt(form.getPassword().getBytes(StandardCharsets.UTF_8));
+        password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
         user.setPassword(password);
         userDAO.save(user);
+    }
+
+    @Override
+    public void updatePassword(ResetPasswordForm form) {
+        String password = form.getPassword();
+        String rePassword = form.getRePassword();
+        if (!password.equals(rePassword)) {
+            throw new ApplicationException("两次密码不一致");
+        }
+        SysUser user = userDAO.findById(form.getId());
+        AssertUtils.notNull(user, "用户不存在");
+        password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
+        if (user.getPassword().equals(password)) {
+            user.setPassword(password);
+            userDAO.save(user);
+            return;
+        }
+        throw new ApplicationException("密码错误");
     }
 }

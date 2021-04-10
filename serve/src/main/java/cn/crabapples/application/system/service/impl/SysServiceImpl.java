@@ -12,7 +12,7 @@ import cn.crabapples.application.system.entity.SysUser;
 import cn.crabapples.application.system.form.UserForm;
 import cn.crabapples.application.system.service.SysService;
 import cn.crabapples.application.system.service.UserService;
-import org.apache.commons.codec.digest.Md5Crypt;
+import cn.hutool.crypto.digest.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,7 +86,7 @@ public class SysServiceImpl implements SysService {
     @Override
     public String loginCheck(UserForm form) {
         String username = form.getUsername();
-        String password = Md5Crypt.md5Crypt(form.getPassword().getBytes(StandardCharsets.UTF_8));
+        String password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
         logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
         SysUser sysUser = userService.findByUsername(username);
         AssertUtils.notNull(sysUser, "用户名不存在");

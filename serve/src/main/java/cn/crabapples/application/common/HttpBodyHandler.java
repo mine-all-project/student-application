@@ -9,8 +9,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
 import java.io.*;
@@ -26,8 +24,8 @@ import java.nio.charset.StandardCharsets;
  * qq 294046317
  * pc-name mrhe
  */
-@Component
-@ControllerAdvice
+//@Component
+//@ControllerAdvice
 public class HttpBodyHandler implements RequestBodyAdvice {
     //    @Value("${privateKey}")
     private final String privateKey;

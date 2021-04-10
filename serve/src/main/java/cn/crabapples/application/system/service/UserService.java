@@ -82,4 +82,6 @@ public interface UserService extends BaseService {
     void updateTags(HttpServletRequest request, TagListForm form);
 
     void resetPassword(ResetPasswordForm form);
+
+    void updatePassword(ResetPasswordForm form);
 }

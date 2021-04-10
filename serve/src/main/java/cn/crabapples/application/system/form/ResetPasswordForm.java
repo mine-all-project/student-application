@@ -24,6 +24,8 @@ public class ResetPasswordForm extends BaseForm {
     @NotBlank(message = "id不能为空", groups = IsNotNull.class)
     private String id;
 
+    private String oldPassword;
+
     @NotBlank(message = "密码不能为空", groups = {IsNotNull.class, IsLogin.class})
     private String password;
 

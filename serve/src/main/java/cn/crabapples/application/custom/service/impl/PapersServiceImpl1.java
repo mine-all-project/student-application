@@ -72,8 +72,11 @@ public class PapersServiceImpl1 implements PapersService1 {
     @Override
     public void savePapers(HttpServletRequest request, PapersForm1 form) {
         String id = form.getId();
+        Papers1 entity = papersDAO.findById(id);
+        if (entity == null) {
+            entity = new Papers1();
+        }
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
-        Papers1 entity = new Papers1();
         BeanUtils.copyProperties(form, entity);
         List<Tags> tagsList = tagsService.findByIds(form.getTagsList());
         entity.setTagsList(tagsList);

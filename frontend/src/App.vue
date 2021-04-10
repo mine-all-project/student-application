@@ -8,7 +8,7 @@
     export default {
         name: 'App',
         mounted() {
-            this.getUserInfo()
+            // this.getUserInfo()
             // this.$router.push({path: "/loginApi"})
         },
         methods: {

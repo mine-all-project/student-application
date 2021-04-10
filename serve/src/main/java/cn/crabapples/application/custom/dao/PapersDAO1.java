@@ -37,4 +37,8 @@ public class PapersDAO1 extends BaseDAO {
     public Papers1 savePapers(Papers1 entity) {
         return papersRepository.saveAndFlush(entity);
     }
+
+    public Papers1 findById(String id) {
+        return papersRepository.findByIdAndDelFlag(id, NOT_DEL);
+    }
 }

@@ -58,11 +58,11 @@
         <a-modal title="修改密码" :visible.sync="show.changePassword" width="25%" ok-text="确认" cancel-text="取消"
                  @ok="submitForm" @cancel="closeModal">
           <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-            <a-form-model-item ref="password" label="原密码" prop="password">
-              <a-input-password v-model="form.password"/>
+            <a-form-model-item ref="oldPassword" label="原密码" prop="oldPassword">
+              <a-input-password v-model="form.oldPassword"/>
             </a-form-model-item>
-            <a-form-model-item ref="newPassword" label="新密码" prop="newPassword">
-              <a-input-password v-model="form.newPassword"/>
+            <a-form-model-item ref="password" label="新密码" prop="password">
+              <a-input-password v-model="form.password"/>
             </a-form-model-item>
             <a-form-model-item ref="rePassword" label="重复密码" prop="rePassword">
               <a-input-password v-model="form.rePassword"/>
@@ -99,11 +99,11 @@ export default {
       wrapperCol: {span: 16},
       openKeys: [],
       rules: {
-        password: [
+        oldPassword: [
           {required: true, message: '请输入原密码', trigger: 'change'},
           {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
         ],
-        newPassword: [
+        password: [
           {required: true, message: '请输入新密码', trigger: 'change'},
           {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
         ],
@@ -288,7 +288,8 @@ export default {
       this.$refs.ruleForm.resetFields();
     },
     logout() {
-      this.$http.logout()
+      sessionStorage.removeItem('crabapples-token')
+      this.$router.push("/login")
     },
     clickMenu(url) {
       this.$router.push({path: url})

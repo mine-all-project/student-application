@@ -1,4 +1,4 @@
-isDebug: true
+isDebug: false
 crypt: false
 dadaBaseUrl: 'localhost'
 dataBaseDriveV8: 'com.mysql.cj.jdbc.Driver'

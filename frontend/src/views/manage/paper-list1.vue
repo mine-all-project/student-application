@@ -45,6 +45,22 @@
         <a-button type="primary" @click="submitForm"> 发布</a-button>
       </div>
     </a-drawer>
+    <a-modal :visible="show.paperInfo" @cancel="closePaperInfo" :footer="null" width="70%">
+      <div class="paper-info" style="width: 100%;height:700px;">
+        <p class="paper-info-title">{{ paperInfo.title }}</p>
+        <a-row>
+          <a-col :span="10">关键字：
+            <span v-for="item in paperInfo.tagsList">{{ item.name }} </span>
+          </a-col>
+          <a-col :span="8"></a-col>
+          <a-col :span="4">发布时间：{{ paperInfo.createTime }}</a-col>
+        </a-row>
+        <p class="paper-info-content" v-html="paperInfo.content"></p>
+        <div class="paper-info-file">附件：
+          <p v-for="item in paperInfo.fileList"><a @click="downloadFile(item)">{{ item.name }}</a></p>
+        </div>
+      </div>
+    </a-modal>
   </div>
 </template>
 
@@ -91,11 +107,11 @@ export default {
           title: '发布时间',
           scopedSlots: {customRender: 'createTime'},
         },
-        {
-          dataIndex: 'readerCount',
-          title: '阅读量',
-          scopedSlots: {customRender: 'readerCount'},
-        },
+        // {
+        //   dataIndex: 'readerCount',
+        //   title: '阅读量',
+        //   scopedSlots: {customRender: 'readerCount'},
+        // },
         {
           dataIndex: 'action',
           title: '操作',
@@ -115,7 +131,7 @@ export default {
           fileList: []
         },
       },
-      stepId: '',
+      paperInfo: {},
       show: {
         addPaper: false,
         paperInfo: false,
@@ -245,6 +261,11 @@ export default {
 
     },
     showPaperInfo(e) {
+      this.show.paperInfo = true
+      this.paperInfo = e
+    },
+    closePaperInfo() {
+      this.show.paperInfo = false
     },
     refreshData() {
       this.getList()
@@ -293,7 +314,7 @@ export default {
       this.form.addPaper.fileList = fileList
     },
     downloadFile(e) {
-      let fileName = e.fileName
+      let fileName = e.name
       this.$http.get(e.url, {responseType: 'blob'}).then((res) => {
         let reader = new FileReader();
         reader.readAsDataURL(res);
@@ -324,5 +345,39 @@ export default {
   background: #fff;
   text-align: right;
   z-index: 1;
+}
+
+.paper-info {
+  height: 50vh;
+  overflow: auto;
+  margin: 10px 10px 0 10px;
+}
+
+.paper-info::-webkit-scrollbar { /*滚动条整体样式*/
+  width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+  margin-right: 10px;
+}
+
+.paper-info::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #535353;
+}
+
+.paper-info::-webkit-scrollbar-track { /*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: #EDEDED;
+}
+
+.paper-info-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.paper-info-content {
+  margin-top: 20px;
 }
 </style>

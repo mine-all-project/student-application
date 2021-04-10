@@ -37,7 +37,7 @@ export default {
         this.$router.push('/manage-index')
         console.log(result)
       })
-      this.$router.push('/manage-index')
+      // this.$router.push('/manage-index')
     }
   }
 }
