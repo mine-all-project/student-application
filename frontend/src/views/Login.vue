@@ -34,10 +34,21 @@ export default {
         }
         _this.$message.success(result.message);
         sessionStorage.setItem('crabapples-token', result.data);
-        this.$router.push('/manage-index')
         console.log(result)
+        _this.$router.push('/manage-index')
       })
       // this.$router.push('/manage-index')
+    },
+    getUserInfo() {
+      this.$http.get('/api/user/getUserInfo').then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
     }
   }
 }

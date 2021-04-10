@@ -2,7 +2,7 @@
   <div>
     <a-button @click="addPaper">发布信息</a-button>
     <a-divider/>
-    <a-table :columns="columns" :data-source="dataSource" rowKey="id">
+    <a-table :columns="columns" :data-source="dataSource" rowKey="id" :pagination="false">
       <span slot="customTitle"> 标题</span>
       <span slot="tags" slot-scope="tags">
         <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>

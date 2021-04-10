@@ -1,8 +1,10 @@
 <template>
   <div>
-    <a-button @click="addPaper">发布信息</a-button>
-    <a-divider/>
-    <a-table :columns="columns" :data-source="dataSource" rowKey="id">
+    <span v-if="sysUser.role !== 0 && sysUser.role !== 2">
+      <a-button @click="addPaper">发布信息</a-button>
+      <a-divider/>
+    </span>
+    <a-table :columns="columns" :data-source="dataSource" rowKey="id" :pagination="false">
       <span slot="customTitle"> 标题</span>
       <span slot="tags" slot-scope="tags">
         <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>
@@ -10,11 +12,15 @@
       <span slot="readerCount" slot-scope="readerCount">{{ readerCount }}</span>
       <span slot="createTime" slot-scope="text">{{ text }}</span>
       <span slot="action" slot-scope="text, record">
+       <span v-if="sysUser.role !== 0">
         <a-button type="warn" size="small" @click="editPaper(record)">编辑文章</a-button>
         <a-divider type="vertical"/>
+       </span>
         <a-button type="primary" size="small" @click="showPaperInfo(record)">查看详情</a-button>
-        <a-divider type="vertical"/>
-        <a-button type="danger" size="small" @click="removePaper(record)">删除</a-button>
+        <span v-if="sysUser.role !== 2">
+          <a-divider type="vertical"/>
+          <a-button type="danger" size="small" @click="removePaper(record)">删除</a-button>
+        </span>
       </span>
     </a-table>
     <a-drawer title="发布信息" width="60%" :visible="show.addPaper" @close="closeForm">
@@ -142,12 +148,26 @@ export default {
         name: ''
       },
       editor: null,
+      sysUser: {}
     };
   },
   mounted() {
+    this.getUserInfo()
+    console.log(this.sysUser)
     this.getList()
   },
   methods: {
+    getUserInfo() {
+      this.$http.get('/api/user/getUserInfo').then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        this.sysUser = result.data
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
     getTagsList() {
       this.$http.get('/api/tags/list').then(result => {
         if (result.status !== 200) {

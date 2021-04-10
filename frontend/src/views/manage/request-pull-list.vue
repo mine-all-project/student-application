@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-table :columns="columns" :data-source="dataSource" rowKey="id">
+    <a-table :columns="columns" :data-source="dataSource" rowKey="id" :pagination="false">
       <span slot="customTitle"> 课题名称</span>
       <span slot="name" slot-scope="text">{{ text }}</span>
       <span slot="tags" slot-scope="tags">

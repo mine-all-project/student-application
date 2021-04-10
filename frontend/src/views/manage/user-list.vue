@@ -16,12 +16,14 @@
         <a-form-model-item label="邮箱" prop="mail">
           <a-input v-model="form.userInfo.mail" placeholder="请输入邮箱"/>
         </a-form-model-item>
-        <a-form-model-item label="权限" prop="role">
-          <a-radio-group v-model="form.userInfo.role" default-value="1">
-            <a-radio value="1">科研人员</a-radio>
-            <a-radio value="2">科研管理员</a-radio>
-          </a-radio-group>
-        </a-form-model-item>
+        <span v-if="form.userInfo.role === 0">
+          <a-form-model-item label="权限" prop="role">
+            <a-radio-group v-model="form.userInfo.role" default-value="2">
+              <a-radio value="1">科研管理员</a-radio>
+              <a-radio value="2">科研人员</a-radio>
+            </a-radio-group>
+          </a-form-model-item>
+        </span>
         <a-form-model-item label="标签" prop="tags">
           <a-select mode="multiple" v-model="form.userInfo.tags" placeholder="请选择标签">
             <a-select-option v-for="item in tagsOptions" :key="item.id">
@@ -46,25 +48,29 @@
         </a-form-model-item>
       </a-form-model>
     </a-modal>
-    <a-table :data-source="dataSource" rowKey="id" :columns="columns">
+    <a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
       <span slot="tags" slot-scope="tags">
         <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>
       </span>
       <span slot="role" slot-scope="role">
           <a-tag color="green" v-if="role === 0">超级管理员</a-tag>
-          <a-tag color="blue" v-if="role === 1">科研人员</a-tag>
-          <a-tag color="orange" v-if="role === 2">科研管理员</a-tag>
+          <a-tag color="orange" v-if="role === 1">科研管理员</a-tag>
+          <a-tag color="blue" v-if="role === 2">科研人员</a-tag>
       </span>
       <span slot="status" slot-scope="status">
         <a-tag color="green" v-if="status === 0">正常</a-tag>
         <a-tag color="red" v-else>禁用</a-tag>
       </span>
       <span slot="action" slot-scope="text, record">
-        <a-button type="default" size="small" @click="changeStatus(record)" v-if="record.status === 0">禁用</a-button>
-        <a-button type="primary" size="small" @click="changeStatus(record)" v-if="record.status === 1">启用</a-button>
-        <a-divider type="vertical"/>
-        <a-button type="danger" size="small" @click="removeUser(record)">删除</a-button>
-        <a-divider type="vertical"/>
+        <span v-if="record.role !== 0">
+          <a-button type="default" size="small" @click="changeStatus(record)" v-if="record.status === 0">禁用</a-button>
+          <a-button type="primary" size="small" @click="changeStatus(record)" v-if="record.status === 1">启用</a-button>
+          <a-divider type="vertical"/>
+        </span>
+        <span v-if="record.role !== 0">
+          <a-button type="danger" size="small" @click="removeUser(record)">删除</a-button>
+          <a-divider type="vertical"/>
+        </span>
         <a-button type="primary" size="small" @click="editUser(record)">编辑</a-button>
         <a-divider type="vertical"/>
         <a-button type="primary" size="small" @click="showResetPassword(record)">重置密码</a-button>
@@ -183,6 +189,7 @@ export default {
         userInfo: false,
         resetPassword: false,
       },
+      sysUser: sessionStorage.getItem("sysUser")
     };
   },
   mounted() {

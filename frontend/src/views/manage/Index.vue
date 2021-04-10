@@ -127,7 +127,8 @@ export default {
       userInfo: {
         name: ''
       },
-      menus: [
+      menus: [],
+      allMenus: [
         {
           key: '1',
           name: '科研管理',
@@ -177,6 +178,73 @@ export default {
               name: '共享审核',
               icon: 'appstore',
               url: '/manage-index/request-pull-list',
+            },
+          ]
+        },
+        {
+          key: '3',
+          name: '科研分析',
+          icon: 'appstore',
+          children: [
+            {
+              key: '31',
+              name: '数据统计',
+              icon: 'appstore',
+              url: '/manage-index/data-statistical',
+            },
+            {
+              key: '32',
+              name: '工作评价',
+              icon: 'appstore',
+              url: '/manage-index/subject-discuss',
+            },
+          ]
+        },
+        {
+          key: '4',
+          name: '数据对接',
+          icon: 'appstore',
+          url: '/school-org/list',
+          children: [
+            // {
+            //   key: '41',
+            //   name: '信息发布',
+            //   icon: 'appstore',
+            //   url: '/manage-index/paper-list',
+            // },
+            {
+              key: '41-1',
+              name: '信息发布',
+              icon: 'appstore',
+              url: '/manage-index/paper-list1',
+            },
+            // {
+            //   key: '42',
+            //   name: '工作评价',
+            //   icon: 'appstore',
+            //   url: '/manage-index/subject-discuss',
+            // },
+          ]
+        },
+        {
+          key: '99',
+          name: '用户管理',
+          icon: 'appstore',
+          url: '/manage-index/user-list',
+        },
+      ],
+      sysMenus: [
+        {
+          key: '1',
+          name: '科研管理',
+          icon: 'appstore',
+          url: '',
+          children: [
+            {
+              key: '12',
+              name: '标签管理',
+              icon: 'appstore',
+              url: '/manage-index/tags',
             },
           ]
         },
@@ -292,6 +360,20 @@ export default {
             },
           ]
         },
+        {
+          key: '4',
+          name: '数据对接',
+          icon: 'appstore',
+          url: '/school-org/list',
+          children: [
+            {
+              key: '41-1',
+              name: '信息发布',
+              icon: 'appstore',
+              url: '/manage-index/paper-list1',
+            },
+          ]
+        },
       ],
       managerMenu: [
         {
@@ -364,6 +446,16 @@ export default {
     // this.$router.push({name: 'welcome'})
   },
   methods: {
+    changeMenus() {
+      let rule = this.userInfo.role
+      if (rule === 0) {
+        this.menus = this.sysMenus
+      } else if (rule === 1) {
+        this.menus = this.managerMenu
+      } else if (rule === 2) {
+        this.menus = this.userMenu
+      }
+    },
     submitTags() {
       this.$http.post('/api/user/updateTags', this.form).then(result => {
         if (result.status !== 200) {
@@ -428,6 +520,7 @@ export default {
         }
         if (result.data !== null) {
           this.userInfo = result.data;
+          this.changeMenus()
         }
       }).catch(function (error) {
         console.error('出现错误:', error);

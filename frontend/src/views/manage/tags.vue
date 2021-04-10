@@ -19,7 +19,7 @@
       </a-form-model>
     </a-modal>
 
-    <a-table :columns="columns" :data-source="dataSource" key="id">
+    <a-table :columns="columns" :data-source="dataSource" key="id" :pagination="false">
       <span slot="name" slot-scope="text">{{ text }}</span>
       <span slot="color" slot-scope="color,record">
         <a-tag :color="color">{{ record.name }}</a-tag>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-modal :visible="show.stepList" @cancel="closeStepList" :footer="null" width="70%">
-      <a-table :columns="stepColumns" :data-source="stepDataSource" rowKey="id">
+      <a-table :columns="stepColumns" :data-source="stepDataSource" rowKey="id" :pagination="false">
         <span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
         <span slot="content" slot-scope="text">
           <a-tooltip placement="topLeft">
@@ -33,7 +33,7 @@
       </a-table>
     </a-modal>
     <a-modal :visible="show.resultList" @cancel="closeResultList" :footer="null" width="60%">
-      <a-table :columns="resultColumns" :data-source="resultDataSource" rowKey="id">
+      <a-table :columns="resultColumns" :data-source="resultDataSource" rowKey="id" :pagination="false">
         <span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
         <span slot="content" slot-scope="text">
           <a-tooltip placement="topLeft">
@@ -48,7 +48,7 @@
         </span>
       </a-table>
     </a-modal>
-    <a-table :columns="columns" :data-source="dataSource" rowKey="id">
+    <a-table :columns="columns" :data-source="dataSource" rowKey="id" :pagination="false">
       <span slot="customTitle"> 课题名称</span>
       <span slot="name" slot-scope="text">{{ text }}</span>
       <span slot="tags" slot-scope="tags">

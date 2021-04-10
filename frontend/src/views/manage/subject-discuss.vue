@@ -26,7 +26,7 @@
       </a-comment>
     </a-modal>
     <a-modal :visible="show.stepList" @cancel="closeStepList" :footer="null" width="70%">
-      <a-table :columns="stepColumns" :data-source="stepDataSource" rowKey="id">
+      <a-table :columns="stepColumns" :data-source="stepDataSource" rowKey="id" :pagination="false">
         <span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
         <span slot="content" slot-scope="text">
           <a-tooltip placement="topLeft">
@@ -58,7 +58,7 @@
       </a-table>
     </a-modal>
     <a-modal :visible="show.resultList" @cancel="closeResultList" :footer="null" width="60%">
-      <a-table :columns="resultColumns" :data-source="resultDataSource" rowKey="id">
+      <a-table :columns="resultColumns" :data-source="resultDataSource" rowKey="id" :pagination="false">
         <span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
         <span slot="content" slot-scope="text">
           <a-tooltip placement="topLeft">
@@ -73,16 +73,16 @@
       </span>
       </a-table>
     </a-modal>
-    <a-table :columns="columns" :data-source="dataSource" rowKey="id">
+    <a-table :columns="columns" :data-source="dataSource" rowKey="id" :pagination="false">
       <span slot="customTitle"> 课题名称</span>
       <span slot="name" slot-scope="text">{{ text }}</span>
       <span slot="tags" slot-scope="tags">
         <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>
       </span>
       <span slot="status" slot-scope="status">
-        <a-tag v-if="status === 0" color="green">{{ status }}</a-tag>
-        <a-tag v-if="status === 1" color="geekblue">{{ status }}</a-tag>
-        <a-tag v-if="status === 2" color="pink">{{ status }}</a-tag>
+        <a-tag v-if="status === 0" color="green">立项</a-tag>
+        <a-tag v-if="status === 1" color="geekblue">在研</a-tag>
+        <a-tag v-if="status === 2" color="pink">结题</a-tag>
       </span>
       <span slot="createBy" slot-scope="createBy">{{ createBy.name }}</span>
       <span slot="beginTime" slot-scope="text">{{ text }}</span>
