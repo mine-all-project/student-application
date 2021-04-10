@@ -1,13 +1,15 @@
 package cn.crabapples.application.custom.entity;
 
 import cn.crabapples.application.common.BaseEntity;
+import cn.crabapples.application.system.dto.SysUserDTO;
 import cn.crabapples.application.system.entity.SysUser;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO
@@ -18,17 +20,24 @@ import java.util.Map;
  * qq 294046317
  * pc-name mrhe
  */
-//@Entity
+@Entity
 @Getter
 @Setter
 //@Document("FileData")
-public class Papers extends BaseEntity {
+public class Papers1 extends BaseEntity {
+    @Column(columnDefinition = "varchar(64) comment '标题'")
     private String title;
+    @Column(columnDefinition = "longtext comment '正文'")
     private String content;
+    @ManyToOne
+    @JSONField(serialize = false)
     private SysUser createBy;
-    private Map<String, Object> user;
-    private List<Map<String, Object>> tagsList;
-    private List<Map<String, String>> fileList;
+    @Transient
+    private SysUserDTO user;
+    @ManyToMany
+    private List<Tags> tagsList;
+    @ManyToMany
+    private List<PaperFileInfo> fileList;
     private int readerCount;
 
     @Override

@@ -30,7 +30,7 @@ import java.util.Map;
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ElasticSearchTest {
-    private final String INDEX_NAME = "student-application";
+    private final String INDEX_NAME = "papers";
 
     @Getter
     @Setter
@@ -39,6 +39,7 @@ public class ElasticSearchTest {
         private int age = 20;
         private int sex = 0;
         private String[] likes = {"吉他", "画画"};
+        private int delFlag = 0;
 
         @Override
         public String toString() {
@@ -59,9 +60,9 @@ public class ElasticSearchTest {
 
     @Test
     public void esTest() throws IOException {
-//        esClient = esClientFactory.getEsClient();
+        esClient = esClientFactory.getEsClient();
 //        createIndex();
-//        insertData();
+        insertData();
 //        SearchRequest request = new SearchRequest(INDEX_NAME);
 //        SearchHits searchHits = esClient.search(request, RequestOptions.DEFAULT).getHits();
 //        System.err.println(searchHits.getTotalHits().value);

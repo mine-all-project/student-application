@@ -25,7 +25,6 @@ public class ElasticSearchClientFactory {
 
     public RestHighLevelClient getEsClient() {
         RestClientBuilder restClientBuilder = RestClient.builder(new HttpHost(esConfigure.getHost(), esConfigure.getPort(), "http"));
-        RestHighLevelClient esClient = new RestHighLevelClient(restClientBuilder);
-        return esClient;
+        return new RestHighLevelClient(restClientBuilder);
     }
 }

@@ -147,7 +147,7 @@ export default {
       });
     },
     getList() {
-      this.$http.get('/api/paper/list').then(result => {
+      this.$http.get('/api/paper1/list').then(result => {
         if (result.status !== 200) {
           this.$message.error(result.message);
           return;
@@ -175,13 +175,17 @@ export default {
       })
     },
     editPaper(e) {
-      console.log(e)
-      console.log(e.fileList.length)
       const _this = this
+      _this.form.addPaper.fileList = e.fileList.map(r =>  {
+        return {
+          uid: r.id,
+          name: r.name,
+          url: r.url,
+        }
+      })
       _this.show.addPaper = true
       _this.getTagsList()
       _this.$nextTick(() => {
-        _this.getList()
         _this.editor = new Editor('#editor')
         _this.editor.config.onchange = (e) => {
           _this.editorChange(e)
@@ -189,10 +193,12 @@ export default {
         _this.editor.create()
         _this.form.addPaper.id = e.id
         _this.form.addPaper.title = e.title
-        _this.form.addPaper.fileList = e.fileList && []
+        _this.form.addPaper.content = e.content
+        _this.editor.txt.html(e.content)
         _this.form.addPaper.tagsList = e.tagsList.map(e => {
           return e.id
         })
+        console.log(_this.form.addPaper)
       })
     },
     editorChange(e) {
@@ -200,13 +206,11 @@ export default {
     },
     closeForm() {
       this.show.addPaper = false
-      console.log(this.editor.txt.html())
       this.resetPaperForm()
       this.editor.destroy()
       this.editor = null
     },
     submitForm() {
-      // let fileList = []
       this.form.addPaper.fileList = this.form.addPaper.fileList.map(e => {
         return {
           name: e.name,
@@ -214,8 +218,7 @@ export default {
           url: e.url,
         }
       })
-      console.log(this.form.addPaper)
-      this.$http.post('/api/paper/save', this.form.addPaper).then(result => {
+      this.$http.post('/api/paper1/save', this.form.addPaper).then(result => {
         if (result.status !== 200) {
           this.$message.error(result.message);
           return;

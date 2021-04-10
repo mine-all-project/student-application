@@ -9,6 +9,10 @@
           <a-dropdown>
             <a-icon type="setting"/>
             <a-menu slot="overlay">
+              <a-menu-item key="3" @click="changeTags">
+                <a-icon type="user"/>
+                我的标签
+              </a-menu-item>
               <a-menu-item key="1" @click="changePassword">
                 <a-icon type="user"/>
                 修改密码
@@ -65,6 +69,20 @@
             </a-form-model-item>
           </a-form-model>
         </a-modal>
+        <a-modal title="我的标签" :visible.sync="show.changeTags" width="25%" ok-text="确认" cancel-text="取消"
+                 @ok="submitForm" @cancel="choseChangeTags">
+          <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+            <a-form-model-item ref="password" label="原密码" prop="password">
+              <a-input-password v-model="form.password"/>
+            </a-form-model-item>
+            <a-form-model-item ref="newPassword" label="新密码" prop="newPassword">
+              <a-input-password v-model="form.newPassword"/>
+            </a-form-model-item>
+            <a-form-model-item ref="rePassword" label="重复密码" prop="rePassword">
+              <a-input-password v-model="form.rePassword"/>
+            </a-form-model-item>
+          </a-form-model>
+        </a-modal>
         <keep-alive>
           <router-view name="innerView"></router-view>
         </keep-alive>
@@ -102,7 +120,8 @@ export default {
         rePassword: ''
       },
       show: {
-        changePassword: false
+        changePassword: false,
+        changeTags: false
       },
       userInfo: {
         name: ''
@@ -191,6 +210,12 @@ export default {
               icon: 'appstore',
               url: '/manage-index/paper-list',
             },
+            {
+              key: '41-1',
+              name: '信息发布1',
+              icon: 'appstore',
+              url: '/manage-index/paper-list1',
+            },
             // {
             //   key: '42',
             //   name: '工作评价',
@@ -222,6 +247,27 @@ export default {
     // this.$router.push({name: 'welcome'})
   },
   methods: {
+    getTagsList() {
+      this.$http.get('/api/tags/list').then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        if (result.data !== null) {
+          this.tagsOptions = result.data;
+          this.tags = result.data;
+        }
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
+    changeTags() {
+      this.getTagsList()
+      this.show.changeTags = true
+    },
+    choseChangeTags() {
+      this.show.changeTags = false
+    },
     titleClick(e) {
       console.log('titleClick', e);
     },

@@ -2,11 +2,11 @@ package cn.crabapples.application.custom.service;
 
 
 import cn.crabapples.application.common.BaseService;
-import cn.crabapples.application.custom.form.PapersForm;
+import cn.crabapples.application.custom.entity.Papers1;
+import cn.crabapples.application.custom.form.PapersForm1;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * TODO 
@@ -17,11 +17,11 @@ import java.util.Map;
  * qq 294046317
  * pc-name mrhe
  */
-public interface PapersService extends BaseService {
+public interface PapersService1 extends BaseService {
 
-    List<Map<String, Object>> getAll();
+    List<Papers1> getAll();
 
     void removeById(String id);
 
-    void savePapers(HttpServletRequest request , PapersForm form);
+    void savePapers(HttpServletRequest request , PapersForm1 form);
 }

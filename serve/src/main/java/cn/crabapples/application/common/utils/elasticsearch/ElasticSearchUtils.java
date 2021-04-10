@@ -36,6 +36,11 @@ public class ElasticSearchUtils {
         return client.search(request, RequestOptions.DEFAULT).getHits();
     }
 
+    public SearchHits findById(String indexName, String id) throws IOException {
+        SearchRequest request = new SearchRequest(indexName, id);
+        return client.search(request, RequestOptions.DEFAULT).getHits();
+    }
+
     public IndexResponse insert(String indexName, Map<String, Object> dataMap) throws IOException {
         IndexRequest request = new IndexRequest(indexName).source(indexName, dataMap);
         return client.index(request, RequestOptions.DEFAULT);

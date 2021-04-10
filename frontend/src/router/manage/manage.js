@@ -8,6 +8,7 @@ import RequestPullList from '@/views/manage/request-pull-list'
 import DataStatistical from '@/views/manage/data-statistical'
 import SubjectDiscuss from '@/views/manage/subject-discuss'
 import PaperList from '@/views/manage/paper-list'
+import PaperList1 from '@/views/manage/paper-list1'
 
 const manageRouter = {
     path: '/manage-index',
@@ -59,6 +60,11 @@ const manageRouter = {
             path: 'paper-list',
             components: {innerView: PaperList},
             name: 'paper-list',
+        },
+        {
+            path: 'paper-list1',
+            components: {innerView: PaperList1},
+            name: 'paper-list1',
         },
     ]
 }
