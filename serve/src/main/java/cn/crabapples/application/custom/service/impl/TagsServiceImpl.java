@@ -40,4 +40,9 @@ public class TagsServiceImpl implements TagsService {
     public void removeById(String id) {
         tagsDAO.removeById(id);
     }
+
+    @Override
+    public List<Tags> findByIds(List<String> ids) {
+        return tagsDAO.findByIds(ids);
+    }
 }

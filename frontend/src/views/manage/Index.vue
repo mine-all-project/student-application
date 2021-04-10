@@ -191,12 +191,12 @@ export default {
               icon: 'appstore',
               url: '/manage-index/paper-list',
             },
-            {
-              key: '42',
-              name: '工作评价',
-              icon: 'appstore',
-              url: '/manage-index/subject-discuss',
-            },
+            // {
+            //   key: '42',
+            //   name: '工作评价',
+            //   icon: 'appstore',
+            //   url: '/manage-index/subject-discuss',
+            // },
           ]
         },
         // {

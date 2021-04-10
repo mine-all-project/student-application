@@ -22,4 +22,6 @@ public interface TagsService {
     List<Tags> getAll();
 
     void removeById(String id);
+
+    List<Tags> findByIds(List<String> ids);
 }

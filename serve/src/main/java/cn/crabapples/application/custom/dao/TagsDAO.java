@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 /**
  * TODO
  *
@@ -46,5 +47,13 @@ public class TagsDAO extends BaseDAO {
         AssertUtils.notNull(tags, "删除失败");
         tags.setDelFlag(1);
         tagsRepository.saveAndFlush(tags);
+    }
+
+    public Tags findById(String id) {
+        return tagsRepository.findByIdAndDelFlag(id, NOT_DEL);
+    }
+
+    public List<Tags> findByIds(List<String> ids) {
+        return tagsRepository.findByIdInAndDelFlag(ids, NOT_DEL);
     }
 }
