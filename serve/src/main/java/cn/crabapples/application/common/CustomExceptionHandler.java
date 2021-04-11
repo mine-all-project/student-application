@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
  * TODO 全局异常处理
  *
@@ -28,6 +29,11 @@ public class CustomExceptionHandler {
         logger.warn("XHR出现异常:[{}]", e.getMessage(), e);
         if (e instanceof HttpMessageNotReadableException) {
             return ResponseDTO.returnError("参数错误");
+        }
+        if (e instanceof ApplicationException) {
+            if (401 == ((ApplicationException) e).getCode()) {
+                return ResponseDTO.returnAuthFail("身份认证失败");
+            }
         }
         return ResponseDTO.returnError(e.getMessage());
     }

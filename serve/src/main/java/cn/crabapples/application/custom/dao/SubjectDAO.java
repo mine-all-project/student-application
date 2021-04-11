@@ -130,7 +130,7 @@ public class SubjectDAO extends BaseDAO {
         Subject subject = subjectRepository.findByIdAndDelFlag(id, NOT_DEL);
         subject.setIsShare(0);
         subjectRepository.saveAndFlush(subject);
-        SubjectShare share = subjectShareRepository.findBySubjectAndStatus(subject, 0).orElse(new SubjectShare());
+        SubjectShare share = subjectShareRepository.findBySubjectAndStatus(subject, 1).orElse(new SubjectShare());
         share.setSubject(subject);
         share.setStatus(0);
         share.setShareBy(sysUser);
@@ -139,7 +139,7 @@ public class SubjectDAO extends BaseDAO {
 
     public void closeShareById(String id) {
         Subject subject = subjectRepository.findByIdAndDelFlag(id, NOT_DEL);
-        SubjectShare share = subjectShareRepository.findBySubjectAndStatus(subject, 1).get();
+        SubjectShare share = subjectShareRepository.findBySubjectAndStatus(subject, 0).get();
         AssertUtils.notNull(share, "分享状态异常");
         subject.setIsShare(1);
         share.setStatus(1);
@@ -170,4 +170,7 @@ public class SubjectDAO extends BaseDAO {
     }
 
 
+    public List<Subject> getAuditList() {
+        return subjectRepository.findByStatusAndDelFlag(desByCreateTime, 0, NOT_DEL);
+    }
 }

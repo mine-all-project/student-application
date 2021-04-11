@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * TODO 
+ * TODO
  *
  * @author Mr.He
  * 2021/4/9 1:51
@@ -29,4 +29,5 @@ public interface SubjectRepository extends JpaRepository<Subject, String> {
 
     List<Subject> findByCreateByNotAndDelFlagAndIsShare(Sort sort, SysUser createById, int delFlag, int isShare);
 
+    List<Subject> findByStatusAndDelFlag(Sort desByCreateTime, int status, int delFlag);
 }

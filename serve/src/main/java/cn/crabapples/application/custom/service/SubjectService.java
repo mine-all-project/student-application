@@ -37,4 +37,10 @@ public interface SubjectService extends BaseService {
     List<SubjectShare> getMinePull(HttpServletRequest request);
 
     List<Subject> getMineJoin(HttpServletRequest request);
+
+    List<Subject> getAuditList(HttpServletRequest request);
+
+    Subject accept(String id);
+
+    Subject unaccepted(String id);
 }

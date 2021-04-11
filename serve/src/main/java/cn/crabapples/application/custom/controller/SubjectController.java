@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * TODO 
+ * TODO
  *
  * @author Mr.He
  * 2021/4/9 1:52
@@ -71,6 +71,30 @@ public class SubjectController extends BaseController {
         List<Subject> resultList = subjectService.getMineJoin(request);
         log.info("返回结果->获取我参与的课题列表完成:[{}]", resultList);
         return ResponseDTO.returnSuccess("操作成功", resultList);
+    }
+
+    @GetMapping("/audit-list")
+    public ResponseDTO audit(HttpServletRequest request) {
+        log.info("收到请求->获取待审核课题列表");
+        List<Subject> resultList = subjectService.getAuditList(request);
+        log.info("返回结果->获取待审核列表完成:[{}]", resultList);
+        return ResponseDTO.returnSuccess("操作成功", resultList);
+    }
+
+    @GetMapping("/audit/accept/{id}")
+    public ResponseDTO accept(@PathVariable String id) {
+        log.info("收到请求->通过审核:[{}]", id);
+        subjectService.accept(id);
+        log.info("返回结果->通过审核完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
+    @GetMapping("/audit/unaccepted/{id}")
+    public ResponseDTO unaccepted(@PathVariable String id) {
+        log.info("收到请求->驳回审核:[{}]", id);
+        subjectService.unaccepted(id);
+        log.info("返回结果->驳回审核完成");
+        return ResponseDTO.returnSuccess("操作成功");
     }
 
     @GetMapping("/mine-pull")

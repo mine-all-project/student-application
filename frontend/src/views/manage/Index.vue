@@ -3,7 +3,7 @@
     <a-layout-header>
       <a-row>
         <a-col :span="4">
-          <span class="title">管理系统</span>
+          <span class="title">科研管理系统</span>
         </a-col>
         <a-col :span="3" :offset="17">
           <a-dropdown>
@@ -143,6 +143,12 @@ export default {
             },
             {
               key: '12',
+              name: '项目审核',
+              icon: 'appstore',
+              url: '/manage-index/audit-list',
+            },
+            {
+              key: '13',
               name: '标签管理',
               icon: 'appstore',
               url: '/manage-index/tags',
@@ -242,6 +248,12 @@ export default {
           children: [
             {
               key: '12',
+              name: '项目审核',
+              icon: 'appstore',
+              url: '/manage-index/audit-list',
+            },
+            {
+              key: '13',
               name: '标签管理',
               icon: 'appstore',
               url: '/manage-index/tags',
@@ -300,7 +312,7 @@ export default {
           url: '/manage-index/user-list',
         },
       ],
-      userMenu: [
+      userMenus: [
         {
           key: '1',
           name: '科研管理',
@@ -375,7 +387,7 @@ export default {
           ]
         },
       ],
-      managerMenu: [
+      managerMenus: [
         {
           key: '1',
           name: '科研管理',
@@ -451,10 +463,11 @@ export default {
       if (rule === 0) {
         this.menus = this.sysMenus
       } else if (rule === 1) {
-        this.menus = this.managerMenu
+        this.menus = this.managerMenus
       } else if (rule === 2) {
-        this.menus = this.userMenu
+        this.menus = this.userMenus
       }
+      this.menus = this.allMenus
     },
     submitTags() {
       this.$http.post('/api/user/updateTags', this.form).then(result => {

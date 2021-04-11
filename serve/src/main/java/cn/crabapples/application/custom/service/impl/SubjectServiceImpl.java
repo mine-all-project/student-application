@@ -1,5 +1,6 @@
 package cn.crabapples.application.custom.service.impl;
 
+import cn.crabapples.application.common.utils.AssertUtils;
 import cn.crabapples.application.common.utils.jwt.JwtConfigure;
 import cn.crabapples.application.custom.dao.SubjectDAO;
 import cn.crabapples.application.custom.dao.SubjectShareDAO;
@@ -97,5 +98,26 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public void closeShareById(String id) {
         subjectDAO.closeShareById(id);
+    }
+
+    @Override
+    public List<Subject> getAuditList(HttpServletRequest request) {
+        return subjectDAO.getAuditList();
+    }
+
+    @Override
+    public Subject accept(String id) {
+        Subject entity = subjectDAO.findById(id);
+        AssertUtils.notNull(entity, "项目不存在");
+        entity.setStatus(1);
+        return subjectDAO.save(entity);
+    }
+
+    @Override
+    public Subject unaccepted(String id) {
+        Subject entity = subjectDAO.findById(id);
+        AssertUtils.notNull(entity, "项目不存在");
+        entity.setStatus(-1);
+        return subjectDAO.save(entity);
     }
 }

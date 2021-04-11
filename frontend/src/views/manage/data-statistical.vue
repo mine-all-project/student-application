@@ -9,7 +9,7 @@
       <div id="item-charts" style="width: 100%;height:400px;"></div>
     </a-modal>
     <a-modal :visible="show.stepList" @cancel="closeStepList" :footer="null" width="70%">
-      <a-table :columns="stepColumns" :data-source="stepDataSource" rowKey="id" :pagination="false">
+      <a-table :columns="stepColumns" :data-source="stepDataSource" rowKey="id" :pagination="false" >
         <span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
         <span slot="content" slot-scope="text">
           <a-tooltip placement="topLeft">
@@ -68,9 +68,10 @@
         <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>
       </span>
       <span slot="status" slot-scope="status">
-        <a-tag v-if="status === 0" color="green">{{ status }}</a-tag>
-        <a-tag v-if="status === 1" color="geekblue">{{ status }}</a-tag>
-        <a-tag v-if="status === 2" color="pink">{{ status }}</a-tag>
+        <a-tag v-if="status === 0" color="green">立项</a-tag>
+        <a-tag v-if="status === 1" color="geekblue">在研</a-tag>
+        <a-tag v-if="status === 2" color="pink">结题</a-tag>
+        <a-tag v-if="status === -1" color="red">驳回</a-tag>
       </span>
       <span slot="createBy" slot-scope="createBy">{{ createBy.name }}</span>
       <span slot="beginTime" slot-scope="text">{{ text }}</span>
@@ -79,7 +80,6 @@
         <a-button type="primary" size="small" @click="showItemCharts(record)">查看分析</a-button>
         <a-divider type="vertical"/>
         <a-button type="primary" size="small" @click="showStepList(record)">查看详情</a-button>
-        <a-divider type="vertical"/>
       </span>
     </a-table>
   </div>
@@ -211,6 +211,7 @@ export default {
           status0: {name: '立项', value: 0},
           status1: {name: '在研', value: 0},
           status2: {name: '结题', value: 0},
+          status_1: {name: '驳回', value: 0},
           isEnd: {name: '立项', value: 0},
           isShare: {name: '共享', value: 0},
         }
@@ -223,6 +224,9 @@ export default {
           }
           if (e.status === 2) {
             seriesData.status2.value++
+          }
+          if (e.status === -1) {
+            seriesData.status_1.value++
           }
           if (e.endTime) {
             seriesData.isEnd.value++
@@ -265,7 +269,8 @@ export default {
                 seriesData.status1,
                 seriesData.status2,
                 // seriesData.isEnd,
-                seriesData.isShare,
+                // seriesData.isShare,
+                seriesData.status_1,
               ],
               areaStyle: {},
               emphasis: {

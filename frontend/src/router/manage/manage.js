@@ -10,6 +10,7 @@ import SubjectDiscuss from '@/views/manage/subject-discuss'
 import PaperList from '@/views/manage/paper-list'
 import PaperList1 from '@/views/manage/paper-list1'
 import UserList from '@/views/manage/user-list'
+import AuditList from '@/views/manage/audit-list'
 
 const manageRouter = {
     path: '/manage-index',
@@ -71,6 +72,11 @@ const manageRouter = {
             path: 'user-list',
             components: {innerView: UserList},
             name: 'user-list',
+        },
+        {
+            path: 'audit-list',
+            components: {innerView: AuditList},
+            name: 'audit-list',
         },
     ]
 }

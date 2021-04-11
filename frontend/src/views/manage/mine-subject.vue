@@ -85,6 +85,7 @@
         <a-tag v-if="status === 0" color="green">立项</a-tag>
         <a-tag v-if="status === 1" color="geekblue">在研</a-tag>
         <a-tag v-if="status === 2" color="pink">结题</a-tag>
+        <a-tag v-if="status === -1" color="red">驳回</a-tag>
       </span>
       <span slot="isShare" slot-scope="isShare">
         <a-tag v-if="isShare === 0" color="green">已共享</a-tag>
@@ -96,11 +97,14 @@
       <span slot="action" slot-scope="text, record">
         <a-button type="danger" size="small" @click="endSub(record)" v-if="record.status === 1">申请结题</a-button>
         <a-divider type="vertical" v-if="record.status === 1"/>
-        <a-button type="primary" style="border:none;background-color:#ea990d;" size="small" @click="share(record)"
-                  v-if="record.isShare === 1">发起共享</a-button>
-        <a-button type="primary" style="border:none;background-color:#27ac05;" size="small" @click="closeShare(record)"
-                  v-if="record.isShare === 0">取消共享</a-button>
-        <a-divider type="vertical"/>
+        <span v-if="record.status === 1 || record.status === 2">
+          <a-button type="primary" style="border:none;background-color:#ea990d;" size="small" @click="share(record)"
+                    v-if="record.isShare === 1">发起共享</a-button>
+          <a-button type="primary" style="border:none;background-color:#27ac05;" size="small"
+                    @click="closeShare(record)"
+                    v-if="record.isShare === 0">取消共享</a-button>
+          <a-divider type="vertical"/>
+        </span>
         <a-button type="primary" size="small" @click="showStepList(record)">查看详情</a-button>
         <!--        <a-dropdown>-->
         <!--          <a-button type="default" size="small">成果-->

@@ -27,7 +27,7 @@ public class Subject extends BaseEntity {
     @Column(columnDefinition = "varchar(64) comment '标题'")
     private String title;
 
-    @Column(columnDefinition = "tinyint(1) default 0 comment '状态 0:立项 1:在研 2:结题'")
+    @Column(columnDefinition = "tinyint(1) default 0 comment '状态 0:立项 1:在研 2:结题 -1:驳回'")
     private Integer status;
 
     @Column(columnDefinition = "tinyint(1) default 1 comment '是否共享 0:是 1:否'")
