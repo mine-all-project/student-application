@@ -11,13 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/9 1:50
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 标签数据库交互实现类
  */
 @Component
 public class TagsDAO extends BaseDAO {

@@ -6,13 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * TODO 标记不需要jwt拦截的url
- *
- * @author Mr.He
- * 9/5/20 2:54 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+ * 标记不需要jwt拦截的url
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

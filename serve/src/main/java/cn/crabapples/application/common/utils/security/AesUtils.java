@@ -11,13 +11,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 /**
- * TODO AES加密工具
- *
- * @author Mr.He
- * 2019/7/3 23:24
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * AES加密工具
  */
 public class AesUtils {
     private static final Logger logger = LoggerFactory.getLogger(AesUtils.class);

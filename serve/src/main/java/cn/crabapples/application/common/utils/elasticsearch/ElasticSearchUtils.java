@@ -14,15 +14,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * TODO
- *
- * @author Mr.He
- * 2021/4/10 15:33
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
- */
 @Component
 public class ElasticSearchUtils {
     private final RestHighLevelClient client;

@@ -3,13 +3,7 @@ package cn.crabapples.application.common;
 import lombok.Getter;
 
 /**
- * TODO http请求返回状态码
- *
- * @author Mr.He
- * 8/29/20 11:50 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+ * http请求返回状态码
  */
 public enum ResponseCode {
     SUCCESS(200),

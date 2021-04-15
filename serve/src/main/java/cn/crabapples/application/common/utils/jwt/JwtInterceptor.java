@@ -13,13 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * TODO 配置jwt拦截器(不拦截@JwtIgnore标记的url)
- *
- * @author Mr.He
- * 9/5/20 2:54 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+ * 配置jwt拦截器(不拦截@JwtIgnore标记的url)
  */
 @Slf4j
 @Component

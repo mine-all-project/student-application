@@ -10,13 +10,7 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/7 3:09
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 科研项目阶段实体类
  */
 
 @Setter

@@ -8,13 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/10 15:04
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文章文件数据库交互实现类（mysql）
  */
 @Component
 public class PapersDAO1 extends BaseDAO {

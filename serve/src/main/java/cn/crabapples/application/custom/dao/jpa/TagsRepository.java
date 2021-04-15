@@ -8,13 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/9 1:50
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 标签数据库交互
  */
 @Repository
 public interface TagsRepository extends JpaRepository<Tags, String> {

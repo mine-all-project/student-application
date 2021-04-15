@@ -28,13 +28,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/10 14:58
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文章功能实现类（mysql）
  */
 @Service
 //@CacheConfig(cacheNames = "user:")
@@ -59,16 +53,25 @@ public class PapersServiceImpl1 implements PapersService1 {
         this.mailUtils = mailUtils;
     }
 
+    /**
+     * 获取文章列表
+     */
     @Override
     public List<Papers1> getAll() {
         return papersDAO.getAll();
     }
 
+    /**
+     * 删除文章
+     */
     @Override
     public void removeById(String id) {
         papersDAO.removeById(id);
     }
 
+    /**
+     * 保存文章
+     */
     @Override
     public void savePapers(HttpServletRequest request, PapersForm1 form) {
         String id = form.getId();
@@ -91,6 +94,9 @@ public class PapersServiceImpl1 implements PapersService1 {
         noticeUser(id, papers, tagsList);
     }
 
+    /**
+     * 根据用户标签邮件通知用户有相关文章发布
+     */
     void noticeUser(String id, Papers1 papers, List<Tags> tagsList) {
         List<String> send = new ArrayList<>();
         if (id.length() <= 0) {

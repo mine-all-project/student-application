@@ -6,13 +6,7 @@ import cn.crabapples.application.custom.entity.RequestPull;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 1:49
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 访问请求功能抽象接口
  */
 public interface RequestPullService extends BaseService {
 

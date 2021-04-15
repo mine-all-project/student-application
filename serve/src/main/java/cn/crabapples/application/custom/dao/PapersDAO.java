@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO
+ * 文章数据库交互实现类（elasticsearch，暂未实现）
  *
- * @author Mr.He
+
  * 2021/4/10 15:04
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+
+
+
  */
 @Component
 public class PapersDAO extends BaseDAO {

@@ -8,13 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/7 3:09
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 科研项目阶段成果实体类
  */
 @Setter
 @Getter

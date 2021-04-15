@@ -10,13 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/9 1:50
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 访问请求数据库交互实现类
  */
 @Component
 public class RequestPullDAO extends BaseDAO {

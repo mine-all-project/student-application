@@ -10,13 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 1:52
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文件接口
  */
 @RestController
 @Slf4j

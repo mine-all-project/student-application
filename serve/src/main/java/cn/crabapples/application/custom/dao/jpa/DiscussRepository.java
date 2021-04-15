@@ -10,13 +10,7 @@ import java.util.List;
 
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/9 2:03
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 评论数据库交互
  */
 @Repository
 public interface DiscussRepository extends JpaRepository<Discuss, String> {

@@ -13,13 +13,7 @@ import org.springframework.core.annotation.Order;
 import java.lang.reflect.Method;
 
 /**
- * TODO service切面拦截
- *
- * @author Mr.He
- * 2020/1/30 18:07
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ *  service切面拦截
  */
 @Aspect
 @Configuration

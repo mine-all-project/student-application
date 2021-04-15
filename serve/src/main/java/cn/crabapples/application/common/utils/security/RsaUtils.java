@@ -16,13 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * TODO RSA加密演示
- *
- * @author Mr.He
- * 2019/7/3 22:49
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * RSA加密演示
  */
 public class RsaUtils {
     private static final Logger logger = LoggerFactory.getLogger(RsaUtils.class);

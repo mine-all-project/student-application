@@ -15,13 +15,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import java.time.Duration;
 
 /**
- * TODO springCache配置类
- *
- * @author Mr.He
- * 2020/1/29 10:12
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * springCache配置类
  */
 @Configuration
 @CacheConfig

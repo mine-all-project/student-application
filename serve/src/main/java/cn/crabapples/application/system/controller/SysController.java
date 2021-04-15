@@ -14,13 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * TODO 系统相关接口
- *
- * @author Mr.He
- * 2020/1/28 23:17
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * 系统相关接口
  */
 
 @RestController

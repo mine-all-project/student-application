@@ -14,13 +14,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 /**
- * TODO SMTP邮件工具类
- *
- * @author Mr.He
- * 2020/3/20 21:15
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * SMTP邮件工具类
  */
 @Component
 public class MailUtils {
@@ -111,7 +105,6 @@ public class MailUtils {
      * @param multipart   邮件数据信息
      * @param contentText 邮件正文
      * @throws MessagingException 邮件相关异常
-     * @return
      */
     public Multipart addMailContentText(Multipart multipart, String contentText) throws MessagingException {
         /*

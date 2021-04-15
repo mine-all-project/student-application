@@ -15,13 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/9 1:59
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 评论功能实现类
  */
 @Service
 //@CacheConfig(cacheNames = "user:")
@@ -39,11 +33,17 @@ public class DiscussServiceImpl implements DiscussService {
         this.userDAO = userDAO;
     }
 
+    /**
+     * 保存评论
+     */
     @Override
     public void saveDiscuss(HttpServletRequest request, DiscussForm form) {
         discussDAO.save(form, getUserInfo(request, jwtConfigure, userDAO, isDebug));
     }
 
+    /**
+     * 获取评论列表
+     */
     @Override
     public List<Discuss> getAll(String subjectId) {
         List<Discuss> result = discussDAO.getAll(subjectId);
@@ -51,6 +51,9 @@ public class DiscussServiceImpl implements DiscussService {
         return result;
     }
 
+    /**
+     * 过滤敏感用户数据
+     */
     void cleanUserData(List<Discuss> list) {
         list.forEach(e -> {
             SysUserDTO user = new SysUserDTO();
@@ -60,6 +63,9 @@ public class DiscussServiceImpl implements DiscussService {
         });
     }
 
+    /**
+     * 删除评论
+     */
     @Override
     public void removeById(String id) {
         discussDAO.removeById(id);

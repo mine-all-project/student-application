@@ -14,13 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * TODO 实体类基础属性
- *
- * @author Mr.He
- * 2019/9/21 17:47
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * 实体类基础属性
  */
 @Getter
 @Setter

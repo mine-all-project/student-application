@@ -13,13 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/9 1:46
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 访问请求实体类
  */
 @Setter
 @Getter

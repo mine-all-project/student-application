@@ -7,13 +7,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 1:49
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文件功能抽象接口
  */
 public interface FileDataService {
     default String getFilePath(HttpServletRequest request, String filePath, String virtualPath) {

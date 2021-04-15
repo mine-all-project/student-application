@@ -19,13 +19,7 @@ import java.util.List;
 
 
 /**
- * TODO 系统相关服务实现类
- *
- * @author Mr.He
- * 2020/1/28 23:23
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * 科研项目功能实现类
  */
 @Service
 //@CacheConfig(cacheNames = "user:")
@@ -45,6 +39,9 @@ public class SubjectServiceImpl implements SubjectService {
         this.subjectShareDAO = subjectShareDAO;
     }
 
+    /**
+     * 保存科研项目
+     */
     @Override
     public Subject saveSubject(HttpServletRequest request, SubjectForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
@@ -53,58 +50,90 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectDAO.save(form);
     }
 
-
+    /**
+     * 获取项目列表
+     */
     @Override
     public List<Subject> getAll() {
         return subjectDAO.getAll();
     }
 
+    /**
+     * 获取我发起的项目
+     */
     @Override
     public List<Subject> getMineAll(HttpServletRequest request) {
         return subjectDAO.getMineAll(getUserInfo(request, jwtConfigure, userDAO, isDebug));
     }
 
+    /**
+     * 获取我参与的项目
+     */
     @Override
     public List<Subject> getMineJoin(HttpServletRequest request) {
         return subjectDAO.getMineJoin(getUserInfo(request, jwtConfigure, userDAO, isDebug));
     }
 
+    /**
+     * 获取我发起的访问请求
+     */
     @Override
     public List<SubjectShare> getMinePull(HttpServletRequest request) {
         return subjectDAO.getMinePull(getUserInfo(request, jwtConfigure, userDAO, isDebug));
     }
 
+    /**
+     * 保存成果
+     */
     @Override
     public void saveResultInfo(SubjectStepResultInfoForm form) {
         subjectDAO.saveResultInfo(form);
     }
 
+    /**
+     * 结束科研阶段
+     */
     @Override
     public void endStepById(String id) {
         subjectDAO.endStepById(id);
     }
 
+    /**
+     * 结束科研项目
+     */
     @Override
     public void endSubjectById(String id) {
         subjectDAO.endSubjectById(id);
     }
 
+    /**
+     * 分享科研项目
+     */
     @Override
     public void shareById(String id, HttpServletRequest request) {
         SysUser sysUser = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         subjectDAO.shareById(id, sysUser);
     }
 
+    /**
+     * 取消分享
+     */
     @Override
     public void closeShareById(String id) {
         subjectDAO.closeShareById(id);
     }
 
+    /**
+     * 获取科研项目待审核列表
+     */
     @Override
     public List<Subject> getAuditList(HttpServletRequest request) {
         return subjectDAO.getAuditList();
     }
 
+    /**
+     * 审核通过
+     */
     @Override
     public Subject accept(String id) {
         Subject entity = subjectDAO.findById(id);
@@ -113,6 +142,9 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectDAO.save(entity);
     }
 
+    /**
+     * 审核拒绝
+     */
     @Override
     public Subject unaccepted(String id) {
         Subject entity = subjectDAO.findById(id);

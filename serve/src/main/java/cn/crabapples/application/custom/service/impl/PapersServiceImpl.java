@@ -21,13 +21,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/10 14:58
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文章功能实现类（elasticsearch，暂未实现）
  */
 @Service
 //@CacheConfig(cacheNames = "user:")
@@ -46,16 +40,25 @@ public class PapersServiceImpl implements PapersService {
         this.userDAO = userDAO;
     }
 
+    /**
+     * 获取文章列表
+     */
     @Override
     public List<Map<String, Object>> getAll() {
         return papersDAO.getAll();
     }
 
+    /**
+     * 删除文章
+     */
     @Override
     public void removeById(String id) {
         papersDAO.removeById(id);
     }
 
+    /**
+     * 保存文章
+     */
     @Override
     public void savePapers(HttpServletRequest request, PapersForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);

@@ -10,13 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 1:51
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 科研项目分享数据库交互
  */
 @Repository
 public interface SubjectShareRepository extends JpaRepository<SubjectShare, String> {

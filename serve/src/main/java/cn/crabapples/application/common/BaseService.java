@@ -9,13 +9,7 @@ import io.jsonwebtoken.Claims;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * TODO 系统服务基础方法
- *
- * @author Mr.He
- * 2021/4/9 1:51
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 系统服务基础方法
  */
 public interface BaseService {
     default SysUser getUserInfo(HttpServletRequest request, JwtConfigure configure, UserDAO userDAO, boolean isDebug) {

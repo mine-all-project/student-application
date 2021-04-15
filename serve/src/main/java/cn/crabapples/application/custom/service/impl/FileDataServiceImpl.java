@@ -8,14 +8,9 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 1:49
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文件功能实现类
  */
 @Slf4j
 @Service
@@ -25,6 +20,9 @@ public class FileDataServiceImpl implements FileDataService {
     @Value("${filePath}")
     private String filePath;
 
+    /**
+     * 上传文件
+     */
     @Override
     public Map<String, String> uploadFile(HttpServletRequest request) {
         String path = getFilePath(request, filePath, virtualPath);

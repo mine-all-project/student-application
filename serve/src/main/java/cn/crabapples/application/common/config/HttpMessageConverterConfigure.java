@@ -7,13 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * TODO springboot 消息转换配置(主要用于配置fastJson解析)
- *
- * @author Mr.He
- * 2020/1/31 2:02
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * springboot 消息转换配置(主要用于配置fastJson解析)
  */
 @Configuration
 public class HttpMessageConverterConfigure {

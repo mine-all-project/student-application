@@ -5,13 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 5:07
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 评论表单
  */
 @Getter
 @Setter

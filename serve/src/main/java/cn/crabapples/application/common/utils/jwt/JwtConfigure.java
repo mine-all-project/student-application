@@ -8,13 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
- * TODO jwt配置类
- *
- * @author Mr.He
- * 9/5/20 2:55 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+ * jwt配置类
  */
 @Getter
 @Setter

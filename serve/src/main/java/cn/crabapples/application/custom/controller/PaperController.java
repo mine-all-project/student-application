@@ -13,13 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/10 14:39
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文章接口(elasticsearch，未启用)
  */
 @RestController
 @Slf4j
@@ -36,7 +30,7 @@ public class PaperController extends BaseController {
     public ResponseDTO save(HttpServletRequest request, @RequestBody PapersForm form) {
         log.info("收到请求->保存文章:[{}]", form);
         super.validator(form, IsLogin.class);
-        papersService.savePapers(request,form);
+        papersService.savePapers(request, form);
         log.info("返回结果->保存标签完成");
         return ResponseDTO.returnSuccess("操作成功");
     }

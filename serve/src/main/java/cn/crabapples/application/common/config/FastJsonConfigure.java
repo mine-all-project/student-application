@@ -6,13 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * TODO fastJson配置
- *
- * @author Mr.He
- * 2020/1/31 0:12
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * fastJson配置
  */
 @Configuration
 public class FastJsonConfigure {

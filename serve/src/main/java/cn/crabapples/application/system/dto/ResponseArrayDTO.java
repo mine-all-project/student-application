@@ -8,11 +8,11 @@ import lombok.Setter;
 /**
  * TODO 返回集合DTO
  *
- * @author Mr.He
+
  * 8/29/20 11:48 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+
+
+
  */
 @Getter
 @Setter

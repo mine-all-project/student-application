@@ -10,13 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 1:49
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文件表单
  */
 @Getter
 @Setter

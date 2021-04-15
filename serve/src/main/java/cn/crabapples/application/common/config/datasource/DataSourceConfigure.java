@@ -12,13 +12,7 @@ import javax.sql.DataSource;
 
 
 /**
- * TODO 数据源配置
- *
- * @author Mr.He
- * 9/5/20 2:34 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+ * 数据源配置
  */
 @Slf4j
 @Configuration

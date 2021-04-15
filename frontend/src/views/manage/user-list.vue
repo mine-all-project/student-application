@@ -16,14 +16,13 @@
         <a-form-model-item label="邮箱" prop="mail">
           <a-input v-model="form.userInfo.mail" placeholder="请输入邮箱"/>
         </a-form-model-item>
-        <span v-if="form.userInfo.role === 0">
           <a-form-model-item label="权限" prop="role">
             <a-radio-group v-model="form.userInfo.role" default-value="2">
+              <a-radio value="0">超级管理员</a-radio>
               <a-radio value="1">科研管理员</a-radio>
               <a-radio value="2">科研人员</a-radio>
             </a-radio-group>
           </a-form-model-item>
-        </span>
         <a-form-model-item label="标签" prop="tags">
           <a-select mode="multiple" v-model="form.userInfo.tags" placeholder="请选择标签">
             <a-select-option v-for="item in tagsOptions" :key="item.id">
@@ -310,6 +309,7 @@ export default {
           this.$message.error(result.message);
           return;
         }
+        this.closeForm()
       }).catch(function (error) {
         console.error('出现错误:', error);
       });

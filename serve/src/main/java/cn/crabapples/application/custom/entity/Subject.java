@@ -12,13 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/4 23:14
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 科研项目实体类
  */
 @Setter
 @Getter

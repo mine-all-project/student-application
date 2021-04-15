@@ -7,14 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.Date;
 import java.util.UUID;
+
 /**
- * TODO 文件工具类
- *
- * @author Mr.He
- * 2021/4/9 1:53
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文件工具类
  */
 public class FileUtils {
     private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);

@@ -18,13 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * TODO 主数据源配置(根据包路径切换数据源)
- *
- * @author Mr.He
- * 9/5/20 2:22 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+ * 主数据源配置
  */
 
 @Configuration

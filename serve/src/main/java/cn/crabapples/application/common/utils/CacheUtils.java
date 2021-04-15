@@ -7,13 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 /**
- * TODO 缓存工具类
- *
- * @author Mr.He
- * 2021/2/4 17:21
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 缓存工具类
  */
 @Component
 @Slf4j

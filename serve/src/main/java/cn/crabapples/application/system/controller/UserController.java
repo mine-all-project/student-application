@@ -20,13 +20,7 @@ import java.util.List;
 
 
 /**
- * TODO 用户管理接口类
- *
- * @author Mr.He
- * 2020/1/27 2:09
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * 用户管理接口类
  */
 @RestController
 @RequestMapping(value = "/api/user")

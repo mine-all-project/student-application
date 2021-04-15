@@ -19,13 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 1:49
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 访问请求功能实现类
  */
 @Service
 //@CacheConfig(cacheNames = "user:")
@@ -51,12 +45,18 @@ public class RequestPullServiceImpl implements RequestPullService {
         this.subjectShareRepository = subjectShareRepository;
     }
 
+    /**
+     * 发起访问申请
+     */
     @Override
     public void requestPull(HttpServletRequest request, String id) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         requestPullDAO.requestPull(user, id);
     }
 
+    /**
+     * 获取申请列表
+     */
     @Override
     public List<RequestPull> requestPullList() {
         List<RequestPull> list = requestPullDAO.findAll();
@@ -68,6 +68,9 @@ public class RequestPullServiceImpl implements RequestPullService {
         return list;
     }
 
+    /**
+     * 同意申请
+     */
     @Override
     public void accept(String id) {
         RequestPull requestPull = requestPullDAO.findById(id);
@@ -79,6 +82,9 @@ public class RequestPullServiceImpl implements RequestPullService {
         requestPullDAO.save(requestPull);
     }
 
+    /**
+     * 拒绝申请
+     */
     @Override
     public void unaccepted(String id) {
         RequestPull requestPull = requestPullDAO.findById(id);

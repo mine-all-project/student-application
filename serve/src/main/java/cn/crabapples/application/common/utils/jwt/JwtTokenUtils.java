@@ -11,13 +11,7 @@ import java.security.Key;
 import java.util.Date;
 
 /**
- * TODO jwt工具(用于解析和生成token)
- *
- * @author Mr.He
- * 9/5/20 2:52 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+ * jwt工具(用于解析和生成token)
  */
 @Slf4j
 public class JwtTokenUtils {

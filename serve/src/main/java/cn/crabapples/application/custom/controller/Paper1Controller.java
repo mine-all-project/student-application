@@ -13,13 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/10 14:39
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文章接口(mysql)
  */
 @RestController
 @Slf4j

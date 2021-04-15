@@ -13,13 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO xml转json工具类
- *
- * @author Mr.He
- * 2020/7/25 14:16
- * mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name crabapples
+ * xml转json工具类
  */
 public class Xml2JsonUtils {
     public static JSONObject xml2JsonObject(InputStream inputStream) {

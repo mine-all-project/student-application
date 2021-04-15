@@ -5,13 +5,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * TODO 注册jwt全局拦截器
- *
- * @author Mr.He
- * 9/5/20 2:53 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+ * 注册jwt全局拦截器
  */
 @Configuration
 public class JwtInterceptorConfigure implements WebMvcConfigurer {

@@ -12,13 +12,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/10 14:43
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 文章实体类（mysql）
  */
 @Entity
 @Getter

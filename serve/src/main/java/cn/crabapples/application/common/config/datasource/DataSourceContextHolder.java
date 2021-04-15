@@ -4,13 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO 数据源信息临时存储类
- *
- * @author Mr.He
- * 9/5/20 2:31 PM
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name root
+ * 数据源信息临时存储类
  */
 public class DataSourceContextHolder {
     // 线程本地环境

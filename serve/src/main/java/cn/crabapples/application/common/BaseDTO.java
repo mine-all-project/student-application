@@ -5,13 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * TODO 返回结果基本DTO
- *
- * @author Mr.He
- * 2019/9/21 17:47
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * 返回结果基本DTO
  */
 @Getter
 @Setter

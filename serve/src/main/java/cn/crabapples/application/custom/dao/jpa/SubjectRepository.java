@@ -9,13 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * TODO
- *
- * @author Mr.He
- * 2021/4/9 1:51
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 科研项目数据库交互
  */
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, String> {

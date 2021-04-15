@@ -8,13 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * TODO redisTemplate配置
- *
- * @author Mr.He
- * 2020/1/30 22:31
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+ * redisTemplate配置
  */
 @Configuration
 public class RedisTemplateConfigure {

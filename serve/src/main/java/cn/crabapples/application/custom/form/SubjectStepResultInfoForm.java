@@ -9,13 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 1:49
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 科研项目成果表单
  */
 @Getter
 @Setter

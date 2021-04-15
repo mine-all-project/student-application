@@ -12,11 +12,11 @@ import org.springframework.web.client.RestTemplate;
 /**
  * TODO springBoot主启动类
  *
- * @author Mr.He
+
  * 2019/8/5 22:53
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+
+
+
  * <p>
  * EnableJpaAuditing 开启jpa审计
  * EnableNacosConfig 开启nacos配置管理 [可在配置文件中配置,且注解会覆盖配置文件] (springBoot)

@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * TODO 用户实体类
  *
- * @author Mr.He
+
  * 2019/7/4 14:51
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
+
+
+
  * <p>
  * Entity 表示这是一个和数据库表相关联的类
  */

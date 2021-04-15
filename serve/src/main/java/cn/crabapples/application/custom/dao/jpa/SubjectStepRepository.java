@@ -5,13 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * TODO 
- *
- * @author Mr.He
- * 2021/4/9 1:51
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name mrhe
+ * 科研项目阶段数据库交互
  */
 @Repository
 public interface SubjectStepRepository extends JpaRepository<SubjectStep, String> {
