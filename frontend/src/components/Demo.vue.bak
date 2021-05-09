@@ -1,0 +1,46 @@
+<template>
+  <div class="page-parent">
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'demo',
+  // beforeCreate: function () {
+  //   alert('触发')
+  //   this.$message.info('触发')
+  // },
+  // created: function () {
+  //   alert('触发')
+  //   this.$message.info('触发')
+  // },
+  // beforeMount: function () {
+  //   alert('触发')
+  //   this.$message.info('触发')
+  // },
+  // mounted: function () {
+  //   alert('触发')
+  //   this.$message.info('触发')
+  // },
+  // beforeUpdate: function () {
+  //   alert('触发')
+  //   this.$message.info('触发')
+  // },
+  // updated: function () {
+  //   alert('触发')
+  //   this.$message.info('触发')
+  // },
+  // beforeDestroy: function () {
+  //   alert('触发')
+  //   this.$message.info('触发')
+  // },
+  // destroyed: function () {
+  //   alert('触发')
+  //   this.$message.info('触发')
+  // }
+
+}
+</script>
+
+<style scoped lang="less">
+</style>

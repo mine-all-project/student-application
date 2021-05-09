@@ -1,18 +1,14 @@
 <template>
   <a-layout>
-    <a-layout-header>
+    <a-layout-header style="color: #fff">
       <a-row>
         <a-col :span="4">
-          <span class="title">科研管理系统</span>
+          <span style="font-size: 20px">管理系统</span>
         </a-col>
         <a-col :span="3" :offset="17">
           <a-dropdown>
             <a-icon type="setting"/>
             <a-menu slot="overlay">
-              <a-menu-item key="3" @click="changeTags">
-                <a-icon type="user"/>
-                我的标签
-              </a-menu-item>
               <a-menu-item key="1" @click="changePassword">
                 <a-icon type="user"/>
                 修改密码
@@ -58,32 +54,28 @@
         <a-modal title="修改密码" :visible.sync="show.changePassword" width="25%" ok-text="确认" cancel-text="取消"
                  @ok="submitForm" @cancel="closeModal">
           <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-            <a-form-model-item ref="oldPassword" label="原密码" prop="oldPassword">
-              <a-input-password v-model="form.oldPassword"/>
-            </a-form-model-item>
-            <a-form-model-item ref="password" label="新密码" prop="password">
+            <a-form-model-item ref="password" label="原密码" prop="password">
               <a-input-password v-model="form.password"/>
+            </a-form-model-item>
+            <a-form-model-item ref="newPassword" label="新密码" prop="newPassword">
+              <a-input-password v-model="form.newPassword"/>
             </a-form-model-item>
             <a-form-model-item ref="rePassword" label="重复密码" prop="rePassword">
               <a-input-password v-model="form.rePassword"/>
             </a-form-model-item>
           </a-form-model>
         </a-modal>
-        <a-modal title="我的标签" :visible.sync="show.changeTags" width="40%" ok-text="保存" cancel-text="取消"
-                 @ok="submitTags" @cancel="closeChangeTags">
-          <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-            <a-form-model-item label="标签" prop="tagsList">
-              <a-select mode="multiple" :default-value="[]" v-model="form.tagsList" placeholder="请选择标签">
-                <a-select-option v-for="item in tagsOptions" :key="item.id">
-                  {{ item.name }}
-                </a-select-option>
-              </a-select>
-            </a-form-model-item>
-          </a-form-model>
-        </a-modal>
-        <keep-alive>
-          <router-view name="innerView"></router-view>
-        </keep-alive>
+        <div class="demo-drawer__content">
+          <a-form v-model="urlSettings">
+            <a-form-item label="点击领取跳转的网址" :label-width="formLabelWidth">
+              <a-input v-model="urlSettings.url" autocomplete="off"></a-input>
+              <a-input v-model="urlSettings.keyWords" disabled></a-input>
+            </a-form-item>
+            <a-form-item :label-width="formLabelWidth">
+              <a-button @click="saveUrlForm" type="primary">确定</a-button>
+            </a-form-item>
+          </a-form>
+        </div>
       </a-layout-content>
     </a-layout>
     <a-layout-footer></a-layout-footer>
@@ -92,18 +84,18 @@
 
 <script>
 export default {
-  name: "Index",
   data() {
     return {
+      formLabelWidth: '80px',
       labelCol: {span: 5},
       wrapperCol: {span: 16},
       openKeys: [],
       rules: {
-        oldPassword: [
+        password: [
           {required: true, message: '请输入原密码', trigger: 'change'},
           {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
         ],
-        password: [
+        newPassword: [
           {required: true, message: '请输入新密码', trigger: 'change'},
           {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
         ],
@@ -112,401 +104,38 @@ export default {
           {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
         ],
       },
-      tagsOptions: [],
       form: {
-        id: '',
         password: '',
         newPassword: '',
-        rePassword: '',
-        tagsList: []
+        rePassword: ''
       },
+
       show: {
-        changePassword: false,
-        changeTags: false
+        changePassword: false
       },
       userInfo: {
         name: ''
       },
-      menus: [],
-      allMenus: [
+      menus: [
         {
           key: '1',
-          name: '科研管理',
+          name: '首页管理',
           icon: 'appstore',
           url: '',
-          children: [
-            {
-              key: '11',
-              name: '项目申报',
-              icon: 'appstore',
-              url: '/manage-index/sub-apply',
-            },
-            {
-              key: '12',
-              name: '项目审核',
-              icon: 'appstore',
-              url: '/manage-index/audit-list',
-            },
-            {
-              key: '13',
-              name: '标签管理',
-              icon: 'appstore',
-              url: '/manage-index/tags',
-            },
-          ]
-        },
-        {
-          key: '2',
-          name: '数据共享',
-          icon: 'appstore',
-          url: '',
-          children: [
-            {
-              key: '21',
-              name: '我的项目',
-              icon: 'appstore',
-              url: '/manage-index/mine-subject',
-            },
-            {
-              key: '22',
-              name: '我参与的',
-              icon: 'appstore',
-              url: '/manage-index/mine-join',
-            },
-            {
-              key: '23',
-              name: '共享项目',
-              icon: 'appstore',
-              url: '/manage-index/mine-pull',
-            },
-            {
-              key: '24',
-              name: '共享审核',
-              icon: 'appstore',
-              url: '/manage-index/request-pull-list',
-            },
-          ]
-        },
-        {
-          key: '3',
-          name: '科研分析',
-          icon: 'appstore',
-          children: [
-            {
-              key: '31',
-              name: '数据统计',
-              icon: 'appstore',
-              url: '/manage-index/data-statistical',
-            },
-            {
-              key: '32',
-              name: '工作评价',
-              icon: 'appstore',
-              url: '/manage-index/subject-discuss',
-            },
-          ]
-        },
-        {
-          key: '4',
-          name: '数据对接',
-          icon: 'appstore',
-          url: '/school-org/list',
-          children: [
-            // {
-            //   key: '41',
-            //   name: '信息发布',
-            //   icon: 'appstore',
-            //   url: '/manage-index/paper-list',
-            // },
-            {
-              key: '41-1',
-              name: '信息发布',
-              icon: 'appstore',
-              url: '/manage-index/paper-list1',
-            },
-            // {
-            //   key: '42',
-            //   name: '工作评价',
-            //   icon: 'appstore',
-            //   url: '/manage-index/subject-discuss',
-            // },
-          ]
-        },
-        {
-          key: '99',
-          name: '用户管理',
-          icon: 'appstore',
-          url: '/manage-index/user-list',
         },
       ],
-      sysMenus: [
-        {
-          key: '1',
-          name: '科研管理',
-          icon: 'appstore',
-          url: '',
-          children: [
-            {
-              key: '12',
-              name: '项目审核',
-              icon: 'appstore',
-              url: '/manage-index/audit-list',
-            },
-            {
-              key: '13',
-              name: '标签管理',
-              icon: 'appstore',
-              url: '/manage-index/tags',
-            },
-          ]
-        },
-        {
-          key: '3',
-          name: '科研分析',
-          icon: 'appstore',
-          children: [
-            {
-              key: '31',
-              name: '数据统计',
-              icon: 'appstore',
-              url: '/manage-index/data-statistical',
-            },
-            {
-              key: '32',
-              name: '工作评价',
-              icon: 'appstore',
-              url: '/manage-index/subject-discuss',
-            },
-          ]
-        },
-        {
-          key: '4',
-          name: '数据对接',
-          icon: 'appstore',
-          url: '/school-org/list',
-          children: [
-            // {
-            //   key: '41',
-            //   name: '信息发布',
-            //   icon: 'appstore',
-            //   url: '/manage-index/paper-list',
-            // },
-            {
-              key: '41-1',
-              name: '信息发布',
-              icon: 'appstore',
-              url: '/manage-index/paper-list1',
-            },
-            // {
-            //   key: '42',
-            //   name: '工作评价',
-            //   icon: 'appstore',
-            //   url: '/manage-index/subject-discuss',
-            // },
-          ]
-        },
-        {
-          key: '99',
-          name: '用户管理',
-          icon: 'appstore',
-          url: '/manage-index/user-list',
-        },
-      ],
-      userMenus: [
-        {
-          key: '1',
-          name: '科研管理',
-          icon: 'appstore',
-          url: '',
-          children: [
-            {
-              key: '11',
-              name: '项目申报',
-              icon: 'appstore',
-              url: '/manage-index/sub-apply',
-            },
-          ]
-        },
-        {
-          key: '2',
-          name: '数据共享',
-          icon: 'appstore',
-          url: '',
-          children: [
-            {
-              key: '21',
-              name: '我的项目',
-              icon: 'appstore',
-              url: '/manage-index/mine-subject',
-            },
-            {
-              key: '22',
-              name: '我参与的',
-              icon: 'appstore',
-              url: '/manage-index/mine-join',
-            },
-            {
-              key: '23',
-              name: '共享项目',
-              icon: 'appstore',
-              url: '/manage-index/mine-pull',
-            },
-          ]
-        },
-        {
-          key: '3',
-          name: '科研分析',
-          icon: 'appstore',
-          children: [
-            {
-              key: '31',
-              name: '数据统计',
-              icon: 'appstore',
-              url: '/manage-index/data-statistical',
-            },
-            {
-              key: '32',
-              name: '工作评价',
-              icon: 'appstore',
-              url: '/manage-index/subject-discuss',
-            },
-          ]
-        },
-        {
-          key: '4',
-          name: '数据对接',
-          icon: 'appstore',
-          url: '/school-org/list',
-          children: [
-            {
-              key: '41-1',
-              name: '信息发布',
-              icon: 'appstore',
-              url: '/manage-index/paper-list1',
-            },
-          ]
-        },
-      ],
-      managerMenus: [
-        {
-          key: '1',
-          name: '科研管理',
-          icon: 'appstore',
-          url: '',
-          children: [
-            {
-              key: '12',
-              name: '标签管理',
-              icon: 'appstore',
-              url: '/manage-index/tags',
-            },
-          ]
-        },
-        {
-          key: '2',
-          name: '数据共享',
-          icon: 'appstore',
-          url: '',
-          children: [
-            {
-              key: '24',
-              name: '共享审核',
-              icon: 'appstore',
-              url: '/manage-index/request-pull-list',
-            },
-          ]
-        },
-        {
-          key: '3',
-          name: '科研分析',
-          icon: 'appstore',
-          children: [
-            {
-              key: '31',
-              name: '数据统计',
-              icon: 'appstore',
-              url: '/manage-index/data-statistical',
-            },
-            {
-              key: '32',
-              name: '工作评价',
-              icon: 'appstore',
-              url: '/manage-index/subject-discuss',
-            },
-          ]
-        },
-        {
-          key: '4',
-          name: '数据对接',
-          icon: 'appstore',
-          url: '/school-org/list',
-          children: [
-            {
-              key: '41-1',
-              name: '信息发布',
-              icon: 'appstore',
-              url: '/manage-index/paper-list1',
-            },
-          ]
-        },
-      ],
+      urlSettings: {
+        keyWords: 'receive',
+        url: '',
+        id: ''
+      }
     };
   },
   mounted() {
-    let token = sessionStorage.getItem('crabapples-token')
     this.getUserInfo()
-    // this.$router.push({name: 'welcome'})
+    this.getUrlSettings()
   },
   methods: {
-    changeMenus() {
-      let rule = this.userInfo.role
-      if (rule === 0) {
-        this.menus = this.sysMenus
-      } else if (rule === 1) {
-        this.menus = this.managerMenus
-      } else if (rule === 2) {
-        this.menus = this.userMenus
-      }
-      this.menus = this.allMenus
-    },
-    submitTags() {
-      this.$http.post('/api/user/updateTags', this.form).then(result => {
-        if (result.status !== 200) {
-          this.$message.error(result.message);
-          return;
-        }
-        this.$message.success(result.message);
-        this.closeChangeTags()
-      }).catch(function (error) {
-        console.error('出现错误:', error);
-      });
-    },
-    getTagsList() {
-      this.$http.get('/api/tags/list').then(result => {
-        if (result.status !== 200) {
-          this.$message.error(result.message);
-          return;
-        }
-        if (result.data !== null) {
-          this.tagsOptions = result.data;
-          this.tags = result.data;
-        }
-      }).catch(function (error) {
-        console.error('出现错误:', error);
-      });
-    },
-    changeTags() {
-      this.getTagsList()
-      this.show.changeTags = true
-      console.log(this.userInfo)
-      this.form.tagsList = this.userInfo.tags.map(e => {
-        return e.id
-      })
-    },
-    closeChangeTags() {
-      this.form.tagsList = []
-      this.show.changeTags = false
-    },
     titleClick(e) {
       console.log('titleClick', e);
     },
@@ -518,12 +147,11 @@ export default {
       this.$refs.ruleForm.resetFields();
     },
     logout() {
-      sessionStorage.removeItem('crabapples-token')
-      this.$router.push("/login")
+      this.$http.logout()
     },
     clickMenu(url) {
-      this.$router.push({path: url})
-      console.log(url)
+      console.log('点击:', url)
+      // this.$router.push({path: url})
     },
     getUserInfo() {
       this.$http.get('/api/user/getUserInfo').then(result => {
@@ -533,7 +161,6 @@ export default {
         }
         if (result.data !== null) {
           this.userInfo = result.data;
-          this.changeMenus()
         }
       }).catch(function (error) {
         console.error('出现错误:', error);
@@ -543,12 +170,11 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           console.info('success', this.form);
-          if (this.form.password !== this.form.rePassword) {
+          if (this.form.newPassword !== this.form.rePassword) {
             this.$message.error('两次密码不一致');
             return
           }
-          this.form.id = this.userInfo.id
-          this.$http.post('/api/user/updatePassword', this.form).then(result => {
+          this.$http.post('/api/updatePassword', this.form).then(result => {
             if (result.status !== 200) {
               this.$message.error(result.message);
               return;
@@ -564,20 +190,40 @@ export default {
         }
       })
     },
+    getUrlSettings(){
+      this.$http.get('/api/wx/getUrlByKeyWords?keyWords=receive').then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        if (result.data !== null) {
+          this.urlSettings = result.data;
+        }
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    },
+    saveUrlForm() {
+      this.$http.post('/api/wx/saveUrlSettings', this.urlSettings).then(result => {
+        this.$message.success(result.message);
+        if (result.status !== 200) {
+          this.$message.error(result.message);
+          return;
+        }
+        this.$message.success(result.message);
+      }).catch(function (error) {
+        console.error('出现错误:', error);
+      });
+    }
   }
 }
 </script>
 
-<style scoped>
+<style>
+
 .ant-layout-header, .ant-layout-footer {
   background: #7dbcea;
   color: #fff;
-  height: 5vh;
-  line-height: 5vh;
-}
-
-.title {
-  font-size: 20px
 }
 
 .ant-layout-footer {
@@ -586,17 +232,19 @@ export default {
 
 .ant-layout-sider {
   width: 100%;
-  height: 90vh;
-  background: #fff;
+  height: 823px;
+  /*background: #ffffff;*/
   /*color: #fff;*/
   /*line-height: 120px;*/
 }
 
 .ant-layout-content {
-  padding: 16px;
+  /*padding: 16px;*/
   background: #fff;
+  color: #fff;
   min-height: 120px;
-  height: 90vh;
+  line-height: 120px;
+  height: 823px;
 }
 
 .container-parent {

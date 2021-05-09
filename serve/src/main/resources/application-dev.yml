@@ -1,11 +1,8 @@
-isDebug: false
-crypt: false
-dadaBaseUrl: 'localhost'
+isDebug: true
+dadaBaseUrl: 'linux.crabapples.cn'
 dataBaseDriveV8: 'com.mysql.cj.jdbc.Driver'
 dataBaseDriveV5: 'com.mysql.jdbc.Driver'
 dataBaseParam: 'useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true'
-virtualPath: '/file/'
-filePath: '/home/mrhe/uploadPath/'
 
 ### log config ###
 logging:
@@ -14,40 +11,24 @@ logging:
     druid:
       sql: debug
 spring:
-  data:
-    mongodb:
-      database: learn
-      host: 127.0.0.1
   jpa:
-    show-sql: true #是否在控制台显示数据库语句
+    show-sql: false #是否在控制台显示数据库语句
     hibernate:
       ddl-auto: update #每次启动时如何操作对应表
     database-platform: org.hibernate.dialect.MySQL8Dialect #设置jpa方言为mysql
-  rabbitmq:
-    host: 192.168.3.20
-    port: 5672
-    username: crabapples
-    password: crabapples
-    virtual-host: /crabapples
   redis:
-    host: localhost
-    port: 6379
+    host: linux.crabapples.cn
+    port: 36379
     database: 0
     jedis:
       pool:
         max-active: 10
   datasource:
     druid:
-      first:
-        driverClassName: ${dataBaseDriveV8} #数据库驱动
-        url: jdbc:mysql://${dadaBaseUrl}:3306/subject?useSSL=false&${dataBaseParam} #数据库地址
-        username: root #数据库用户名
-        password: root #数据库密码
-      second:
-        driverClassName: ${dataBaseDriveV8} #数据库驱动
-        url: jdbc:mysql://${dadaBaseUrl}:3306/subject?useSSL=false&${dataBaseParam} #数据库地址
-        username: root #数据库用户名
-        password: root #数据库密码
+      driverClassName: ${dataBaseDriveV8} #数据库驱动
+      url: jdbc:mysql://${dadaBaseUrl}:33306/red_package?useSSL=false&${dataBaseParam} #数据库地址
+      username: root #数据库用户名
+      password: root #数据库密码
       connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
       filters: stat,wall,slf4j
       initial-size: 5
@@ -73,3 +54,8 @@ spring:
           result-set-log-enabled: true
           statement-executable-sql-log-enable: true
           statement-log-enabled: false
+#test
+appid: wxe9ccbe09c1fe8d1d
+secret: 7cf8d055f24e9250644ae3a75a0ae9b5
+tokenUrl: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appid}&secret=${secret}'
+

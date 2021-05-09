@@ -2,13 +2,8 @@ import axios from 'axios'
 import router from '@/router';
 import message from 'ant-design-vue/es/message'
 import notification from 'ant-design-vue/es/notification'
-import {encrypt} from './RsaUtils1'
 
-const settings = require('../../settings')
-const crypt = settings.crypt;
-const isDebug = settings.isDebug;
-const instance = axios.create({timeout: 12 * 1000 * 1000});
-
+const instance = axios.create({timeout: 1000 * 12});
 instance.interceptors.request.use(
     config => {
         // 登录流程控制中，根据本地是否存在token判断用户的登录情况
@@ -16,16 +11,12 @@ instance.interceptors.request.use(
         // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
         // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。
         const token = sessionStorage.getItem('crabapples-token');
-        if (token === null) {
-            if (!isDebug)
-                router.push('/login')
-        }
+        // if (token === null) {
+        //     router.push('/manage-login')
+        // }
         config.headers['crabapples-token'] = token;
-        config.data = crypt && config.data ? encrypt(JSON.stringify(config.data)) : config.data
-        if (/get/i.test(config.method)) {
-            config.params = config.params || {}
-            config.params.temp = Date.parse(new Date()) / 1000
-        }
+        // console.log('请求拦截')
+        // console.log(config)
         return config;
     },
     error => Promise.error(error)
@@ -35,11 +26,10 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
     response => {
         console.warn('响应拦截->success', response);
-        let data = response.data
         if (response.data.status === 401) {
-            router.push('/login')
+            router.push('/manage-login')
         }
-        return response.status === 200 ? Promise.resolve(data) : Promise.reject(data)
+        return response.status === 200 ? Promise.resolve(response.data) : Promise.reject(response.data)
     },
     // 服务器状态码不是200的情况
     error => {
@@ -49,4 +39,47 @@ instance.interceptors.response.use(
     }
 );
 
-export default instance
+export function login(data) {
+    instance.post('/api/loginCheck', data).then(result => {
+        if (result.status !== 200) {
+            message.error(result.message);
+            return
+        }
+        message.success(result.message);
+        sessionStorage.setItem('crabapples-token', result.data);
+        router.push('/manage-index')
+    }).catch(exception => {
+        notification.error(exception)
+    })
+}
+
+export function logout(data) {
+    instance.post('/api/logout', data).then(response => {
+        const result = response.data;
+        console.log('通过api获取到的数据:', result);
+        sessionStorage.removeItem('crabapples-token')
+        router.push('/manage-login')
+    }).catch(exception => {
+        notification.error(exception)
+    })
+}
+
+export function get(url) {
+    return instance.get(url).then(response => {
+        return Promise.resolve(response);
+    }).catch(exception => {
+        return Promise.reject(exception);
+    })
+}
+
+export function post(url, data) {
+    return instance.post(url, data).then(response => {
+        return Promise.resolve(response);
+    }).catch(exception => {
+        console.error('系统错误', exception);
+        return Promise.reject(exception);
+    })
+}
+
+
+export default {instance, login, logout, get, post}

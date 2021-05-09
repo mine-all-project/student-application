@@ -1,33 +1,49 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import Index from '@/views/manage/Index'
-import manageRouter from "@/router/manage/manage"
+import PortalIndex from '@/views/portal/Index.vue'
+import ManagerIndex from '@/views/manage/Index.vue'
+import Receive from '@/components/Receive.vue'
+import RedPackage from '@/components/RedPackcge.vue'
+import Demo from '@/components/Demo.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-    manageRouter,
+    {
+        path: '/demo',
+        name: 'demo',
+        component: Demo
+    },
+    {
+        path: '/hello',
+        name: 'hello',
+        component: () => import('@/views/Hello.vue')
+    },
     {
         path: '/',
-        name: 'Home',
-        component: Index
+        name: 'portal-index',
+        component: PortalIndex
     },
     {
-        path: '/login',
-        name: 'Login',
-        component: Login
+        path: '/manageIndex',
+        name: 'manage-index',
+        component: ManagerIndex
     },
     {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+        path: '/manageLogin',
+        name: 'manage-login',
+        component: () => import('@/views/manage/Login.vue')
     },
-
+    {
+        path: '/red_package',
+        name: 'red-package',
+        component: RedPackage
+    },
+    {
+        path: '/receive',
+        name: 'receive',
+        component: Receive
+    },
 ]
 
 const router = new VueRouter({
@@ -35,10 +51,5 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
-//获取原型对象上的push函数
-const originalPush = VueRouter.prototype.push
-//修改原型对象中的push方法
-VueRouter.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(err => err)
-}
+
 export default router
