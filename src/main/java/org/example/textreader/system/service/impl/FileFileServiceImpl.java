@@ -3,7 +3,7 @@ package org.example.textreader.system.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.example.textreader.system.dao.FileInfoRepository;
 import org.example.textreader.system.entity.FileInfo;
-import org.example.textreader.system.service.FileService;
+import org.example.textreader.system.service.FileInfoService;
 import org.example.textreader.system.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 @Service
-public class FileServiceImpl implements FileService {
+public class FileFileServiceImpl implements FileInfoService {
     @Value("${virtualPath}")
     private String virtualPath;
     @Value("${uploadPath}")
@@ -24,7 +24,7 @@ public class FileServiceImpl implements FileService {
 
     private final FileInfoRepository fileInfoRepository;
 
-    public FileServiceImpl(FileInfoRepository fileInfoRepository) {
+    public FileFileServiceImpl(FileInfoRepository fileInfoRepository) {
         this.fileInfoRepository = fileInfoRepository;
     }
 
@@ -44,4 +44,8 @@ public class FileServiceImpl implements FileService {
         return fileInfoRepository.saveAndFlush(fileInfo);
     }
 
+    @Override
+    public FileInfo getById(String id) {
+        return fileInfoRepository.findById(id).orElse(new FileInfo());
+    }
 }

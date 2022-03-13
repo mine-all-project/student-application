@@ -4,16 +4,10 @@ const app = new Vue({
     components: {},
     data() {
         return {
-            paperList: [{id:'1',title:'标题1',content:'内容1'}],
+            form: {title: '', fileInfo: {}, content: ''},
+            show: {drawer: false, loading: false},
+            paperList: [{id: '1', title: '标题1', content: '内容1'}],
             audioFile: {},
-            drawer: {
-                show: false,
-                loading: false,
-                form: {
-                    title: '',
-                    filePath: '',
-                },
-            },
             formLabelWidth: '80px',
             timer: null,
             menus: [
@@ -27,26 +21,33 @@ const app = new Vue({
             welcome: true
         }
     },
+    mounted() {
+        this.getPaperList()
+    },
     methods: {
-        readText(){
+        readText() {
 
+        },
+        openReadWindow() {
         },
         remove(scope) {
             const _this = this;
             const id = scope.row.id;
             _this.$confirm('确认删除？').then(e => {
-                _this.drawer.loading = true;
-                axios.delete(`/api/removeAudioFileById/${id}`).then(response => {
-                    _this.getAudioFileList();
+                _this.show.loading = true;
+                axios.delete(`/api/paper/del/${id}`).then(response => {
+                    _this.getPaperList();
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
+                        _this.show.loading = false;
                         _this.$message.error('数据加载失败');
                         return
                     }
+                    _this.show.loading = false;
                     _this.$message.success('操作成功')
                 }).catch(function (error) {
-                    _this.getAudioFileList();
+                    _this.getPaperList();
                     console.log('请求出现错误:', error);
                 });
             });
@@ -65,52 +66,48 @@ const app = new Vue({
                 console.log('请求出现错误:', error);
             });
         },
-        drawerOpen(scope) {
-            this.drawer.show = true;
+        openPaperEdit(scope) {
+            this.show.drawer = true;
             this.$nextTick(() => {
-                this.getGoodsById(scope ? scope.row.id : undefined);
+                this.getPaperById(scope ? scope.row.id : undefined);
             })
         },
-        getGoodsById(id) {
+        getPaperById(id) {
             const _this = this;
             if (id !== undefined) {
-                axios.get(`/api/getGoodsById/${id}`).then(response => {
+                axios.get(`/api/paper/id/${id}`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
                         this.$message.error('数据加载失败');
                         return
                     }
-                    _this.drawer.form = result.data;
-                    _this.editor.txt.html(_this.drawer.form.url)
+                    _this.form = result.data;
                 }).catch(function (error) {
                     console.log('请求出现错误:', error);
                 });
             }
         },
-        drawerClose() {
-            this.drawer.loading = false;
-            this.drawer.show = false;
-            this.$refs.drawer.closeDrawer();
-            this.getAudioFileList();
+        closeEdit() {
+            this.show.loading = false;
+            this.show.drawer = false;
         },
-        saveDrawer() {
+        savePaper() {
             const _this = this;
-            _this.drawer.loading = true;
-            _this.drawer.form.keyword = 'food';
-            axios.post(`/api/saveGoodsInfo`, _this.drawer.form).then(response => {
+            _this.show.loading = true;
+            axios.post(`/api/paper/save`, _this.form).then(response => {
                 const result = response.data;
                 console.log('通过api获取到的数据:', result);
                 if (result.status !== 200) {
                     this.$message.error('数据加载失败');
                     return
                 }
-                _this.content = result.data;
-                _this.drawer.loading = false;
+                _this.show.loading = false;
                 _this.$message.success('操作成功');
-                window.location.reload();
+                _this.closeEdit()
+                _this.getPaperList()
             }).catch(function (error) {
-                // window.location.reload();
+                window.location.reload();
                 console.log('请求出现错误:', error);
             });
         },
@@ -120,7 +117,18 @@ const app = new Vue({
                 this.$message.error('上传失败');
                 return
             }
-            this.drawer.form.url = result.data.path;
+            axios.get(`/api/paper/content/${result.data.id}`).then(response => {
+                const result = response.data;
+                console.log('通过api获取到的数据:', result);
+                if (result.status !== 200) {
+                    this.$message.error('数据加载失败');
+                    return
+                }
+                this.form.content = result.data
+            }).catch(function (error) {
+                console.log('请求出现错误:', error);
+            });
+            this.form.fileInfo = result.data;
             this.$message.success('上传成功');
         },
         logout() {

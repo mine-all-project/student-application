@@ -30,17 +30,18 @@
 						<el-table-column label="文章内容" width="160">
 							<template slot-scope="scope">
 								<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
-								<el-button type="primary" @click="drawerOpen(scope)" size="mini">编辑</el-button>
+								<el-button type="primary" @click="openPaperEdit(scope)" size="mini">编辑</el-button>
+								<el-button type="primary" @click="openReadWindow(scope)" size="mini">朗读</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
-					<el-button type="primary" @click="drawerOpen(undefined)" size="mini" style="margin-top: 10px">添加文章</el-button>
-					<el-drawer :before-close="drawerClose" :visible.sync="drawer.show" :wrapperClosable="false" ref="drawer"
-										 size="60%">
-						<div class="demo-drawer__content">
-							<el-form v-model="drawer.form">
+					<el-button type="primary" @click="openPaperEdit(undefined)" size="mini" style="margin-top: 10px">添加文章</el-button>
+					<el-drawer :before-close="closeEdit" :visible.sync="show.drawer" :wrapperClosable="false" size="60%"
+										 ref="drawer">
+						<div>
+							<el-form v-model="form">
 								<el-form-item label="文章标题" :label-width="formLabelWidth">
-									<el-input v-model="drawer.form.name" autocomplete="off"></el-input>
+									<el-input v-model="form.title" autocomplete="off"></el-input>
 								</el-form-item>
 								<el-form-item label="上传文件" :label-width="formLabelWidth">
 									<el-upload class="avatar-uploader" :action="`/api/uploadFile`"
@@ -51,13 +52,13 @@
 
 							</el-form>
 							<div style="margin-left: 10px">
-								<el-button type="primary" @click="saveDrawer" :loading="drawer.loading">
-									{{ drawer.loading ? '提交中 ...' : '确定'}}
+								<el-button type="primary" @click="savePaper" :loading="show.loading">
+									{{ show.loading ? '提交中 ...' : '确定'}}
 								</el-button>
-								<el-button @click="drawerClose">取 消</el-button>
+								<el-button @click="closeEdit">取 消</el-button>
 							</div>
 							<div style="margin: 10px 0 0 10px">
-								<el-input v-model="drawer.form.name" type="textarea" rows="20"></el-input>
+								<el-input v-model="form.content" type="textarea" rows="20" readonly></el-input>
 							</div>
 						</div>
 					</el-drawer>
