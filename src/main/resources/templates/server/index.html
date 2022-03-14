@@ -5,7 +5,11 @@
 	<title>后台管理</title>
 	<div data-th-include="/components/index :: style"></div>
 	<div data-th-replace="/components/index :: meta"></div>
-
+	<style>
+      #app {
+          background: url(/images/login-02/background.png) no-repeat 100%;
+      }
+	</style>
 </head>
 <body>
 <div id="app">
@@ -18,7 +22,7 @@
 					<el-table :data="paperList" stripe style="width: 100%">
 						<el-table-column prop="title" label="文章标题" width="220"></el-table-column>
 						<el-table-column prop="content" label="文章内容" :show-overflow-tooltip="true"></el-table-column>
-						<el-table-column label="文章内容" width="300">
+						<el-table-column label="操作" width="300">
 							<template slot-scope="scope">
 								<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
 								<el-button type="primary" @click="openPaperEdit(scope)" size="mini">编辑</el-button>
@@ -57,8 +61,9 @@
 										 element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
 						<div class="block">
 							<span>音色</span>
-							<el-cascader v-model="form.voices" :options="voiceOptions" :props="{ expandTrigger: 'hover'}" style="width:100%">
-								<template slot-scope="{ node, data }" >
+							<el-cascader v-model="form.voices" :options="voiceOptions" :props="{ expandTrigger: 'hover'}"
+													 style="width:100%">
+								<template slot-scope="{ node, data }">
 									<span v-if="node.isLeaf">{{ data.name }} ({{ data.label }}) </span>
 									<span v-else>{{ data.label }} </span>
 									<span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
