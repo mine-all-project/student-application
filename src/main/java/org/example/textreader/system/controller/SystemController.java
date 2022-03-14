@@ -22,7 +22,7 @@ import java.util.Map;
 
 
 @Controller
-@RequestMapping("/manage")
+@RequestMapping("/system")
 @Slf4j
 public class SystemController extends BaseController {
 
@@ -49,9 +49,17 @@ public class SystemController extends BaseController {
 
     /**
      * 用户登录
-     *
-     * @param form 用户名和密码
-     * @return 登录成功返回token
+     */
+    @GetMapping("/logout")
+    public String logout() {
+        log.info("收到请求->退出登录");
+        sysService.logout();
+        log.info("返回结果->退出登录完成");
+        return "/server/login";
+    }
+
+    /**
+     * 退出登录
      */
     @PostMapping("/loginCheck")
     @ResponseBody

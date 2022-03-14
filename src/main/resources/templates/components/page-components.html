@@ -52,8 +52,7 @@
 <th data-th-fragment="menus">
 	<el-aside width="200px" style="background-color: rgb(238, 241, 246);height: 100vh">
 		<el-menu :default-openeds="['0']">
-			<el-menu-item :index="`${0}`" v-for="(item) in menus"
-										@click="clickMenu(item.url)" :key="item.id">
+			<el-menu-item :index="`${0}`" v-for="(item) in menus" @click="clickMenu(item.url)" :key="item.id">
 				<i :class="item.icon"></i>{{item.name}}
 			</el-menu-item>
 		</el-menu>

@@ -293,10 +293,10 @@ const app = new Vue({
             this.$message.success('上传成功');
         },
         logout() {
-            window.location.href = '/logOut'
+            window.location.href = '/system/logout'
         },
         clickMenu(url) {
-            window.location.href = url
+            // window.location.href = url
         }
     }
 })

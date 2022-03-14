@@ -30,33 +30,4 @@ public class PageController {
         logger.info("收到请求->进入二级页面[{}]", FRONTEND + dir + "/" + pageName);
         return FRONTEND + dir + "/" + pageName;
     }
-
-//    /**
-//     * 进入首页
-//     */
-//    @RequestMapping("/")
-//    public String index() {
-//        return toIndex();
-//    }
-//    @RequestMapping("/index")
-//    public String toIndex() {
-//        return "/index";
-//    }
-//
-//    /**
-//     * 进入登录页面
-//     */
-//    @RequestMapping("/login")
-//    public String toLogin() {
-//        return "login";
-//    }
-//
-//    /**
-//     * 进入注册页面
-//     */
-//    @RequestMapping("/registry")
-//    public String registry() {
-//        return "registry";
-//    }
-
 }

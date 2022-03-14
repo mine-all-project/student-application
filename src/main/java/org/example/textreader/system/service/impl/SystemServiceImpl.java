@@ -31,6 +31,12 @@ public class SystemServiceImpl implements SysService {
     }
 
     @Override
+    public void logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+    }
+
+    @Override
     public ResponseDTO login(UserForm form) {
         try {
             String username = form.getUsername();

@@ -45,9 +45,9 @@ public class ShiroConfigure {
          *  anon不需要认证的url
          *  perms需要授权的url
          */
-        filterMap.put("/manage/loginCheck","anon");
-        filterMap.put("/manage/registryCheck","anon");
-//        filterMap.put("/manage/**","authc");
+        filterMap.put("/system/loginCheck","anon");
+        filterMap.put("/system/registryCheck","anon");
+        filterMap.put("/server/**","authc");
         filterMap.put("/api/**","anon");
 
         filterMap.put("/js/**","anon");
@@ -62,7 +62,7 @@ public class ShiroConfigure {
 //        filterMap.put("/index","perms[]");
 
         shiroFilterFactory.setFilterChainDefinitionMap(filterMap);
-        shiroFilterFactory.setLoginUrl("/manage/login");
+        shiroFilterFactory.setLoginUrl("/server/login");
         /*
          * ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑
          * 认证失败跳转的页面

@@ -18,4 +18,5 @@ public interface SysService {
 
     SysUser registry(HttpServletRequest request, Map<String, String> map);
 
+    void logout();
 }
