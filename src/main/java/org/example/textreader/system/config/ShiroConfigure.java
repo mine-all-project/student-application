@@ -52,11 +52,11 @@ public class ShiroConfigure {
 
         filterMap.put("/js/**","anon");
         filterMap.put("/css/**","anon");
-        filterMap.put("/X-admin/css/**","anon");
-        filterMap.put("/X-admin/js/**","anon");
-        filterMap.put("/X-admin/images/**","anon");
-        filterMap.put("/X-admin/fonts/**","anon");
-        filterMap.put("/X-admin/lib/**","anon");
+        filterMap.put("/x-admin/css/**","anon");
+        filterMap.put("/x-admin/js/**","anon");
+        filterMap.put("/x-admin/images/**","anon");
+        filterMap.put("/x-admin/fonts/**","anon");
+        filterMap.put("/x-admin/lib/**","anon");
         filterMap.put("/view/**","anon");
 
 //        filterMap.put("/index","perms[]");

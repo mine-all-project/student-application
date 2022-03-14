@@ -3,25 +3,16 @@
 			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 	<title>后台管理</title>
-	<div data-th-include="/components/vue :: style"></div>
-	<style>
-      .el-header {
-          background-color: #B3C0D1;
-          color: #333;
-          line-height: 60px;
-      }
+	<div data-th-include="/components/index :: style"></div>
+	<div data-th-replace="/components/index :: meta"></div>
 
-      .el-aside {
-          color: #333;
-      }
-	</style>
 </head>
 <body>
 <div id="app">
 	<el-container style=" border: 1px solid #eee">
-		<div data-th-replace="/components/page-components :: header"></div>
+		<div data-th-replace="/components/index :: header"></div>
 		<el-container>
-			<div data-th-replace="/components/page-components :: menus"></div>
+			<div data-th-replace="/components/index :: menus"></div>
 			<el-main>
 				<el-row>
 					<el-table :data="paperList" stripe style="width: 100%">
@@ -93,6 +84,8 @@
 	</el-container>
 </div>
 <div data-th-include="/components/vue :: javascript"></div>
+<div data-th-replace="/components/index :: javascript"></div>
+
 <script src="./main.js"></script>
 </body>
 </html>

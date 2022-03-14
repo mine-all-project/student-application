@@ -1,0 +1,51 @@
+<th th:fragment="header">
+	<el-header width="100%" style="text-align: right; font-size: 12px">
+		<el-dropdown>
+			<i class="el-icon-setting" style="margin-right: 15px"></i>
+			<el-dropdown-menu slot="dropdown">
+				<el-dropdown-item><span @click="logout">退出登录</span></el-dropdown-item>
+			</el-dropdown-menu>
+		</el-dropdown>
+	</el-header>
+</th>
+
+<th th:fragment="menus">
+	<el-aside width="200px" style="background-color: rgb(238, 241, 246);height: 100vh">
+		<el-menu :default-openeds="['0']">
+			<el-menu-item :index="`${0}`" v-for="(item) in menus" @click="clickMenu(item.url)" :key="item.id">
+				<i :class="item.icon"></i>{{item.name}}
+			</el-menu-item>
+		</el-menu>
+	</el-aside>
+</th>
+
+<th th:fragment="style">
+	<style>
+      .el-header {
+          background-color: #B3C0D1;
+          color: #333;
+          line-height: 60px;
+      }
+
+      .el-aside {
+          color: #333;
+      }
+	</style>
+	<link rel="stylesheet" th:href="@{/css/element-ui/element-ui.css}">
+	<link rel="stylesheet" th:href="@{/css/quill.snow.css}">
+</th>
+
+<th th:fragment="javascript">
+	<script th:src="@{/js/axios.min.js}"></script>
+	<script th:src="@{/js/quill.js}"></script>
+	<script th:src="@{/js/wangEditor.min.js}"></script>
+	<script th:src="@{/js/element-ui/element-ui.js}"></script>
+	<script th:src="@{/js/common.js}"></script>
+
+</th>
+
+<th data-th-fragment="meta">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="renderer" content="webkit"/>
+	<meta name="force-rendering" content="webkit"/>
+</th>
