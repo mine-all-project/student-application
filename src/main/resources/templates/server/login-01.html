@@ -3,8 +3,6 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
   <title>用户登陆</title>
-  <script th:src="@{/js/jquery-1.8.2.min.js}"></script>
-  <link rel="stylesheet" th:href="@{/css/login-01/login.css}">
 </head>
 <body class="login-bg">
 <div class="login layui-anim layui-anim-up">
@@ -22,6 +20,8 @@
     <hr class="hr20">
   </form>
 </div>
+<script th:src="@{/js/jquery-1.8.2.min.js}"></script>
+<link rel="stylesheet" th:href="@{/css/login-01/login.css}">
 <div th:replace="/components/vue :: javascript"></div>
 <div th:replace="/components/index :: javascript"></div>
 <div th:replace="/components/lay-ui :: javascript"></div>
