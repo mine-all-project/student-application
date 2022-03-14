@@ -27,7 +27,7 @@
 					<el-table :data="paperList" stripe style="width: 100%">
 						<el-table-column prop="title" label="文章标题" width="220"></el-table-column>
 						<el-table-column prop="content" label="文章内容" :show-overflow-tooltip="true"></el-table-column>
-						<el-table-column label="文章内容" width="160">
+						<el-table-column label="文章内容" width="300">
 							<template slot-scope="scope">
 								<el-button type="danger" @click="remove(scope)" size="mini">删除</el-button>
 								<el-button type="primary" @click="openPaperEdit(scope)" size="mini">编辑</el-button>
@@ -35,21 +35,20 @@
 							</template>
 						</el-table-column>
 					</el-table>
-					<el-button type="primary" @click="openPaperEdit(undefined)" size="mini" style="margin-top: 10px">添加文章</el-button>
-					<el-drawer :before-close="closeEdit" :visible.sync="show.drawer" :wrapperClosable="false" size="60%"
-										 ref="drawer">
+					<el-button type="primary" @click="openPaperEdit(undefined)" size="mini" style="margin-top: 10px">添加文章
+					</el-button>
+					<el-drawer :visible.sync="show.drawer" :wrapperClosable="false" size="60%" ref="drawer">
 						<div>
 							<el-form v-model="form">
 								<el-form-item label="文章标题" :label-width="formLabelWidth">
-									<el-input v-model="form.title" autocomplete="off"></el-input>
+									<el-input v-model="form.paper.title" autocomplete="off"></el-input>
 								</el-form-item>
 								<el-form-item label="上传文件" :label-width="formLabelWidth">
 									<el-upload class="avatar-uploader" :action="`/api/uploadFile`"
-														 :show-file-list="true" ref="uploadFile" :limit="1" :on-success="uploadSuccess">
+														 :show-file-list="false" ref="uploadFile" :limit="1" :on-success="uploadSuccess">
 										<el-button size="small" type="primary">点击上传</el-button>
 									</el-upload>
 								</el-form-item>
-
 							</el-form>
 							<div style="margin-left: 10px">
 								<el-button type="primary" @click="savePaper" :loading="show.loading">
@@ -58,10 +57,36 @@
 								<el-button @click="closeEdit">取 消</el-button>
 							</div>
 							<div style="margin: 10px 0 0 10px">
-								<el-input v-model="form.content" type="textarea" rows="20" readonly></el-input>
+								<el-input v-model="form.paper.content" type="textarea" rows="20" readonly></el-input>
 							</div>
 						</div>
 					</el-drawer>
+					<el-dialog :visible.sync="show.read" title="播放设置" width="40%" center v-loading="show.voicing"
+										 :close-on-click-modal="false" element-loading-text="语音合成中，请稍后"
+										 element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
+						<div class="block">
+							<span>音色</span>
+							<el-cascader v-model="form.voices" :options="voiceOptions" :props="{ expandTrigger: 'hover'}" style="width:100%">
+								<template slot-scope="{ node, data }" >
+									<span v-if="node.isLeaf">{{ data.name }} ({{ data.label }}) </span>
+									<span v-else>{{ data.label }} </span>
+									<span v-if="!node.isLeaf"> ({{ data.children.length }}) </span>
+								</template>
+							</el-cascader>
+						</div>
+						<div class="block">
+							<span>语调</span>
+							<el-slider v-model="form.reader.pitchRate" :min="-500" :max="500"></el-slider>
+						</div>
+						<div class="block">
+							<span>语速</span>
+							<el-slider v-model="form.reader.speechRate" :min="-500" :max="500"></el-slider>
+						</div>
+						<audio controls="controls" id="player" style="display: none"></audio>
+						<el-button @click="createVoiceFile" type="primary" size="mini">开始合成</el-button>
+						<el-button @click="replay" size="mini">重新播放</el-button>
+						<el-button @click="closeReadWindow" size="mini">关闭</el-button>
+					</el-dialog>
 				</el-row>
 			</el-main>
 		</el-container>
