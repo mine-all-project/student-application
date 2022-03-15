@@ -117,7 +117,7 @@ const app = new Vue({
                     ]
                 },
             ],
-            show: {drawer: false, loading: false, read: false, play: false, voicing: false},
+            show: {drawer: false, loading: false, read: false, play: false, voicing: false, parseText: false},
             paperList: [{id: '1', title: '标题1', content: '内容1'}],
             paperListAll: [],
             readerSrc: '',
@@ -288,14 +288,17 @@ const app = new Vue({
                 this.$message.error('上传失败');
                 return
             }
+            this.show.parseText = true
             axios.get(`/api/paper/content/${result.data.id}`).then(response => {
                 const result = response.data;
                 console.log('通过api获取到的数据:', result);
                 if (result.status !== 200) {
                     this.$message.error('数据加载失败');
+                    this.show.parseText = false
                     return
                 }
                 this.form.paper.content = result.data
+                this.show.parseText = false
             }).catch(function (error) {
                 console.log('请求出现错误:', error);
             });

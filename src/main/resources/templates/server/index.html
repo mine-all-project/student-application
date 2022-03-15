@@ -13,7 +13,7 @@
       }
 
       * {
-          cursor: url('/css/cursor/ribbon5.cur'), default
+          cursor: url('/images/cursor/mouse-03.cur'), default
       }
 
       body {
@@ -31,7 +31,7 @@
 	</style>
 </head>
 <body>
-<div id="app" style="cursor:url('/css/cursor/ribbon5.cur'),default">
+<div id="app" style="cursor:url('/images/cursor/mouse-03.cur'),default">
 	<el-container style=" border: 1px solid #eee">
 		<div data-th-replace="/components/server/index :: header"></div>
 		<el-container>
@@ -56,8 +56,9 @@
 				</div>
 				<el-button type="primary" @click="openPaperEdit(undefined)" size="mini" style="margin-top: 10px">添加文章
 				</el-button>
-				<el-drawer :visible.sync="show.drawer" :wrapperClosable="false" size="60%" ref="drawer">
-					<div>
+				<el-drawer :visible.sync="show.drawer" @close="closeEdit" :wrapperClosable="false" size="60%" ref="drawer"  v-loading="show.parseText"
+									 :close-on-click-modal="false" element-loading-text="文件解析中"
+									 element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
 						<el-form v-model="form">
 							<el-form-item label="文章标题" :label-width="formLabelWidth">
 								<el-input v-model="form.paper.title" autocomplete="off"></el-input>
@@ -78,7 +79,6 @@
 						<div style="margin: 10px 0 0 10px">
 							<el-input v-model="form.paper.content" type="textarea" rows="20" readonly></el-input>
 						</div>
-					</div>
 				</el-drawer>
 				<el-dialog :visible.sync="show.read" title="播放设置" width="40%" center v-loading="show.voicing"
 									 :close-on-click-modal="false" element-loading-text="语音合成中，请稍后"
