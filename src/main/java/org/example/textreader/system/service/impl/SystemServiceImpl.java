@@ -8,13 +8,12 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.example.textreader.common.ApplicationException;
-import org.example.textreader.system.dao.SysUserRepository;
 import org.example.textreader.common.ResponseDTO;
+import org.example.textreader.system.dao.SysUserRepository;
 import org.example.textreader.system.entity.SysUser;
 import org.example.textreader.system.form.UserForm;
 import org.example.textreader.system.service.SysService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -59,13 +58,13 @@ public class SystemServiceImpl implements SysService {
         if (exist != null) {
             throw new ApplicationException("用户名已经存在");
         }
-        String code = String.valueOf(request.getSession().getAttribute("randomCode"));
-        if (StringUtils.isEmpty(code)) {
-            throw new ApplicationException("验证码失效，请重新获取");
-        }
-        if (!code.equals(map.get("code"))) {
-            throw new ApplicationException("验证码错误");
-        }
+//        String code = String.valueOf(request.getSession().getAttribute("randomCode"));
+//        if (StringUtils.isEmpty(code)) {
+//            throw new ApplicationException("验证码失效，请重新获取");
+//        }
+//        if (!code.equals(map.get("code"))) {
+//            throw new ApplicationException("验证码错误");
+//        }
         String username = map.get("username");
         String password = new Md5Hash(map.get("password")).toString();
         SysUser sysUser = new SysUser();

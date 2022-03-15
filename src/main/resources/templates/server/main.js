@@ -8,6 +8,8 @@ const app = new Vue({
                 reader: {paper: {}, pitchRate: 100, speechRate: 100, voice: ''},
                 voices: []
             },
+            pagination: {total: 0,pageSize: 10},
+            title: "",
             voiceOptions: [
                 {
                     label: '通用', children: [
@@ -117,6 +119,7 @@ const app = new Vue({
             ],
             show: {drawer: false, loading: false, read: false, play: false, voicing: false},
             paperList: [{id: '1', title: '标题1', content: '内容1'}],
+            paperListAll: [],
             readerSrc: '',
             formLabelWidth: '80px',
             timer: null,
@@ -135,6 +138,9 @@ const app = new Vue({
         this.getPaperList()
     },
     methods: {
+        changePage(e){
+            this.paperList = this.paperListAll.slice((e-1)*10,this.pagination.pageSize*e);
+        },
         openReadWindow(scope) {
             this.form.reader.paper = scope.row
             this.show.read = true
@@ -222,7 +228,9 @@ const app = new Vue({
                     this.$message.error('数据加载失败');
                     return;
                 }
-                _this.paperList = result.data;
+                _this.paperListAll = result.data
+                _this.pagination.total = _this.paperListAll.length
+                _this.paperList = _this.paperListAll.slice(0,_this.pagination.pageSize);
             }).catch(function (error) {
                 console.log('请求出现错误:', error);
             });
@@ -250,8 +258,10 @@ const app = new Vue({
             }
         },
         closeEdit() {
+            this.$refs.uploadFile.clearFiles()
             this.show.loading = false;
             this.show.drawer = false;
+            this.form.paper = {title: '', fileInfo: {}, content: ''}
         },
         savePaper() {
             const _this = this;

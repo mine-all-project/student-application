@@ -10,27 +10,29 @@
 	<div data-reactroot="">
 		<div class="body">
 			<div class="form">
-				<div class="title">用户登录</div>
+				<div class="title">用户注册</div>
 				<div class="base-div">
 					<div>
 						<div class="mobileIcon"></div>
-						<input type="text" maxLength="11" autoComplete="off" v-model="username"/>
+						<input type="text" maxLength="11" autoComplete="off" v-model="username" placeholder="用户名"/>
 						<p class="error-tips"></p>
 					</div>
 				</div>
 				<div class="base-div">
 					<div>
 						<div class="passwordIcon"></div>
-						<input type="password" autoComplete="off" v-model="password">
+						<input type="password" autoComplete="off" v-model="password" placeholder="密码"/>
 						<p class="error-tips"></p>
 					</div>
 				</div>
-				<div class="base-div"><a class="login-button" @click="login">登录</a></div>
 				<div class="base-div">
 					<div>
-						<p class="register"><a href="/server/register">快速注册</a><span></span></p>
+						<div class="passwordIcon"></div>
+						<input type="password" autoComplete="off" v-model="againPassword" placeholder="重复密码"/>
+						<p class="error-tips"></p>
 					</div>
 				</div>
+				<div class="base-div"><a class="login-button" @click="register">注册</a></div>
 			</div>
 		</div>
 	</div>
@@ -49,29 +51,37 @@
         data() {
             return {
                 username: '',
-                password: ''
+                password: '',
+                againPassword: '',
             }
         },
         mounted() {
         },
         methods: {
-            login() {
+            register() {
+                if(this.password!==this.againPassword){
+                    this.$message.error('两次密码不一致')
+                    return
+                }
                 let data = {
                     username: this.username,
-                    password: this.password
+                    password: this.password,
+                    againPassword: this.againPassword
                 }
+
                 console.log('data--->', data)
-                axios.post('/system/loginCheck', data).then(response => {
+                axios.post('/system/registryCheck', data).then(response => {
                     const result = response.data
                     console.log('通过api获取到的数据:', result)
                     if (result.status !== 200) {
                         layer.msg(result.message)
+                        this.$message.error(result.message)
                         return
                     }
                     layer.msg(result.message)
                     this.$message.success(result.message)
                     setTimeout(() => {
-                        window.location.href = '/server/index'
+                        window.location.href = '/server/login'
                     }, 2000)
                 }).catch(exception => {
                     layer.msg('系统错误')
