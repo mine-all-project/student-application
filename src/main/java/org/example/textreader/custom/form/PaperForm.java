@@ -19,6 +19,7 @@ public class PaperForm {
     private String title;
 
     private String content;
+    private String author;
     private FileInfo fileInfo;
 
 

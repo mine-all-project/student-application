@@ -1,14 +1,35 @@
+let instance = axios.create({
+    timeout: 3000,
+})
+
+instance.interceptors.response.use(
+    response => {
+        if (response.status === 200) {
+            if (response.data.status === 401) {
+                setTimeout(() => {
+                    window.location.href = '/server/login'
+                }, 3000)
+
+            }
+        }
+        return response
+    },
+    error => {
+        return Promise.reject(error)
+    }
+)
 const app = new Vue({
     el: '#app',
     components: {},
     data() {
         return {
+            axios: instance,
             form: {
                 paper: {title: '', fileInfo: {}, content: ''},
                 reader: {paper: {}, pitchRate: 100, speechRate: 100, voice: ''},
                 voices: []
             },
-            pagination: {total: 0,pageSize: 10},
+            pagination: {total: 0, pageSize: 10},
             title: "",
             voiceOptions: [
                 {
@@ -138,8 +159,8 @@ const app = new Vue({
         this.getPaperList()
     },
     methods: {
-        changePage(e){
-            this.paperList = this.paperListAll.slice((e-1)*10,this.pagination.pageSize*e);
+        changePage(e) {
+            this.paperList = this.paperListAll.slice((e - 1) * 10, this.pagination.pageSize * e);
         },
         openReadWindow(scope) {
             this.form.reader.paper = scope.row
@@ -164,11 +185,11 @@ const app = new Vue({
         },
         getReadInfo(readInfo) {
             this.timer = setInterval(() => {
-                axios.post(`/api/paper/reader/id/${readInfo.id}`,).then(response => {
+                this.axios.post(`/api/paper/reader/id/${readInfo.id}`,).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
+                        this.$message.error(result.message);
                         return
                     }
                     if (result.data.status === 0) {
@@ -184,7 +205,7 @@ const app = new Vue({
         createVoiceFile() {
             this.show.voicing = true
             this.form.reader.voice = this.form.voices[1]
-            axios.post(`/api/paper/reader/create`, this.form.reader).then(response => {
+            this.axios.post(`/api/paper/reader/create`, this.form.reader).then(response => {
                 const result = response.data;
                 console.log('通过api获取到的数据:', result);
                 if (result.status !== 200) {
@@ -202,13 +223,12 @@ const app = new Vue({
             const id = scope.row.id;
             _this.$confirm('确认删除？').then(e => {
                 _this.show.loading = true;
-                axios.delete(`/api/paper/del/${id}`).then(response => {
+                _this.axios.delete(`/api/paper/del/${id}`).then(response => {
                     _this.getPaperList();
                     const result = response.data;
-                    console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
                         _this.show.loading = false;
-                        _this.$message.error('数据加载失败');
+                        _this.$message.error(e.message);
                         return
                     }
                     _this.show.loading = false;
@@ -221,16 +241,16 @@ const app = new Vue({
         },
         getPaperList() {
             const _this = this;
-            axios.get('/api/paper/list').then(response => {
+            this.axios.get('/api/paper/list').then(response => {
                 const result = response.data;
                 console.log('通过api获取到的数据:', result);
                 if (result.status !== 200) {
-                    this.$message.error('数据加载失败');
+                    _this.$message.error(result.message);
                     return;
                 }
                 _this.paperListAll = result.data
                 _this.pagination.total = _this.paperListAll.length
-                _this.paperList = _this.paperListAll.slice(0,_this.pagination.pageSize);
+                _this.paperList = _this.paperListAll.slice(0, _this.pagination.pageSize);
             }).catch(function (error) {
                 console.log('请求出现错误:', error);
             });
@@ -244,11 +264,11 @@ const app = new Vue({
         getPaperById(id) {
             const _this = this;
             if (id !== undefined) {
-                axios.get(`/api/paper/id/${id}`).then(response => {
+                _this.axios.get(`/api/paper/id/${id}`).then(response => {
                     const result = response.data;
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {
-                        this.$message.error('数据加载失败');
+                        this.$message.error(result.message);
                         return
                     }
                     _this.form.paper = result.data;
@@ -266,11 +286,11 @@ const app = new Vue({
         savePaper() {
             const _this = this;
             _this.show.loading = true;
-            axios.post(`/api/paper/save`, _this.form.paper).then(response => {
+            _this.axios.post(`/api/paper/save`, _this.form.paper).then(response => {
                 const result = response.data;
                 console.log('通过api获取到的数据:', result);
                 if (result.status !== 200) {
-                    this.$message.error('数据加载失败');
+                    _this.$message.error(result.message);
                     return
                 }
                 _this.show.loading = false;
@@ -285,15 +305,15 @@ const app = new Vue({
         uploadSuccess(result) {
             console.log('通过api获取到的数据:', result);
             if (result.status !== 200) {
-                this.$message.error('上传失败');
+                this.$message.error(result.message);
                 return
             }
             this.show.parseText = true
-            axios.get(`/api/paper/content/${result.data.id}`).then(response => {
+            this.axios.get(`/api/paper/content/${result.data.id}`).then(response => {
                 const result = response.data;
                 console.log('通过api获取到的数据:', result);
                 if (result.status !== 200) {
-                    this.$message.error('数据加载失败');
+                    this.$message.error(result.message);
                     this.show.parseText = false
                     return
                 }

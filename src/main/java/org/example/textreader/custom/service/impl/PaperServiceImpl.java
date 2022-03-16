@@ -3,6 +3,8 @@ package org.example.textreader.custom.service.impl;
 import com.alibaba.nls.client.AccessToken;
 import com.alibaba.nls.client.protocol.OutputFormatEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.example.textreader.common.ApplicationException;
 import org.example.textreader.custom.dao.jpa.PaperRepository;
 import org.example.textreader.custom.entity.Paper;
@@ -13,6 +15,7 @@ import org.example.textreader.custom.service.PaperService;
 import org.example.textreader.custom.service.ReadInfoService;
 import org.example.textreader.custom.utils.TextReadUtils;
 import org.example.textreader.system.entity.FileInfo;
+import org.example.textreader.system.entity.SysUser;
 import org.example.textreader.system.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -52,7 +55,11 @@ public class PaperServiceImpl implements PaperService {
 
     @Override
     public Paper savePaper(PaperForm form) {
-        return paperRepository.saveAndFlush(form.toEntity());
+        Subject subject = SecurityUtils.getSubject();
+        SysUser publisher = (SysUser) subject.getPrincipal();
+        Paper entity = form.toEntity();
+        entity.setPublisher(publisher);
+        return paperRepository.saveAndFlush(entity);
     }
 
     @Override
@@ -111,7 +118,7 @@ public class PaperServiceImpl implements PaperService {
         }
         UUID id = UUID.randomUUID();
         String filePath = MessageFormat.format("{0}{1}.mp3", fold, id);
-        String virtualPath = MessageFormat.format("{0}temp/{1}.mp3",this.virtualPath, id);
+        String virtualPath = MessageFormat.format("{0}temp/{1}.mp3", this.virtualPath, id);
         readInfo.setFilePath(filePath);
         readInfo.setVirtualPath(virtualPath);
     }

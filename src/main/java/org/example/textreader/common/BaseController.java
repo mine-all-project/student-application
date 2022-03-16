@@ -32,6 +32,8 @@ public abstract class BaseController {
     @ResponseBody
     protected ResponseDTO applicationExceptionHandler(Exception e){
         logger.error("ajax出现异常:[{}]\n",e.getMessage(),e);
+        System.err.println(e instanceof UnauthenticatedException);
+        System.err.println(e.getClass());
         if(e instanceof UnauthenticatedException){
             return ResponseDTO.returnAuthFail("未获授权,请先登陆后重试,5秒后自动跳转");
         }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.textreader.system.entity.BaseEntity;
 import org.example.textreader.system.entity.FileInfo;
+import org.example.textreader.system.entity.SysUser;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,11 @@ public class Paper extends BaseEntity {
     @Column(columnDefinition = "longtext default null comment '文件内容'")
     private String content;
 
+    @OneToOne
+    private SysUser publisher;
+
+    @Column(columnDefinition = "longtext default null comment '作者'")
+    private String author;
 
     @Override
     public String toString() {

@@ -71,7 +71,7 @@ public class ShiroConfigure {
          * 授权失败跳转的页面
          * ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
          */
-//        shiroFilterFactory.setUnauthorizedUrl("/manage/login");
+        shiroFilterFactory.setUnauthorizedUrl("/server/login");
         return shiroFilterFactory;
     }
 
