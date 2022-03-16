@@ -160,7 +160,6 @@ const app = new Vue({
     },
     methods: {
         downloadFile(scope) {
-            console.log(scope)
             window.open(scope.row.fileInfo.virtualPath)
         },
         changePage(e) {
