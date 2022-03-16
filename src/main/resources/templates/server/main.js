@@ -159,6 +159,10 @@ const app = new Vue({
         this.getPaperList()
     },
     methods: {
+        downloadFile(scope) {
+            console.log(scope)
+            window.open(scope.row.fileInfo.virtualPath)
+        },
         changePage(e) {
             this.paperList = this.paperListAll.slice((e - 1) * 10, this.pagination.pageSize * e);
         },
