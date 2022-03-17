@@ -8,31 +8,29 @@
         <version>2.1.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>cn.crabapples</groupId>
-    <artifactId>student-application</artifactId>
+    <groupId>org.example</groupId>
+    <artifactId>application</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <java.version>1.8</java.version>
-        <mail.version>1.4.7</mail.version>
-        <nls.version>2.1.6</nls.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.alibaba.nls</groupId>
-            <artifactId>nls-sdk-transcriber</artifactId>
-            <version>${nls.version}</version>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.nls</groupId>
-            <artifactId>nls-sdk-common</artifactId>
-            <version>${nls.version}</version>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>2.0.2</version>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.nls</groupId>
-            <artifactId>nls-sdk-tts</artifactId>
-            <version>${nls.version}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.10</version>
         </dependency>
         <dependency>
             <groupId>com.github.axet</groupId>
@@ -49,12 +47,6 @@
             <groupId>ch.ethz.ganymed</groupId>
             <artifactId>ganymed-ssh2</artifactId>
             <version>RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>${mail.version}</version>
         </dependency>
 
         <!-- 属性配置依赖 -->
@@ -119,6 +111,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.17.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.5.7</version>
+        </dependency>
 
     </dependencies>
 
@@ -130,24 +132,6 @@
                 <configuration>
                     <fork>true</fork>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeGroupIds>com.alibaba.nls</includeGroupIds>
-                            <outputDirectory>../lib</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
 
