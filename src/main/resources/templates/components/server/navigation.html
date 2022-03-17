@@ -1,0 +1,141 @@
+<style th:fragment="el-style">
+    .header {
+        background-color: rgba(238, 241, 246, 1);
+        height: 6vh;
+        color: #333;
+        border-bottom: 1px solid #f1f1f1;
+    }
+
+    .aside {
+        background-color: rgba(238, 241, 246, 1);
+        height: 93vh;
+        color: #333;
+        border-right: 1px solid #f1f1f1;
+    }
+</style>
+<el-header width="100%"
+					 style=" display: flex;	justify-content: space-between;	align-items: center;"
+					 class="header" th:fragment="el-header">
+	<span>{{title}}</span>
+	<el-dropdown>
+		<i class="el-icon-setting" style="margin-right: 15px;"></i>
+		<el-dropdown-menu slot="dropdown">
+			<el-dropdown-item><span @click="logout">退出登录</span></el-dropdown-item>
+		</el-dropdown-menu>
+	</el-dropdown>
+</el-header>
+<el-aside width="200px" class="aside" th:fragment="el-menus">
+	<el-menu :default-openeds="['0']">
+		<el-menu-item :index="`${0}`" v-for="(item) in menus" @click="clickMenu(item.url)" :key="item.id">
+			<i :class="item.icon"></i>{{item.name}}
+		</el-menu-item>
+	</el-menu>
+</el-aside>
+
+<style th:fragment="a-style">
+    .ant-layout-header, .ant-layout-footer {
+        background: #7dbcea;
+        color: #fff;
+        height: 5vh;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+    }
+    .title {
+        font-size: 20px
+    }
+    .ant-layout-footer {
+        line-height: 1.5;
+    }
+    .ant-layout-sider {
+        width: 100%;
+        height: 89vh;
+        background: #fff;
+    }
+    .ant-layout-content {
+        padding: 16px;
+        background: #fff;
+        min-height: 120px;
+        height: 89vh;
+    }
+    .container-parent {
+        /*padding: 16px;*/
+    }
+</style>
+<a-layout-header th:fragment="a-header">
+			<span class="title">科研管理系统</span>
+			<div>
+				<a-dropdown>
+				<a-icon type="setting"></a-icon>
+				<a-menu slot="overlay">
+					<a-menu-item key="3" @click="changeTags">
+						<a-icon type="user"></a-icon>
+						我的标签
+					</a-menu-item>
+					<a-menu-item key="1" @click="showChangePassword">
+						<a-icon type="user"></a-icon>
+						修改密码
+					</a-menu-item>
+					<a-menu-item key="2" @click="logout">
+						<a-icon type="user"></a-icon>
+						退出登录
+					</a-menu-item>
+				</a-menu>
+				<a-button style="margin-left: 8px"> Button
+					<a-icon type="down"></a-icon>
+				</a-button>
+			</a-dropdown>
+			<span>{{ userInfo.name }}</span>
+			</div>
+</a-layout-header>
+<a-layout-sider th:fragment="a-menus">
+	<a-menu style="width: 200px;height: 100%" mode="inline">
+		<a-sub-menu :key="menu.key" @titleClick="clickTitle" v-for="menu in menus"
+								v-if="menu.children && menu.children.length">
+			<span slot="title"><a-icon :type="menu.icon"></a-icon><span>{{ menu.name }}</span></span>
+			<a-sub-menu :key="child.key" v-if="child.children && child.children.length" v-for="child in menu.children">
+				<span slot="title"><a-icon :type="child.icon"></a-icon><span>{{ child.name }}</span></span>
+				<a-menu-item :key="item.key" v-for="item in child.children" @click="clickMenu(item.url)">
+					<a-icon :type="item.icon"></a-icon>
+					<span>{{ item.name }}</span>
+				</a-menu-item>
+			</a-sub-menu>
+			<a-menu-item :key="child.key" v-else @click="clickMenu(child.url)">
+				<a-icon :type="child.icon"></a-icon>
+				<span>{{ child.name }}</span>
+			</a-menu-item>
+		</a-sub-menu>
+		<a-menu-item :key="menu.key" v-else @click="clickMenu(menu.url)">
+			<a-icon :type="menu.icon"></a-icon>
+			<span>{{ menu.name }}</span>
+		</a-menu-item>
+	</a-menu>
+</a-layout-sider>
+<a-modal th:fragment="a-password" title="修改密码" :visible.sync="show.changePassword" width="25%" ok-text="确认"
+				 cancel-text="取消"
+				 @ok="submitForm" @cancel="closeChangePassword">
+	<a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+		<a-form-model-item ref="oldPassword" label="原密码" prop="oldPassword">
+			<a-input-password v-model="form.oldPassword"></a-input-password>
+		</a-form-model-item>
+		<a-form-model-item ref="password" label="新密码" prop="password">
+			<a-input-password v-model="form.password"></a-input-password>
+		</a-form-model-item>
+		<a-form-model-item ref="rePassword" label="重复密码" prop="rePassword">
+			<a-input-password v-model="form.rePassword"></a-input-password>
+		</a-form-model-item>
+	</a-form-model>
+</a-modal>
+<a-modal th:fragment="a-tags" title="我的标签" :visible.sync="show.changeTags" width="40%" ok-text="保存" cancel-text="取消"
+				 @ok="submitTags" @cancel="closeChangeTags">
+	<a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+		<a-form-model-item label="标签" prop="tagsList">
+			<a-select mode="multiple" :default-value="[]" v-model="form.tagsList" placeholder="请选择标签">
+				<a-select-option v-for="item in tagsOptions" :key="item.id">
+					{{ item.name }}
+				</a-select-option>
+			</a-select>
+		</a-form-model-item>
+	</a-form-model>
+</a-modal>
+<a-layout-footer th:fragment="a-footer"></a-layout-footer>

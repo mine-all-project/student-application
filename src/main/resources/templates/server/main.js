@@ -1,13 +1,22 @@
-let instance = axios.create({
-    timeout: 3000,
-})
-
+let instance = axios.create({timeout: 3000})
+instance.interceptors.request.use(
+    config => {
+        config.headers['crabapples-token'] = sessionStorage.getItem('token');
+        if (/get/i.test(config.method)) {
+            config.params = config.params || {}
+            config.params.temp = Date.parse(new Date()) / 1000
+        }
+        return config;
+    },
+    error => Promise.error(error)
+);
 instance.interceptors.response.use(
     response => {
+        console.debug('api返回的数据-->', response)
         if (response.status === 200) {
             if (response.data.status === 401) {
                 setTimeout(() => {
-                    window.location.href = '/server/login'
+                    // window.location.href = '/server/login'
                 }, 3000)
 
             }
@@ -23,14 +32,36 @@ const app = new Vue({
     components: {},
     data() {
         return {
+            labelCol: {span: 5},
+            wrapperCol: {span: 16},
+            $http: instance,
             axios: instance,
             form: {
                 paper: {title: '', fileInfo: {}, content: ''},
                 reader: {paper: {}, pitchRate: 100, speechRate: 100, voice: ''},
-                voices: []
+                voices: [],
+                oldPassword: '',
+                password: '',
+                rePassword: '',
+                tagsList: [],
             },
             pagination: {total: 0, pageSize: 10},
             title: "",
+            rules: {
+                oldPassword: [
+                    {required: true, message: '请输入原密码', trigger: 'change'},
+                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                ],
+                password: [
+                    {required: true, message: '请输入新密码', trigger: 'change'},
+                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                ],
+                rePassword: [
+                    {required: true, message: '请重复新密码', trigger: 'change'},
+                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                ],
+            },
+
             voiceOptions: [
                 {
                     label: '通用', children: [
@@ -138,27 +169,420 @@ const app = new Vue({
                     ]
                 },
             ],
-            show: {drawer: false, loading: false, read: false, play: false, voicing: false, parseText: false},
+            show: {changePassword: false, loading: false, read: false, play: false, voicing: false, parseText: false},
             paperList: [{id: '1', title: '标题1', content: '内容1'}],
             paperListAll: [],
             readerSrc: '',
             formLabelWidth: '80px',
             timer: null,
-            menus: [
+            menus: [],
+            allMenus: [
                 {
-                    id: '0',
-                    name: '文章列表',
-                    icon: '',
-                    url: '/manage/list.html'
+                    key: '1',
+                    name: '科研管理',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '11',
+                            name: '项目申报',
+                            icon: 'appstore',
+                            url: '/manage-index/sub-apply',
+                        },
+                        {
+                            key: '12',
+                            name: '项目审核',
+                            icon: 'appstore',
+                            url: '/manage-index/audit-list',
+                        },
+                        {
+                            key: '13',
+                            name: '标签管理',
+                            icon: 'appstore',
+                            url: '/manage-index/tags',
+                        },
+                    ]
+                },
+                {
+                    key: '2',
+                    name: '数据共享',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '21',
+                            name: '我的项目',
+                            icon: 'appstore',
+                            url: '/manage-index/mine-subject',
+                        },
+                        {
+                            key: '22',
+                            name: '我参与的',
+                            icon: 'appstore',
+                            url: '/manage-index/mine-join',
+                        },
+                        {
+                            key: '23',
+                            name: '共享项目',
+                            icon: 'appstore',
+                            url: '/manage-index/mine-pull',
+                        },
+                        {
+                            key: '24',
+                            name: '共享审核',
+                            icon: 'appstore',
+                            url: '/manage-index/request-pull-list',
+                        },
+                    ]
+                },
+                {
+                    key: '3',
+                    name: '科研分析',
+                    icon: 'appstore',
+                    children: [
+                        {
+                            key: '31',
+                            name: '数据统计',
+                            icon: 'appstore',
+                            url: '/manage-index/data-statistical',
+                        },
+                        {
+                            key: '32',
+                            name: '工作评价',
+                            icon: 'appstore',
+                            url: '/manage-index/subject-discuss',
+                        },
+                    ]
+                },
+                {
+                    key: '4',
+                    name: '数据对接',
+                    icon: 'appstore',
+                    url: '/school-org/list',
+                    children: [
+                        // {
+                        //   key: '41',
+                        //   name: '信息发布',
+                        //   icon: 'appstore',
+                        //   url: '/manage-index/paper-list',
+                        // },
+                        {
+                            key: '41-1',
+                            name: '信息发布',
+                            icon: 'appstore',
+                            url: '/manage-index/paper-list1',
+                        },
+                        // {
+                        //   key: '42',
+                        //   name: '工作评价',
+                        //   icon: 'appstore',
+                        //   url: '/manage-index/subject-discuss',
+                        // },
+                    ]
+                },
+                {
+                    key: '99',
+                    name: '用户管理',
+                    icon: 'appstore',
+                    url: '/manage-index/user-list',
                 },
             ],
-            welcome: true
+            sysMenus: [
+                {
+                    key: '1',
+                    name: '科研管理',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '12',
+                            name: '项目审核',
+                            icon: 'appstore',
+                            url: '/manage-index/audit-list',
+                        },
+                        {
+                            key: '13',
+                            name: '标签管理',
+                            icon: 'appstore',
+                            url: '/manage-index/tags',
+                        },
+                    ]
+                },
+                {
+                    key: '3',
+                    name: '科研分析',
+                    icon: 'appstore',
+                    children: [
+                        {
+                            key: '31',
+                            name: '数据统计',
+                            icon: 'appstore',
+                            url: '/manage-index/data-statistical',
+                        },
+                        {
+                            key: '32',
+                            name: '工作评价',
+                            icon: 'appstore',
+                            url: '/manage-index/subject-discuss',
+                        },
+                    ]
+                },
+                {
+                    key: '4',
+                    name: '数据对接',
+                    icon: 'appstore',
+                    url: '/school-org/list',
+                    children: [
+                        // {
+                        //   key: '41',
+                        //   name: '信息发布',
+                        //   icon: 'appstore',
+                        //   url: '/manage-index/paper-list',
+                        // },
+                        {
+                            key: '41-1',
+                            name: '信息发布',
+                            icon: 'appstore',
+                            url: '/manage-index/paper-list1',
+                        },
+                        // {
+                        //   key: '42',
+                        //   name: '工作评价',
+                        //   icon: 'appstore',
+                        //   url: '/manage-index/subject-discuss',
+                        // },
+                    ]
+                },
+                {
+                    key: '99',
+                    name: '用户管理',
+                    icon: 'appstore',
+                    url: '/manage-index/user-list',
+                },
+            ],
+            userMenus: [
+                {
+                    key: '1',
+                    name: '科研管理',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '11',
+                            name: '项目申报',
+                            icon: 'appstore',
+                            url: '/manage-index/sub-apply',
+                        },
+                    ]
+                },
+                {
+                    key: '2',
+                    name: '数据共享',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '21',
+                            name: '我的项目',
+                            icon: 'appstore',
+                            url: '/manage-index/mine-subject',
+                        },
+                        {
+                            key: '22',
+                            name: '我参与的',
+                            icon: 'appstore',
+                            url: '/manage-index/mine-join',
+                        },
+                        {
+                            key: '23',
+                            name: '共享项目',
+                            icon: 'appstore',
+                            url: '/manage-index/mine-pull',
+                        },
+                    ]
+                },
+                {
+                    key: '3',
+                    name: '科研分析',
+                    icon: 'appstore',
+                    children: [
+                        {
+                            key: '31',
+                            name: '数据统计',
+                            icon: 'appstore',
+                            url: '/manage-index/data-statistical',
+                        },
+                        {
+                            key: '32',
+                            name: '工作评价',
+                            icon: 'appstore',
+                            url: '/manage-index/subject-discuss',
+                        },
+                    ]
+                },
+                {
+                    key: '4',
+                    name: '数据对接',
+                    icon: 'appstore',
+                    url: '/school-org/list',
+                    children: [
+                        {
+                            key: '41-1',
+                            name: '信息发布',
+                            icon: 'appstore',
+                            url: '/manage-index/paper-list1',
+                        },
+                    ]
+                },
+            ],
+            managerMenus: [
+                {
+                    key: '1',
+                    name: '科研管理',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '12',
+                            name: '标签管理',
+                            icon: 'appstore',
+                            url: '/manage-index/tags',
+                        },
+                    ]
+                },
+                {
+                    key: '2',
+                    name: '数据共享',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '24',
+                            name: '共享审核',
+                            icon: 'appstore',
+                            url: '/manage-index/request-pull-list',
+                        },
+                    ]
+                },
+                {
+                    key: '3',
+                    name: '科研分析',
+                    icon: 'appstore',
+                    children: [
+                        {
+                            key: '31',
+                            name: '数据统计',
+                            icon: 'appstore',
+                            url: '/manage-index/data-statistical',
+                        },
+                        {
+                            key: '32',
+                            name: '工作评价',
+                            icon: 'appstore',
+                            url: '/manage-index/subject-discuss',
+                        },
+                    ]
+                },
+                {
+                    key: '4',
+                    name: '数据对接',
+                    icon: 'appstore',
+                    url: '/school-org/list',
+                    children: [
+                        {
+                            key: '41-1',
+                            name: '信息发布',
+                            icon: 'appstore',
+                            url: '/manage-index/paper-list1',
+                        },
+                    ]
+                },
+            ],
+            welcome: true,
+            userInfo: {},
+            tagsOptions: [],
+
         }
     },
     mounted() {
-        this.getPaperList()
+        this.menus = this.allMenus
+        this.getUserInfo()
     },
     methods: {
+        showChangePassword() {
+            this.show.changePassword = true
+        },
+        closeChangePassword() {
+            this.show.changePassword = false
+            // this.$refs.ruleForm.resetFields();
+        },
+        clickTitle(e) {
+            console.log('clickTitle', e);
+        },
+        clickMenu(url) {
+            console.log('clickMenu', url);
+            // window.location.href = url
+        },
+        getUserInfo() {
+            this.axios.get('/api/user/getUserInfo').then(result => {
+                if (result.status !== 200) {
+                    this.$message.error(result.message);
+                    return;
+                }
+                if (result.data !== null) {
+                    this.userInfo = result.data;
+                    this.changeMenus()
+                }
+            }).catch(function (error) {
+                console.error('出现错误:', error);
+            });
+        },
+
+        submitForm() {
+            // this.$refs.ruleForm.validate(valid => {
+            //     if (valid) {
+            //         console.info('success', this.form);
+            //         if (this.form.password !== this.form.rePassword) {
+            //             this.$message.error('两次密码不一致');
+            //             return
+            //         }
+            //         this.form.id = this.userInfo.id
+            //         this.$http.post('/api/user/updatePassword', this.form).then(result => {
+            //             if (result.status !== 200) {
+            //                 this.$message.error(result.message);
+            //                 return;
+            //             }
+            //             this.$message.success(result.message);
+            //             this.closeModal()
+            //         }).catch(function (error) {
+            //             console.error('出现错误:', error);
+            //         });
+            //     } else {
+            //         console.log('验证失败');
+            //         return false;
+            //     }
+            // })
+        },
+        changeMenus() {
+            // let rule = this.userInfo.role
+            // if (rule === 0) {
+            //     this.menus = this.sysMenus
+            // } else if (rule === 1) {
+            //     this.menus = this.managerMenus
+            // } else if (rule === 2) {
+            //     this.menus = this.userMenus
+            // }
+            // this.menus = this.allMenus
+        },
+        changeTags() {
+            // this.getTagsList()
+            // this.show.changeTags = true
+            // console.log(this.userInfo)
+            // this.form.tagsList = this.userInfo.tags.map(e => {
+            //     return e.id
+            // })
+        },
+
         downloadFile(scope) {
             window.open(scope.row.fileInfo.virtualPath)
         },
@@ -331,8 +755,5 @@ const app = new Vue({
         logout() {
             window.location.href = '/system/logout'
         },
-        clickMenu(url) {
-            // window.location.href = url
-        }
     }
 })
