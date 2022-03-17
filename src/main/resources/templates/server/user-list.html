@@ -21,193 +21,99 @@
 </head>
 <body>
 <div id="app">
-	<div>
-		<a-button @click="addUser">添加用户</a-button>
-		<a-divider></a-divider>
-		<a-drawer width="30%" :visible="show.userInfo" @close="closeUserForm">
-			<a-form-model :model="form.userInfo" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-				<a-form-model-item label="用户名" prop="username">
-					<a-input v-model="form.userInfo.username" placeholder="请输入用户名"></a-input>
-				</a-form-model-item>
-				<a-form-model-item label="姓名" prop="name">
-					<a-input v-model="form.userInfo.name" placeholder="请输入姓名"></a-input>
-				</a-form-model-item>
-				<a-form-model-item label="年龄" prop="age">
-					<a-input-number style="width:100%" v-model="form.userInfo.age" placeholder="请输入年龄"></a-input-number>
-				</a-form-model-item>
-				<a-form-model-item label="邮箱" prop="mail">
-					<a-input v-model="form.userInfo.mail" placeholder="请输入邮箱"></a-input>
-				</a-form-model-item>
-				<a-form-model-item label="权限" prop="role">
-					<a-radio-group v-model="form.userInfo.role" default-value="2">
-						<a-radio value="0">超级管理员</a-radio>
-						<a-radio value="1">科研管理员</a-radio>
-						<a-radio value="2">科研人员</a-radio>
-					</a-radio-group>
-				</a-form-model-item>
-				<a-form-model-item label="标签" prop="tags">
-					<a-select mode="multiple" v-model="form.userInfo.tags" placeholder="请选择标签">
-						<a-select-option v-for="item in tagsOptions" :key="item.id">
-							{{ item.name }}
-						</a-select-option>
-					</a-select>
-				</a-form-model-item>
-			</a-form-model>
-			<div class="drawer-bottom-button">
-				<a-button :style="{ marginRight: '8px' }" @click="closeUserForm">关闭</a-button>
-				<a-button type="primary" @click="saveUserForm">保存</a-button>
-			</div>
-		</a-drawer>
-		<a-modal title="重置密码" :visible.sync="show.resetPassword" width="30%" ok-text="确认" cancel-text="取消"
-						 @ok="submitResetPassword" @cancel="closeResetPassword">
-			<a-form-model :model="form.resetPassword" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-				<a-form-model-item label="新密码" prop="password">
-					<a-input-password v-model="form.resetPassword.password"></a-input-password>
-				</a-form-model-item>
-				<a-form-model-item label="重复密码" prop="rePassword">
-					<a-input-password v-model="form.resetPassword.rePassword"></a-input-password>
-				</a-form-model-item>
-			</a-form-model>
-		</a-modal>
-		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
-      <span slot="tags" slot-scope="tags">
-        <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>
-      </span>
-			<span slot="role" slot-scope="role">
-          <a-tag color="green" v-if="role === 0">超级管理员</a-tag>
-          <a-tag color="orange" v-if="role === 1">科研管理员</a-tag>
-          <a-tag color="blue" v-if="role === 2">科研人员</a-tag>
-      </span>
-			<span slot="status" slot-scope="status">
-        <a-tag color="green" v-if="status === 0">正常</a-tag>
-        <a-tag color="red" v-else>禁用</a-tag>
-      </span>
-			<span slot="action" slot-scope="text, record">
-        <span v-if="record.role !== 0">
-          <a-button type="default" size="small" @click="changeStatus(record)" v-if="record.status === 0">禁用</a-button>
-          <a-button type="primary" size="small" @click="changeStatus(record)" v-if="record.status === 1">启用</a-button>
-					<a-divider type="vertical"></a-divider>
-        </span>
-        <span v-if="record.role !== 0">
-          <a-button type="danger" size="small" @click="removeUser(record)">删除</a-button>
-					<a-divider type="vertical"></a-divider>
-        </span>
-        <a-button type="primary" size="small" @click="editUser(record)">编辑</a-button>
-				<a-divider type="vertical"></a-divider>
-        <a-button type="primary" size="small" @click="showResetPassword(record)">重置密码</a-button>
-				<a-divider type="vertical"></a-divider>
-      </span>
-		</a-table>
-	</div>
+	<a-tabs type="card">
+		<a-tab-pane key="1" tab="二手交易">
+			<a-button @click="showAddGoods(0)">发布闲置</a-button>
+			<a-divider></a-divider>
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in freeGoods">
+					<img slot="cover" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+					<a-card-meta title="Europe Street beat">
+						<template slot="description">
+							www.instagram.com
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
+		</a-tab-pane>
+		<a-tab-pane key="2" tab="租赁">
+			<a-button @click="showAddGoods(1)">发布租赁</a-button>
+			<a-divider></a-divider>
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in freeGoods">
+					<img slot="cover" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+					<a-card-meta title="Europe Street beat">
+						<template slot="description">
+							www.instagram.com
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
+		</a-tab-pane>
+		<a-button slot="tabBarExtraContent">
+			发布急需
+		</a-button>
+	</a-tabs>
+	<a-modal title="发布" :visible.sync="show.addGoods" width="25%" ok-text="确认"
+					 cancel-text="取消" @ok="saveGoods" @cancel="closeAddGoods">
+		<a-form-model ref="ruleForm" :model="form.goods" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item ref="name" label="商品名称" prop="name">
+				<a-input v-model="form.goods.name"></a-input>
+			</a-form-model-item>
+			<a-form-model-item ref="image" label="商品图片" prop="image">
+				<div class="clearfix">
+					<a-upload name="file" list-type="picture-card" :file-list="fileList"
+										action="/api/uploadFile" @preview="handlePreview" @change="changeUploadFile">
+						<div v-if="fileList.length < 8">
+							<a-icon type="plus"></a-icon>
+							<div class="ant-upload-text"> Upload</div>
+						</div>
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+						<img alt="example" style="width: 100%" :src="previewImage"/>
+					</a-modal>
+				</div>
+
+
+				<a-upload name="file" :multiple="true" action="/api/uploadFile" :headers="headers"
+									:showUploadList="false" @change="changeUploadFile">
+					<a-button type="dashed" size="small" @click="uploadFile()">上传图片</a-button>
+				</a-upload>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+
 </div>
 <script>
     const app = new Vue({
         el: '#app',
         data() {
             return {
+                fileList: [],
+                freeGoods: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},],
                 rules: {
-                    username: [
-                        {required: true, message: '请输入用户名', trigger: 'blur'},
-                        {min: 2, max: 16, message: '长度为2-16个字符', trigger: 'blur'},
-                        {whitespace: true, message: '请输入用户名', trigger: 'blur'}
-                    ],
                     name: [
-                        {required: true, message: '请输入名称', trigger: 'blur'},
-                        {min: 2, max: 16, message: '长度为2-16个字符', trigger: 'blur'},
-                        {whitespace: true, message: '请输入名称', trigger: 'blur'}
+                        {required: true, message: '请输入商品名称', trigger: 'change'},
+                        {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                     ],
-                    age: [
-                        {required: true, message: '请输入年龄', trigger: 'blur'},
-                    ],
-                    mail: [
-                        {required: true, message: '请输入邮箱', trigger: 'blur'},
-                        {whitespace: true, message: '请输入邮箱', trigger: 'blur'}
-                    ],
-                    role: [
-                        {required: true, message: '请选择权限', trigger: 'change'},
-                    ],
-                    tags: [],
                     password: [
-                        {required: true, message: '请输入密码', trigger: 'blur'},
-                        {min: 8, max: 16, message: '长度为8-16个字符', trigger: 'blur'},
-                        {whitespace: true, message: '请输入密码', trigger: 'blur'}
+                        {required: true, message: '请输入新密码', trigger: 'change'},
+                        {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                     ],
                     rePassword: [
-                        {required: true, message: '请重复输入密码', trigger: 'blur'},
-                        {min: 8, max: 16, message: '长度为8-16个字符', trigger: 'blur'},
-                        {whitespace: true, message: '请重复输入密码', trigger: 'blur'}
+                        {required: true, message: '请重复新密码', trigger: 'change'},
+                        {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                     ],
                 },
-                columns: [
-                    {
-                        dataIndex: 'username',
-                        key: 'username',
-                        title: '用户名',
-                    },
-                    {
-                        dataIndex: 'name',
-                        title: '姓名',
-                        key: 'name',
-                    },
-                    {
-                        dataIndex: 'age',
-                        title: '年龄',
-                        key: 'age',
-                    },
-                    {
-                        dataIndex: 'mail',
-                        title: '邮箱',
-                        key: 'mail',
-                    },
-                    {
-                        dataIndex: 'tags',
-                        title: '标签',
-                        key: 'tags',
-                        scopedSlots: {customRender: 'tags'}
-                    },
-                    {
-                        dataIndex: 'role',
-                        title: '角色',
-                        key: 'role',
-                        scopedSlots: {customRender: 'role'}
-                    },
-                    {
-                        dataIndex: 'status',
-                        title: '状态',
-                        key: 'status',
-                        scopedSlots: {customRender: 'status'}
-                    },
-                    {
-                        title: '操作',
-                        key: 'action',
-                        scopedSlots: {customRender: 'action'},
-                    },
-                ],
-                dataSource: [],
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
-                tagsOptions: [],
                 form: {
-                    type: 0,
-                    userInfo: {
-                        id: '',
-                        name: '',
-                        age: '',
-                        mail: '',
-                        role: 1,
-                        status: null,
-                        tags: [],
-                    },
-                    resetPassword: {
-                        id: '',
-                        password: '',
-                        rePassword: '',
-                    },
+                    goods: {}
                 },
                 show: {
-                    tags: false,
-                    userInfo: false,
-                    resetPassword: false,
+                    addGoods: false,
                 },
                 sysUser: sessionStorage.getItem("sysUser")
             };
@@ -217,18 +123,34 @@
             // this.getTagsList()
         },
         methods: {
-            getTagsList() {
-                axios.get('/api/tags/list').then(result => {
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    if (result.data !== null) {
-                        this.tagsOptions = result.data;
-                    }
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
+            async handlePreview(file) {
+                // if (!file.url && !file.preview) {
+                //     file.preview = await getBase64(file.originFileObj);
+                // }
+                // this.previewImage = file.url || file.preview;
+                // this.previewVisible = true;
+            },
+            changeUploadFile(info) {
+                // if (info.file.status === 'done') {
+                //     this.$message.success(`${info.file.name} 上传成功`);
+                //     this.showAddResultInfo()
+                //     this.form.addResultInfo.url = info.file.response.data.path
+                //     this.form.addResultInfo.fileName = info.file.name
+                // } else if (info.file.status === 'error') {
+                //     this.$message.error(`${info.file.name} 上传失败`);
+                // }
+            },
+            uploadFile() {
+
+            },
+            showAddGoods(type) {
+                this.show.addGoods = true
+            },
+            closeAddGoods() {
+                this.show.addGoods = false
+            },
+            saveGoods() {
+                this.closeAddGoods()
             },
             refreshData() {
                 this.getList()

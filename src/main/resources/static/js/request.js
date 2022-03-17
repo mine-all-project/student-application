@@ -29,3 +29,6 @@ request.interceptors.response.use(
     }
 )
 axios = request
+const headers = {
+    'crabapples-token': sessionStorage.getItem('token'),
+}
