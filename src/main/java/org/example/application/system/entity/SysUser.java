@@ -47,8 +47,8 @@ public class SysUser extends BaseEntity {
     @JSONField(serialize = false)
     private List<SysRole> sysRoles;
 
-    @Column(columnDefinition = "bit(1) default 0 not null comment '用户状态标记 0:正常 1:禁用'")
-    private Integer status;
+    @Column(columnDefinition = "tinyint(1) default 0 not null comment '用户状态标记 0:正常 1:禁用'")
+    private int status;
 
     @Override
     public String toString() {

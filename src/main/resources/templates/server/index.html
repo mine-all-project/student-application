@@ -22,11 +22,14 @@
 			<a-layout-content class="content">
 				<div data-th-replace="/components/server/navigation :: a-password"></div>
 <!--				<div data-th-replace="/components/server/navigation :: a-tags"></div>-->
+				<iframe :src="pageUrl" style="width: 100%;height: 100%;border: none"></iframe>
 			</a-layout-content>
 		</a-layout>
 		<div data-th-replace="/components/server/navigation :: a-footer"></div>
 	</a-layout>
 </div>
+
+
 <script src="./main.js"></script>
 </body>
 </html>

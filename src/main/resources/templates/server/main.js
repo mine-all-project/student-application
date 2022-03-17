@@ -1,45 +1,14 @@
-let instance = axios.create({timeout: 3000})
-instance.interceptors.request.use(
-    config => {
-        config.headers['crabapples-token'] = sessionStorage.getItem('token');
-        if (/get/i.test(config.method)) {
-            config.params = config.params || {}
-            config.params.temp = Date.parse(new Date()) / 1000
-        }
-        return config;
-    },
-    error => Promise.error(error)
-);
-instance.interceptors.response.use(
-    response => {
-        console.debug('api返回的数据-->', response)
-        if (response.status === 200) {
-            if (response.data.status === 401) {
-                setTimeout(() => {
-                    // window.location.href = '/server/login'
-                }, 3000)
-
-            }
-        }
-        return response
-    },
-    error => {
-        return Promise.reject(error)
-    }
-)
 const app = new Vue({
     el: '#app',
     components: {},
     data() {
         return {
+            pageUrl:'/server/user-list.html',
             labelCol: {span: 5},
             wrapperCol: {span: 16},
-            $http: instance,
-            axios: instance,
+            $http: axios,
+            axios: axios,
             form: {
-                paper: {title: '', fileInfo: {}, content: ''},
-                reader: {paper: {}, pitchRate: 100, speechRate: 100, voice: ''},
-                voices: [],
                 oldPassword: '',
                 password: '',
                 rePassword: '',
@@ -61,133 +30,21 @@ const app = new Vue({
                     {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                 ],
             },
-
-            voiceOptions: [
-                {
-                    label: '通用', children: [
-                        {value: 'aiqi', label: '温柔女声', name: '艾琪'},
-                        {value: 'aicheng', label: '标准男声', name: '艾城'},
-                        {value: 'aijia', label: '标准女声', name: '艾佳'},
-                        {value: 'siqi', label: '温柔女声', name: '思琪'},
-                        {value: 'sijia', label: '标准女声', name: '思佳'},
-                        {value: 'mashu', label: '儿童剧男声', name: '马树'},
-                        {value: 'yuer', label: '儿童剧女声', name: '悦儿'},
-                        {value: 'ruoxi', label: '温柔女声', name: '若兮'},
-                        {value: 'aida', label: '标准男声', name: '艾达'},
-                        {value: 'sicheng', label: '标准男声', name: '思诚'},
-                        {value: 'ninger', label: '标准女声', name: '宁儿'},
-                        {value: 'xiaoyun', label: '标准女声', name: '小云'},
-                        {value: 'xiaogang', label: '标准男声', name: '小刚'},
-                        {value: 'ruilin', label: '标准女声', name: '瑞琳'},
-                    ]
-                },
-                {
-                    label: '客服', children: [
-                        {value: 'aixia', label: '亲和女声', name: '艾夏'},
-                        {value: 'aiyue', label: '温柔女声', name: '艾悦'},
-                        {value: 'aiya', label: '严厉女声', name: '艾雅'},
-                        {value: 'aijing', label: '严厉女声', name: '艾婧'},
-                        {value: 'aimei', label: '甜美女声', name: '艾美'},
-                        {value: 'siyue', label: '温柔女声', name: '思悦'},
-                        {value: 'Aina', label: '浙普女声', name: '艾娜'},
-                        {value: 'aishuo', label: '自然男声', name: '艾硕'},
-                        {value: 'aiyu', label: '自然女声', name: '艾雨'},
-                        {value: 'xiaomei', label: '甜美女声', name: '小美'},
-                        {value: 'yina', label: '浙普女声', name: '伊娜'},
-                        {value: 'sijing', label: '严厉女声', name: '思婧'},
-                    ]
-                },
-                {
-                    label: '超高清', children: [
-                        {value: 'zhitian', label: '甜美女声', name: '知甜'},
-                        {value: 'zhiqing', label: '台湾话女声', name: '知青'},
-                    ]
-                },
-                {
-                    label: '直播', children: [
-                        {value: 'laomei', label: '吆喝女声', name: '老妹'},
-                        {value: 'laotie', label: '东北老铁', name: '老铁'},
-                        {value: 'xiaoxian', label: '亲切女声', name: '小仙'},
-                        {value: 'guijie', label: '亲切女声', name: '柜姐'},
-                        {value: 'stella', label: '知性女声', name: 'Stella'},
-                        {value: 'maoxiaomei', label: '活力女声', name: '猫小美'},
-                        {value: 'qiaowei', label: '卖场广播', name: '巧薇'},
-                        {value: 'ailun', label: '悬疑解说', name: '艾伦'},
-                        {value: 'aifei', label: '激昂解说', name: '艾飞'},
-                        {value: 'yaqun', label: '卖场广播', name: '亚群'},
-                        {value: 'stanley', label: '沉稳男声', name: 'Stanley'},
-                        {value: 'kenny', label: '温暖男声', name: 'Kenny'},
-                        {value: 'rosa', label: '自然女声', name: 'Rosa'},
-                    ]
-                },
-                {
-                    label: '童声', children: [
-                        {value: 'aitong', label: '儿童音', name: '艾彤'},
-                        {value: 'aiwei', label: '萝莉女声', name: '艾薇'},
-                        {value: 'jielidou', label: '治愈童声', name: '杰力豆'},
-                        {value: 'xiaobei', label: '萝莉女声', name: '小北'},
-                        {value: 'sitong', label: '儿童音', name: '思彤'},
-                        {value: 'aibao', label: '萝莉女声', name: '艾宝'},
-                    ]
-                },
-                {
-                    label: '英文', children: [
-                        {value: 'ava', label: '美式女声', name: 'ava'},
-                        {value: 'Luca', label: '英音男声', name: 'Luca'},
-                        {value: 'Luna', label: '英音女声', name: 'Luna'},
-                        {value: 'Emily', label: '英音女声', name: 'Emily'},
-                        {value: 'Eric', label: '英音男声', name: 'Eric'},
-                        {value: 'annie', label: '美语女声', name: 'Annie'},
-                        {value: 'Andy', label: '美音男声', name: 'Andy'},
-                        {value: 'William', label: '英音男声', name: 'William'},
-                        {value: 'Abby', label: '美音女声', name: 'Abby'},
-                        {value: 'Lydia', label: '英中双语', name: 'Lydia'},
-                        {value: 'Olivia', label: '英音女声', name: 'Olivia'},
-                        {value: 'Wendy', label: '英音女声', name: 'Wendy'},
-                        {value: 'Harry', label: '英音男声', name: 'Harry'},
-                    ]
-                },
-                {
-                    label: '方言', children: [
-                        {value: 'jiajia', label: '粤语女声', name: '佳佳'},
-                        {value: 'dahu', label: '东北话男声', name: '大虎'},
-                        {value: 'aikan', label: '天津话男声', name: '艾侃'},
-                        {value: 'taozi', label: '粤语女声', name: '桃子'},
-                        {value: 'qingqing', label: '台湾话女声', name: '青青'},
-                        {value: 'cuijie', label: '东北话女声', name: '翠姐'},
-                        {value: 'xiaoze', label: '湖南重口音', name: '小泽'},
-                        {value: 'shanshan', label: '粤语女声', name: '姗姗'},
-                    ]
-                },
-                {
-                    label: '多语种', children: [
-                        {value: 'tomoka', label: '日语女声', name: '智香'},
-                        {value: 'tomoya', label: '日语男声', name: '智也'},
-                        {value: 'indah', label: '印尼女声', name: 'Indah'},
-                        {value: 'farah', label: '马来语女声', name: 'Farah'},
-                        {value: 'tala', label: '菲律宾语女声', name: 'Tala'},
-                    ]
-                },
-            ],
             show: {changePassword: false, loading: false, read: false, play: false, voicing: false, parseText: false},
-            paperList: [{id: '1', title: '标题1', content: '内容1'}],
-            paperListAll: [],
-            readerSrc: '',
-            formLabelWidth: '80px',
             timer: null,
             menus: [],
             allMenus: [
                 {
                     key: '1',
-                    name: '科研管理',
+                    name: '用户管理',
                     icon: 'appstore',
                     url: '',
                     children: [
                         {
                             key: '11',
-                            name: '项目申报',
+                            name: '用户列表',
                             icon: 'appstore',
-                            url: '/manage-index/sub-apply',
+                            url: '/server/user-list',
                         },
                         {
                             key: '12',
@@ -205,86 +62,53 @@ const app = new Vue({
                 },
                 {
                     key: '2',
-                    name: '数据共享',
+                    name: '校园咨询',
+                    icon: 'appstore',
+                    url: '',
+                },
+                {
+                    key: '3',
+                    name: '校园动态',
                     icon: 'appstore',
                     url: '',
                     children: [
                         {
-                            key: '21',
-                            name: '我的项目',
+                            key: '31',
+                            name: '二手交易平台',
                             icon: 'appstore',
                             url: '/manage-index/mine-subject',
                         },
                         {
-                            key: '22',
+                            key: '32',
                             name: '我参与的',
                             icon: 'appstore',
                             url: '/manage-index/mine-join',
                         },
                         {
-                            key: '23',
-                            name: '共享项目',
+                            key: '33',
+                            name: '失物招领',
                             icon: 'appstore',
                             url: '/manage-index/mine-pull',
                         },
                         {
-                            key: '24',
-                            name: '共享审核',
+                            key: '34',
+                            name: '拼车',
+                            icon: 'appstore',
+                            url: '/manage-index/request-pull-list',
+                        },
+                        {
+                            key: '35',
+                            name: '就业速递',
+                            icon: 'appstore',
+                            url: '/manage-index/request-pull-list',
+                        },
+                        {
+                            key: '36',
+                            name: '其它',
                             icon: 'appstore',
                             url: '/manage-index/request-pull-list',
                         },
                     ]
-                },
-                {
-                    key: '3',
-                    name: '科研分析',
-                    icon: 'appstore',
-                    children: [
-                        {
-                            key: '31',
-                            name: '数据统计',
-                            icon: 'appstore',
-                            url: '/manage-index/data-statistical',
-                        },
-                        {
-                            key: '32',
-                            name: '工作评价',
-                            icon: 'appstore',
-                            url: '/manage-index/subject-discuss',
-                        },
-                    ]
-                },
-                {
-                    key: '4',
-                    name: '数据对接',
-                    icon: 'appstore',
-                    url: '/school-org/list',
-                    children: [
-                        // {
-                        //   key: '41',
-                        //   name: '信息发布',
-                        //   icon: 'appstore',
-                        //   url: '/manage-index/paper-list',
-                        // },
-                        {
-                            key: '41-1',
-                            name: '信息发布',
-                            icon: 'appstore',
-                            url: '/manage-index/paper-list1',
-                        },
-                        // {
-                        //   key: '42',
-                        //   name: '工作评价',
-                        //   icon: 'appstore',
-                        //   url: '/manage-index/subject-discuss',
-                        // },
-                    ]
-                },
-                {
-                    key: '99',
-                    name: '用户管理',
-                    icon: 'appstore',
-                    url: '/manage-index/user-list',
                 },
             ],
             sysMenus: [
@@ -521,6 +345,7 @@ const app = new Vue({
         },
         clickMenu(url) {
             console.log('clickMenu', url);
+            this.pageUrl = url
             // window.location.href = url
         },
         getUserInfo() {

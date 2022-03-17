@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Slf4j
 @Service
-public class FileFileServiceImpl implements FileInfoService {
+public class FileInfoServiceImpl implements FileInfoService {
     @Value("${virtualPath}")
     private String virtualPath;
     @Value("${uploadPath}")
@@ -24,7 +24,7 @@ public class FileFileServiceImpl implements FileInfoService {
 
     private final FileInfoDAO fileInfoDAO;
 
-    public FileFileServiceImpl(FileInfoDAO fileInfoDAO) {
+    public FileInfoServiceImpl(FileInfoDAO fileInfoDAO) {
         this.fileInfoDAO = fileInfoDAO;
     }
 
