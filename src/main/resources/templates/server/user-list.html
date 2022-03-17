@@ -52,9 +52,22 @@
 				</a-card>
 			</a-space>
 		</a-tab-pane>
-		<a-button slot="tabBarExtraContent">
-			发布急需
-		</a-button>
+		<a-tab-pane key="3" tab="需求列表">
+			<a-button @click="showAddGoods(1)">发布急需</a-button>
+			<a-divider></a-divider>
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in freeGoods">
+					<img slot="cover" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+					<a-card-meta title="Europe Street beat">
+						<template slot="description">
+							www.instagram.com
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
+		</a-tab-pane>
+
 	</a-tabs>
 	<a-modal title="发布" :visible.sync="show.addGoods" width="25%" ok-text="确认"
 					 cancel-text="取消" @ok="saveGoods" @cancel="closeAddGoods">

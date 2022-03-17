@@ -4,18 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * TODO 请求DTO
- *
-
- * 8/30/20 10:59 AM
-
-
-
- */
 @Getter
 @Setter
-public class RequestDTO extends PageDTO {
+public class DemandDTO {
+    private String id;
+    private String username;
+    private String name;
+
     @Override
     public String toString() {
         return JSONObject.toJSONString(this);

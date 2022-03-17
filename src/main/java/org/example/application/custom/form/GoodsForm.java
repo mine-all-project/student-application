@@ -20,7 +20,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Getter
 @Setter
-public class ResetPasswordForm extends BaseForm {
+public class GoodsForm extends BaseForm {
     @NotBlank(message = "id不能为空", groups = IsNotNull.class)
     private String id;
 
