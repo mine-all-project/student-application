@@ -10,10 +10,10 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableJpaAuditing
 @SpringBootApplication
-public class StudentApplication {
-    private static final Logger logger = LoggerFactory.getLogger(StudentApplication.class);
+public class Application {
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
     public static void main(String[] args) {
-        SpringApplication.run(StudentApplication.class, args);
+        SpringApplication.run(Application.class, args);
         logger.info("项目启动完成-->>");
     }
 

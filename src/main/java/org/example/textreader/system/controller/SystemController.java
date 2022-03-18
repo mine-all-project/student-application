@@ -59,7 +59,7 @@ public class SystemController extends BaseController {
     }
 
     /**
-     * 退出登录
+     * 登录
      */
     @PostMapping("/loginCheck")
     @ResponseBody
