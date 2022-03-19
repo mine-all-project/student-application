@@ -8,8 +8,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class BaseForm {
+public abstract class BaseForm<T extends BaseEntity> {
     protected String id;
     protected int pageIndex;
     protected int pageSize;
+
+    public abstract T toEntity();
 }

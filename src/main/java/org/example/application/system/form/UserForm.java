@@ -1,5 +1,7 @@
 package org.example.application.system.form;
 
+import org.example.application.common.ApplicationException;
+import org.example.application.common.BaseEntity;
 import org.example.application.common.BaseForm;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
@@ -14,12 +16,9 @@ import java.util.List;
 
 /**
  * TODO 用户信息提交Form
- *
-
+ * <p>
+ * <p>
  * 2020/1/27 11:26
-
-
-
  */
 @Getter
 @Setter
@@ -51,6 +50,11 @@ public class UserForm extends BaseForm {
     private List<String> tags;
 
     private Integer role;
+
+    @Override
+    public BaseEntity toEntity() {
+        throw new ApplicationException("暂无转换方法");
+    }
 
     @Override
     public String toString() {

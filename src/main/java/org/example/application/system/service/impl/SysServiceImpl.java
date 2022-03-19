@@ -47,11 +47,11 @@ public class SysServiceImpl implements SysService {
 
     private final UserService userService;
     private final UserDAO userDAO;
+    private final JwtConfigure jwtConfigure;
 
     private final SysMenuRepository sysMenuRepository;
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private final JwtConfigure jwtConfigure;
 
     public SysServiceImpl(ApplicationConfigure applicationConfigure,
                           UserService userService,

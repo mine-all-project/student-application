@@ -19,8 +19,8 @@ import java.util.List;
 public class Goods extends BaseEntity {
     @Column(columnDefinition = "varchar(256) default null comment '名称'")
     private String name;
-    @Column(columnDefinition = "varchar(256) default null comment '价格'")
-    private String price;
+    @Column(columnDefinition = "int default 0 comment '价格'")
+    private Integer price;
     @Column(columnDefinition = "varchar(256) default null comment '描述'")
     private String content;
     @Column(columnDefinition = "tinyint default null comment '商品类型 1:闲置 2:租赁'")
@@ -31,7 +31,8 @@ public class Goods extends BaseEntity {
     private SysUser publisher;
     @OneToMany
     private List<FileInfo> images;
-
+    @OneToMany
+    private List<Message> messages;
 
     @Override
     public String toString() {

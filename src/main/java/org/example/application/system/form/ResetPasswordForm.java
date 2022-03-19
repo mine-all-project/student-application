@@ -1,5 +1,7 @@
 package org.example.application.system.form;
 
+import org.example.application.common.ApplicationException;
+import org.example.application.common.BaseEntity;
 import org.example.application.common.BaseForm;
 import org.example.application.common.groups.IsLogin;
 import org.example.application.common.groups.IsNotNull;
@@ -31,6 +33,11 @@ public class ResetPasswordForm extends BaseForm {
 
     @NotBlank(message = "密码不能为空", groups = {IsNotNull.class, IsLogin.class})
     private String rePassword;
+
+    @Override
+    public BaseEntity toEntity() {
+        throw new ApplicationException("暂无转换方法");
+    }
 
     @Override
     public String toString() {

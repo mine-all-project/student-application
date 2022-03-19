@@ -17,171 +17,620 @@
           text-align: right;
           z-index: 1;
       }
+
+      .ant-input-number {
+          width: 100%;
+      }
 	</style>
 </head>
 <body>
 <div id="app">
+	<a-row>
+		<a-col :span="6">
+			<a-input placeholder="输入关键字搜索" v-model="form.searchText"></a-input>
+		</a-col>
+		<a-col :span="6" style="display: flex;justify-content: space-around">
+			<a-button type="primary" @click="search">搜索</a-button>
+			<a-button @click="resetList">重置</a-button>
+			<a-button @click="getMinePublish">我发布的</a-button>
+		</a-col>
+	</a-row>
+	<a-divider></a-divider>
 	<a-tabs type="card">
+		<a-col slot="tabBarExtraContent">
+			<a-button type="primary" @click="showAddGoods"> 发布商品</a-button>
+			<a-button type="default" @click="showAddDemand"> 发布需求</a-button>
+		</a-col>
 		<a-tab-pane key="1" tab="二手交易">
-			<a-button @click="showAddGoods(0)">发布闲置</a-button>
-			<a-divider></a-divider>
 			<a-space direction="vertical"
 							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
-				<a-card hoverable style="width: 240px" v-for="item in freeGoods">
-					<img slot="cover" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
-					<a-card-meta title="Europe Street beat">
+				<a-card hoverable style="width: 240px" v-for="item in freeGoods" @click="showGoodsInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.name">
 						<template slot="description">
-							www.instagram.com
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+								<span>￥{{item.price}}</span>
+							</div>
 						</template>
 					</a-card-meta>
 				</a-card>
 			</a-space>
 		</a-tab-pane>
 		<a-tab-pane key="2" tab="租赁">
-			<a-button @click="showAddGoods(1)">发布租赁</a-button>
 			<a-divider></a-divider>
 			<a-space direction="vertical"
 							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
-				<a-card hoverable style="width: 240px" v-for="item in freeGoods">
-					<img slot="cover" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
-					<a-card-meta title="Europe Street beat">
+				<a-card hoverable style="width: 240px" v-for="item in leaseGoods" @click="showGoodsInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.name">
 						<template slot="description">
-							www.instagram.com
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+								<span>￥{{item.price}}</span>
+							</div>
 						</template>
 					</a-card-meta>
 				</a-card>
 			</a-space>
 		</a-tab-pane>
 		<a-tab-pane key="3" tab="需求列表">
-			<a-button @click="showAddGoods(1)">发布急需</a-button>
 			<a-divider></a-divider>
 			<a-space direction="vertical"
 							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
-				<a-card hoverable style="width: 240px" v-for="item in freeGoods">
-					<img slot="cover" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
-					<a-card-meta title="Europe Street beat">
+				<a-card hoverable style="width: 240px" v-for="item in demands" @click="showDemandInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.title">
 						<template slot="description">
-							www.instagram.com
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+							</div>
 						</template>
 					</a-card-meta>
 				</a-card>
 			</a-space>
 		</a-tab-pane>
-
 	</a-tabs>
-	<a-modal title="发布" :visible.sync="show.addGoods" width="25%" ok-text="确认"
+	<a-modal title="发布商品" :visible.sync="show.addGoods" width="30%" ok-text="确认"
 					 cancel-text="取消" @ok="saveGoods" @cancel="closeAddGoods">
 		<a-form-model ref="ruleForm" :model="form.goods" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-			<a-form-model-item ref="name" label="商品名称" prop="name">
+			<a-form-model-item label="商品名称" prop="name">
 				<a-input v-model="form.goods.name"></a-input>
 			</a-form-model-item>
-			<a-form-model-item ref="image" label="商品图片" prop="image">
+			<a-form-model-item label="商品价格" prop="price">
+				<a-input-number :min="0" v-model="form.goods.price" style></a-input-number>
+			</a-form-model-item>
+			<a-form-model-item label="发布类型" prop="type">
+				<a-radio-group name="type" v-model="form.goods.type">
+					<a-radio :value="1">闲置</a-radio>
+					<a-radio :value="2">租赁</a-radio>
+				</a-radio-group>
+			</a-form-model-item>
+			<a-form-model-item label="商品描述" prop="content">
+				<a-textarea v-model="form.goods.content" :rows="4"></a-textarea>
+			</a-form-model-item>
+			<a-form-model-item label="商品图片" prop="image">
 				<div class="clearfix">
-					<a-upload name="file" list-type="picture-card" :file-list="fileList"
-										action="/api/uploadFile" @preview="handlePreview" @change="changeUploadFile">
-						<div v-if="fileList.length < 8">
+					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile">
+						<div v-if="temp.fileList.length < 9">
 							<a-icon type="plus"></a-icon>
-							<div class="ant-upload-text"> Upload</div>
+							<div class="ant-upload-text"> 上传</div>
 						</div>
 					</a-upload>
-					<a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-						<img alt="example" style="width: 100%" :src="previewImage"/>
-					</a-modal>
 				</div>
-
-
-				<a-upload name="file" :multiple="true" action="/api/uploadFile" :headers="headers"
-									:showUploadList="false" @change="changeUploadFile">
-					<a-button type="dashed" size="small" @click="uploadFile()">上传图片</a-button>
-				</a-upload>
 			</a-form-model-item>
 		</a-form-model>
 	</a-modal>
-
+	<a-modal title="发布需求" :visible.sync="show.addDemand" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveDemand" @cancel="closeAddDemand">
+		<a-form-model ref="ruleForm" :model="form.demand" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item label="标题" prop="title">
+				<a-input v-model="form.demand.title"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="描述" prop="content">
+				<a-textarea v-model="form.demand.content" :rows="4"></a-textarea>
+			</a-form-model-item>
+			<a-form-model-item label="图片" prop="image">
+				<div class="clearfix">
+					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile">
+						<div v-if="temp.fileList.length < 9">
+							<a-icon type="plus"></a-icon>
+							<div class="ant-upload-text"> 上传</div>
+						</div>
+					</a-upload>
+				</div>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="商品详情" :visible.sync="show.goodsInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showGoodsMessage" @cancel="closeGoodsInfo">
+		<a-col>
+			<a-button type="primary" @click="editGoods">编辑</a-button>
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteGoods">
+				<template slot="title">
+					<p>确定要删除吗？</p>
+				</template>
+				<a-button type="danger">删除</a-button>
+			</a-popconfirm>
+			<a-divider></a-divider>
+		</a-col>
+		<p style="display: flex;justify-content: space-around">
+			<span>商品名称：{{form.goods.name}} </span>
+			<span>商品类型：{{form.goods.type}} </span>
+			<span>商品价格：{{form.goods.price}} </span>
+		</p>
+		<a-divider></a-divider>
+		<p>{{form.goods.content}} </p>
+		<a-divider></a-divider>
+		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
+	</a-modal>
+	<a-modal title="需求详情" :visible.sync="show.demandInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showDemandMessage" @cancel="closeDemandInfo">
+		<a-col>
+			<a-button type="primary" @click="editDemand">编辑</a-button>
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteDemand">
+				<template slot="title">
+					<p>确定要删除吗？</p>
+				</template>
+				<a-button type="danger">删除</a-button>
+			</a-popconfirm>
+			<a-divider></a-divider>
+		</a-col>
+		<p> {{form.demand.title}} </p>
+		<a-divider></a-divider>
+		<p>{{form.goods.content}} </p>
+		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
+	</a-modal>
+	<a-modal title="商品评论" :visible.sync="show.goodsMessage" width="60%" :footer="null" @cancel="closeGoodsMessage">
+		<a-list v-if="form.goods.messages.length" :data-source="form.goods.messages"
+						:header="form.goods.name"
+						item-layout="horizontal">
+			<a-list-item slot="renderItem" slot-scope="item, index">
+				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
+									 :datetime="item.datetime"></a-comment>
+			</a-list-item>
+		</a-list>
+		<a-comment>
+			<!--			<a-avatar slot="avatar" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"-->
+			<!--								alt="Han Solo"></a-avatar>-->
+			<div slot="content">
+				<a-form-item>
+					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
+				</a-form-item>
+				<a-form-item>
+					<a-button type="primary" @click="saveGoodsMessage"> 发表</a-button>
+				</a-form-item>
+			</div>
+		</a-comment>
+	</a-modal>
+	<a-modal title="需求评论" :visible.sync="show.demandMessage" width="60%" :footer="null" @cancel="closeDemandMessage">
+		<a-list v-if="form.demand.messages.length" :data-source="form.demand.messages"
+						:header="form.demand.name"
+						item-layout="horizontal">
+			<a-list-item slot="renderItem" slot-scope="item, index">
+				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
+									 :datetime="item.datetime"></a-comment>
+			</a-list-item>
+		</a-list>
+		<a-comment>
+			<!--			<a-avatar slot="avatar" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"-->
+			<!--								alt="Han Solo"></a-avatar>-->
+			<div slot="content">
+				<a-form-item>
+					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
+				</a-form-item>
+				<a-form-item>
+					<a-button type="primary" @click="saveDemandMessage"> 发表</a-button>
+				</a-form-item>
+			</div>
+		</a-comment>
+	</a-modal>
+	<a-modal :visible="show.previewImg" :footer="null" @cancel="closePreview">
+		<img style="width: 100%" :src="temp.previewSrc"/>
+	</a-modal>
 </div>
 <script>
     const app = new Vue({
         el: '#app',
         data() {
             return {
-                fileList: [],
-                freeGoods: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},],
+                headers: headers,
+                freeGoods: [],
+                leaseGoods: [],
+                demands: [],
                 rules: {
                     name: [
                         {required: true, message: '请输入商品名称', trigger: 'change'},
-                        {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                        {min: 1, max: 16, message: '长度为1-16位', trigger: 'change'},
                     ],
-                    password: [
-                        {required: true, message: '请输入新密码', trigger: 'change'},
-                        {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                    price: [
+                        {required: true, message: '请输入商品价格', trigger: 'change'},
                     ],
-                    rePassword: [
-                        {required: true, message: '请重复新密码', trigger: 'change'},
-                        {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                    title: [
+                        {required: true, message: '请输入标题', trigger: 'change'},
+                    ],
+                    type: [
+                        {required: true, message: '请选择发布类型', trigger: 'change'},
                     ],
                 },
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
-                    goods: {}
+                    goods: {messages: []},
+                    demand: {messages: []},
+                    searchText: '',
+                    messages: [],
                 },
                 show: {
+                    previewImg: false,
                     addGoods: false,
+                    addDemand: false,
+                    goodsInfo: false,
+                    demandInfo: false,
+                    goodsMessage: false,
+                    demandMessage: false,
+                },
+                temp: {
+                    previewSrc: '',
+                    fileList: [],
+                    allGoods: [],
+                    searchGoods: [],
+                    messages: [],
+                    message: '',
+                    isAddGoods: false,
+                    isAddDemand: false,
+                    isMinePublish: false,
                 },
                 sysUser: sessionStorage.getItem("sysUser")
             };
         },
         mounted() {
             this.getList()
-            // this.getTagsList()
         },
         methods: {
-            async handlePreview(file) {
-                // if (!file.url && !file.preview) {
-                //     file.preview = await getBase64(file.originFileObj);
-                // }
-                // this.previewImage = file.url || file.preview;
-                // this.previewVisible = true;
+            showAddDemand() {
+                this.temp.isAddDemand = true
+                this.show.addDemand = true
             },
-            changeUploadFile(info) {
-                // if (info.file.status === 'done') {
-                //     this.$message.success(`${info.file.name} 上传成功`);
-                //     this.showAddResultInfo()
-                //     this.form.addResultInfo.url = info.file.response.data.path
-                //     this.form.addResultInfo.fileName = info.file.name
-                // } else if (info.file.status === 'error') {
-                //     this.$message.error(`${info.file.name} 上传失败`);
-                // }
+            closeAddDemand() {
+                this.show.addDemand = false
             },
-            uploadFile() {
+            saveDemand() {
+                let data = this.form.demand
+                let oldFile = data.images
+                let newFile = this.temp.fileList.map(e => {
+                    if (e.response) {
+                        return e.response.data
+                    } else {
+                        return null
+                    }
+                }).filter(e => {
+                    return e
+                })
+                if (this.temp.isAddDemand) {
+                    data.images = newFile
+                } else {
+                    data.images = [...oldFile, ...newFile]
+                }
+                axios.post('/api/demand/save', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeAddDemand()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            editDemand() {
+                this.show.addDemand = true
+                this.show.demandInfo = false
+                this.temp.isAddDemand = false
+            },
+            deleteDemand() {
+                axios.delete(`/api/demand/delete/${this.form.demand.id}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.closeDemandInfo()
+                    this.getMinePublish()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            showDemandInfo(demand) {
+                this.form.demand = demand
+                this.temp.fileList = demand.images.map(e => {
+                    return {
+                        uid: e.id,
+                        name: e.oldName,
+                        status: 'done',
+                        url: e.virtualPath,
+                    }
+                })
+                this.show.demandInfo = true
+            },
+            closeDemandInfo() {
+                this.show.demandInfo = false
+            },
+            showDemandMessage() {
+                this.show.demandMessage = true
+            },
+            closeDemandMessage() {
+                this.temp.messages = ''
+                this.show.demandMessage = false
+            },
+            saveDemandMessage() {
+                this.form.demand.messages.push({content: this.temp.message})
+                this.saveDemand()
+                this.temp.message = ''
+            },
 
-            },
-            showAddGoods(type) {
+            showAddGoods() {
+                this.form.goods = {messages: []}
+                this.temp.fileList = []
                 this.show.addGoods = true
+                this.temp.isAddGoods = true
             },
             closeAddGoods() {
                 this.show.addGoods = false
             },
             saveGoods() {
-                this.closeAddGoods()
+                let data = this.form.goods
+                let oldFile = data.images
+                let newFile = this.temp.fileList.map(e => {
+                    if (e.response) {
+                        return e.response.data
+                    } else {
+                        return null
+                    }
+                }).filter(e => {
+                    return e
+                })
+                if (this.temp.isAddGoods) {
+                    data.images = newFile
+                } else {
+                    data.images = [...oldFile, ...newFile]
+                }
+                axios.post('/api/goods/save', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeAddGoods()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
             },
-            refreshData() {
-                this.getList()
+            editGoods() {
+                this.show.addGoods = true
+                this.show.goodsInfo = false
+                this.temp.isAddGoods = false
             },
-            getList() {
-                axios.get('/api/user/list').then(response => {
+            deleteGoods() {
+                axios.delete(`/api/goods/delete/${this.form.goods.id}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.closeGoodsInfo()
+                    this.getMinePublish()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            showGoodsInfo(goods) {
+                this.form.goods = goods
+                this.temp.fileList = goods.images.map(e => {
+                    return {
+                        uid: e.id,
+                        name: e.oldName,
+                        status: 'done',
+                        url: e.virtualPath,
+                    }
+                })
+                this.show.goodsInfo = true
+            },
+            closeGoodsInfo() {
+                this.show.goodsInfo = false
+            },
+            showGoodsMessage() {
+                this.show.goodsMessage = true
+            },
+            closeGoodsMessage() {
+                this.temp.messages = ''
+                this.show.goodsMessage = false
+            },
+            saveGoodsMessage() {
+                this.form.goods.messages.push({content: this.temp.message})
+                this.saveGoods()
+                this.temp.message = ''
+            },
+
+
+            getMinePublish() {
+                this.temp.isMinePublish = true
+                axios.get(`/api/goods/mine`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.dataSource = result.data;
+                        this.filterGoods(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                axios.get(`/api/demand/mine`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterDemand(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
+            resetList() {
+                this.temp.searchGoods = ''
+                this.getList()
+            },
+            search() {
+                this.temp.isMinePublish = false
+                axios.get(`/api/goods/search/${this.form.searchText}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterGoods(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                axios.get(`/api/demand/search/${this.form.searchText}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterGoods(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            getList() {
+                this.temp.isMinePublish = false
+                axios.get('/api/goods/list').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterGoods(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                axios.get('/api/demand/list').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterDemand(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            filterGoods(source) {
+                const allGoods = source.map(e => {
+                    let images = e.images.sort((a, b) => {
+                        let createTimeA = new moment(a.createTime.substring(0, 19))
+                        let createTimeB = new moment(b.createTime.substring(0, 19))
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    return {
+                        id: e.id,
+                        name: e.name,
+                        price: e.price,
+                        image: e.images.length ? e.images[0].virtualPath : '',
+                        images: images,
+                        content: e.content,
+                        type: e.type,
+                        messages: e.messages,
+                    }
+                });
+                this.freeGoods = allGoods.filter(e => e.type === 1)
+                this.leaseGoods = allGoods.filter(e => e.type === 2)
+            },
+            filterDemand(source) {
+                const demands = source.map(e => {
+                    let images = e.images.sort((a, b) => {
+                        let createTimeA = new moment(a.createTime.substring(0, 19))
+                        let createTimeB = new moment(b.createTime.substring(0, 19))
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    return {
+                        id: e.id,
+                        title: e.title,
+                        price: e.price,
+                        image: e.images.length ? e.images[0].virtualPath : '',
+                        images: images,
+                        content: e.content,
+                        type: e.type,
+                        messages: e.messages,
+                    }
+                });
+
+                this.demands = demands
+                console.log('demands-->', demands)
+                console.log(this.demands)
+            },
+
+
+
+
+
+            closePreview() {
+                this.show.previewImg = false
+            },
+            async showPreview(file) {
+                if (file.response) {
+                    this.temp.previewSrc = file.response.data.virtualPath
+                } else {
+                    this.temp.previewSrc = file.url
+                }
+                this.show.previewImg = true
+            },
+            changeUploadFile(info) {
+                this.temp.fileList = info.fileList
+                if (info.file.status === 'done') {
+                    this.$message.success(`${info.file.name} 上传成功`);
+                } else if (info.file.status === 'error') {
+                    this.$message.error(`${info.file.name} 上传失败`);
+                }
+            },
+
+
+
+
             changeStatus(e) {
                 const _this = this;
                 this.$confirm({
@@ -225,10 +674,6 @@
                     },
                 });
             },
-            addUser() {
-                this.form.type = 0
-                this.show.userInfo = true
-            },
             editUser(e) {
                 this.form.type = 1
                 this.form.userInfo.id = e.id
@@ -244,53 +689,6 @@
                 // })
                 console.log(this.form.userInfo.role)
                 this.show.userInfo = true
-            },
-            closeUserForm() {
-                this.form.userInfo = {
-                    id: '',
-                    name: '',
-                    age: '',
-                    mail: '',
-                    role: null,
-                    status: null,
-                    tags: [],
-                }
-                this.show.userInfo = false
-                this.refreshData()
-            },
-            saveUserForm() {
-                console.log(this.form)
-                let url = this.form.type === 0 ? '/api/user/addUser' : '/api/user/editUser'
-                axios.post(url, this.form.userInfo).then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    this.closeUserForm()
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-            },
-            closeResetPassword() {
-                this.show.resetPassword = false
-            },
-            showResetPassword(e) {
-                this.form.resetPassword.id = e.id
-                this.show.resetPassword = true
-            },
-            submitResetPassword() {
-                console.log(this.form.resetPassword)
-                axios.post('/api/user/resetPassword', this.form.resetPassword).then(result => {
-                    console.log('通过api获取到的数据:', result);
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return
-                    }
-                    this.$message.success(result.message)
-                }).catch(function (error) {
-                    console.log('请求出现错误:', error);
-                });
             },
         }
     })

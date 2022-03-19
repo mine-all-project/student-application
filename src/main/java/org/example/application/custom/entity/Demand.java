@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.application.common.BaseEntity;
+import org.example.application.system.entity.FileInfo;
 import org.example.application.system.entity.SysUser;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.List;
 
 @Setter
 @Getter
@@ -24,6 +27,11 @@ public class Demand extends BaseEntity {
     private Integer status;
     @OneToOne
     private SysUser publisher;
+    @OneToMany
+    private List<FileInfo> images;
+    @OneToMany
+    private List<Message> messages;
+
 
     @Override
     public String toString() {
