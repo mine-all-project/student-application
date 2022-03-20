@@ -40,12 +40,12 @@
 				</a-form-model-item>
 				<a-form-model-item label="权限" prop="role">
 					<a-radio-group v-model="form.userInfo.role" default-value="2">
-						<a-radio value="0">超级管理员</a-radio>
-						<a-radio value="1">科研管理员</a-radio>
-						<a-radio value="2">科研人员</a-radio>
+<!--						<a-radio value="0">系统管理员</a-radio>-->
+						<a-radio value="1">用户管理员</a-radio>
+						<a-radio value="2">普通用户</a-radio>
 					</a-radio-group>
 				</a-form-model-item>
-				<a-form-model-item label="标签" prop="tags">
+				<a-form-model-item label="标签" prop="tags" v-if="false">
 					<a-select mode="multiple" v-model="form.userInfo.tags" placeholder="请选择标签">
 						<a-select-option v-for="item in tagsOptions" :key="item.id">
 							{{ item.name }}
@@ -74,9 +74,9 @@
         <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>
       </span>
 			<span slot="role" slot-scope="role">
-          <a-tag color="green" v-if="role === 0">超级管理员</a-tag>
-          <a-tag color="orange" v-if="role === 1">科研管理员</a-tag>
-          <a-tag color="blue" v-if="role === 2">科研人员</a-tag>
+          <a-tag color="green" v-if="role === 0">系统管理员</a-tag>
+          <a-tag color="orange" v-if="role === 1">用户管理员</a-tag>
+          <a-tag color="blue" v-if="role === 2">普通用户</a-tag>
       </span>
 			<span slot="status" slot-scope="status">
         <a-tag color="green" v-if="status === 0">正常</a-tag>
@@ -160,12 +160,6 @@
                         key: 'mail',
                     },
                     {
-                        dataIndex: 'tags',
-                        title: '标签',
-                        key: 'tags',
-                        scopedSlots: {customRender: 'tags'}
-                    },
-                    {
                         dataIndex: 'role',
                         title: '角色',
                         key: 'role',
@@ -200,8 +194,8 @@
                     },
                     resetPassword: {
                         id: '',
-                        password: '',
-                        rePassword: '',
+                        newPassword: '',
+                        againPassword: '',
                     },
                 },
                 show: {
@@ -217,19 +211,6 @@
             // this.getTagsList()
         },
         methods: {
-            getTagsList() {
-                axios.get('/api/tags/list').then(result => {
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    if (result.data !== null) {
-                        this.tagsOptions = result.data;
-                    }
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-            },
             refreshData() {
                 this.getList()
             },
@@ -304,10 +285,6 @@
                 this.form.userInfo.mail = e.mail
                 this.form.userInfo.role = e.role + ''
                 this.form.userInfo.status = e.status
-                // this.form.userInfo.tags = e.tags.map(r => {
-                //     return r.id
-                // })
-                console.log(this.form.userInfo.role)
                 this.show.userInfo = true
             },
             closeUserForm() {
