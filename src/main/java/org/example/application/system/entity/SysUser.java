@@ -1,10 +1,10 @@
 package org.example.application.system.entity;
 
-import org.example.application.common.BaseEntity;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.application.common.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -36,6 +36,10 @@ public class SysUser extends BaseEntity {
 
     @Column(columnDefinition = "varchar(64) comment '邮箱'")
     private String mail;
+
+    @OneToOne
+    @JoinColumn(columnDefinition = "comment '年龄'")
+    private FileInfo headImg;
 
     @Column(columnDefinition = "tinyint(4) comment '年龄'")
     private Integer age;

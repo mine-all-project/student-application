@@ -4,13 +4,13 @@ import org.example.application.common.BaseController;
 import org.example.application.common.groups.IsEdit;
 import org.example.application.common.groups.IsNotNull;
 import org.example.application.common.groups.IsStatusChange;
-import org.example.application.system.entity.SysUser;
-import org.example.application.system.form.UserForm;
-import org.example.application.system.service.UserService;
 import org.example.application.system.dto.ResponseDTO;
 import org.example.application.system.dto.SysUserDTO;
+import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
-import org.example.application.system.form.TagListForm;
+import org.example.application.system.form.UpdateUserInfoForm;
+import org.example.application.system.form.UserForm;
+import org.example.application.system.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -85,6 +85,15 @@ public class UserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
+    @PostMapping("/updateUserInfo")
+    public ResponseDTO updateUserInfo(@RequestBody UpdateUserInfoForm form) {
+        super.validator(form, IsNotNull.class);
+        logger.info("收到请求->修改用户信息,id:[{}]", form.getId());
+        userService.updateUserInfo(form);
+        logger.info("返回结果->修改用户信息完成");
+        return ResponseDTO.returnSuccess("操作成功");
+    }
+
     @GetMapping("/getUserInfo")
     public ResponseDTO getUserInfo(HttpServletRequest request) {
         logger.info("收到请求->获取当前用户信息");
@@ -108,12 +117,5 @@ public class UserController extends BaseController {
         logger.info("返回结果->获取用户列表结束:[{}]", list);
         return ResponseDTO.returnSuccess("操作成功", list);
     }
-
-    @PostMapping("/updateTags")
-    public ResponseDTO updateTags(HttpServletRequest request, @RequestBody TagListForm form) {
-        logger.info("收到请求->修改用户标签");
-        userService.updateTags(request, form);
-        logger.info("返回结果->修改用户标签");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
+//1bbd886460827015e5d605ed44252251
 }

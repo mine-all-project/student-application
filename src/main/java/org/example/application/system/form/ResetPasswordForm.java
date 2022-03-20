@@ -11,15 +11,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-/**
- * TODO 用户信息提交Form
- *
-
- * 2020/1/27 11:26
- * e-mail
-
-
- */
 @Getter
 @Setter
 public class ResetPasswordForm extends BaseForm {
@@ -29,10 +20,10 @@ public class ResetPasswordForm extends BaseForm {
     private String oldPassword;
 
     @NotBlank(message = "密码不能为空", groups = {IsNotNull.class, IsLogin.class})
-    private String password;
+    private String newPassword;
 
     @NotBlank(message = "密码不能为空", groups = {IsNotNull.class, IsLogin.class})
-    private String rePassword;
+    private String againPassword;
 
     @Override
     public BaseEntity toEntity() {

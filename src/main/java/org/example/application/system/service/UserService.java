@@ -4,7 +4,7 @@ import org.example.application.common.BaseService;
 import org.example.application.system.dto.SysUserDTO;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
-import org.example.application.system.form.TagListForm;
+import org.example.application.system.form.UpdateUserInfoForm;
 import org.example.application.system.form.UserForm;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,9 +79,9 @@ public interface UserService extends BaseService {
 
     SysUser getUserInfo(HttpServletRequest request);
 
-    void updateTags(HttpServletRequest request, TagListForm form);
-
     void resetPassword(ResetPasswordForm form);
 
     void updatePassword(ResetPasswordForm form);
+
+    void updateUserInfo(UpdateUserInfoForm form);
 }

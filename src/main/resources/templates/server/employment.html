@@ -32,73 +32,72 @@
 		<a-col :span="6" style="display: flex;justify-content: space-around">
 			<a-button type="primary" @click="search">搜索</a-button>
 			<a-button @click="resetList">重置</a-button>
+			<a-button @click="getMinePublish">我发布的</a-button>
 		</a-col>
 	</a-row>
 	<a-divider></a-divider>
 	<a-tabs type="card">
-		<a-tab-pane key="1" tab="拼车">
-			<a-table :columns="columns.employment" :data-source="tableDataList.employment" rowKey="id" :pagination="false">
-				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
-				<span slot="content" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="publisher" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text.username }}</span>
-            </template>
-            <span class="step-content">{{ text.username }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="createTime" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="note" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="type" slot-scope="text">
-					  <a-tag color="green" v-if="text === 1">拾到</a-tag>
-					  <a-tag color="blue" v-if="text === 2">丢失</a-tag>
-				</span>
-				<span slot="status" slot-scope="text">
-          <a-tag color="green" v-if="text === 0">正常</a-tag>
-          <a-tag color="blue" v-if="text === 1">待审</a-tag>
-          <a-tag color="red" v-if="text === 2">驳回</a-tag>
-				</span>
-				<span slot="action" slot-scope="text, record">
-					<a-button type="primary" size="small" @click="showChangeEmploymentStatus(record,0)">通过</a-button>
-					<a-button type="danger" size="small" @click="showChangeEmploymentStatus(record,2)">驳回</a-button>
-					<a-button type="default" size="small" @click="showEmploymentInfo(record)">查看详情</a-button>
-      	</span>
-			</a-table>
+		<a-col slot="tabBarExtraContent">
+			<a-button type="default" @click="showAddEmployment"> 发布</a-button>
+		</a-col>
+		<a-tab-pane key="1" tab="就业速递">
+			<a-divider></a-divider>
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in employment" @click="showEmploymentInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.title">
+						<template slot="description">
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+							</div>
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
 		</a-tab-pane>
 	</a-tabs>
-	<a-modal title="审核" :visible.sync="show.changeEmploymentStatus" width="30%" ok-text="确认"
-					 cancel-text="取消" @ok="saveEmploymentCheck" @cancel="closeChangeEmploymentStatus">
+	<a-modal title="发布" :visible.sync="show.addEmployment" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveEmployment" @cancel="closeAddEmployment">
 		<a-form-model ref="ruleForm" :model="form.employment" :rules="rules" :label-col="labelCol"
 									:wrapper-col="wrapperCol">
-			<a-form-model-item label="审核意见" prop="note">
-				<a-input v-model="form.employment.note"></a-input>
+			<a-form-model-item label="标题" prop="title">
+				<a-input v-model="form.employment.title"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="详情" prop="content">
+				<a-textarea v-model="form.employment.content" :rows="4"></a-textarea>
+			</a-form-model-item>
+			<a-form-model-item label="图片" prop="image">
+				<div class="clearfix">
+					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile"
+										:remove="removeUploadFile">
+						<div v-if="temp.fileList.length < 9">
+							<a-icon type="plus"></a-icon>
+							<div class="ant-upload-text"> 上传</div>
+						</div>
+					</a-upload>
+				</div>
 			</a-form-model-item>
 		</a-form-model>
 	</a-modal>
 	<a-modal title="详情" :visible.sync="show.employmentInfo" width="60%" ok-text="查看评论"
 					 cancel-text="取消" @ok="showEmploymentMessage" @cancel="closeEmploymentInfo">
+		<a-col>
+			<a-button type="primary" @click="editEmployment">编辑</a-button>
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteEmployment">
+				<template slot="title">
+					<p>确定要删除吗？</p>
+				</template>
+				<a-button type="danger">删除</a-button>
+			</a-popconfirm>
+			<a-divider></a-divider>
+		</a-col>
 		<p> {{form.employment.title}} </p>
 		<a-divider></a-divider>
 		<p>{{form.employment.content}} </p>
@@ -136,78 +135,47 @@
         el: '#app',
         data() {
             return {
-                columns: {
-                    employment: [
-                        {
-                            dataIndex: 'title',
-                            title: '标题',
-                        },
-                        {
-                            dataIndex: 'content',
-                            title: '描述',
-                            scopedSlots: {customRender: 'content'},
-                            ellipsis: true,
-                            width: '20%'
-                        },
-                        {
-                            dataIndex: 'status',
-                            title: '状态',
-                            scopedSlots: {customRender: 'status'},
-                        },
-                        {
-                            dataIndex: 'publisher',
-                            title: '发布人',
-                            scopedSlots: {customRender: 'publisher'},
-                        },
-                        {
-                            dataIndex: 'createTimeStr',
-                            title: '发布时间',
-                            scopedSlots: {customRender: 'createTime'},
-                        },
-                        {
-                            dataIndex: 'note',
-                            title: '操作备注',
-                            scopedSlots: {customRender: 'note'},
-                            ellipsis: true,
-                            width: '10%'
-                        },
-                        {
-                            dataIndex: 'action',
-                            title: '操作',
-                            scopedSlots: {customRender: 'action'},
-                            width: '20%'
-                        },
-                    ],
-                },
-                tableDataList: {
-                    employment: [],
-                },
+                headers: headers,
+                employment: [],
                 rules: {
-                    note: [
-                        {required: true, message: '请输入商品名称', trigger: 'change'},
+                    title: [
+                        {required: true, message: '请输入标题', trigger: 'change'},
+                    ],
+                    fromAddress: [
+                        {required: true, message: '请输入出发地', trigger: 'change'},
+                    ],
+                    targetAddress: [
+                        {required: true, message: '请输入目的地', trigger: 'change'},
+                    ],
+                    personCount: [
+                        {required: true, message: '请输入人数', trigger: 'change'},
+                    ],
+                    beginTime: [
+                        {required: true, message: '请选择出发时间', trigger: 'change'},
                     ],
                 },
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
-                    employment: {messages: [], images: {}},
-                    demand: {messages: [], images: {}},
+                    employment: {messages: []},
                     searchText: '',
                     messages: [],
                 },
                 show: {
                     previewImg: false,
+                    addEmployment: false,
                     employmentInfo: false,
                     employmentMessage: false,
-                    changeEmploymentStatus: false,
                 },
                 temp: {
+                    defaultDateTime: new moment(),
+                    beginTimeMode: '',
                     previewSrc: '',
                     fileList: [],
-                    allEmployment: [],
-                    searchEmployment: [],
                     messages: [],
                     message: '',
+                    isAddEmployment: false,
+                    isMinePublish: false,
                 },
                 sysUser: sessionStorage.getItem("sysUser")
             };
@@ -216,37 +184,74 @@
             this.getList()
         },
         methods: {
-            showChangeEmploymentStatus(record, status) {
-                this.form.employment = record
-                this.form.employment.status = status
-                this.show.changeEmploymentStatus = true
-            },
-            closeChangeEmploymentStatus() {
-                this.show.changeEmploymentStatus = false
-            },
-            saveEmploymentCheck() {
-                let data = this.form.employment
-                let url = '/api/employment'
-                if (data.status === 0) {
-                    url += '/checkPass'
-                } else if (data.status === 2) {
-                    url += '/checkFail'
+            showTimePicker(open) {
+                console.log('open', open)
+                if (open) {
+                    this.temp.beginTimeMode = 'time';
                 }
-                axios.post(url, data).then(response => {
+            },
+            showDatePicker(value, mode) {
+                console.log('value', value)
+                console.log('mode', mode)
+
+                this.temp.beginTimeMode = mode;
+            },
+            showAddEmployment() {
+                this.temp.isAddEmployment = true
+                this.show.addEmployment = true
+            },
+            closeAddEmployment() {
+                this.show.addEmployment = false
+            },
+            saveEmployment() {
+                let data = this.form.employment
+                let oldFile = data.images
+                let newFile = this.temp.fileList.map(e => {
+                    if (e.response) {
+                        return e.response.data
+                    } else {
+                        return null
+                    }
+                }).filter(e => {
+                    return e
+                })
+                if (this.temp.isAddEmployment) {
+                    data.images = newFile
+                } else {
+                    data.images = [...oldFile, ...newFile]
+                }
+                axios.post('/api/employment/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     this.$message.success(result.message);
-                    this.form.demand = {messages: []}
+                    this.closeAddEmployment()
+                    this.form.employment = {messages: []}
                     this.getList()
-                    this.show.changeEmploymentStatus = false
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-
+            editEmployment() {
+                this.show.addEmployment = true
+                this.show.employmentInfo = false
+                this.temp.isAddEmployment = false
+            },
+            deleteEmployment() {
+                axios.delete(`/api/employment/delete/${this.form.employment.id}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.closeEmploymentInfo()
+                    this.getMinePublish()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             showEmploymentInfo(employment) {
                 this.form.employment = employment
                 this.temp.fileList = employment.images.map(e => {
@@ -274,7 +279,21 @@
                 this.saveEmployment()
                 this.temp.message = ''
             },
-
+            getMinePublish() {
+                this.temp.isMinePublish = true
+                axios.get(`/api/employment/mine`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterEmployment(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             resetList() {
                 this.temp.search = ''
                 this.getList()
@@ -312,26 +331,27 @@
             filterEmployment(source) {
                 const employment = source.map(e => {
                     let images = e.images.sort((a, b) => {
-                        let createTimeA = new moment(a.createTime)
-                        let createTimeB = new moment(b.createTime)
+                        let createTimeA = new moment(a.createTime.substring(0, 19))
+                        let createTimeB = new moment(b.createTime.substring(0, 19))
                         return createTimeA.diff(createTimeB, 's');
                     })
                     return {
                         id: e.id,
-                        name: e.name,
                         title: e.title,
+                        beginTime: new moment(e.price),
+                        personCount: e.personCount,
+                        fromAddress: e.fromAddress,
+                        targetAddress: e.targetAddress,
                         image: e.images.length ? e.images[0].virtualPath : '',
                         images: images,
                         content: e.content,
                         type: e.type,
-                        status: e.status,
-                        note: e.note,
-                        publisher: e.publisher,
-                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                         messages: e.messages,
+                        createTime: e.createTime,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                     }
                 });
-                this.tableDataList.employment = employment
+                this.employment = employment
             },
             closePreview() {
                 this.show.previewImg = false
@@ -343,6 +363,19 @@
                     this.temp.previewSrc = file.url
                 }
                 this.show.previewImg = true
+            },
+            changeUploadFile(info) {
+                this.temp.fileList = info.fileList
+                if (info.file.status === 'done') {
+                    this.$message.success(`${info.file.name} 上传成功`);
+                } else if (info.file.status === 'error') {
+                    this.$message.error(`${info.file.name} 上传失败`);
+                }
+            },
+            removeUploadFile(file) {
+                this.form.employment.images = this.form.employment.images.filter(e => {
+                    return e.virtualPath !== file.url
+                })
             },
         }
     })

@@ -8,7 +8,7 @@ import org.example.application.system.dao.UserDAO;
 import org.example.application.system.dto.SysUserDTO;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
-import org.example.application.system.form.TagListForm;
+import org.example.application.system.form.UpdateUserInfoForm;
 import org.example.application.system.form.UserForm;
 import org.example.application.system.service.UserService;
 import cn.hutool.crypto.digest.MD5;
@@ -25,12 +25,9 @@ import java.util.List;
 
 /**
  * TODO 用户相关服务实现类
- *
-
+ * <p>
+ * <p>
  * 2020/1/27 2:10
-
-
-
  */
 @Service
 public class UserServiceImpl implements UserService {
@@ -135,42 +132,45 @@ public class UserServiceImpl implements UserService {
         return getUserInfo(request, jwtConfigure, userDAO, isDebug);
     }
 
-    @Override
-    public void updateTags(HttpServletRequest request, TagListForm form) {
-        SysUser user = getUserInfo(request);
-        userDAO.save(user);
-    }
 
     @Override
     public void resetPassword(ResetPasswordForm form) {
-        String password = form.getPassword();
-        String rePassword = form.getRePassword();
-        if (!password.equals(rePassword)) {
+        String newPassword = form.getNewPassword();
+        String againPassword = form.getAgainPassword();
+        if (!newPassword.equals(againPassword)) {
             throw new ApplicationException("两次密码不一致");
         }
         SysUser user = userDAO.findById(form.getId());
         AssertUtils.notNull(user, "用户不存在");
-        password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
-        user.setPassword(password);
+        newPassword = MD5.create().digestHex(form.getNewPassword().getBytes(StandardCharsets.UTF_8));
+        user.setPassword(newPassword);
         userDAO.save(user);
     }
 
     @Override
     public void updatePassword(ResetPasswordForm form) {
-        String password = form.getPassword();
-        String rePassword = form.getRePassword();
-        if (!password.equals(rePassword)) {
+        String newPassword = form.getNewPassword();
+        String againPassword = form.getAgainPassword();
+        if (!newPassword.equals(againPassword)) {
             throw new ApplicationException("两次密码不一致");
         }
         SysUser user = userDAO.findById(form.getId());
         AssertUtils.notNull(user, "用户不存在");
         String oldPassword = MD5.create().digestHex(form.getOldPassword().getBytes(StandardCharsets.UTF_8));
         if (user.getPassword().equals(oldPassword)) {
-            password = MD5.create().digestHex(password.getBytes(StandardCharsets.UTF_8));
-            user.setPassword(password);
+            newPassword = MD5.create().digestHex(newPassword.getBytes(StandardCharsets.UTF_8));
+            user.setPassword(newPassword);
             userDAO.save(user);
             return;
         }
         throw new ApplicationException("密码错误");
+    }
+
+    @Override
+    public void updateUserInfo(UpdateUserInfoForm form) {
+        SysUser user = userDAO.findById(form.getId());
+        AssertUtils.notNull(user, "用户不存在");
+        BeanUtils.copyProperties(form, user);
+        userDAO.save(user);
     }
 }
