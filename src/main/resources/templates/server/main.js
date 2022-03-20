@@ -68,33 +68,27 @@ const app = new Vue({
                         },
                         {
                             key: '32',
-                            name: '我参与的',
-                            icon: 'appstore',
-                            url: '/manage-index/mine-join',
-                        },
-                        {
-                            key: '33',
                             name: '失物招领',
                             icon: 'appstore',
-                            url: '/manage-index/mine-pull',
+                            url: '/server/lost-items.html',
                         },
                         {
                             key: '34',
                             name: '拼车',
                             icon: 'appstore',
-                            url: '/manage-index/request-pull-list',
+                            url: '/server/car-pooling.html',
                         },
                         {
                             key: '35',
                             name: '就业速递',
                             icon: 'appstore',
-                            url: '/manage-index/request-pull-list',
+                            url: '/server/employment.html',
                         },
                         {
                             key: '36',
                             name: '其它',
                             icon: 'appstore',
-                            url: '/manage-index/request-pull-list',
+                            url: '/server/other.html',
                         },
                     ]
                 },
