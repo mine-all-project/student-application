@@ -209,12 +209,12 @@
 						item-layout="horizontal">
 			<a-list-item slot="renderItem" slot-scope="item, index">
 				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
-									 :datetime="item.datetime"></a-comment>
+									 :datetime="item.datetime">
+					<a-avatar slot="avatar" :src="item.publisher.headImg.virtualPath" v-if="item.publisher.headImg"></a-avatar>
+				</a-comment>
 			</a-list-item>
 		</a-list>
 		<a-comment>
-			<!--			<a-avatar slot="avatar" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"-->
-			<!--								alt="Han Solo"></a-avatar>-->
 			<div slot="content">
 				<a-form-item>
 					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
@@ -231,12 +231,12 @@
 						item-layout="horizontal">
 			<a-list-item slot="renderItem" slot-scope="item, index">
 				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
-									 :datetime="item.datetime"></a-comment>
+									 :datetime="item.datetime">
+					<a-avatar slot="avatar" :src="item.publisher.headImg.virtualPath" v-if="item.publisher.headImg"></a-avatar>
+				</a-comment>
 			</a-list-item>
 		</a-list>
 		<a-comment>
-			<!--			<a-avatar slot="avatar" src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"-->
-			<!--								alt="Han Solo"></a-avatar>-->
 			<div slot="content">
 				<a-form-item>
 					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
@@ -342,6 +342,8 @@
                     }
                     this.$message.success(result.message);
                     this.closeAddDemand()
+                    this.closeDemandMessage()
+                    this.closeDemandInfo()
                     this.form.demand = {messages: []}
                     this.getList()
                 }).catch(function (error) {
@@ -428,6 +430,8 @@
                     }
                     this.$message.success(result.message);
                     this.closeAddGoods()
+                    this.closeGoodsMessage()
+                    this.closeGoodsInfo()
                     this.form.goods = {messages: []}
                     this.getList()
                 }).catch(function (error) {
