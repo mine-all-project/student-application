@@ -87,7 +87,8 @@
 			<a-form-model-item label="图片" prop="image">
 				<div class="clearfix">
 					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
-										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile">
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile"
+										:remove="removeUploadFile">
 						<div v-if="temp.fileList.length < 9">
 							<a-icon type="plus"></a-icon>
 							<div class="ant-upload-text"> 上传</div>
@@ -388,6 +389,11 @@
                 } else if (info.file.status === 'error') {
                     this.$message.error(`${info.file.name} 上传失败`);
                 }
+            },
+            removeUploadFile(file) {
+                this.form.carPooling.images = this.form.carPooling.images.filter(e => {
+                    return e.virtualPath !== file.url
+                })
             },
         }
     })

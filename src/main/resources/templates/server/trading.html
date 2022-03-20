@@ -127,7 +127,8 @@
 			<a-form-model-item label="商品图片" prop="image">
 				<div class="clearfix">
 					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
-										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile">
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile"
+										:remove="removeUploadFile">
 						<div v-if="temp.fileList.length < 9">
 							<a-icon type="plus"></a-icon>
 							<div class="ant-upload-text"> 上传</div>
@@ -149,7 +150,8 @@
 			<a-form-model-item label="图片" prop="image">
 				<div class="clearfix">
 					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
-										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile">
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile"
+										:remove="removeUploadFile">
 						<div v-if="temp.fileList.length < 9">
 							<a-icon type="plus"></a-icon>
 							<div class="ant-upload-text"> 上传</div>
@@ -273,8 +275,8 @@
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
-                    goods: {messages: []},
-                    demand: {messages: []},
+                    goods: {messages: [], images: {}},
+                    demand: {messages: [], images: {}},
                     searchText: '',
                     messages: [],
                 },
@@ -623,6 +625,18 @@
                 } else if (info.file.status === 'error') {
                     this.$message.error(`${info.file.name} 上传失败`);
                 }
+            },
+            removeUploadFile(file) {
+                try {
+                    this.form.goods.images = this.form.goods.images.filter(e => {
+                        return e.virtualPath !== file.url
+                    })
+                } catch (e) {
+                    this.form.demand.images = this.form.demand.images.filter(e => {
+                        return e.virtualPath !== file.url
+                    })
+                }
+
             },
 
         }
