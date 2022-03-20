@@ -227,6 +227,7 @@
                     }
                     this.$message.success(result.message);
                     this.closeAddEmployment()
+                    this.form.employment = {messages: []}
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);

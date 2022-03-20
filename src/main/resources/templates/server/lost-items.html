@@ -230,6 +230,7 @@
                     }
                     this.$message.success(result.message);
                     this.closeAddLostItems()
+                    this.form.lostItems = {messages: []}
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -280,7 +281,6 @@
                 this.saveLostItems()
                 this.temp.message = ''
             },
-
 
 
             getMinePublish() {

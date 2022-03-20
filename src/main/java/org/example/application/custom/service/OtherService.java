@@ -1,20 +1,20 @@
 package org.example.application.custom.service;
 
 import org.example.application.common.BaseService;
-import org.example.application.custom.entity.Goods;
-import org.example.application.custom.form.GoodsForm;
+import org.example.application.custom.entity.Other;
+import org.example.application.custom.form.OtherForm;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface OtherService extends BaseService {
-    List<Goods> getAll();
+    List<Other> getAll();
 
-    Goods save(HttpServletRequest request,GoodsForm form);
+    Other save(HttpServletRequest request,OtherForm form);
 
-    List<Goods> search(String keywords);
+    List<Other> search(String keywords);
 
-    List<Goods> getListByMine(HttpServletRequest request);
+    List<Other> getListByMine(HttpServletRequest request);
 
     void deleteById(String id);
 }

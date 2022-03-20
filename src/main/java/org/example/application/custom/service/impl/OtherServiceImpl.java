@@ -2,10 +2,10 @@ package org.example.application.custom.service.impl;
 
 import org.example.application.common.DIC;
 import org.example.application.common.utils.jwt.JwtConfigure;
-import org.example.application.custom.dao.GoodsDAO;
-import org.example.application.custom.entity.Goods;
-import org.example.application.custom.form.GoodsForm;
-import org.example.application.custom.service.GoodsService;
+import org.example.application.custom.dao.OtherDAO;
+import org.example.application.custom.entity.Other;
+import org.example.application.custom.form.OtherForm;
+import org.example.application.custom.service.OtherService;
 import org.example.application.custom.service.MessageService;
 import org.example.application.system.dao.UserDAO;
 import org.example.application.system.entity.SysUser;
@@ -16,49 +16,49 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
-public class OtherServiceImpl implements GoodsService {
-    private final GoodsDAO goodsDAO;
+public class OtherServiceImpl implements OtherService {
+    private final OtherDAO otherDAO;
     @Value("${isDebug}")
     private boolean isDebug;
     private final UserDAO userDAO;
     private final JwtConfigure jwtConfigure;
     private final MessageService messageService;
 
-    public OtherServiceImpl(GoodsDAO goodsDAO, UserDAO userDAO, JwtConfigure jwtConfigure, MessageService messageService) {
-        this.goodsDAO = goodsDAO;
+    public OtherServiceImpl(OtherDAO otherDAO, UserDAO userDAO, JwtConfigure jwtConfigure, MessageService messageService) {
+        this.otherDAO = otherDAO;
         this.userDAO = userDAO;
         this.jwtConfigure = jwtConfigure;
         this.messageService = messageService;
     }
 
     @Override
-    public List<Goods> getAll() {
-        return goodsDAO.getAll();
+    public List<Other> getAll() {
+        return otherDAO.getAll();
     }
 
     @Override
-    public List<Goods> search(String keywords) {
-        return goodsDAO.search(keywords);
+    public List<Other> search(String keywords) {
+        return otherDAO.search(keywords);
     }
 
     @Override
-    public Goods save(HttpServletRequest request, GoodsForm form) {
+    public Other save(HttpServletRequest request, OtherForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
-        Goods entity = form.toEntity();
+        Other entity = form.toEntity();
         entity.setPublisher(user);
         entity.setStatus(DIC.CHECK_WAIT);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
-        return goodsDAO.save(entity);
+        return otherDAO.save(entity);
     }
 
     @Override
-    public List<Goods> getListByMine(HttpServletRequest request) {
+    public List<Other> getListByMine(HttpServletRequest request) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
-        return goodsDAO.getBySysUser(user);
+        return otherDAO.getBySysUser(user);
     }
 
     @Override
     public void deleteById(String id) {
-        goodsDAO.deleteById(id);
+        otherDAO.deleteById(id);
     }
 }
