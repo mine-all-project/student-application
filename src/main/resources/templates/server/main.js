@@ -3,7 +3,7 @@ const app = new Vue({
     components: {},
     data() {
         return {
-            pageUrl:'/server/user-list.html',
+            pageUrl:'/server/demo.html',
             labelCol: {span: 5},
             wrapperCol: {span: 16},
             $http: axios,
@@ -46,18 +46,6 @@ const app = new Vue({
                             icon: 'appstore',
                             url: '/server/user-list',
                         },
-                        {
-                            key: '12',
-                            name: '项目审核',
-                            icon: 'appstore',
-                            url: '/manage-index/audit-list',
-                        },
-                        {
-                            key: '13',
-                            name: '标签管理',
-                            icon: 'appstore',
-                            url: '/manage-index/tags',
-                        },
                     ]
                 },
                 {
@@ -76,7 +64,7 @@ const app = new Vue({
                             key: '31',
                             name: '二手交易平台',
                             icon: 'appstore',
-                            url: '/manage-index/mine-subject',
+                            url: '/server/trading.html',
                         },
                         {
                             key: '32',

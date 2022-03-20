@@ -3,10 +3,10 @@ package org.example.application.custom.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.DIC;
 import org.example.application.common.utils.jwt.JwtConfigure;
-import org.example.application.custom.dao.DemandDAO;
-import org.example.application.custom.entity.Demand;
-import org.example.application.custom.form.DemandForm;
-import org.example.application.custom.service.DemandService;
+import org.example.application.custom.dao.LostItemsDAO;
+import org.example.application.custom.entity.LostItems;
+import org.example.application.custom.form.LostItemsForm;
+import org.example.application.custom.service.LostItemsService;
 import org.example.application.custom.service.MessageService;
 import org.example.application.system.dao.UserDAO;
 import org.example.application.system.entity.SysUser;
@@ -18,50 +18,50 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class DemandServiceImpl implements DemandService {
-    private final DemandDAO demandDAO;
+public class LostItemsServiceImpl implements LostItemsService {
+    private final LostItemsDAO lostItemsDAO;
     @Value("${isDebug}")
     private boolean isDebug;
     private final UserDAO userDAO;
     private final JwtConfigure jwtConfigure;
     private final MessageService messageService;
 
-    public DemandServiceImpl(DemandDAO demandDAO, UserDAO userDAO, JwtConfigure jwtConfigure, MessageService messageService) {
-        this.demandDAO = demandDAO;
+    public LostItemsServiceImpl(LostItemsDAO lostItemsDAO, UserDAO userDAO, JwtConfigure jwtConfigure, MessageService messageService) {
+        this.lostItemsDAO = lostItemsDAO;
         this.userDAO = userDAO;
         this.jwtConfigure = jwtConfigure;
         this.messageService = messageService;
     }
 
     @Override
-    public List<Demand> getAll() {
-        return demandDAO.getAll();
+    public List<LostItems> getAll() {
+        return lostItemsDAO.getAll();
     }
 
     @Override
-    public List<Demand> search(String keywords) {
-        return demandDAO.search(keywords);
+    public List<LostItems> search(String keywords) {
+        return lostItemsDAO.search(keywords);
     }
 
     @Override
-    public Demand save(HttpServletRequest request, DemandForm form) {
+    public LostItems save(HttpServletRequest request, LostItemsForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
-        Demand entity = form.toEntity();
+        LostItems entity = form.toEntity();
         entity.setPublisher(user);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
         entity.setStatus(DIC.CHECK_WAIT);
-        return demandDAO.save(entity);
+        return lostItemsDAO.save(entity);
     }
 
     @Override
-    public List<Demand> getListByMine(HttpServletRequest request) {
+    public List<LostItems> getListByMine(HttpServletRequest request) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
-        return demandDAO.getBySysUser(user);
+        return lostItemsDAO.getBySysUser(user);
     }
 
 
     @Override
     public void deleteById(String id) {
-        demandDAO.deleteById(id);
+        lostItemsDAO.deleteById(id);
     }
 }

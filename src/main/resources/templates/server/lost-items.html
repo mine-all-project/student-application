@@ -195,7 +195,7 @@
 		</a-col>
 		<p> {{form.demand.title}} </p>
 		<a-divider></a-divider>
-		<p>{{form.demand.content}} </p>
+		<p>{{form.goods.content}} </p>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
 	<a-modal title="商品评论" :visible.sync="show.goodsMessage" width="60%" :footer="null" @cancel="closeGoodsMessage">
@@ -502,7 +502,7 @@
                 });
             },
             resetList() {
-                this.temp.search = ''
+                this.temp.searchGoods = ''
                 this.getList()
             },
             search() {
@@ -526,7 +526,7 @@
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterDemand(result.data)
+                        this.filterGoods(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
