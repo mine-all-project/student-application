@@ -5,6 +5,7 @@ import org.example.application.custom.dao.jpa.LostItemsRepository;
 import org.example.application.custom.entity.LostItems;
 import org.example.application.system.entity.SysUser;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,5 +35,11 @@ public class LostItemsDAO extends BaseDAO {
 
     public void deleteById(String id) {
         lostItemsRepository.deleteById(id);
+    }
+
+
+    @Transactional
+    public void updateStatusById(String id, int status,String note) {
+        lostItemsRepository.updateStatusById(id, status, note);
     }
 }

@@ -17,4 +17,8 @@ public interface DemandService extends BaseService {
     List<Demand> getListByMine(HttpServletRequest request);
 
     void deleteById(String id);
+
+    void checkPass(DemandForm form);
+
+    void checkFail(DemandForm form);
 }

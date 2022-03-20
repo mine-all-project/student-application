@@ -64,4 +64,14 @@ public class LostItemsServiceImpl implements LostItemsService {
     public void deleteById(String id) {
         lostItemsDAO.deleteById(id);
     }
+
+    @Override
+    public void checkPass(LostItemsForm form) {
+        lostItemsDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+    }
+
+    @Override
+    public void checkFail(LostItemsForm form) {
+        lostItemsDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
+    }
 }

@@ -25,6 +25,8 @@ public class LostItems extends BaseEntity {
     private Integer type;
     @Column(columnDefinition = "tinyint default 1 comment '状态 0:正常 1:待审 2:驳回 3:'")
     private Integer status;
+    @Column(columnDefinition = "varchar(256) default null comment '审核备注'")
+    private String note;
     @OneToOne
     private SysUser publisher;
     @OneToMany

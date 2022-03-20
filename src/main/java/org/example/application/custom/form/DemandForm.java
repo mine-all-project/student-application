@@ -12,7 +12,6 @@ import org.example.application.system.entity.SysUser;
 import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -22,6 +21,8 @@ public class DemandForm extends BaseForm {
     private String title;
     private String content;
     private Integer type;
+    private Integer status;
+    private String note;
     private SysUser publisher;
     private List<FileInfo> images;
     private List<Message> messages;

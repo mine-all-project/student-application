@@ -59,4 +59,18 @@ public class DemandController extends BaseController {
         log.info("返回结果->删除我发布的需求结束");
         return ResponseDTO.returnSuccess();
     }
+    @PostMapping("/checkPass")
+    public ResponseDTO checkPass(@RequestBody DemandForm form) {
+        log.info("收到请求->需求通过审核[{}]",form);
+        demandService.checkPass(form);
+        log.info("返回结果->需求通过审核结束");
+        return ResponseDTO.returnSuccess();
+    }
+    @PostMapping("/checkFail")
+    public ResponseDTO checkFail(@RequestBody DemandForm form) {
+        log.info("收到请求->需求驳回审核[{}]",form);
+        demandService.checkFail(form);
+        log.info("返回结果->需求驳回审核结束");
+        return ResponseDTO.returnSuccess();
+    }
 }

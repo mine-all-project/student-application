@@ -60,4 +60,18 @@ public class GoodsController extends BaseController {
         log.info("返回结果->删除我发布的商品结束");
         return ResponseDTO.returnSuccess();
     }
+    @PostMapping("/checkPass")
+    public ResponseDTO checkPass(@RequestBody GoodsForm form) {
+        log.info("收到请求->商品通过审核[{}]",form);
+        goodsService.checkPass(form);
+        log.info("返回结果->商品通过审核结束");
+        return ResponseDTO.returnSuccess();
+    }
+    @PostMapping("/checkFail")
+    public ResponseDTO checkFail(@RequestBody GoodsForm form) {
+        log.info("收到请求->商品驳回审核[{}]",form);
+        goodsService.checkFail(form);
+        log.info("返回结果->商品驳回审核结束");
+        return ResponseDTO.returnSuccess();
+    }
 }

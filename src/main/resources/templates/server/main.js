@@ -73,240 +73,69 @@ const app = new Vue({
                             url: '/server/lost-items.html',
                         },
                         {
-                            key: '34',
+                            key: '33',
                             name: '拼车',
                             icon: 'appstore',
                             url: '/server/car-pooling.html',
                         },
                         {
-                            key: '35',
+                            key: '34',
                             name: '就业速递',
                             icon: 'appstore',
                             url: '/server/employment.html',
                         },
                         {
-                            key: '36',
+                            key: '35',
                             name: '其它',
                             icon: 'appstore',
                             url: '/server/other.html',
                         },
                     ]
                 },
-            ],
-            sysMenus: [
-                {
-                    key: '1',
-                    name: '科研管理',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '12',
-                            name: '项目审核',
-                            icon: 'appstore',
-                            url: '/manage-index/audit-list',
-                        },
-                        {
-                            key: '13',
-                            name: '标签管理',
-                            icon: 'appstore',
-                            url: '/manage-index/tags',
-                        },
-                    ]
-                },
-                {
-                    key: '3',
-                    name: '科研分析',
-                    icon: 'appstore',
-                    children: [
-                        {
-                            key: '31',
-                            name: '数据统计',
-                            icon: 'appstore',
-                            url: '/manage-index/data-statistical',
-                        },
-                        {
-                            key: '32',
-                            name: '工作评价',
-                            icon: 'appstore',
-                            url: '/manage-index/subject-discuss',
-                        },
-                    ]
-                },
                 {
                     key: '4',
-                    name: '数据对接',
-                    icon: 'appstore',
-                    url: '/school-org/list',
-                    children: [
-                        // {
-                        //   key: '41',
-                        //   name: '信息发布',
-                        //   icon: 'appstore',
-                        //   url: '/manage-index/paper-list',
-                        // },
-                        {
-                            key: '41-1',
-                            name: '信息发布',
-                            icon: 'appstore',
-                            url: '/manage-index/paper-list1',
-                        },
-                        // {
-                        //   key: '42',
-                        //   name: '工作评价',
-                        //   icon: 'appstore',
-                        //   url: '/manage-index/subject-discuss',
-                        // },
-                    ]
-                },
-                {
-                    key: '99',
-                    name: '用户管理',
-                    icon: 'appstore',
-                    url: '/manage-index/user-list',
-                },
-            ],
-            userMenus: [
-                {
-                    key: '1',
-                    name: '科研管理',
+                    name: '数据审核',
                     icon: 'appstore',
                     url: '',
                     children: [
                         {
-                            key: '11',
-                            name: '项目申报',
+                            key: '41',
+                            name: '二手交易',
                             icon: 'appstore',
-                            url: '/manage-index/sub-apply',
-                        },
-                    ]
-                },
-                {
-                    key: '2',
-                    name: '数据共享',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '21',
-                            name: '我的项目',
-                            icon: 'appstore',
-                            url: '/manage-index/mine-subject',
+                            url: '/server/check-trading.html',
                         },
                         {
-                            key: '22',
-                            name: '我参与的',
+                            key: '42',
+                            name: '失物招领',
                             icon: 'appstore',
-                            url: '/manage-index/mine-join',
+                            url: '/server/check-lost-items.html',
                         },
                         {
-                            key: '23',
-                            name: '共享项目',
+                            key: '43',
+                            name: '拼车',
                             icon: 'appstore',
-                            url: '/manage-index/mine-pull',
-                        },
-                    ]
-                },
-                {
-                    key: '3',
-                    name: '科研分析',
-                    icon: 'appstore',
-                    children: [
-                        {
-                            key: '31',
-                            name: '数据统计',
-                            icon: 'appstore',
-                            url: '/manage-index/data-statistical',
+                            url: '/server/check-car-pooling.html',
                         },
                         {
-                            key: '32',
-                            name: '工作评价',
+                            key: '44',
+                            name: '就业速递',
                             icon: 'appstore',
-                            url: '/manage-index/subject-discuss',
+                            url: '/server/check-employment.html',
                         },
-                    ]
-                },
-                {
-                    key: '4',
-                    name: '数据对接',
-                    icon: 'appstore',
-                    url: '/school-org/list',
-                    children: [
                         {
-                            key: '41-1',
-                            name: '信息发布',
+                            key: '45',
+                            name: '其它',
                             icon: 'appstore',
-                            url: '/manage-index/paper-list1',
+                            url: '/server/check-other.html',
                         },
                     ]
                 },
             ],
-            managerMenus: [
-                {
-                    key: '1',
-                    name: '科研管理',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '12',
-                            name: '标签管理',
-                            icon: 'appstore',
-                            url: '/manage-index/tags',
-                        },
-                    ]
-                },
-                {
-                    key: '2',
-                    name: '数据共享',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '24',
-                            name: '共享审核',
-                            icon: 'appstore',
-                            url: '/manage-index/request-pull-list',
-                        },
-                    ]
-                },
-                {
-                    key: '3',
-                    name: '科研分析',
-                    icon: 'appstore',
-                    children: [
-                        {
-                            key: '31',
-                            name: '数据统计',
-                            icon: 'appstore',
-                            url: '/manage-index/data-statistical',
-                        },
-                        {
-                            key: '32',
-                            name: '工作评价',
-                            icon: 'appstore',
-                            url: '/manage-index/subject-discuss',
-                        },
-                    ]
-                },
-                {
-                    key: '4',
-                    name: '数据对接',
-                    icon: 'appstore',
-                    url: '/school-org/list',
-                    children: [
-                        {
-                            key: '41-1',
-                            name: '信息发布',
-                            icon: 'appstore',
-                            url: '/manage-index/paper-list1',
-                        },
-                    ]
-                },
-            ],
+            sysMenus: [],
+            userMenus: [ ],
+            managerMenus: [ ],
             welcome: true,
             userInfo: {},
-            tagsOptions: [],
 
         }
     },

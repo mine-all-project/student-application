@@ -336,8 +336,8 @@
             filterLostItems(source) {
                 const lostItems = source.map(e => {
                     let images = e.images.sort((a, b) => {
-                        let createTimeA = new moment(a.createTime.substring(0, 19))
-                        let createTimeB = new moment(b.createTime.substring(0, 19))
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
                         return createTimeA.diff(createTimeB, 's');
                     })
                     return {
@@ -349,6 +349,8 @@
                         content: e.content,
                         type: e.type,
                         messages: e.messages,
+                        createTime: e.createTime,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                     }
                 });
                 this.foundItem = lostItems.filter(e => e.type === 1)

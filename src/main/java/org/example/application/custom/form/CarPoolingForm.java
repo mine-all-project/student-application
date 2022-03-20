@@ -30,6 +30,8 @@ public class CarPoolingForm extends BaseForm {
     private String content;
     @NotNull(message = "出发时间不能为空", groups = IsNotNull.class)
     private LocalDateTime beginTime;
+    private Integer status;
+    private String note;
     private SysUser publisher;
     private List<FileInfo> images;
     private List<Message> messages;

@@ -17,4 +17,8 @@ public interface CarPoolingService extends BaseService {
     List<CarPooling> getListByMine(HttpServletRequest request);
 
     void deleteById(String id);
+
+    void checkPass(CarPoolingForm form);
+
+    void checkFail(CarPoolingForm form);
 }

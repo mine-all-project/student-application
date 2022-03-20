@@ -5,6 +5,7 @@ import org.example.application.custom.dao.jpa.DemandRepository;
 import org.example.application.custom.entity.Demand;
 import org.example.application.system.entity.SysUser;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class DemandDAO extends BaseDAO {
     }
 
     public List<Demand> search(String keywords) {
-        return demandRepository.findAllByTitleLike(keywords,desByCreateTime);
+        return demandRepository.findAllByTitleLike(keywords, desByCreateTime);
     }
 
     public Demand save(Demand entity) {
@@ -29,10 +30,15 @@ public class DemandDAO extends BaseDAO {
     }
 
     public List<Demand> getBySysUser(SysUser user) {
-        return demandRepository.findAllByPublisher(user,desByCreateTime);
+        return demandRepository.findAllByPublisher(user, desByCreateTime);
     }
 
     public void deleteById(String id) {
         demandRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateStatusById(String id, int status,String note) {
+        demandRepository.updateStatusById(id, status, note);
     }
 }

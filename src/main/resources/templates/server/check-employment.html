@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org"
 			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
@@ -36,8 +38,8 @@
 	</a-row>
 	<a-divider></a-divider>
 	<a-tabs type="card">
-		<a-tab-pane key="1" tab="其他">
-			<a-table :columns="columns.other" :data-source="tableDataList.other" rowKey="id" :pagination="false">
+		<a-tab-pane key="1" tab="拼车">
+			<a-table :columns="columns.employment" :data-source="tableDataList.employment" rowKey="id" :pagination="false">
 				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
 				<span slot="content" slot-scope="text">
           <a-tooltip placement="topLeft">
@@ -72,8 +74,8 @@
           </a-tooltip>
         </span>
 				<span slot="type" slot-scope="text">
-					  <a-tag color="green" v-if="text === 1">校园交友</a-tag>
-					  <a-tag color="blue" v-if="text === 2">匿名吐槽</a-tag>
+					  <a-tag color="green" v-if="text === 1">拾到</a-tag>
+					  <a-tag color="blue" v-if="text === 2">丢失</a-tag>
 				</span>
 				<span slot="status" slot-scope="text">
           <a-tag color="green" v-if="text === 0">正常</a-tag>
@@ -81,38 +83,33 @@
           <a-tag color="red" v-if="text === 2">驳回</a-tag>
 				</span>
 				<span slot="action" slot-scope="text, record">
-					<a-button type="primary" size="small" @click="showChangeOtherStatus(record,0)">通过</a-button>
-					<a-button type="danger" size="small" @click="showChangeOtherStatus(record,2)">驳回</a-button>
-					<a-button type="default" size="small" @click="showOtherInfo(record)">查看详情</a-button>
+					<a-button type="primary" size="small" @click="showChangeEmploymentStatus(record,0)">通过</a-button>
+					<a-button type="danger" size="small" @click="showChangeEmploymentStatus(record,2)">驳回</a-button>
+					<a-button type="default" size="small" @click="showEmploymentInfo(record)">查看详情</a-button>
       	</span>
 			</a-table>
 		</a-tab-pane>
 	</a-tabs>
-	<a-modal title="审核" :visible.sync="show.changeOtherStatus" width="30%" ok-text="确认"
-					 cancel-text="取消" @ok="saveOtherCheck" @cancel="closeChangeOtherStatus">
-		<a-form-model ref="ruleForm" :model="form.other" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+	<a-modal title="审核" :visible.sync="show.changeEmploymentStatus" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveEmploymentCheck" @cancel="closeChangeEmploymentStatus">
+		<a-form-model ref="ruleForm" :model="form.employment" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
 			<a-form-model-item label="审核意见" prop="note">
-				<a-input v-model="form.other.note"></a-input>
+				<a-input v-model="form.employment.note"></a-input>
 			</a-form-model-item>
 		</a-form-model>
 	</a-modal>
-	<a-modal title="详情" :visible.sync="show.otherInfo" width="60%" ok-text="查看评论"
-					 cancel-text="取消" @ok="showOtherMessage" @cancel="closeOtherInfo">
-		<p style="display: flex;justify-content: space-around">
-			<span>标题：{{form.other.title}} </span>
-			<span>类型：
-				<span v-if="form.other.type===1">校园交友</span>
-				<span v-if="form.other.type===2">匿名吐槽</span>
-			</span>
-		</p>
+	<a-modal title="详情" :visible.sync="show.employmentInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showEmploymentMessage" @cancel="closeEmploymentInfo">
+		<p> {{form.employment.title}} </p>
 		<a-divider></a-divider>
-		<p>{{form.other.content}} </p>
-		<a-divider></a-divider>
+		<p>{{form.employment.content}} </p>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
-	<a-modal title="评论" :visible.sync="show.otherMessage" width="60%" :footer="null" @cancel="closeOtherMessage">
-		<a-list v-if="form.other.messages.length" :data-source="form.other.messages"
-						:header="form.other.name" item-layout="horizontal">
+	<a-modal title="评论" :visible.sync="show.employmentMessage" width="60%" :footer="null"
+					 @cancel="closeEmploymentMessage">
+		<a-list v-if="form.employment.messages.length" :data-source="form.employment.messages"
+						:header="form.employment.name"
+						item-layout="horizontal">
 			<a-list-item slot="renderItem" slot-scope="item, index">
 				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
 									 :datetime="item.datetime"></a-comment>
@@ -126,7 +123,7 @@
 					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
 				</a-form-item>
 				<a-form-item>
-					<a-button type="primary" @click="saveOtherMessage"> 发表</a-button>
+					<a-button type="primary" @click="saveEmploymentMessage"> 发表</a-button>
 				</a-form-item>
 			</div>
 		</a-comment>
@@ -141,7 +138,7 @@
         data() {
             return {
                 columns: {
-                    other: [
+                    employment: [
                         {
                             dataIndex: 'title',
                             title: '标题',
@@ -154,11 +151,6 @@
                             width: '20%'
                         },
                         {
-                            dataIndex: 'type',
-                            title: '发布时间',
-                            scopedSlots: {customRender: 'type'},
-                        },
-                        {
                             dataIndex: 'status',
                             title: '状态',
                             scopedSlots: {customRender: 'status'},
@@ -168,7 +160,6 @@
                             title: '发布人',
                             scopedSlots: {customRender: 'publisher'},
                         },
-
                         {
                             dataIndex: 'createTimeStr',
                             title: '发布时间',
@@ -190,7 +181,7 @@
                     ],
                 },
                 tableDataList: {
-                    other: [],
+                    employment: [],
                 },
                 rules: {
                     note: [
@@ -200,21 +191,22 @@
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
-                    other: {messages: [], images: {}},
+                    employment: {messages: [], images: {}},
+                    demand: {messages: [], images: {}},
                     searchText: '',
                     messages: [],
                 },
                 show: {
                     previewImg: false,
-                    otherInfo: false,
-                    otherMessage: false,
-                    changeOtherStatus: false,
+                    employmentInfo: false,
+                    employmentMessage: false,
+                    changeEmploymentStatus: false,
                 },
                 temp: {
                     previewSrc: '',
                     fileList: [],
-                    allOther: [],
-                    searchOther: [],
+                    allEmployment: [],
+                    searchEmployment: [],
                     messages: [],
                     message: '',
                 },
@@ -225,17 +217,17 @@
             this.getList()
         },
         methods: {
-            showChangeOtherStatus(record, status) {
-                this.form.other = record
-                this.form.other.status = status
-                this.show.changeOtherStatus = true
+            showChangeEmploymentStatus(record, status) {
+                this.form.employment = record
+                this.form.employment.status = status
+                this.show.changeEmploymentStatus = true
             },
-            closeChangeOtherStatus() {
-                this.show.changeOtherStatus = false
+            closeChangeEmploymentStatus() {
+                this.show.changeEmploymentStatus = false
             },
-            saveOtherCheck() {
-                let data = this.form.other
-                let url = '/api/other'
+            saveEmploymentCheck() {
+                let data = this.form.employment
+                let url = '/api/employment'
                 if (data.status === 0) {
                     url += '/checkPass'
                 } else if (data.status === 2) {
@@ -250,15 +242,15 @@
                     this.$message.success(result.message);
                     this.form.demand = {messages: []}
                     this.getList()
-                    this.show.changeOtherStatus = false
+                    this.show.changeEmploymentStatus = false
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
 
-            showOtherInfo(other) {
-                this.form.other = other
-                this.temp.fileList = other.images.map(e => {
+            showEmploymentInfo(employment) {
+                this.form.employment = employment
+                this.temp.fileList = employment.images.map(e => {
                     return {
                         uid: e.id,
                         name: e.oldName,
@@ -266,24 +258,23 @@
                         url: e.virtualPath,
                     }
                 })
-                this.show.otherInfo = true
+                this.show.employmentInfo = true
             },
-            closeOtherInfo() {
-                this.show.otherInfo = false
+            closeEmploymentInfo() {
+                this.show.employmentInfo = false
             },
-            showOtherMessage() {
-                this.show.otherMessage = true
+            showEmploymentMessage() {
+                this.show.employmentMessage = true
             },
-            closeOtherMessage() {
+            closeEmploymentMessage() {
                 this.temp.messages = ''
-                this.show.otherMessage = false
+                this.show.employmentMessage = false
             },
-            saveOtherMessage() {
-                this.form.other.messages.push({content: this.temp.message})
-                this.saveOther()
+            saveEmploymentMessage() {
+                this.form.employment.messages.push({content: this.temp.message})
+                this.saveEmployment()
                 this.temp.message = ''
             },
-
 
             resetList() {
                 this.temp.search = ''
@@ -291,26 +282,14 @@
             },
             search() {
                 this.temp.isMinePublish = false
-                axios.get(`/api/other/search/${this.form.searchText}`).then(response => {
+                axios.get(`/api/employment/search/${this.form.searchText}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterOther(result.data)
-                    }
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-                axios.get(`/api/anonymous/search/${this.form.searchText}`).then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    if (result.data !== null) {
-                        this.filterAnonymous(result.data)
+                        this.filterEmployment(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -318,21 +297,21 @@
             },
             getList() {
                 this.temp.isMinePublish = false
-                axios.get('/api/other/list').then(response => {
+                axios.get('/api/employment/list').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterOther(result.data)
+                        this.filterEmployment(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            filterOther(source) {
-                const allOther = source.map(e => {
+            filterEmployment(source) {
+                const employment = source.map(e => {
                     let images = e.images.sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
@@ -353,7 +332,7 @@
                         messages: e.messages,
                     }
                 });
-                this.tableDataList.other = allOther
+                this.tableDataList.employment = employment
             },
             closePreview() {
                 this.show.previewImg = false

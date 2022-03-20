@@ -61,4 +61,14 @@ public class GoodsServiceImpl implements GoodsService {
     public void deleteById(String id) {
         goodsDAO.deleteById(id);
     }
+
+    @Override
+    public void checkPass(GoodsForm form) {
+        goodsDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+    }
+
+    @Override
+    public void checkFail(GoodsForm form) {
+        goodsDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
+    }
 }

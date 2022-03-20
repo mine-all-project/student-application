@@ -6,6 +6,7 @@ import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.DemandDAO;
 import org.example.application.custom.entity.Demand;
 import org.example.application.custom.form.DemandForm;
+import org.example.application.custom.form.OtherForm;
 import org.example.application.custom.service.DemandService;
 import org.example.application.custom.service.MessageService;
 import org.example.application.system.dao.UserDAO;
@@ -63,5 +64,15 @@ public class DemandServiceImpl implements DemandService {
     @Override
     public void deleteById(String id) {
         demandDAO.deleteById(id);
+    }
+
+    @Override
+    public void checkPass(DemandForm form) {
+        demandDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+    }
+
+    @Override
+    public void checkFail(DemandForm form) {
+        demandDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
     }
 }

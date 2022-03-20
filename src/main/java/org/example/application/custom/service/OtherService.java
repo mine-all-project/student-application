@@ -17,4 +17,8 @@ public interface OtherService extends BaseService {
     List<Other> getListByMine(HttpServletRequest request);
 
     void deleteById(String id);
+
+    void checkPass(OtherForm form);
+
+    void checkFail(OtherForm form);
 }

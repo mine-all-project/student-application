@@ -37,7 +37,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      */
     @Column(columnDefinition = "timestamp default current_timestamp comment '创建时间'")
     @CreatedDate
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss E")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     /**
@@ -46,7 +46,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      */
     @Column(columnDefinition = "timestamp default current_timestamp on update current_timestamp comment '修改时间'")
     @LastModifiedDate
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss E")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
     /**

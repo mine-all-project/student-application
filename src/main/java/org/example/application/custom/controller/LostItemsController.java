@@ -59,4 +59,19 @@ public class LostItemsController extends BaseController {
         log.info("返回结果->删除我发布的失物招领结束");
         return ResponseDTO.returnSuccess();
     }
+
+    @PostMapping("/checkPass")
+    public ResponseDTO checkPass(@RequestBody LostItemsForm form) {
+        log.info("收到请求->失物招领通过审核[{}]",form);
+        lostItemsService.checkPass(form);
+        log.info("返回结果->失物招领通过审核结束");
+        return ResponseDTO.returnSuccess();
+    }
+    @PostMapping("/checkFail")
+    public ResponseDTO checkFail(@RequestBody LostItemsForm form) {
+        log.info("收到请求->失物招领驳回审核[{}]",form);
+        lostItemsService.checkFail(form);
+        log.info("返回结果->失物招领驳回审核结束");
+        return ResponseDTO.returnSuccess();
+    }
 }

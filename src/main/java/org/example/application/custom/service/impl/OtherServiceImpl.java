@@ -5,8 +5,8 @@ import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.OtherDAO;
 import org.example.application.custom.entity.Other;
 import org.example.application.custom.form.OtherForm;
-import org.example.application.custom.service.OtherService;
 import org.example.application.custom.service.MessageService;
+import org.example.application.custom.service.OtherService;
 import org.example.application.system.dao.UserDAO;
 import org.example.application.system.entity.SysUser;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,5 +60,15 @@ public class OtherServiceImpl implements OtherService {
     @Override
     public void deleteById(String id) {
         otherDAO.deleteById(id);
+    }
+
+    @Override
+    public void checkPass(OtherForm form) {
+        otherDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+    }
+
+    @Override
+    public void checkFail(OtherForm form) {
+        otherDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
     }
 }

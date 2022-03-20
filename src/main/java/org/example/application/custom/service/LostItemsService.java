@@ -17,4 +17,8 @@ public interface LostItemsService extends BaseService {
     List<LostItems> getListByMine(HttpServletRequest request);
 
     void deleteById(String id);
+
+    void checkPass(LostItemsForm form);
+
+    void checkFail(LostItemsForm form);
 }

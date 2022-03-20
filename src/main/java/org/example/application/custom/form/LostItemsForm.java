@@ -24,6 +24,8 @@ public class LostItemsForm extends BaseForm {
     private String content;
     @NotNull(message = "类型不能为空", groups = IsNotNull.class)
     private Integer type;
+    private Integer status;
+    private String note;
     private SysUser publisher;
     private List<FileInfo> images;
     private List<Message> messages;

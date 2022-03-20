@@ -5,6 +5,7 @@ import org.example.application.custom.dao.jpa.OtherRepository;
 import org.example.application.custom.entity.Other;
 import org.example.application.system.entity.SysUser;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,14 +26,19 @@ public class OtherDAO extends BaseDAO {
     }
 
     public List<Other> search(String keywords) {
-        return otherRepository.findAllByTitleLike(keywords,desByCreateTime);
+        return otherRepository.findAllByTitleLike(keywords, desByCreateTime);
     }
 
     public List<Other> getBySysUser(SysUser user) {
-        return otherRepository.findAllByPublisher(user,desByCreateTime);
+        return otherRepository.findAllByPublisher(user, desByCreateTime);
     }
 
     public void deleteById(String id) {
         otherRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateStatusById(String id, int status, String note) {
+        otherRepository.updateStatusById(id, status, note);
     }
 }

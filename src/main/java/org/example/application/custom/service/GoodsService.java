@@ -17,4 +17,8 @@ public interface GoodsService extends BaseService {
     List<Goods> getListByMine(HttpServletRequest request);
 
     void deleteById(String id);
+
+    void checkPass(GoodsForm form);
+
+    void checkFail(GoodsForm form);
 }

@@ -62,4 +62,12 @@ public class OtherController extends BaseController {
         log.info("返回结果->删除我发布的其他结束");
         return ResponseDTO.returnSuccess();
     }
+
+    @PostMapping("/checkFail")
+    public ResponseDTO checkFail(@RequestBody OtherForm form) {
+        log.info("收到请求->其他驳回审核[{}]",form);
+        otherService.checkFail(form);
+        log.info("返回结果->其他驳回审核结束");
+        return ResponseDTO.returnSuccess();
+    }
 }

@@ -203,18 +203,6 @@
             this.getList()
         },
         methods: {
-            showTimePicker(open) {
-                console.log('open', open)
-                if (open) {
-                    this.temp.beginTimeMode = 'time';
-                }
-            },
-            showDatePicker(value, mode) {
-                console.log('value', value)
-                console.log('mode', mode)
-
-                this.temp.beginTimeMode = mode;
-            },
             showAddCarPooling() {
                 this.temp.isAddCarPooling = true
                 this.show.addCarPooling = true
@@ -350,15 +338,15 @@
             filterCarPooling(source) {
                 const carPooling = source.map(e => {
                     let images = e.images.sort((a, b) => {
-                        let createTimeA = new moment(a.createTime.substring(0, 19))
-                        let createTimeB = new moment(b.createTime.substring(0, 19))
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
                         return createTimeA.diff(createTimeB, 's');
                     })
                     return {
                         id: e.id,
                         title: e.title,
                         beginTime: new moment(e.beginTime),
-                        beginTimeStr: new moment((e.beginTime).substring(0, 19)).format('YYYY-MM-DD HH:mm:ss'),
+                        beginTimeStr: new moment((e.beginTime)).format('YYYY-MM-DD HH:mm:ss'),
                         personCount: e.personCount,
                         fromAddress: e.fromAddress,
                         targetAddress: e.targetAddress,
@@ -367,6 +355,8 @@
                         content: e.content,
                         type: e.type,
                         messages: e.messages,
+                        createTime: e.createTime,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                     }
                 });
                 this.carPooling = carPooling

@@ -21,6 +21,8 @@ public class EmploymentForm extends BaseForm {
     private String title;
     private String content;
     private Integer type;
+    private Integer status;
+    private String note;
     private SysUser publisher;
     private List<FileInfo> images;
     private List<Message> messages;

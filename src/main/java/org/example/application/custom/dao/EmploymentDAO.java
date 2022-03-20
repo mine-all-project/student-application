@@ -5,6 +5,7 @@ import org.example.application.custom.dao.jpa.EmploymentRepository;
 import org.example.application.custom.entity.Employment;
 import org.example.application.system.entity.SysUser;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class EmploymentDAO extends BaseDAO {
     }
 
     public List<Employment> search(String keywords) {
-        return employmentRepository.findAllByTitleLike(keywords,desByCreateTime);
+        return employmentRepository.findAllByTitleLike(keywords, desByCreateTime);
     }
 
     public Employment save(Employment entity) {
@@ -29,10 +30,15 @@ public class EmploymentDAO extends BaseDAO {
     }
 
     public List<Employment> getBySysUser(SysUser user) {
-        return employmentRepository.findAllByPublisher(user,desByCreateTime);
+        return employmentRepository.findAllByPublisher(user, desByCreateTime);
     }
 
     public void deleteById(String id) {
         employmentRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateStatusById(String id, int status,String note) {
+        employmentRepository.updateStatusById(id, status, note);
     }
 }

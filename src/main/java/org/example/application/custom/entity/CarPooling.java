@@ -30,10 +30,12 @@ public class CarPooling extends BaseEntity {
     @Column(columnDefinition = "varchar(256) default null comment '详情'")
     private String content;
     @Column(columnDefinition = "timestamp  comment '出发时间'")
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss E")
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime beginTime;
     @Column(columnDefinition = "tinyint default 1 comment '状态 0:正常 1:待审 2:驳回 3:'")
     private Integer status;
+    @Column(columnDefinition = "varchar(256) default null comment '审核备注'")
+    private String note;
     @OneToOne
     private SysUser publisher;
     @OneToMany

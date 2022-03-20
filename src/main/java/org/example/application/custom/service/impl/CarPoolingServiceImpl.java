@@ -64,4 +64,14 @@ public class CarPoolingServiceImpl implements CarPoolingService {
     public void deleteById(String id) {
         carPoolingDAO.deleteById(id);
     }
+
+    @Override
+    public void checkPass(CarPoolingForm form) {
+        carPoolingDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+    }
+
+    @Override
+    public void checkFail(CarPoolingForm form) {
+        carPoolingDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
+    }
 }

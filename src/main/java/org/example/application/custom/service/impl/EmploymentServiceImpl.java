@@ -6,6 +6,7 @@ import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.EmploymentDAO;
 import org.example.application.custom.entity.Employment;
 import org.example.application.custom.form.EmploymentForm;
+import org.example.application.custom.form.OtherForm;
 import org.example.application.custom.service.EmploymentService;
 import org.example.application.custom.service.MessageService;
 import org.example.application.system.dao.UserDAO;
@@ -63,5 +64,15 @@ public class EmploymentServiceImpl implements EmploymentService {
     @Override
     public void deleteById(String id) {
         employmentDAO.deleteById(id);
+    }
+
+    @Override
+    public void checkPass(EmploymentForm form) {
+        employmentDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+    }
+
+    @Override
+    public void checkFail(EmploymentForm form) {
+        employmentDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
     }
 }

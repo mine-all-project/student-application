@@ -17,4 +17,8 @@ public interface EmploymentService extends BaseService {
     List<Employment> getListByMine(HttpServletRequest request);
 
     void deleteById(String id);
+
+    void checkPass(EmploymentForm form);
+
+    void checkFail(EmploymentForm form);
 }

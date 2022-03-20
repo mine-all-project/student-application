@@ -36,8 +36,8 @@
 	</a-row>
 	<a-divider></a-divider>
 	<a-tabs type="card">
-		<a-tab-pane key="1" tab="其他">
-			<a-table :columns="columns.other" :data-source="tableDataList.other" rowKey="id" :pagination="false">
+		<a-tab-pane key="1" tab="拼车">
+			<a-table :columns="columns.carPooling" :data-source="tableDataList.carPooling" rowKey="id" :pagination="false">
 				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
 				<span slot="content" slot-scope="text">
           <a-tooltip placement="topLeft">
@@ -72,8 +72,8 @@
           </a-tooltip>
         </span>
 				<span slot="type" slot-scope="text">
-					  <a-tag color="green" v-if="text === 1">校园交友</a-tag>
-					  <a-tag color="blue" v-if="text === 2">匿名吐槽</a-tag>
+					  <a-tag color="green" v-if="text === 1">拾到</a-tag>
+					  <a-tag color="blue" v-if="text === 2">丢失</a-tag>
 				</span>
 				<span slot="status" slot-scope="text">
           <a-tag color="green" v-if="text === 0">正常</a-tag>
@@ -81,38 +81,40 @@
           <a-tag color="red" v-if="text === 2">驳回</a-tag>
 				</span>
 				<span slot="action" slot-scope="text, record">
-					<a-button type="primary" size="small" @click="showChangeOtherStatus(record,0)">通过</a-button>
-					<a-button type="danger" size="small" @click="showChangeOtherStatus(record,2)">驳回</a-button>
-					<a-button type="default" size="small" @click="showOtherInfo(record)">查看详情</a-button>
+					<a-button type="primary" size="small" @click="showChangeCarPoolingStatus(record,0)">通过</a-button>
+					<a-button type="danger" size="small" @click="showChangeCarPoolingStatus(record,2)">驳回</a-button>
+					<a-button type="default" size="small" @click="showCarPoolingInfo(record)">查看详情</a-button>
       	</span>
 			</a-table>
 		</a-tab-pane>
 	</a-tabs>
-	<a-modal title="审核" :visible.sync="show.changeOtherStatus" width="30%" ok-text="确认"
-					 cancel-text="取消" @ok="saveOtherCheck" @cancel="closeChangeOtherStatus">
-		<a-form-model ref="ruleForm" :model="form.other" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+	<a-modal title="审核" :visible.sync="show.changeCarPoolingStatus" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveCarPoolingCheck" @cancel="closeChangeCarPoolingStatus">
+		<a-form-model ref="ruleForm" :model="form.carPooling" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
 			<a-form-model-item label="审核意见" prop="note">
-				<a-input v-model="form.other.note"></a-input>
+				<a-input v-model="form.carPooling.note"></a-input>
 			</a-form-model-item>
 		</a-form-model>
 	</a-modal>
-	<a-modal title="详情" :visible.sync="show.otherInfo" width="60%" ok-text="查看评论"
-					 cancel-text="取消" @ok="showOtherMessage" @cancel="closeOtherInfo">
+	<a-modal title="详情" :visible.sync="show.carPoolingInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showCarPoolingMessage" @cancel="closeCarPoolingInfo">
+		<p> {{form.carPooling.title}} </p>
+		<a-divider></a-divider>
 		<p style="display: flex;justify-content: space-around">
-			<span>标题：{{form.other.title}} </span>
-			<span>类型：
-				<span v-if="form.other.type===1">校园交友</span>
-				<span v-if="form.other.type===2">匿名吐槽</span>
-			</span>
+			<span>出发地：{{form.carPooling.beginAddress}} </span>
+			<span>目的地：{{form.carPooling.targetAddress}} </span>
+			<span>人数：{{form.carPooling.personCount}} </span>
+			<span>出发时间：{{form.carPooling.beginTimeStr}} </span>
 		</p>
 		<a-divider></a-divider>
-		<p>{{form.other.content}} </p>
-		<a-divider></a-divider>
+		<p>{{form.carPooling.content}} </p>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
-	<a-modal title="评论" :visible.sync="show.otherMessage" width="60%" :footer="null" @cancel="closeOtherMessage">
-		<a-list v-if="form.other.messages.length" :data-source="form.other.messages"
-						:header="form.other.name" item-layout="horizontal">
+	<a-modal title="评论" :visible.sync="show.carPoolingMessage" width="60%" :footer="null"
+					 @cancel="closeCarPoolingMessage">
+		<a-list v-if="form.carPooling.messages.length" :data-source="form.carPooling.messages"
+						:header="form.carPooling.name"
+						item-layout="horizontal">
 			<a-list-item slot="renderItem" slot-scope="item, index">
 				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
 									 :datetime="item.datetime"></a-comment>
@@ -126,7 +128,7 @@
 					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
 				</a-form-item>
 				<a-form-item>
-					<a-button type="primary" @click="saveOtherMessage"> 发表</a-button>
+					<a-button type="primary" @click="saveCarPoolingMessage"> 发表</a-button>
 				</a-form-item>
 			</div>
 		</a-comment>
@@ -141,7 +143,7 @@
         data() {
             return {
                 columns: {
-                    other: [
+                    carPooling: [
                         {
                             dataIndex: 'title',
                             title: '标题',
@@ -154,9 +156,21 @@
                             width: '20%'
                         },
                         {
-                            dataIndex: 'type',
-                            title: '发布时间',
-                            scopedSlots: {customRender: 'type'},
+                            dataIndex: 'personCount',
+                            title: '人数',
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'fromAddress',
+                            title: '出发地',
+                        },
+                        {
+                            dataIndex: 'targetAddress',
+                            title: '目的地',
+                        },
+                        {
+                            dataIndex: 'beginTimeStr',
+                            title: '出发时间',
                         },
                         {
                             dataIndex: 'status',
@@ -168,7 +182,6 @@
                             title: '发布人',
                             scopedSlots: {customRender: 'publisher'},
                         },
-
                         {
                             dataIndex: 'createTimeStr',
                             title: '发布时间',
@@ -190,7 +203,7 @@
                     ],
                 },
                 tableDataList: {
-                    other: [],
+                    carPooling: [],
                 },
                 rules: {
                     note: [
@@ -200,21 +213,22 @@
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
-                    other: {messages: [], images: {}},
+                    carPooling: {messages: [], images: {}},
+                    demand: {messages: [], images: {}},
                     searchText: '',
                     messages: [],
                 },
                 show: {
                     previewImg: false,
-                    otherInfo: false,
-                    otherMessage: false,
-                    changeOtherStatus: false,
+                    carPoolingInfo: false,
+                    carPoolingMessage: false,
+                    changeCarPoolingStatus: false,
                 },
                 temp: {
                     previewSrc: '',
                     fileList: [],
-                    allOther: [],
-                    searchOther: [],
+                    allCarPooling: [],
+                    searchCarPooling: [],
                     messages: [],
                     message: '',
                 },
@@ -225,17 +239,17 @@
             this.getList()
         },
         methods: {
-            showChangeOtherStatus(record, status) {
-                this.form.other = record
-                this.form.other.status = status
-                this.show.changeOtherStatus = true
+            showChangeCarPoolingStatus(record, status) {
+                this.form.carPooling = record
+                this.form.carPooling.status = status
+                this.show.changeCarPoolingStatus = true
             },
-            closeChangeOtherStatus() {
-                this.show.changeOtherStatus = false
+            closeChangeCarPoolingStatus() {
+                this.show.changeCarPoolingStatus = false
             },
-            saveOtherCheck() {
-                let data = this.form.other
-                let url = '/api/other'
+            saveCarPoolingCheck() {
+                let data = this.form.carPooling
+                let url = '/api/carPooling'
                 if (data.status === 0) {
                     url += '/checkPass'
                 } else if (data.status === 2) {
@@ -250,15 +264,15 @@
                     this.$message.success(result.message);
                     this.form.demand = {messages: []}
                     this.getList()
-                    this.show.changeOtherStatus = false
+                    this.show.changeCarPoolingStatus = false
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
 
-            showOtherInfo(other) {
-                this.form.other = other
-                this.temp.fileList = other.images.map(e => {
+            showCarPoolingInfo(carPooling) {
+                this.form.carPooling = carPooling
+                this.temp.fileList = carPooling.images.map(e => {
                     return {
                         uid: e.id,
                         name: e.oldName,
@@ -266,21 +280,21 @@
                         url: e.virtualPath,
                     }
                 })
-                this.show.otherInfo = true
+                this.show.carPoolingInfo = true
             },
-            closeOtherInfo() {
-                this.show.otherInfo = false
+            closeCarPoolingInfo() {
+                this.show.carPoolingInfo = false
             },
-            showOtherMessage() {
-                this.show.otherMessage = true
+            showCarPoolingMessage() {
+                this.show.carPoolingMessage = true
             },
-            closeOtherMessage() {
+            closeCarPoolingMessage() {
                 this.temp.messages = ''
-                this.show.otherMessage = false
+                this.show.carPoolingMessage = false
             },
-            saveOtherMessage() {
-                this.form.other.messages.push({content: this.temp.message})
-                this.saveOther()
+            saveCarPoolingMessage() {
+                this.form.carPooling.messages.push({content: this.temp.message})
+                this.saveCarPooling()
                 this.temp.message = ''
             },
 
@@ -291,26 +305,14 @@
             },
             search() {
                 this.temp.isMinePublish = false
-                axios.get(`/api/other/search/${this.form.searchText}`).then(response => {
+                axios.get(`/api/carPooling/search/${this.form.searchText}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterOther(result.data)
-                    }
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-                axios.get(`/api/anonymous/search/${this.form.searchText}`).then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    if (result.data !== null) {
-                        this.filterAnonymous(result.data)
+                        this.filterCarPooling(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -318,21 +320,21 @@
             },
             getList() {
                 this.temp.isMinePublish = false
-                axios.get('/api/other/list').then(response => {
+                axios.get('/api/carPooling/list').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterOther(result.data)
+                        this.filterCarPooling(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            filterOther(source) {
-                const allOther = source.map(e => {
+            filterCarPooling(source) {
+                const carPooling = source.map(e => {
                     let images = e.images.sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
@@ -342,6 +344,11 @@
                         id: e.id,
                         name: e.name,
                         title: e.title,
+                        beginTime: new moment(e.beginTime),
+                        beginTimeStr: new moment((e.beginTime)).format('YYYY-MM-DD HH:mm:ss'),
+                        personCount: e.personCount,
+                        fromAddress: e.fromAddress,
+                        targetAddress: e.targetAddress,
                         image: e.images.length ? e.images[0].virtualPath : '',
                         images: images,
                         content: e.content,
@@ -353,7 +360,7 @@
                         messages: e.messages,
                     }
                 });
-                this.tableDataList.other = allOther
+                this.tableDataList.carPooling = carPooling
             },
             closePreview() {
                 this.show.previewImg = false
