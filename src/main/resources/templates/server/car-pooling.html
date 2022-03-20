@@ -70,10 +70,13 @@
 				<a-input v-model="form.carPooling.title"></a-input>
 			</a-form-model-item>
 			<a-form-model-item label="出发地" prop="fromAddress">
-				<a-input v-model="form.carPooling.fromAddress" :rows="4"></a-input>
+				<a-input v-model="form.carPooling.fromAddress"></a-input>
 			</a-form-model-item>
 			<a-form-model-item label="目的地" prop="targetAddress">
-				<a-input v-model="form.carPooling.targetAddress" :rows="4"></a-input>
+				<a-input v-model="form.carPooling.targetAddress"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="详情" prop="content">
+				<a-textarea v-model="form.carPooling.content" :rows="4"></a-textarea>
 			</a-form-model-item>
 			<a-form-model-item label="人数" prop="personCount">
 				<a-input-number :min="0" v-model="form.carPooling.personCount" style></a-input-number>
@@ -109,9 +112,10 @@
 		<p> {{form.carPooling.title}} </p>
 		<a-divider></a-divider>
 		<p style="display: flex;justify-content: space-around">
-			<span>出发地：{{form.carPooling.name}} </span>
-			<span>目的地：{{form.carPooling.type}} </span>
-			<span>出发时间：{{form.carPooling.price}} </span>
+			<span>出发地：{{form.carPooling.beginAddress}} </span>
+			<span>目的地：{{form.carPooling.targetAddress}} </span>
+			<span>人数：{{form.carPooling.personCount}} </span>
+			<span>出发时间：{{form.carPooling.beginTimeStr}} </span>
 		</p>
 		<a-divider></a-divider>
 		<p>{{form.carPooling.content}} </p>
@@ -351,7 +355,8 @@
                     return {
                         id: e.id,
                         title: e.title,
-                        beginTime: new moment(e.price),
+                        beginTime: new moment(e.beginTime),
+                        beginTimeStr: new moment((e.beginTime).substring(0,19)).format('YYYY-MM-DD HH:mm:ss'),
                         personCount: e.personCount,
                         fromAddress: e.fromAddress,
                         targetAddress: e.targetAddress,

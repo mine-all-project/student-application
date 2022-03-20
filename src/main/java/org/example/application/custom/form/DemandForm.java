@@ -20,7 +20,6 @@ import java.util.List;
 public class DemandForm extends BaseForm {
     @NotBlank(message = "标题不能为空", groups = IsNotNull.class)
     private String title;
-    private Integer price;
     private String content;
     private Integer type;
     private SysUser publisher;

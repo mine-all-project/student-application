@@ -38,34 +38,13 @@
 	<a-divider></a-divider>
 	<a-tabs type="card">
 		<a-col slot="tabBarExtraContent">
-			<a-button type="default" @click="showAddLostItems"> 发布</a-button>
+			<a-button type="default" @click="showAddEmployment"> 发布</a-button>
 		</a-col>
-		<a-tab-pane key="1" tab="拾到">
+		<a-tab-pane key="1" tab="就业速递">
 			<a-divider></a-divider>
 			<a-space direction="vertical"
 							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
-				<a-card hoverable style="width: 240px" v-for="item in foundItem" @click="showLostItemsInfo(item)">
-					<img slot="cover" :src="item.image"/>
-					<a-card-meta :title="item.title">
-						<template slot="description">
-							<div style="display: flex;justify-content: space-between">
-								<a-tooltip placement="top">
-									<template slot="title">
-										<span>{{item.content}}</span>
-									</template>
-									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
-								</a-tooltip>
-							</div>
-						</template>
-					</a-card-meta>
-				</a-card>
-			</a-space>
-		</a-tab-pane>
-		<a-tab-pane key="2" tab="丢失">
-			<a-divider></a-divider>
-			<a-space direction="vertical"
-							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
-				<a-card hoverable style="width: 240px" v-for="item in lostItem" @click="showlostItemsInfo(item)">
+				<a-card hoverable style="width: 240px" v-for="item in employment" @click="showEmploymentInfo(item)">
 					<img slot="cover" :src="item.image"/>
 					<a-card-meta :title="item.title">
 						<template slot="description">
@@ -83,20 +62,15 @@
 			</a-space>
 		</a-tab-pane>
 	</a-tabs>
-	<a-modal title="发布" :visible.sync="show.addLostItems" width="30%" ok-text="确认"
-					 cancel-text="取消" @ok="saveLostItems" @cancel="closeAddLostItems">
-		<a-form-model ref="ruleForm" :model="form.lostItems" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+	<a-modal title="发布" :visible.sync="show.addEmployment" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveEmployment" @cancel="closeAddEmployment">
+		<a-form-model ref="ruleForm" :model="form.employment" :rules="rules" :label-col="labelCol"
+									:wrapper-col="wrapperCol">
 			<a-form-model-item label="标题" prop="title">
-				<a-input v-model="form.lostItems.title"></a-input>
+				<a-input v-model="form.employment.title"></a-input>
 			</a-form-model-item>
-			<a-form-model-item label="描述" prop="content">
-				<a-textarea v-model="form.lostItems.content" :rows="4"></a-textarea>
-			</a-form-model-item>
-			<a-form-model-item label="发布类型" prop="type">
-				<a-radio-group name="type" v-model="form.lostItems.type">
-					<a-radio :value="1">拾到</a-radio>
-					<a-radio :value="2">丢失</a-radio>
-				</a-radio-group>
+			<a-form-model-item label="详情" prop="content">
+				<a-textarea v-model="form.employment.content" :rows="4"></a-textarea>
 			</a-form-model-item>
 			<a-form-model-item label="图片" prop="image">
 				<div class="clearfix">
@@ -111,11 +85,11 @@
 			</a-form-model-item>
 		</a-form-model>
 	</a-modal>
-	<a-modal title="详情" :visible.sync="show.lostItemsInfo" width="60%" ok-text="查看评论"
-					 cancel-text="取消" @ok="showLostItemsMessage" @cancel="closeLostItemsInfo">
+	<a-modal title="详情" :visible.sync="show.employmentInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showEmploymentMessage" @cancel="closeEmploymentInfo">
 		<a-col>
-			<a-button type="primary" @click="editLostItems">编辑</a-button>
-			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteLostItems">
+			<a-button type="primary" @click="editEmployment">编辑</a-button>
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteEmployment">
 				<template slot="title">
 					<p>确定要删除吗？</p>
 				</template>
@@ -123,14 +97,15 @@
 			</a-popconfirm>
 			<a-divider></a-divider>
 		</a-col>
-		<p> {{form.lostItems.title}} </p>
+		<p> {{form.employment.title}} </p>
 		<a-divider></a-divider>
-		<p>{{form.lostItems.content}} </p>
+		<p>{{form.employment.content}} </p>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
-	<a-modal title="评论" :visible.sync="show.lostItemsMessage" width="60%" :footer="null" @cancel="closeLostItemsMessage">
-		<a-list v-if="form.lostItems.messages.length" :data-source="form.lostItems.messages"
-						:header="form.lostItems.name"
+	<a-modal title="评论" :visible.sync="show.employmentMessage" width="60%" :footer="null"
+					 @cancel="closeEmploymentMessage">
+		<a-list v-if="form.employment.messages.length" :data-source="form.employment.messages"
+						:header="form.employment.name"
 						item-layout="horizontal">
 			<a-list-item slot="renderItem" slot-scope="item, index">
 				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
@@ -145,7 +120,7 @@
 					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
 				</a-form-item>
 				<a-form-item>
-					<a-button type="primary" @click="saveLostItemsMessage"> 发表</a-button>
+					<a-button type="primary" @click="saveEmploymentMessage"> 发表</a-button>
 				</a-form-item>
 			</div>
 		</a-comment>
@@ -160,35 +135,45 @@
         data() {
             return {
                 headers: headers,
-                lostItem: [],
-                foundItem: [],
+                employment: [],
                 rules: {
                     title: [
                         {required: true, message: '请输入标题', trigger: 'change'},
                     ],
-                    type: [
-                        {required: true, message: '请选择发布类型', trigger: 'change'},
+                    fromAddress: [
+                        {required: true, message: '请输入出发地', trigger: 'change'},
+                    ],
+                    targetAddress: [
+                        {required: true, message: '请输入目的地', trigger: 'change'},
+                    ],
+                    personCount: [
+                        {required: true, message: '请输入人数', trigger: 'change'},
+                    ],
+                    beginTime: [
+                        {required: true, message: '请选择出发时间', trigger: 'change'},
                     ],
                 },
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
-                    lostItems: {messages: []},
+                    employment: {messages: []},
                     searchText: '',
                     messages: [],
                 },
                 show: {
                     previewImg: false,
-                    addLostItems: false,
-                    lostItemsInfo: false,
-                    lostItemsMessage: false,
+                    addEmployment: false,
+                    employmentInfo: false,
+                    employmentMessage: false,
                 },
                 temp: {
+                    defaultDateTime: new moment(),
+                    beginTimeMode: '',
                     previewSrc: '',
                     fileList: [],
                     messages: [],
                     message: '',
-                    isAddLostItems: false,
+                    isAddEmployment: false,
                     isMinePublish: false,
                 },
                 sysUser: sessionStorage.getItem("sysUser")
@@ -198,15 +183,27 @@
             this.getList()
         },
         methods: {
-            showAddLostItems() {
-                this.temp.isAddLostItems = true
-                this.show.addLostItems = true
+            showTimePicker(open) {
+                console.log('open', open)
+                if (open) {
+                    this.temp.beginTimeMode = 'time';
+                }
             },
-            closeAddLostItems() {
-                this.show.addLostItems = false
+            showDatePicker(value, mode) {
+                console.log('value', value)
+                console.log('mode', mode)
+
+                this.temp.beginTimeMode = mode;
             },
-            saveLostItems() {
-                let data = this.form.lostItems
+            showAddEmployment() {
+                this.temp.isAddEmployment = true
+                this.show.addEmployment = true
+            },
+            closeAddEmployment() {
+                this.show.addEmployment = false
+            },
+            saveEmployment() {
+                let data = this.form.employment
                 let oldFile = data.images
                 let newFile = this.temp.fileList.map(e => {
                     if (e.response) {
@@ -217,45 +214,45 @@
                 }).filter(e => {
                     return e
                 })
-                if (this.temp.isAddLostItems) {
+                if (this.temp.isAddEmployment) {
                     data.images = newFile
                 } else {
                     data.images = [...oldFile, ...newFile]
                 }
-                axios.post('/api/lostItems/save', data).then(response => {
+                axios.post('/api/employment/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     this.$message.success(result.message);
-                    this.closeAddLostItems()
+                    this.closeAddEmployment()
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            editLostItems() {
-                this.show.addLostItems = true
-                this.show.lostItemsInfo = false
-                this.temp.isAddLostItems = false
+            editEmployment() {
+                this.show.addEmployment = true
+                this.show.employmentInfo = false
+                this.temp.isAddEmployment = false
             },
-            deleteLostItems() {
-                axios.delete(`/api/lostItems/delete/${this.form.lostItems.id}`).then(response => {
+            deleteEmployment() {
+                axios.delete(`/api/employment/delete/${this.form.employment.id}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
-                    this.closeLostItemsInfo()
+                    this.closeEmploymentInfo()
                     this.getMinePublish()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            showLostItemsInfo(lostItems) {
-                this.form.lostItems = lostItems
-                this.temp.fileList = lostItems.images.map(e => {
+            showEmploymentInfo(employment) {
+                this.form.employment = employment
+                this.temp.fileList = employment.images.map(e => {
                     return {
                         uid: e.id,
                         name: e.oldName,
@@ -263,36 +260,33 @@
                         url: e.virtualPath,
                     }
                 })
-                this.show.lostItemsInfo = true
+                this.show.employmentInfo = true
             },
-            closeLostItemsInfo() {
-                this.show.lostItemsInfo = false
+            closeEmploymentInfo() {
+                this.show.employmentInfo = false
             },
-            showLostItemsMessage() {
-                this.show.lostItemsMessage = true
+            showEmploymentMessage() {
+                this.show.employmentMessage = true
             },
-            closeLostItemsMessage() {
+            closeEmploymentMessage() {
                 this.temp.messages = ''
-                this.show.lostItemsMessage = false
+                this.show.employmentMessage = false
             },
-            saveLostItemsMessage() {
-                this.form.lostItems.messages.push({content: this.temp.message})
-                this.saveLostItems()
+            saveEmploymentMessage() {
+                this.form.employment.messages.push({content: this.temp.message})
+                this.saveEmployment()
                 this.temp.message = ''
             },
-
-
-
             getMinePublish() {
                 this.temp.isMinePublish = true
-                axios.get(`/api/lostItems/mine`).then(response => {
+                axios.get(`/api/employment/mine`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterLostItems(result.data)
+                        this.filterEmployment(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -304,14 +298,14 @@
             },
             search() {
                 this.temp.isMinePublish = false
-                axios.get(`/api/lostItems/search/${this.form.searchText}`).then(response => {
+                axios.get(`/api/employment/search/${this.form.searchText}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterLostItems(result.data)
+                        this.filterEmployment(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -319,21 +313,21 @@
             },
             getList() {
                 this.temp.isMinePublish = false
-                axios.get('/api/lostItems/list').then(response => {
+                axios.get('/api/employment/list').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterLostItems(result.data)
+                        this.filterEmployment(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            filterLostItems(source) {
-                const lostItems = source.map(e => {
+            filterEmployment(source) {
+                const employment = source.map(e => {
                     let images = e.images.sort((a, b) => {
                         let createTimeA = new moment(a.createTime.substring(0, 19))
                         let createTimeB = new moment(b.createTime.substring(0, 19))
@@ -342,7 +336,10 @@
                     return {
                         id: e.id,
                         title: e.title,
-                        price: e.price,
+                        beginTime: new moment(e.price),
+                        personCount: e.personCount,
+                        fromAddress: e.fromAddress,
+                        targetAddress: e.targetAddress,
                         image: e.images.length ? e.images[0].virtualPath : '',
                         images: images,
                         content: e.content,
@@ -350,8 +347,7 @@
                         messages: e.messages,
                     }
                 });
-                this.foundItem = lostItems.filter(e => e.type === 1)
-                this.lostItem = lostItems.filter(e => e.type === 2)
+                this.employment = employment
             },
             closePreview() {
                 this.show.previewImg = false
@@ -372,7 +368,6 @@
                     this.$message.error(`${info.file.name} 上传失败`);
                 }
             },
-
         }
     })
 </script>

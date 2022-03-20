@@ -38,13 +38,13 @@
 	<a-divider></a-divider>
 	<a-tabs type="card">
 		<a-col slot="tabBarExtraContent">
-			<a-button type="default" @click="showAddCarPooling"> 发布</a-button>
+			<a-button type="default" @click="showAddEmployment"> 发布</a-button>
 		</a-col>
-		<a-tab-pane key="1" tab="拼车">
+		<a-tab-pane key="1" tab="就业速递">
 			<a-divider></a-divider>
 			<a-space direction="vertical"
 							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
-				<a-card hoverable style="width: 240px" v-for="item in carPooling" @click="showCarPoolingInfo(item)">
+				<a-card hoverable style="width: 240px" v-for="item in employment" @click="showEmploymentInfo(item)">
 					<img slot="cover" :src="item.image"/>
 					<a-card-meta :title="item.title">
 						<template slot="description">
@@ -62,24 +62,15 @@
 			</a-space>
 		</a-tab-pane>
 	</a-tabs>
-	<a-modal title="发布" :visible.sync="show.addCarPooling" width="30%" ok-text="确认"
-					 cancel-text="取消" @ok="saveCarPooling" @cancel="closeAddCarPooling">
-		<a-form-model ref="ruleForm" :model="form.carPooling" :rules="rules" :label-col="labelCol"
+	<a-modal title="发布" :visible.sync="show.addEmployment" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveEmployment" @cancel="closeAddEmployment">
+		<a-form-model ref="ruleForm" :model="form.employment" :rules="rules" :label-col="labelCol"
 									:wrapper-col="wrapperCol">
 			<a-form-model-item label="标题" prop="title">
-				<a-input v-model="form.carPooling.title"></a-input>
+				<a-input v-model="form.employment.title"></a-input>
 			</a-form-model-item>
-			<a-form-model-item label="出发地" prop="fromAddress">
-				<a-input v-model="form.carPooling.fromAddress" :rows="4"></a-input>
-			</a-form-model-item>
-			<a-form-model-item label="目的地" prop="targetAddress">
-				<a-input v-model="form.carPooling.targetAddress" :rows="4"></a-input>
-			</a-form-model-item>
-			<a-form-model-item label="人数" prop="personCount">
-				<a-input-number :min="0" v-model="form.carPooling.personCount" style></a-input-number>
-			</a-form-model-item>
-			<a-form-model-item label="出发时间" prop="beginTime">
-				<a-date-picker format="YYYY-MM-DD HH:mm:ss" v-model="form.carPooling.beginTime" show-time></a-date-picker>
+			<a-form-model-item label="详情" prop="content">
+				<a-textarea v-model="form.employment.content" :rows="4"></a-textarea>
 			</a-form-model-item>
 			<a-form-model-item label="图片" prop="image">
 				<div class="clearfix">
@@ -94,11 +85,11 @@
 			</a-form-model-item>
 		</a-form-model>
 	</a-modal>
-	<a-modal title="详情" :visible.sync="show.carPoolingInfo" width="60%" ok-text="查看评论"
-					 cancel-text="取消" @ok="showCarPoolingMessage" @cancel="closeCarPoolingInfo">
+	<a-modal title="详情" :visible.sync="show.employmentInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showEmploymentMessage" @cancel="closeEmploymentInfo">
 		<a-col>
-			<a-button type="primary" @click="editCarPooling">编辑</a-button>
-			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteCarPooling">
+			<a-button type="primary" @click="editEmployment">编辑</a-button>
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteEmployment">
 				<template slot="title">
 					<p>确定要删除吗？</p>
 				</template>
@@ -106,21 +97,15 @@
 			</a-popconfirm>
 			<a-divider></a-divider>
 		</a-col>
-		<p> {{form.carPooling.title}} </p>
+		<p> {{form.employment.title}} </p>
 		<a-divider></a-divider>
-		<p style="display: flex;justify-content: space-around">
-			<span>出发地：{{form.carPooling.name}} </span>
-			<span>目的地：{{form.carPooling.type}} </span>
-			<span>出发时间：{{form.carPooling.price}} </span>
-		</p>
-		<a-divider></a-divider>
-		<p>{{form.carPooling.content}} </p>
+		<p>{{form.employment.content}} </p>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
-	<a-modal title="评论" :visible.sync="show.carPoolingMessage" width="60%" :footer="null"
-					 @cancel="closeCarPoolingMessage">
-		<a-list v-if="form.carPooling.messages.length" :data-source="form.carPooling.messages"
-						:header="form.carPooling.name"
+	<a-modal title="评论" :visible.sync="show.employmentMessage" width="60%" :footer="null"
+					 @cancel="closeEmploymentMessage">
+		<a-list v-if="form.employment.messages.length" :data-source="form.employment.messages"
+						:header="form.employment.name"
 						item-layout="horizontal">
 			<a-list-item slot="renderItem" slot-scope="item, index">
 				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
@@ -135,7 +120,7 @@
 					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
 				</a-form-item>
 				<a-form-item>
-					<a-button type="primary" @click="saveCarPoolingMessage"> 发表</a-button>
+					<a-button type="primary" @click="saveEmploymentMessage"> 发表</a-button>
 				</a-form-item>
 			</div>
 		</a-comment>
@@ -150,7 +135,7 @@
         data() {
             return {
                 headers: headers,
-                carPooling: [],
+                employment: [],
                 rules: {
                     title: [
                         {required: true, message: '请输入标题', trigger: 'change'},
@@ -171,15 +156,15 @@
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
-                    carPooling: {messages: []},
+                    employment: {messages: []},
                     searchText: '',
                     messages: [],
                 },
                 show: {
                     previewImg: false,
-                    addCarPooling: false,
-                    carPoolingInfo: false,
-                    carPoolingMessage: false,
+                    addEmployment: false,
+                    employmentInfo: false,
+                    employmentMessage: false,
                 },
                 temp: {
                     defaultDateTime: new moment(),
@@ -188,7 +173,7 @@
                     fileList: [],
                     messages: [],
                     message: '',
-                    isAddCarPooling: false,
+                    isAddEmployment: false,
                     isMinePublish: false,
                 },
                 sysUser: sessionStorage.getItem("sysUser")
@@ -210,15 +195,15 @@
 
                 this.temp.beginTimeMode = mode;
             },
-            showAddCarPooling() {
-                this.temp.isAddCarPooling = true
-                this.show.addCarPooling = true
+            showAddEmployment() {
+                this.temp.isAddEmployment = true
+                this.show.addEmployment = true
             },
-            closeAddCarPooling() {
-                this.show.addCarPooling = false
+            closeAddEmployment() {
+                this.show.addEmployment = false
             },
-            saveCarPooling() {
-                let data = this.form.carPooling
+            saveEmployment() {
+                let data = this.form.employment
                 let oldFile = data.images
                 let newFile = this.temp.fileList.map(e => {
                     if (e.response) {
@@ -229,45 +214,45 @@
                 }).filter(e => {
                     return e
                 })
-                if (this.temp.isAddCarPooling) {
+                if (this.temp.isAddEmployment) {
                     data.images = newFile
                 } else {
                     data.images = [...oldFile, ...newFile]
                 }
-                axios.post('/api/carPooling/save', data).then(response => {
+                axios.post('/api/employment/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     this.$message.success(result.message);
-                    this.closeAddCarPooling()
+                    this.closeAddEmployment()
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            editCarPooling() {
-                this.show.addCarPooling = true
-                this.show.carPoolingInfo = false
-                this.temp.isAddCarPooling = false
+            editEmployment() {
+                this.show.addEmployment = true
+                this.show.employmentInfo = false
+                this.temp.isAddEmployment = false
             },
-            deleteCarPooling() {
-                axios.delete(`/api/carPooling/delete/${this.form.carPooling.id}`).then(response => {
+            deleteEmployment() {
+                axios.delete(`/api/employment/delete/${this.form.employment.id}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
-                    this.closeCarPoolingInfo()
+                    this.closeEmploymentInfo()
                     this.getMinePublish()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            showCarPoolingInfo(carPooling) {
-                this.form.carPooling = carPooling
-                this.temp.fileList = carPooling.images.map(e => {
+            showEmploymentInfo(employment) {
+                this.form.employment = employment
+                this.temp.fileList = employment.images.map(e => {
                     return {
                         uid: e.id,
                         name: e.oldName,
@@ -275,33 +260,33 @@
                         url: e.virtualPath,
                     }
                 })
-                this.show.carPoolingInfo = true
+                this.show.employmentInfo = true
             },
-            closeCarPoolingInfo() {
-                this.show.carPoolingInfo = false
+            closeEmploymentInfo() {
+                this.show.employmentInfo = false
             },
-            showCarPoolingMessage() {
-                this.show.carPoolingMessage = true
+            showEmploymentMessage() {
+                this.show.employmentMessage = true
             },
-            closeCarPoolingMessage() {
+            closeEmploymentMessage() {
                 this.temp.messages = ''
-                this.show.carPoolingMessage = false
+                this.show.employmentMessage = false
             },
-            saveCarPoolingMessage() {
-                this.form.carPooling.messages.push({content: this.temp.message})
-                this.saveCarPooling()
+            saveEmploymentMessage() {
+                this.form.employment.messages.push({content: this.temp.message})
+                this.saveEmployment()
                 this.temp.message = ''
             },
             getMinePublish() {
                 this.temp.isMinePublish = true
-                axios.get(`/api/carPooling/mine`).then(response => {
+                axios.get(`/api/employment/mine`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterCarPooling(result.data)
+                        this.filterEmployment(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -313,14 +298,14 @@
             },
             search() {
                 this.temp.isMinePublish = false
-                axios.get(`/api/carPooling/search/${this.form.searchText}`).then(response => {
+                axios.get(`/api/employment/search/${this.form.searchText}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterCarPooling(result.data)
+                        this.filterEmployment(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -328,21 +313,21 @@
             },
             getList() {
                 this.temp.isMinePublish = false
-                axios.get('/api/carPooling/list').then(response => {
+                axios.get('/api/employment/list').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterCarPooling(result.data)
+                        this.filterEmployment(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            filterCarPooling(source) {
-                const carPooling = source.map(e => {
+            filterEmployment(source) {
+                const employment = source.map(e => {
                     let images = e.images.sort((a, b) => {
                         let createTimeA = new moment(a.createTime.substring(0, 19))
                         let createTimeB = new moment(b.createTime.substring(0, 19))
@@ -362,7 +347,7 @@
                         messages: e.messages,
                     }
                 });
-                this.carPooling = carPooling
+                this.employment = employment
             },
             closePreview() {
                 this.show.previewImg = false
