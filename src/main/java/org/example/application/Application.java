@@ -13,8 +13,9 @@ import org.springframework.web.client.RestTemplate;
 public class Application {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
         SpringApplication.run(Application.class, args);
+//        Class.forName("oracle.jdbc.driver.OracleDriver");
         logger.info(">>>>>>>>服务启动成功 [jpa] [jwt] >>>>>>>>>");
     }
 
