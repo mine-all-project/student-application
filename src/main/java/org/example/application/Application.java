@@ -1,5 +1,6 @@
 package org.example.application;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -10,12 +11,12 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableJpaAuditing
 @SpringBootApplication
+@MapperScan("org.example.application")
 public class Application {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) throws ClassNotFoundException {
         SpringApplication.run(Application.class, args);
-//        Class.forName("oracle.jdbc.driver.OracleDriver");
         logger.info(">>>>>>>>服务启动成功 [jpa] [jwt] >>>>>>>>>");
     }
 
