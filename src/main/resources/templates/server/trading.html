@@ -184,6 +184,12 @@
 		<a-divider></a-divider>
 		<p>{{form.goods.content}} </p>
 		<a-divider></a-divider>
+		<p v-if="temp.isMinePublish">
+			<span>审核意见：{{form.goods.note}}</span>
+			<a-tag color="green" v-if="form.goods.status === 0">正常</a-tag>
+			<a-tag color="blue" v-if="form.goods.status === 1">待审</a-tag>
+			<a-tag color="red" v-if="form.goods.status === 2">驳回</a-tag>
+		</p>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
 	<a-modal title="需求详情" :visible.sync="show.demandInfo" width="60%" ok-text="查看评论"
@@ -201,6 +207,13 @@
 		<p> {{form.demand.title}} </p>
 		<a-divider></a-divider>
 		<p>{{form.demand.content}} </p>
+		<a-divider></a-divider>
+		<p v-if="temp.isMinePublish">
+			<span>审核意见：{{form.demand.note}}</span>
+			<a-tag color="green" v-if="form.demand.status === 0">正常</a-tag>
+			<a-tag color="blue" v-if="form.demand.status === 1">待审</a-tag>
+			<a-tag color="red" v-if="form.demand.status === 2">驳回</a-tag>
+		</p>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
 	<a-modal title="商品评论" :visible.sync="show.goodsMessage" width="60%" :footer="null" @cancel="closeGoodsMessage">
@@ -317,7 +330,7 @@
             closeAddDemand() {
                 this.show.addDemand = false
                 this.form.demand = {messages: []}
-                this.temp.fileList =[]
+                this.temp.fileList = []
             },
             saveDemand() {
                 let data = this.form.demand
@@ -408,7 +421,7 @@
             closeAddGoods() {
                 this.show.addGoods = false
                 this.form.goods = {messages: []}
-                this.temp.fileList =[]
+                this.temp.fileList = []
             },
             saveGoods() {
                 let data = this.form.goods
@@ -585,6 +598,8 @@
                     })
                     return {
                         id: e.id,
+                        status: e.status,
+                        note: e.note,
                         name: e.name,
                         price: e.price,
                         image: e.images.length ? e.images[0].virtualPath : '',
@@ -608,6 +623,8 @@
                     })
                     return {
                         id: e.id,
+                        status: e.status,
+                        note: e.note,
                         title: e.title,
                         price: e.price,
                         image: e.images.length ? e.images[0].virtualPath : '',

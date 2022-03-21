@@ -120,6 +120,13 @@
 		</p>
 		<a-divider></a-divider>
 		<p>{{form.carPooling.content}} </p>
+		<a-divider></a-divider>
+		<p v-if="temp.isMinePublish">
+			<span>审核意见：{{form.carPooling.note}}</span>
+			<a-tag color="green" v-if="form.carPooling.status === 0">正常</a-tag>
+			<a-tag color="blue" v-if="form.carPooling.status === 1">待审</a-tag>
+			<a-tag color="red" v-if="form.carPooling.status === 2">驳回</a-tag>
+		</p>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
 	<a-modal title="评论" :visible.sync="show.carPoolingMessage" width="60%" :footer="null"

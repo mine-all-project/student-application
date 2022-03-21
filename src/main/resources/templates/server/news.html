@@ -178,7 +178,12 @@
 		</p>
 		<a-divider></a-divider>
 		<p>{{form.news.content}} </p>
-		<a-divider></a-divider>
+		<p v-if="temp.isMinePublish">
+			<span>审核意见：{{form.content.note}}</span>
+			<a-tag color="green" v-if="form.content.status === 0">正常</a-tag>
+			<a-tag color="blue" v-if="form.content.status === 1">待审</a-tag>
+			<a-tag color="red" v-if="form.content.status === 2">驳回</a-tag>
+		</p>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
 	<a-modal title="评论" :visible.sync="show.newsMessage" width="60%" :footer="null" @cancel="closeNewsMessage">
