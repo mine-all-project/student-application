@@ -70,7 +70,7 @@ const app = new Vue({
                     key: '2',
                     name: '校园咨询',
                     icon: 'appstore',
-                    url: '',
+                    url: '/server/news.html',
                 },
                 {
                     key: '3',
@@ -116,6 +116,12 @@ const app = new Vue({
                     icon: 'appstore',
                     url: '',
                     children: [
+                        {
+                            key: '40',
+                            name: '校园咨询',
+                            icon: 'appstore',
+                            url: '/server/check-news.html',
+                        },
                         {
                             key: '41',
                             name: '二手交易',

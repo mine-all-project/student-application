@@ -38,15 +38,77 @@
 	<a-divider></a-divider>
 	<a-tabs type="card">
 		<a-col slot="tabBarExtraContent">
-			<a-button type="default" @click="showAddCarPooling"> 发布</a-button>
+			<a-button type="primary" @click="showAddNews"> 发布信息</a-button>
 		</a-col>
-		<a-tab-pane key="1" tab="拼车">
+		<a-tab-pane key="1" tab="食堂意见">
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in diningRoom" @click="showNewsInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.name">
+						<template slot="description">
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+							</div>
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
+		</a-tab-pane>
+		<a-tab-pane key="2" tab="阅读推荐">
 			<a-divider></a-divider>
 			<a-space direction="vertical"
 							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
-				<a-card hoverable style="width: 240px" v-for="item in carPooling" @click="showCarPoolingInfo(item)">
+				<a-card hoverable style="width: 240px" v-for="item in reading" @click="showNewsInfo(item)">
 					<img slot="cover" :src="item.image"/>
-					<a-card-meta :title="item.title">
+					<a-card-meta :title="item.name">
+						<template slot="description">
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+							</div>
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
+		</a-tab-pane>
+		<a-tab-pane key="3" tab="话题讨论">
+			<a-divider></a-divider>
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in discuss" @click="showNewsInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.name">
+						<template slot="description">
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+							</div>
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
+		</a-tab-pane>
+		<a-tab-pane key="4" tab="校内新闻">
+			<a-divider></a-divider>
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in schoolNews" @click="showNewsInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.name">
 						<template slot="description">
 							<div style="display: flex;justify-content: space-between">
 								<a-tooltip placement="top">
@@ -62,27 +124,22 @@
 			</a-space>
 		</a-tab-pane>
 	</a-tabs>
-	<a-modal title="发布" :visible.sync="show.addCarPooling" width="30%" ok-text="确认"
-					 cancel-text="取消" @ok="saveCarPooling" @cancel="closeAddCarPooling">
-		<a-form-model ref="ruleForm" :model="form.carPooling" :rules="rules" :label-col="labelCol"
-									:wrapper-col="wrapperCol">
+	<a-modal title="发布信息" :visible.sync="show.addNews" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveNews" @cancel="closeAddNews">
+		<a-form-model ref="ruleForm" :model="form.news" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
 			<a-form-model-item label="标题" prop="title">
-				<a-input v-model="form.carPooling.title"></a-input>
+				<a-input v-model="form.news.title"></a-input>
 			</a-form-model-item>
-			<a-form-model-item label="出发地" prop="fromAddress">
-				<a-input v-model="form.carPooling.fromAddress"></a-input>
-			</a-form-model-item>
-			<a-form-model-item label="目的地" prop="targetAddress">
-				<a-input v-model="form.carPooling.targetAddress"></a-input>
+			<a-form-model-item label="发布类型" prop="type">
+				<a-radio-group name="type" v-model="form.news.type">
+					<a-radio :value="1">食堂意见</a-radio>
+					<a-radio :value="2">阅读推荐</a-radio>
+					<a-radio :value="3">话题讨论</a-radio>
+					<a-radio :value="4">校内新闻</a-radio>
+				</a-radio-group>
 			</a-form-model-item>
 			<a-form-model-item label="详情" prop="content">
-				<a-textarea v-model="form.carPooling.content" :rows="4"></a-textarea>
-			</a-form-model-item>
-			<a-form-model-item label="人数" prop="personCount">
-				<a-input-number :min="0" v-model="form.carPooling.personCount" style></a-input-number>
-			</a-form-model-item>
-			<a-form-model-item label="出发时间" prop="beginTime">
-				<a-date-picker format="YYYY-MM-DD HH:mm:ss" v-model="form.carPooling.beginTime" show-time></a-date-picker>
+				<a-textarea v-model="form.news.content" :rows="4"></a-textarea>
 			</a-form-model-item>
 			<a-form-model-item label="图片" prop="image">
 				<div class="clearfix">
@@ -98,11 +155,11 @@
 			</a-form-model-item>
 		</a-form-model>
 	</a-modal>
-	<a-modal title="详情" :visible.sync="show.carPoolingInfo" width="60%" ok-text="查看评论"
-					 cancel-text="取消" @ok="showCarPoolingMessage" @cancel="closeCarPoolingInfo">
+	<a-modal title="详情" :visible.sync="show.newsInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showNewsMessage" @cancel="closeNewsInfo">
 		<a-col v-if="temp.isMinePublish">
-			<a-button type="primary" @click="editCarPooling">编辑</a-button>
-			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteCarPooling">
+			<a-button type="primary" @click="editNews">编辑</a-button>
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteNews">
 				<template slot="title">
 					<p>确定要删除吗？</p>
 				</template>
@@ -110,23 +167,23 @@
 			</a-popconfirm>
 			<a-divider></a-divider>
 		</a-col>
-		<p> {{form.carPooling.title}} </p>
-		<a-divider></a-divider>
 		<p style="display: flex;justify-content: space-around">
-			<span>出发地：{{form.carPooling.beginAddress}} </span>
-			<span>目的地：{{form.carPooling.targetAddress}} </span>
-			<span>人数：{{form.carPooling.personCount}} </span>
-			<span>出发时间：{{form.carPooling.beginTimeStr}} </span>
+			<span>标题：{{form.news.title}} </span>
+			<span>类型：
+				<span v-if="form.news.type===1">食堂意见</span>
+				<span v-if="form.news.type===2">阅读推荐</span>
+				<span v-if="form.news.type===3">话题讨论</span>
+				<span v-if="form.news.type===4">校内新闻</span>
+			</span>
 		</p>
 		<a-divider></a-divider>
-		<p>{{form.carPooling.content}} </p>
+		<p>{{form.news.content}} </p>
+		<a-divider></a-divider>
 		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
 	</a-modal>
-	<a-modal title="评论" :visible.sync="show.carPoolingMessage" width="60%" :footer="null"
-					 @cancel="closeCarPoolingMessage">
-		<a-list v-if="form.carPooling.messages.length" :data-source="form.carPooling.messages"
-						:header="form.carPooling.name"
-						item-layout="horizontal">
+	<a-modal title="评论" :visible.sync="show.newsMessage" width="60%" :footer="null" @cancel="closeNewsMessage">
+		<a-list v-if="form.news.messages.length" :data-source="form.news.messages"
+						:header="form.news.name" item-layout="horizontal">
 			<a-list-item slot="renderItem" slot-scope="item, index">
 				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
 									 :datetime="item.datetime">
@@ -140,7 +197,7 @@
 					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
 				</a-form-item>
 				<a-form-item>
-					<a-button type="primary" @click="saveCarPoolingMessage"> 发表</a-button>
+					<a-button type="primary" @click="saveNewsMessage"> 发表</a-button>
 				</a-form-item>
 			</div>
 		</a-comment>
@@ -155,45 +212,39 @@
         data() {
             return {
                 headers: headers,
-                carPooling: [],
+                diningRoom: [],
+                reading: [],
+                discuss: [],
+                schoolNews: [],
                 rules: {
                     title: [
                         {required: true, message: '请输入标题', trigger: 'change'},
                     ],
-                    fromAddress: [
-                        {required: true, message: '请输入出发地', trigger: 'change'},
-                    ],
-                    targetAddress: [
-                        {required: true, message: '请输入目的地', trigger: 'change'},
-                    ],
-                    personCount: [
-                        {required: true, message: '请输入人数', trigger: 'change'},
-                    ],
-                    beginTime: [
-                        {required: true, message: '请选择出发时间', trigger: 'change'},
+                    type: [
+                        {required: true, message: '请选择发布类型', trigger: 'change'},
                     ],
                 },
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
-                    carPooling: {messages: []},
+                    news: {messages: []},
                     searchText: '',
                     messages: [],
                 },
                 show: {
                     previewImg: false,
-                    addCarPooling: false,
-                    carPoolingInfo: false,
-                    carPoolingMessage: false,
+                    addNews: false,
+                    newsInfo: false,
+                    newsMessage: false,
                 },
                 temp: {
-                    defaultDateTime: new moment(),
-                    beginTimeMode: '',
                     previewSrc: '',
                     fileList: [],
+                    allNews: [],
+                    searchNews: [],
                     messages: [],
                     message: '',
-                    isAddCarPooling: false,
+                    isAddNews: false,
                     isMinePublish: false,
                 },
                 sysUser: sessionStorage.getItem("sysUser")
@@ -203,17 +254,17 @@
             this.getList()
         },
         methods: {
-            showAddCarPooling() {
-                this.temp.isAddCarPooling = true
-                this.show.addCarPooling = true
+            showAddNews() {
+                this.temp.isAddNews = true
+                this.show.addNews = true
             },
-            closeAddCarPooling() {
-                this.show.addCarPooling = false
-                this.form.carPooling = {messages: []}
-                this.temp.fileList =[]
+            closeAddNews() {
+                this.show.addNews = false
+                this.form.news = {messages: []}
+                this.temp.fileList = []
             },
-            saveCarPooling() {
-                let data = this.form.carPooling
+            saveNews() {
+                let data = this.form.news
                 let oldFile = data.images
                 let newFile = this.temp.fileList.map(e => {
                     if (e.response) {
@@ -224,47 +275,47 @@
                 }).filter(e => {
                     return e
                 })
-                if (this.temp.isAddCarPooling) {
+                if (this.temp.isAddNews) {
                     data.images = newFile
                 } else {
                     data.images = [...oldFile, ...newFile]
                 }
-                axios.post('/api/carPooling/save', data).then(response => {
+                axios.post('/api/news/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     this.$message.success(result.message);
-                    this.closeAddCarPooling()
-                    this.closeCarPoolingMessage()
-                    this.closeCarPoolingInfo()
+                    this.closeAddNews()
+                    this.closeNewsMessage()
+                    this.closeNewsInfo()
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            editCarPooling() {
-                this.show.addCarPooling = true
-                this.show.carPoolingInfo = false
-                this.temp.isAddCarPooling = false
+            editNews() {
+                this.show.addNews = true
+                this.show.newsInfo = false
+                this.temp.isAddNews = false
             },
-            deleteCarPooling() {
-                axios.delete(`/api/carPooling/delete/${this.form.carPooling.id}`).then(response => {
+            deleteNews() {
+                axios.delete(`/api/news/delete/${this.form.news.id}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
-                    this.closeCarPoolingInfo()
+                    this.closeNewsInfo()
                     this.getMinePublish()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            showCarPoolingInfo(carPooling) {
-                this.form.carPooling = carPooling
-                this.temp.fileList = carPooling.images.map(e => {
+            showNewsInfo(news) {
+                this.form.news = news
+                this.temp.fileList = news.images.map(e => {
                     return {
                         uid: e.id,
                         name: e.oldName,
@@ -272,35 +323,37 @@
                         url: e.virtualPath,
                     }
                 })
-                this.show.carPoolingInfo = true
+                this.show.newsInfo = true
             },
-            closeCarPoolingInfo() {
-                this.show.carPoolingInfo = false
-                this.form.carPooling = {messages: []}
+            closeNewsInfo() {
+                this.show.newsInfo = false
+                this.form.news = {messages: []}
                 this.temp.fileList = []
             },
-            showCarPoolingMessage() {
-                this.show.carPoolingMessage = true
+            showNewsMessage() {
+                console.log(this.form.news.messages)
+                this.show.newsMessage = true
             },
-            closeCarPoolingMessage() {
+            closeNewsMessage() {
                 this.temp.messages = ''
-                this.show.carPoolingMessage = false
+                this.show.newsMessage = false
             },
-            saveCarPoolingMessage() {
-                this.form.carPooling.messages.push({content: this.temp.message})
-                this.saveCarPooling()
+            saveNewsMessage() {
+                this.form.news.messages.push({content: this.temp.message})
+                this.saveNews()
                 this.temp.message = ''
             },
+
             getMinePublish() {
                 this.temp.isMinePublish = true
-                axios.get(`/api/carPooling/mine`).then(response => {
+                axios.get(`/api/news/mine`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterCarPooling(result.data)
+                        this.filterNews(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -312,14 +365,14 @@
             },
             search() {
                 this.temp.isMinePublish = false
-                axios.get(`/api/carPooling/search/${this.form.searchText}`).then(response => {
+                axios.get(`/api/news/search/${this.form.searchText}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterCarPooling(result.data)
+                        this.filterNews(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -327,21 +380,21 @@
             },
             getList() {
                 this.temp.isMinePublish = false
-                axios.get('/api/carPooling/list').then(response => {
+                axios.get('/api/news/list').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterCarPooling(result.data)
+                        this.filterNews(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            filterCarPooling(source) {
-                const carPooling = source.map(e => {
+            filterNews(source) {
+                const allNews = source.map(e => {
                     let images = e.images.sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
@@ -349,12 +402,9 @@
                     })
                     return {
                         id: e.id,
+                        name: e.name,
                         title: e.title,
-                        beginTime: new moment(e.beginTime),
-                        beginTimeStr: new moment((e.beginTime)).format('YYYY-MM-DD HH:mm:ss'),
-                        personCount: e.personCount,
-                        fromAddress: e.fromAddress,
-                        targetAddress: e.targetAddress,
+                        price: e.price,
                         image: e.images.length ? e.images[0].virtualPath : '',
                         images: images,
                         content: e.content,
@@ -364,7 +414,10 @@
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                     }
                 });
-                this.carPooling = carPooling
+                this.diningRoom = allNews.filter(e => e.type === 1)
+                this.reading = allNews.filter(e => e.type === 2)
+                this.discuss = allNews.filter(e => e.type === 3)
+                this.schoolNews = allNews.filter(e => e.type === 4)
             },
             closePreview() {
                 this.show.previewImg = false
@@ -386,7 +439,7 @@
                 }
             },
             removeUploadFile(file) {
-                this.form.carPooling.images = this.form.carPooling.images.filter(e => {
+                this.form.news.images = this.form.news.images.filter(e => {
                     return e.virtualPath !== file.url
                 })
             },

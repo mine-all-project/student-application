@@ -163,7 +163,7 @@
 	</a-modal>
 	<a-modal title="商品详情" :visible.sync="show.goodsInfo" width="60%" ok-text="查看评论"
 					 cancel-text="取消" @ok="showGoodsMessage" @cancel="closeGoodsInfo">
-		<a-col>
+		<a-col v-if="temp.isMinePublish">
 			<a-button type="primary" @click="editGoods">编辑</a-button>
 			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteGoods">
 				<template slot="title">
@@ -188,7 +188,7 @@
 	</a-modal>
 	<a-modal title="需求详情" :visible.sync="show.demandInfo" width="60%" ok-text="查看评论"
 					 cancel-text="取消" @ok="showDemandMessage" @cancel="closeDemandInfo">
-		<a-col>
+		<a-col v-if="temp.isMinePublish">
 			<a-button type="primary" @click="editDemand">编辑</a-button>
 			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteDemand">
 				<template slot="title">
@@ -316,6 +316,8 @@
             },
             closeAddDemand() {
                 this.show.addDemand = false
+                this.form.demand = {messages: []}
+                this.temp.fileList =[]
             },
             saveDemand() {
                 let data = this.form.demand
@@ -344,7 +346,6 @@
                     this.closeAddDemand()
                     this.closeDemandMessage()
                     this.closeDemandInfo()
-                    this.form.demand = {messages: []}
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -382,6 +383,8 @@
             },
             closeDemandInfo() {
                 this.show.demandInfo = false
+                this.form.demand = {messages: []}
+                this.temp.fileList = []
             },
             showDemandMessage() {
                 this.show.demandMessage = true
@@ -404,6 +407,8 @@
             },
             closeAddGoods() {
                 this.show.addGoods = false
+                this.form.goods = {messages: []}
+                this.temp.fileList =[]
             },
             saveGoods() {
                 let data = this.form.goods
@@ -432,7 +437,6 @@
                     this.closeAddGoods()
                     this.closeGoodsMessage()
                     this.closeGoodsInfo()
-                    this.form.goods = {messages: []}
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -470,6 +474,8 @@
             },
             closeGoodsInfo() {
                 this.show.goodsInfo = false
+                this.form.goods = {messages: []}
+                this.temp.fileList = []
             },
             showGoodsMessage() {
                 this.show.goodsMessage = true

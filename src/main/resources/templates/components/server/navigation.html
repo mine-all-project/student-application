@@ -70,18 +70,21 @@
 	<span class="title">{{title}}</span>
 	<div>
 		<a-dropdown>
-			<a-icon type="setting"></a-icon>
+			<span>
+				<a-avatar :src="userInfo.headImg.virtualPath" v-if="userInfo.headImg"></a-avatar>
+				<span>{{ userInfo.name }}</span>
+			</span>
 			<a-menu slot="overlay">
 				<a-menu-item key="3" @click="showPersonSettings">
-					<a-icon type="user"></a-icon>
+					<a-icon type="setting"></a-icon>
 					个人设置
 				</a-menu-item>
 				<a-menu-item key="1" @click="showUpdatePassword">
-					<a-icon type="user"></a-icon>
+					<a-icon type="key"></a-icon>
 					修改密码
 				</a-menu-item>
 				<a-menu-item key="2" @click="logout">
-					<a-icon type="user"></a-icon>
+					<a-icon type="logout"></a-icon>
 					退出登录
 				</a-menu-item>
 			</a-menu>
@@ -89,7 +92,6 @@
 				<a-icon type="down"></a-icon>
 			</a-button>
 		</a-dropdown>
-		<span>{{ userInfo.name }}</span>
 	</div>
 </a-layout-header>
 <a-layout-sider th:fragment="a-menus">

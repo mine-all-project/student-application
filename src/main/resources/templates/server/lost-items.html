@@ -114,7 +114,7 @@
 	</a-modal>
 	<a-modal title="详情" :visible.sync="show.lostItemsInfo" width="60%" ok-text="查看评论"
 					 cancel-text="取消" @ok="showLostItemsMessage" @cancel="closeLostItemsInfo">
-		<a-col>
+		<a-col v-if="temp.isMinePublish">
 			<a-button type="primary" @click="editLostItems">编辑</a-button>
 			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteLostItems">
 				<template slot="title">
@@ -205,6 +205,8 @@
             },
             closeAddLostItems() {
                 this.show.addLostItems = false
+                this.form.lostItems = {messages: []}
+                this.temp.fileList =[]
             },
             saveLostItems() {
                 let data = this.form.lostItems
@@ -233,7 +235,6 @@
                     this.closeAddLostItems()
                     this.closeLostItemsMessage()
                     this.closeLostItemsInfo()
-                    this.form.lostItems = {messages: []}
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -271,6 +272,8 @@
             },
             closeLostItemsInfo() {
                 this.show.lostItemsInfo = false
+                this.form.lostItems = {messages: []}
+                this.temp.fileList = []
             },
             showLostItemsMessage() {
                 this.show.lostItemsMessage = true

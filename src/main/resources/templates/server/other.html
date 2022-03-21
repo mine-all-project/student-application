@@ -113,7 +113,7 @@
 	</a-modal>
 	<a-modal title="详情" :visible.sync="show.otherInfo" width="60%" ok-text="查看评论"
 					 cancel-text="取消" @ok="showOtherMessage" @cancel="closeOtherInfo">
-		<a-col>
+		<a-col v-if="temp.isMinePublish">
 			<a-button type="primary" @click="editOther">编辑</a-button>
 			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteOther">
 				<template slot="title">
@@ -212,6 +212,8 @@
             },
             closeAddOther() {
                 this.show.addOther = false
+                this.form.other = {messages: []}
+                this.temp.fileList = []
             },
             saveOther() {
                 let data = this.form.other
@@ -240,7 +242,6 @@
                     this.closeAddOther()
                     this.closeOtherMessage()
                     this.closeOtherInfo()
-                    this.form.other = {messages: []}
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -278,6 +279,8 @@
             },
             closeOtherInfo() {
                 this.show.otherInfo = false
+                this.form.other = {messages: []}
+                this.temp.fileList = []
             },
             showOtherMessage() {
                 console.log(this.form.other.messages)
@@ -322,18 +325,6 @@
                     }
                     if (result.data !== null) {
                         this.filterOther(result.data)
-                    }
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-                axios.get(`/api/anonymous/search/${this.form.searchText}`).then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    if (result.data !== null) {
-                        this.filterAnonymous(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
