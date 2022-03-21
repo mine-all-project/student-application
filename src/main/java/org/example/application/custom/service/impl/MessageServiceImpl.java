@@ -22,6 +22,7 @@ public class MessageServiceImpl implements MessageService {
     private boolean isDebug;
     private final UserDAO userDAO;
     private final JwtConfigure jwtConfigure;
+
     public MessageServiceImpl(MessageDAO messageDAO, UserDAO userDAO, JwtConfigure jwtConfigure) {
         this.messageDAO = messageDAO;
         this.userDAO = userDAO;
@@ -31,11 +32,12 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message save(HttpServletRequest request, MessageForm form) {
         Message entity = form.toEntity();
-        return save(request,entity);
+        return save(request, entity);
     }
 
     @Override
     public Message save(HttpServletRequest request, Message entity) {
+        checkTalkStatus(request, jwtConfigure, userDAO, isDebug);
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         entity.setPublisher(user);
         entity.setStatus(DIC.CHECK_WAIT);
@@ -44,6 +46,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> saveAll(HttpServletRequest request, List<Message> list) {
+        checkTalkStatus(request, jwtConfigure, userDAO, isDebug);
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         final List<Message> collect = list.stream().map(e -> {
             e.setPublisher(user);

@@ -45,6 +45,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Goods save(HttpServletRequest request, GoodsForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         Goods entity = form.toEntity();
+        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
         entity.setPublisher(user);
         entity.setStatus(DIC.CHECK_WAIT);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
@@ -64,11 +65,11 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void checkPass(GoodsForm form) {
-        goodsDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+        goodsDAO.updateStatusById(form.getId(), DIC.CHECK_PASS, form.getNote());
     }
 
     @Override
     public void checkFail(GoodsForm form) {
-        goodsDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
+        goodsDAO.updateStatusById(form.getId(), DIC.CHECK_FAIL, form.getNote());
     }
 }

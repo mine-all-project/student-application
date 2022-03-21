@@ -48,6 +48,7 @@ public class DemandServiceImpl implements DemandService {
     public Demand save(HttpServletRequest request, DemandForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         Demand entity = form.toEntity();
+        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
         entity.setPublisher(user);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
         entity.setStatus(DIC.CHECK_WAIT);
@@ -68,11 +69,11 @@ public class DemandServiceImpl implements DemandService {
 
     @Override
     public void checkPass(DemandForm form) {
-        demandDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+        demandDAO.updateStatusById(form.getId(), DIC.CHECK_PASS, form.getNote());
     }
 
     @Override
     public void checkFail(DemandForm form) {
-        demandDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
+        demandDAO.updateStatusById(form.getId(), DIC.CHECK_FAIL, form.getNote());
     }
 }

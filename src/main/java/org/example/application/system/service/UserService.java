@@ -84,4 +84,12 @@ public interface UserService extends BaseService {
     void updatePassword(ResetPasswordForm form);
 
     void updateUserInfo(UpdateUserInfoForm form);
+
+    void publishCheckPass(String id);
+
+    void publishCheckFail(String id);
+
+    void talkCheckPass(String id);
+
+    void talkCheckFailTalk(String id);
 }

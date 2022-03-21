@@ -32,7 +32,7 @@ public class OtherController extends BaseController {
 
     @GetMapping("/search/{keywords}")
     public ResponseDTO search(@PathVariable String keywords) {
-        log.info("收到请求->搜索其他列表,keywords:[{}]",keywords);
+        log.info("收到请求->搜索其他列表,keywords:[{}]", keywords);
         List<Other> list = otherService.search(keywords);
         log.info("返回结果->搜索其他列表结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
@@ -41,8 +41,8 @@ public class OtherController extends BaseController {
     @PostMapping("/save")
     public ResponseDTO save(HttpServletRequest request, @RequestBody OtherForm form) {
         validator(form, IsNotNull.class);
-        log.info("收到请求->发布其他:[{}]",form);
-        Other entity = otherService.save(request,form);
+        log.info("收到请求->发布其他:[{}]", form);
+        Other entity = otherService.save(request, form);
         log.info("返回结果->发布其他结束:[{}]", entity);
         return ResponseDTO.returnSuccess(entity);
     }
@@ -57,21 +57,23 @@ public class OtherController extends BaseController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseDTO deleteById(@PathVariable String id) {
-        log.info("收到请求->删除我发布的其他,id:[{}]",id);
+        log.info("收到请求->删除我发布的其他,id:[{}]", id);
         otherService.deleteById(id);
         log.info("返回结果->删除我发布的其他结束");
         return ResponseDTO.returnSuccess();
     }
+
     @PostMapping("/checkPass")
     public ResponseDTO checkPass(@RequestBody OtherForm form) {
-        log.info("收到请求->其他审核[{}]",form);
+        log.info("收到请求->其他审核[{}]", form);
         otherService.checkPass(form);
         log.info("返回结果->其他审核结束");
         return ResponseDTO.returnSuccess();
     }
+
     @PostMapping("/checkFail")
     public ResponseDTO checkFail(@RequestBody OtherForm form) {
-        log.info("收到请求->其他驳回审核[{}]",form);
+        log.info("收到请求->其他驳回审核[{}]", form);
         otherService.checkFail(form);
         log.info("返回结果->其他驳回审核结束");
         return ResponseDTO.returnSuccess();

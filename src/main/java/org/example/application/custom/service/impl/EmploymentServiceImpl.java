@@ -48,6 +48,7 @@ public class EmploymentServiceImpl implements EmploymentService {
     public Employment save(HttpServletRequest request, EmploymentForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         Employment entity = form.toEntity();
+        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
         entity.setPublisher(user);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
         entity.setStatus(DIC.CHECK_WAIT);
@@ -68,11 +69,11 @@ public class EmploymentServiceImpl implements EmploymentService {
 
     @Override
     public void checkPass(EmploymentForm form) {
-        employmentDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+        employmentDAO.updateStatusById(form.getId(), DIC.CHECK_PASS, form.getNote());
     }
 
     @Override
     public void checkFail(EmploymentForm form) {
-        employmentDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
+        employmentDAO.updateStatusById(form.getId(), DIC.CHECK_FAIL, form.getNote());
     }
 }

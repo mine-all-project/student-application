@@ -1,6 +1,7 @@
 package org.example.application.system.service.impl;
 
 import org.example.application.common.ApplicationException;
+import org.example.application.common.DIC;
 import org.example.application.common.config.ApplicationConfigure;
 import org.example.application.common.utils.AssertUtils;
 import org.example.application.common.utils.jwt.JwtConfigure;
@@ -171,6 +172,38 @@ public class UserServiceImpl implements UserService {
         SysUser user = userDAO.findById(form.getId());
         AssertUtils.notNull(user, "用户不存在");
         BeanUtils.copyProperties(form, user);
+        userDAO.save(user);
+    }
+
+    @Override
+    public void publishCheckPass(String id) {
+        SysUser user = userDAO.findById(id);
+        AssertUtils.notNull(user, "用户不存在");
+        user.setPublishStatus(DIC.CHECK_PASS);
+        userDAO.save(user);
+    }
+
+    @Override
+    public void publishCheckFail(String id) {
+        SysUser user = userDAO.findById(id);
+        AssertUtils.notNull(user, "用户不存在");
+        user.setPublishStatus(DIC.CHECK_FAIL);
+        userDAO.save(user);
+    }
+
+    @Override
+    public void talkCheckPass(String id) {
+        SysUser user = userDAO.findById(id);
+        AssertUtils.notNull(user, "用户不存在");
+        user.setTalkStatus(DIC.CHECK_PASS);
+        userDAO.save(user);
+    }
+
+    @Override
+    public void talkCheckFailTalk(String id) {
+        SysUser user = userDAO.findById(id);
+        AssertUtils.notNull(user, "用户不存在");
+        user.setTalkStatus(DIC.CHECK_FAIL);
         userDAO.save(user);
     }
 }

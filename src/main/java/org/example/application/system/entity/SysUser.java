@@ -38,21 +38,27 @@ public class SysUser extends BaseEntity {
     private String mail;
 
     @OneToOne
-    @JoinColumn(columnDefinition = "comment '年龄'")
+    @JoinColumn(columnDefinition = "comment '头像'")
     private FileInfo headImg;
 
-    @Column(columnDefinition = "tinyint(4) comment '年龄'")
+    @Column(columnDefinition = "tinyint comment '年龄'")
     private Integer age;
 
-    @Column(columnDefinition = "tinyint(1) comment '角色 0:超级管理员 1:科研人员 2: 科研管理员'")
+    @Column(columnDefinition = "tinyint comment '角色 0:超级管理员 1:科研人员 2: 科研管理员'")
     private Integer role;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JSONField(serialize = false)
     private List<SysRole> sysRoles;
 
-    @Column(columnDefinition = "tinyint(1) default 0 not null comment '用户状态标记 0:正常 1:禁用'")
+    @Column(columnDefinition = "tinyint default 0 not null comment '用户状态标记 0:正常 1:禁用'")
     private int status;
+
+    @Column(columnDefinition = "tinyint default 0 comment '是否允许发布状态标记 0:正常 1:禁用'")
+    private int publishStatus;
+
+    @Column(columnDefinition = "tinyint default 0 comment '是否运行评论状态标记 0:正常 1:禁用'")
+    private int talkStatus;
 
     @Override
     public String toString() {

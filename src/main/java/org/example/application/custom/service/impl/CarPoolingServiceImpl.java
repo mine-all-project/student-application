@@ -47,6 +47,7 @@ public class CarPoolingServiceImpl implements CarPoolingService {
     public CarPooling save(HttpServletRequest request, CarPoolingForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         CarPooling entity = form.toEntity();
+        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
         entity.setPublisher(user);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
         entity.setStatus(DIC.CHECK_WAIT);
@@ -67,11 +68,11 @@ public class CarPoolingServiceImpl implements CarPoolingService {
 
     @Override
     public void checkPass(CarPoolingForm form) {
-        carPoolingDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+        carPoolingDAO.updateStatusById(form.getId(), DIC.CHECK_PASS, form.getNote());
     }
 
     @Override
     public void checkFail(CarPoolingForm form) {
-        carPoolingDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
+        carPoolingDAO.updateStatusById(form.getId(), DIC.CHECK_FAIL, form.getNote());
     }
 }

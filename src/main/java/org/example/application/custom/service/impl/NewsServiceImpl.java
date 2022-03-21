@@ -45,6 +45,7 @@ public class NewsServiceImpl implements NewsService {
     public News save(HttpServletRequest request, NewsForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         News entity = form.toEntity();
+        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
         entity.setPublisher(user);
         entity.setStatus(DIC.CHECK_WAIT);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
@@ -64,11 +65,11 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void checkPass(NewsForm form) {
-        newsDAO.updateStatusById(form.getId(),DIC.CHECK_PASS,form.getNote());
+        newsDAO.updateStatusById(form.getId(), DIC.CHECK_PASS, form.getNote());
     }
 
     @Override
     public void checkFail(NewsForm form) {
-        newsDAO.updateStatusById(form.getId(),DIC.CHECK_FAIL,form.getNote());
+        newsDAO.updateStatusById(form.getId(), DIC.CHECK_FAIL, form.getNote());
     }
 }
