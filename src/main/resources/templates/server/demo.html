@@ -3,6 +3,8 @@
 			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 	<div data-th-replace="/components/base :: javascript"></div>
+	<div data-th-replace="/components/base :: quill"></div>
+	<div data-th-replace="/components/base :: wangEditor"></div>
 	<div data-th-replace="/components/vue :: javascript"></div>
 	<div data-th-replace="/components/ui :: antd"></div>
 	<style>
@@ -26,13 +28,13 @@
 		<a-divider></a-divider>
 		<a-drawer width="50%" :visible="show.goods" @close="closeGoodsForm">
 			<a-form-model :model="form.goods" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-				<a-form-model-item label="名称" prop="title">
-					<a-input v-model="form.goods.title" placeholder="请输入名称"></a-input>
+				<a-form-model-item label="名称" prop="name">
+					<a-input v-model="form.goods.name" placeholder="请输入名称"></a-input>
 				</a-form-model-item>
 				<a-form-model-item label="售价" prop="price">
 					<a-input v-model="form.goods.price" placeholder="请输入售价"></a-input>
 				</a-form-model-item>
-				<div id="editor"></div>
+				<div id="editor" style="height: 40vh"></div>
 			</a-form-model>
 			<div class="drawer-bottom-button">
 				<a-button :style="{ marginRight: '8px' }" @click="closeGoodsForm">关闭</a-button>
@@ -40,10 +42,10 @@
 			</div>
 		</a-drawer>
 		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
-				<span slot="type" slot-scope="text, record">
+			<span slot="type" slot-scope="text, record">
           {{record.type_name}}
 				</span>
-			<span slot="content" slot-scope="text">
+			<span slot="content_" slot-scope="text">
           <a-tooltip placement="topLeft">
             <template slot="title">
               <span>{{ text }}</span>
@@ -51,7 +53,9 @@
             <span class="step-content">{{ text }}</span>
           </a-tooltip>
         </span>
+			<span slot="content" slot-scope="text">{{ text }}</span>
 			<span slot="action" slot-scope="text, record">
+          <a-button type="primary" size="small" @click="editGoods(record)">编辑</a-button>
           <a-button type="danger" size="small" @click="removeGoods(record)">删除</a-button>
 			</span>
 		</a-table>
@@ -87,6 +91,7 @@
                     {
                         dataIndex: 'content',
                         title: '详情',
+                        ellipsis: true,
                         scopedSlots: {customRender: 'content'},
                     },
                     {
@@ -112,27 +117,39 @@
                     goodsTypes: []
                 },
                 editor: null,
-                sysUser: sessionStorage.getItem("sysUser")
-            };
+                sysUser: sessionStorage.getItem("sysUser"),
+                initEdit: true,
+                toolbarOptions: [
+                    ['bold', 'italic', 'underline', 'strike'], //加粗，斜体，下划线，删除线
+                    ['blockquote', 'code-block'],  //引用，代码块
+                    [{'list': 'ordered'}, {'list': 'bullet'}],  //列表
+                    [{'color': []}, {'background': []}],  // 字体颜色，字体背景颜色
+                    [{'align': []}], //对齐方式
+                    ['clean'], //清除字体样式
+                    ['image'] //上传图片、上传视频
+                ],
+            }
         },
         mounted() {
             this.getList()
-            this.createEditor()
+
         },
         methods: {
             createEditor() {
-                this.$nextTick(() => {
-                    this.editor = new wangEditor('#editor')
-                    this.editor.uploadImgShowBase64 = true;
-                    this.editor.showLinkImg = false;
-                    this.editor.pasteIgnoreImg = true;
-                    this.editor.create();
-                })
+                setTimeout(() => {
+                    if (this.initEdit) {
+                        this.editor = new window.Quill('#editor', {
+                            theme: 'snow',
+                            modules: {
+                                toolbar: this.toolbarOptions
+                            }
+                        })
+                        this.initEdit = false
+                    }
+                }, 500)
             },
             destroyEditor() {
-                const _this = this
-                console.log(_this.editor)
-                _this.editor = null
+                this.editor.root.innerHTML = ''
             },
             refreshData() {
                 this.getList()
@@ -175,16 +192,21 @@
             addGoods() {
                 this.form.type = 0
                 this.show.goods = true
+                this.createEditor()
             },
             editGoods(e) {
                 console.log(e)
                 this.form.type = 1
                 this.show.goods = true
                 this.form.goods.id = e.id
-                this.form.goods.typeId = e.typeId
-                this.editor.txt.html(e.content)
+                this.form.goods.name = e.name
+                this.form.goods.price = e.price
+                this.createEditor()
+                this.editor.root.innerHTML = e.content
             },
             saveGoodsForm() {
+                console.log(this.editor.root.innerHTML)
+                this.form.goods.content = this.editor.root.innerHTML
                 let url = this.form.type === 0 ? '/api/goods/add' : '/api/goods/update'
                 axios.post(url, this.form.goods).then(response => {
                     const result = response.data
@@ -202,7 +224,9 @@
                 this.form.goods = {
                     id: '',
                     name: '',
+                    content: ''
                 }
+                this.destroyEditor()
                 this.show.goods = false
             },
         }

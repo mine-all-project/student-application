@@ -24,7 +24,7 @@
 	<div>
 		<a-button @click="addPaperType">添加分类</a-button>
 		<a-divider></a-divider>
-		<a-drawer width="30%" :visible="show.paperType" @close="closePaperTypeForm">
+		<a-modal width="30%" :visible="show.paperType" @close="closePaperTypeForm">
 			<a-form-model :model="form.paperType" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
 				<a-form-model-item label="名称" prop="name">
 					<a-input v-model="form.paperType.name" placeholder="请输入名称"></a-input>
@@ -34,7 +34,7 @@
 				<a-button :style="{ marginRight: '8px' }" @click="closePaperTypeForm">关闭</a-button>
 				<a-button type="primary" @click="savePaperTypeForm">保存</a-button>
 			</div>
-		</a-drawer>
+		</a-modal>
 		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
 			<span slot="action" slot-scope="text, record">
           <a-button type="danger" size="small" @click="deletePaperType(record)">删除</a-button>
