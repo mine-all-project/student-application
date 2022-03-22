@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.example.application.custom.entity.PaperType;
 
 import java.util.List;
+
 @Mapper
 public interface PaperTypeMapper {
     int deleteByPrimaryKey(String id);

@@ -66,26 +66,4 @@ public class PaperController extends BaseController {
         log.info("返回结果->删除文章结束");
         return ResponseDTO.returnSuccess();
     }
-
-//    @GetMapping("/search/{keywords}")
-//    public ResponseDTO search(@PathVariable String keywords) {
-//        log.info("收到请求->搜索商品列表,keywords:[{}]",keywords);
-//        List<Goods> list = goodsService.search(keywords);
-//        log.info("返回结果->搜索商品列表结束:[{}]", list);
-//        return ResponseDTO.returnSuccess(list);
-//    }
-//    @PostMapping("/checkPass")
-//    public ResponseDTO checkPass(@RequestBody GoodsForm form) {
-//        log.info("收到请求->商品通过审核[{}]",form);
-//        goodsService.checkPass(form);
-//        log.info("返回结果->商品通过审核结束");
-//        return ResponseDTO.returnSuccess();
-//    }
-//    @PostMapping("/checkFail")
-//    public ResponseDTO checkFail(@RequestBody GoodsForm form) {
-//        log.info("收到请求->商品驳回审核[{}]",form);
-//        goodsService.checkFail(form);
-//        log.info("返回结果->商品驳回审核结束");
-//        return ResponseDTO.returnSuccess();
-//    }
 }

@@ -22,22 +22,21 @@
 <body>
 <div id="app">
 	<div>
+		<a-button type="default" @click="addGoods"> 添加商品</a-button>
 		<a-divider></a-divider>
-		<a-drawer width="50%" :visible="show.paper" @close="closePaperForm">
-			<a-form-model :model="form.paper" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+		<a-drawer width="50%" :visible="show.goods" @close="closeGoodsForm">
+			<a-form-model :model="form.goods" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
 				<a-form-model-item label="名称" prop="title">
-					<a-input v-model="form.paper.title" placeholder="请输入名称"></a-input>
+					<a-input v-model="form.goods.title" placeholder="请输入名称"></a-input>
 				</a-form-model-item>
-				<a-form-model-item label="分类" prop="typeId">
-					<a-select default-value="lucy" style="width: 100%" v-model="form.paper.typeId">
-						<a-select-option :value="item.id" v-for="item in options.paperTypes"> {{item.name}}</a-select-option>
-					</a-select>
+				<a-form-model-item label="售价" prop="price">
+					<a-input v-model="form.goods.price" placeholder="请输入售价"></a-input>
 				</a-form-model-item>
 				<div id="editor"></div>
 			</a-form-model>
 			<div class="drawer-bottom-button">
-				<a-button :style="{ marginRight: '8px' }" @click="closePaperForm">关闭</a-button>
-				<a-button type="primary" @click="savePaperForm">保存</a-button>
+				<a-button :style="{ marginRight: '8px' }" @click="closeGoodsForm">关闭</a-button>
+				<a-button type="primary" @click="saveGoodsForm">保存</a-button>
 			</div>
 		</a-drawer>
 		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
@@ -53,7 +52,7 @@
           </a-tooltip>
         </span>
 			<span slot="action" slot-scope="text, record">
-          <a-button type="danger" size="small" @click="removePaper(record)">删除</a-button>
+          <a-button type="danger" size="small" @click="removeGoods(record)">删除</a-button>
 			</span>
 		</a-table>
 	</div>
@@ -67,8 +66,8 @@
                     title: [
                         {required: true, message: '请输入名称', trigger: 'blur'},
                     ],
-                    typeId: [
-                        {required: true, message: '请选择分类', trigger: 'blur'},
+                    price: [
+                        {required: true, message: '请选择售价', trigger: 'blur'},
                     ],
                 },
                 columns: [
@@ -78,17 +77,16 @@
                         title: '唯一id',
                     },
                     {
-                        dataIndex: 'title',
-                        title: '标题',
+                        dataIndex: 'name',
+                        title: '商品名称',
                     },
                     {
-                        dataIndex: 'type',
-                        title: '分类',
-                        scopedSlots: {customRender: 'type'},
+                        dataIndex: 'price',
+                        title: '售价',
                     },
                     {
                         dataIndex: 'content',
-                        title: '内容',
+                        title: '详情',
                         scopedSlots: {customRender: 'content'},
                     },
                     {
@@ -101,43 +99,30 @@
                 wrapperCol: {span: 16},
                 form: {
                     type: 0,
-                    paper: {
+                    goods: {
                         id: '',
                         name: '',
                         content: '',
                     },
                 },
                 show: {
-                    paper: false,
+                    goods: false,
                 },
                 options: {
-                    paperTypes: []
+                    goodsTypes: []
                 },
-                editor: new wangEditor('#editor'),
+                editor: null,
                 sysUser: sessionStorage.getItem("sysUser")
             };
         },
         mounted() {
             this.getList()
-            this.getPaperTypeList()
+            this.createEditor()
         },
         methods: {
-            getPaperTypeList() {
-                axios.get('/api/paperType/list').then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    if (result.data !== null) {
-                        this.options.paperTypes = result.data;
-                    }
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-            },
             createEditor() {
                 this.$nextTick(() => {
+                    this.editor = new wangEditor('#editor')
                     this.editor.uploadImgShowBase64 = true;
                     this.editor.showLinkImg = false;
                     this.editor.pasteIgnoreImg = true;
@@ -153,7 +138,7 @@
                 this.getList()
             },
             getList() {
-                axios.get('/api/paper/list').then(response => {
+                axios.get('/api/goods/list').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
@@ -166,14 +151,14 @@
                     console.error('出现错误:', error);
                 });
             },
-            removePaper(e) {
+            removeGoods(e) {
                 const _this = this;
                 this.$confirm({
                     title: '确认删除?',
                     cancelText: '取消',
                     okText: '确定',
                     onOk() {
-                        axios.delete(`/api/paper/delete/${e.id}`).then(result => {
+                        axios.delete(`/api/goods/delete/${e.id}`).then(result => {
                             console.log('通过api获取到的数据:', result);
                             if (result.status !== 200) {
                                 _this.$message.error(result.message);
@@ -187,41 +172,38 @@
                     },
                 });
             },
-            addPaper() {
+            addGoods() {
                 this.form.type = 0
-                this.show.paper = true
-                this.createEditor()
+                this.show.goods = true
             },
-            editPaper(e) {
+            editGoods(e) {
                 console.log(e)
                 this.form.type = 1
-                this.show.paper = true
-                this.createEditor()
-                this.form.paper.id = e.id
-                this.form.paper.typeId = e.typeId
+                this.show.goods = true
+                this.form.goods.id = e.id
+                this.form.goods.typeId = e.typeId
                 this.editor.txt.html(e.content)
             },
-            savePaperForm() {
-                this.form.paper.content = this.editor.txt.html()
-                let url = this.form.type === 0 ? '/api/paper/add' : '/api/paper/update'
-                axios.post(url, this.form.paper).then(response => {
+            saveGoodsForm() {
+                let url = this.form.type === 0 ? '/api/goods/add' : '/api/goods/update'
+                axios.post(url, this.form.goods).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
-                    this.closePaperForm()
+                    this.closeGoodsForm()
                     this.refreshData()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            closePaperForm() {
-                this.form.paper = {
+            closeGoodsForm() {
+                this.form.goods = {
                     id: '',
                     name: '',
                 }
-                this.show.paper = false
+                this.show.goods = false
             },
         }
     })
