@@ -26,7 +26,7 @@ public class PaperDAO extends BaseDAO {
         paperMapper.updateByPrimaryKeySelective(entity);
     }
 
-    public Paper findPaperById(String id) {
+    public Map findPaperById(String id) {
         return paperMapper.selectByPrimaryKey(id);
     }
 
@@ -39,7 +39,7 @@ public class PaperDAO extends BaseDAO {
         return paperMapper.selectAll();
     }
 
-    public List<Paper> getAllByTypeId(String pid) {
-        throw new ApplicationException("暂未实现");
+    public List<Map> getAllByTypeId(String pid) {
+        return paperMapper.getAllByTypeId(pid);
     }
 }

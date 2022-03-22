@@ -30,7 +30,7 @@ public class PaperController extends BaseController {
     @GetMapping("/list/{typeId}")
     public ResponseDTO getAllByTypeId(@PathVariable String typeId) {
         log.info("收到请求->获取文章列表,typeId:[{}]",typeId);
-        List<Paper> list = paperService.getAllByTypeId(typeId);
+        List<Map> list = paperService.getAllByTypeId(typeId);
         log.info("返回结果->获取文章列表结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
     }
@@ -54,7 +54,7 @@ public class PaperController extends BaseController {
     @GetMapping("/id/{id}")
     public ResponseDTO findPaperById(@PathVariable String id) {
         log.info("收到请求->获取文章,id:[{}]", id);
-        Paper entity = paperService.findPaperById(id);
+        Map entity = paperService.findPaperById(id);
         log.info("返回结果->获取文章结束:[{}]", entity);
         return ResponseDTO.returnSuccess(entity);
     }

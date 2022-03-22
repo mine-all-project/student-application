@@ -11,11 +11,11 @@ public interface PaperService extends BaseService {
 
     void addPaper(Paper type);
 
-    Paper findPaperById(String id);
+    Map findPaperById(String id);
 
     void deletePaperById(String id);
 
     void updatePaper(Paper type);
 
-    List<Paper> getAllByTypeId(String typeId);
+    List<Map> getAllByTypeId(String typeId);
 }

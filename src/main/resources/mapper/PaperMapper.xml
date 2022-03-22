@@ -14,16 +14,23 @@
         id
         , title, create_time, update_time, del_flag, content, type_id
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from paper
-        where id = #{id,jdbcType=VARCHAR}
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="java.util.Map">
+        select a.*, b.name as type_name
+        from paper as a
+                 left join paper_type as b on a.type_id = b.id
+        where a.id = #{id,jdbcType=VARCHAR}
     </select>
     <select id="selectAll" resultType="java.util.Map">
         select a.*, b.name as type_name
         from paper as a
                  left join paper_type as b on a.type_id = b.id
+    </select>
+    <select id="getAllByTypeId" resultType="java.util.Map">
+        select a.*, b.name as type_name
+        from paper as a
+                 left join paper_type as b on a.type_id = b.id
+        where a.type_id = #{pid}
+
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete

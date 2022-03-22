@@ -32,7 +32,7 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public List<Paper> getAllByTypeId(String typeId) {
+    public List<Map> getAllByTypeId(String typeId) {
         return paperDAO.getAllByTypeId(typeId);
     }
 
@@ -47,7 +47,7 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public Paper findPaperById(String id) {
+    public Map findPaperById(String id) {
         return paperDAO.findPaperById(id);
     }
 

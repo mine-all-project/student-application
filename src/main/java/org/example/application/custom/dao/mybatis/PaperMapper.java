@@ -1,6 +1,7 @@
 package org.example.application.custom.dao.mybatis;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.example.application.custom.entity.Paper;
 
 import java.util.List;
@@ -13,11 +14,13 @@ public interface PaperMapper {
 
     int insertSelective(Paper record);
 
-    Paper selectByPrimaryKey(String id);
+    Map selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(Paper record);
 
     int updateByPrimaryKey(Paper record);
 
     List<Map> selectAll();
+
+    List<Map> getAllByTypeId(@Param("pid") String pid);
 }
