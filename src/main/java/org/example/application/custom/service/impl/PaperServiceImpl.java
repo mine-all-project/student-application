@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -26,7 +27,7 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public List<Paper> getAll() {
+    public List<Map> getAll() {
         return paperDAO.getAll();
     }
 

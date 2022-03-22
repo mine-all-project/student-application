@@ -8,6 +8,7 @@ import org.example.application.system.dto.ResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -21,7 +22,7 @@ public class PaperController extends BaseController {
     @GetMapping("/list")
     public ResponseDTO getAll() {
         log.info("收到请求->获取文章列表");
-        List<Paper> list = paperService.getAll();
+        List<Map> list = paperService.getAll();
         log.info("返回结果->获取文章列表结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
     }
@@ -35,18 +36,18 @@ public class PaperController extends BaseController {
     }
 
     @PostMapping("/add")
-    public ResponseDTO addPaper(@RequestBody Paper type) {
+    public ResponseDTO addPaper(@RequestBody Paper paper) {
         log.info("收到请求->添加文章");
-        paperService.addPaper(type);
-        log.info("返回结果->添加文章结束:[{}]", type);
+        paperService.addPaper(paper);
+        log.info("返回结果->添加文章结束:[{}]", paper);
         return ResponseDTO.returnSuccess();
     }
 
     @PostMapping("/update")
-    public ResponseDTO updatePaper(@RequestBody Paper type) {
+    public ResponseDTO updatePaper(@RequestBody Paper paper) {
         log.info("收到请求->修改文章");
-        paperService.updatePaper(type);
-        log.info("返回结果->修改文章结束:[{}]", type);
+        paperService.updatePaper(paper);
+        log.info("返回结果->修改文章结束:[{}]", paper);
         return ResponseDTO.returnSuccess();
     }
 

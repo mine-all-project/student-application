@@ -4,9 +4,10 @@ import org.example.application.common.BaseService;
 import org.example.application.custom.entity.Paper;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PaperService extends BaseService {
-    List<Paper> getAll();
+    List<Map> getAll();
 
     void addPaper(Paper type);
 

@@ -84,6 +84,68 @@ const app = new Vue({
                             icon: 'appstore',
                             url: '/server/paper-list.html',
                         },
+                    ]
+                },
+                {
+                    key: '4',
+                    name: '海产管理',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '40',
+                            name: '产品管理',
+                            icon: 'appstore',
+                            url: '/server/goods-list.html',
+                        },
+                        {
+                            key: '41',
+                            name: '订单管理',
+                            icon: 'appstore',
+                            url: '/server/order-list.html',
+                        },
+                    ]
+                },
+            ],
+            sysMenus: [{
+                key: '1',
+                name: '用户管理',
+                icon: 'appstore',
+                url: '',
+                children: [
+                    {
+                        key: '11',
+                        name: '用户列表',
+                        icon: 'appstore',
+                        url: '/server/user-list',
+                    },
+                ]
+            },],
+            userMenus: [
+                {
+                    key: '2',
+                    name: '校园咨询',
+                    icon: 'appstore',
+                    url: '/server/news.html',
+                },
+                {
+                    key: '3',
+                    name: '校园动态',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '31',
+                            name: '二手交易平台',
+                            icon: 'appstore',
+                            url: '/server/trading.html',
+                        },
+                        {
+                            key: '32',
+                            name: '失物招领',
+                            icon: 'appstore',
+                            url: '/server/lost-items.html',
+                        },
                         {
                             key: '33',
                             name: '拼车',
@@ -103,109 +165,8 @@ const app = new Vue({
                             url: '/server/other.html',
                         },
                     ]
-                },
-                {
-                    key: '4',
-                    name: '数据审核',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '40',
-                            name: '校园咨询',
-                            icon: 'appstore',
-                            url: '/server/check-news.html',
-                        },
-                        {
-                            key: '41',
-                            name: '二手交易',
-                            icon: 'appstore',
-                            url: '/server/check-trading.html',
-                        },
-                        {
-                            key: '42',
-                            name: '失物招领',
-                            icon: 'appstore',
-                            url: '/server/check-lost-items.html',
-                        },
-                        {
-                            key: '43',
-                            name: '拼车',
-                            icon: 'appstore',
-                            url: '/server/check-car-pooling.html',
-                        },
-                        {
-                            key: '44',
-                            name: '就业速递',
-                            icon: 'appstore',
-                            url: '/server/check-employment.html',
-                        },
-                        {
-                            key: '45',
-                            name: '其它',
-                            icon: 'appstore',
-                            url: '/server/check-other.html',
-                        },
-                    ]
-                },
+                }
             ],
-            sysMenus: [{
-                key: '1',
-                name: '用户管理',
-                icon: 'appstore',
-                url: '',
-                children: [
-                    {
-                        key: '11',
-                        name: '用户列表',
-                        icon: 'appstore',
-                        url: '/server/user-list',
-                    },
-                ]
-            },],
-            userMenus: [{
-                key: '2',
-                name: '校园咨询',
-                icon: 'appstore',
-                url: '/server/news.html',
-            }, {
-                key: '3',
-                name: '校园动态',
-                icon: 'appstore',
-                url: '',
-                children: [
-                    {
-                        key: '31',
-                        name: '二手交易平台',
-                        icon: 'appstore',
-                        url: '/server/trading.html',
-                    },
-                    {
-                        key: '32',
-                        name: '失物招领',
-                        icon: 'appstore',
-                        url: '/server/lost-items.html',
-                    },
-                    {
-                        key: '33',
-                        name: '拼车',
-                        icon: 'appstore',
-                        url: '/server/car-pooling.html',
-                    },
-                    {
-                        key: '34',
-                        name: '就业速递',
-                        icon: 'appstore',
-                        url: '/server/employment.html',
-                    },
-                    {
-                        key: '35',
-                        name: '其它',
-                        icon: 'appstore',
-                        url: '/server/other.html',
-                    },
-                ]
-            },],
             managerMenus: [
                 {
                     key: '2',
@@ -278,7 +239,6 @@ const app = new Vue({
                 fileList: []
             }
         }
-
     },
     mounted() {
         this.menus = this.allMenus
@@ -394,6 +354,7 @@ const app = new Vue({
             } else if (rule === 2) {
                 this.menus = this.userMenus
             }
+            this.menus = this.allMenus
         },
 
         logout() {

@@ -7,6 +7,7 @@ import org.example.application.custom.entity.Paper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -34,8 +35,8 @@ public class PaperDAO extends BaseDAO {
     }
 
 
-    public List<Paper> getAll() {
-        throw new ApplicationException("暂未实现");
+    public List<Map> getAll() {
+        return paperMapper.selectAll();
     }
 
     public List<Paper> getAllByTypeId(String pid) {
