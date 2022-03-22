@@ -22,7 +22,7 @@
 <body>
 <div id="app">
 	<div>
-		<a-button @click="addUser">添加分类</a-button>
+		<a-button @click="addPaperType">添加分类</a-button>
 		<a-divider></a-divider>
 		<a-drawer width="30%" :visible="show.paperType" @close="closePaperTypeForm">
 			<a-form-model :model="form.paperType" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -37,9 +37,9 @@
 		</a-drawer>
 		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
 			<span slot="action" slot-scope="text, record">
-          <a-button type="danger" size="small" @click="removeUser(record)">删除</a-button>
+          <a-button type="danger" size="small" @click="deletePaperType(record)">删除</a-button>
 					<a-divider type="vertical"></a-divider>
-					<a-button type="primary" size="small" @click="editUser(record)">编辑</a-button>
+					<a-button type="primary" size="small" @click="editPaperType(record)">编辑</a-button>
 			</span>
 		</a-table>
 	</div>
@@ -95,7 +95,7 @@
                 this.getList()
             },
             getList() {
-                axios.get('/api/paper/typeList').then(response => {
+                axios.get('/api/paperType/list').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
@@ -108,14 +108,14 @@
                     console.error('出现错误:', error);
                 });
             },
-            removeUser(e) {
+            deletePaperType(e) {
                 const _this = this;
                 this.$confirm({
                     title: '确认删除?该分类下所有文章都会被删除！',
                     cancelText: '取消',
                     okText: '确定',
                     onOk() {
-                        axios.delete(`/api/paper/typeList/delete/${e.id}`).then(result => {
+                        axios.delete(`/api/paperType/delete/${e.id}`).then(result => {
                             console.log('通过api获取到的数据:', result);
                             if (result.status !== 200) {
                                 _this.$message.error(result.message);
@@ -129,11 +129,11 @@
                     },
                 });
             },
-            addUser() {
+            addPaperType() {
                 this.form.type = 0
                 this.show.paperType = true
             },
-            editUser(e) {
+            editPaperType(e) {
                 this.form.type = 1
                 this.form.paperType.id = e.id
                 this.form.paperType.name = e.name
@@ -148,8 +148,7 @@
                 this.refreshData()
             },
             savePaperTypeForm() {
-                console.log(this.form)
-                let url = this.form.type === 0 ? '/api/paper/typeList/add' : '/api/paper/typeList/update'
+                let url = this.form.type === 0 ? '/api/paperType/add' : '/api/paperType/update'
                 axios.post(url, this.form.paperType).then(response => {
                     const result = response.data
                     if (result.status !== 200) {

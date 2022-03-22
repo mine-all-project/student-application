@@ -3,7 +3,7 @@ const app = new Vue({
     components: {},
     data() {
         return {
-            pageUrl: '/server/welcome.html',
+            pageUrl: '/server/demo.html',
             headers: headers,
             labelCol: {span: 5},
             wrapperCol: {span: 16},
@@ -67,28 +67,22 @@ const app = new Vue({
                     ]
                 },
                 {
-                    key: '2',
-                    name: '校园咨询',
-                    icon: 'appstore',
-                    url: '/server/news.html',
-                },
-                {
                     key: '3',
-                    name: '校园动态',
+                    name: '文章管理',
                     icon: 'appstore',
                     url: '',
                     children: [
                         {
                             key: '31',
-                            name: '二手交易平台',
+                            name: '文章分类管理',
                             icon: 'appstore',
-                            url: '/server/trading.html',
+                            url: '/server/type-list.html',
                         },
                         {
                             key: '32',
-                            name: '失物招领',
+                            name: '文章列表',
                             icon: 'appstore',
-                            url: '/server/lost-items.html',
+                            url: '/server/paper-list.html',
                         },
                         {
                             key: '33',

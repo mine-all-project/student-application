@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @EnableJpaAuditing
 @SpringBootApplication
-@MapperScan("org.example.application")
+@MapperScan({"org.example.application.custom.dao.mybatis"})
 public class Application {
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
