@@ -49,4 +49,9 @@ public class GoodsServiceImpl implements GoodsService {
     public void deleteGoodsById(String id) {
         goodsDAO.deleteGoodsById(id);
     }
+
+    @Override
+    public List<Goods> selectByIds(String[] goods_ids) {
+        return goodsDAO.selectByIds(goods_ids);
+    }
 }

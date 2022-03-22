@@ -1,6 +1,7 @@
 package org.example.application.custom.dao.mybatis;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.example.application.custom.entity.Goods;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface GoodsMapper {
     int updateByPrimaryKey(Goods record);
 
     List<Goods> findAll();
+
+    List<Goods> selectByIds(@Param("ids") String[] goods_ids);
 }

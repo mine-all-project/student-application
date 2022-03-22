@@ -26,6 +26,14 @@
         <include refid="Base_Column_List"/>
         from goods
     </select>
+    <select id="selectByIds" resultType="org.example.application.custom.entity.Goods">
+        select
+        <include refid="Base_Column_List"/>
+        from goods where id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
         from goods

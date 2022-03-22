@@ -16,4 +16,6 @@ public interface GoodsService extends BaseService {
 
     void updateGoods(Goods entity);
 
+    List<Goods> selectByIds(String[] goods_ids);
+
 }

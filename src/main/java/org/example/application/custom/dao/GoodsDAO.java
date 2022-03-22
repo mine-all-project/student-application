@@ -35,4 +35,8 @@ public class GoodsDAO extends BaseDAO {
     public void deleteGoodsById(String id) {
         goodsMapper.deleteByPrimaryKey(id);
     }
+
+    public List<Goods> selectByIds(String[] goods_ids) {
+        return goodsMapper.selectByIds(goods_ids);
+    }
 }

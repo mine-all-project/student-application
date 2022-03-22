@@ -74,15 +74,23 @@
         <!--            <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
         <!--            <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
         <!--        </table>-->
-        <table schema="" tableName="goods" enableCountByExample="false" enableUpdateByExample="false"
+<!--        <table schema="" tableName="goods" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <columnOverride column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>-->
+<!--            <columnOverride column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>-->
+<!--            <columnOverride column="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
+<!--            <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
+<!--            <columnOverride column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>-->
+<!--            <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--        </table> -->
+        <table schema="" tableName="store_car" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <columnOverride column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
-            <columnOverride column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
-            <columnOverride column="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>
-            <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>
-            <columnOverride column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>
-            <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
-
+<!--            <columnOverride column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>-->
+<!--            <columnOverride column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>-->
+<!--            <columnOverride column="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
+<!--            <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
+<!--            <columnOverride column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>-->
+            <columnOverride column="goods_ids" javaType="java.lang.String" jdbcType="VARCHAR"/>
         </table>
         <!--        <table schema="" tableName="order" enableCountByExample="false" enableUpdateByExample="false"-->
         <!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
