@@ -81,7 +81,11 @@ public class StoreCarServiceImpl implements StoreCarService {
                     ids.add(good_id);
                 }
             }
-            return goodsService.selectByIds(ids);
+            if (ids.size() > 0) {
+                return goodsService.selectByIds(ids);
+            } else {
+                return Collections.emptyList();
+            }
         } else {
             return Collections.emptyList();
         }
