@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.application.custom.dao.mybatis.FavoriteMapper">
+    <resultMap id="BaseResultMap" type="org.example.application.custom.entity.Favorite">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="goods_ids" jdbcType="VARCHAR" property="goodsIds"/>
+        <result column="paper_ids" jdbcType="VARCHAR" property="paperIds"/>
+    </resultMap>
+    <insert id="insert" parameterType="org.example.application.custom.entity.Favorite">
+        insert into favorite (id, user_id, goods_ids,
+                              paper_ids)
+        values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{goodsIds,jdbcType=VARCHAR},
+                #{paperIds,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="org.example.application.custom.entity.Favorite">
+        insert into favorite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="goodsIds != null">
+                goods_ids,
+            </if>
+            <if test="paperIds != null">
+                paper_ids,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsIds != null">
+                #{goodsIds,jdbcType=VARCHAR},
+            </if>
+            <if test="paperIds != null">
+                #{paperIds,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective">
+        update favorite
+        <set>
+            <if test="goodsIds != null">
+                goods_ids = #{goodsIds,jdbcType=VARCHAR},
+            </if>
+            <if test="paperIds != null">
+                paper_ids = #{paperIds,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="selectByUserId" resultType="org.example.application.custom.entity.Favorite">
+        select *
+        from favorite
+        where user_id = #{user_id,jdbcType=VARCHAR}
+    </select>
+</mapper>

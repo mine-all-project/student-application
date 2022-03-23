@@ -37,6 +37,6 @@ public class FileInfoController extends BaseController {
         log.info("收到请求->获取文件信息,id:[{}]",id);
         FileInfo fileInfo = fileInfoService.getFileById(id);
         log.info("返回结果->获取文件信息结束:[{}]", fileInfo);
-        return ResponseDTO.returnSuccess("上传成功", fileInfo);
+        return ResponseDTO.returnSuccess( fileInfo);
     }
 }

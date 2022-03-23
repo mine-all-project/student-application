@@ -107,10 +107,14 @@
         <!--            <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
         <!--        <property name="selectAllOrderByClause" value="createTime desc"/>-->
         <!--        </table>-->
-        <!--        <select id="findAll" resultType="org.example.application.custom.entity.PaperType">-->
-        <!--            select-->
-        <!--            <include refid="Base_Column_List"/>-->
-        <!--            from paper_type-->
-        <!--        </select>-->
+        <table schema="" tableName="favorite" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <columnOverride column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+            <columnOverride column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
+            <columnOverride column="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+            <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>
+            <columnOverride column="goods_ids" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <columnOverride column="paper_ids" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </table>
     </context>
 </generatorConfiguration>
