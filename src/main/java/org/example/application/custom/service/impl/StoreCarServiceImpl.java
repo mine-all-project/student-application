@@ -86,4 +86,14 @@ public class StoreCarServiceImpl implements StoreCarService {
             return Collections.emptyList();
         }
     }
+
+    @Override
+    public void cleanStoreCar(HttpServletRequest request) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        StoreCar storeCar = storeCarDAO.selectByUserId(user.getId());
+        if (null != storeCar) {
+            storeCar.setGoodsIds(",");
+            storeCarDAO.updateStoreCar(storeCar);
+        }
+    }
 }

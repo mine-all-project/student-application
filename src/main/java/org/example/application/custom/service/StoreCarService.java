@@ -13,4 +13,6 @@ public interface StoreCarService extends BaseService {
     void deleteStoreCar(HttpServletRequest request, String goodsId);
 
     List<Goods> getStoreCar(HttpServletRequest request);
+
+    void cleanStoreCar(HttpServletRequest request);
 }
