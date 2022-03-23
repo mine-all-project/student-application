@@ -83,15 +83,6 @@
 <!--            <columnOverride column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>-->
 <!--            <columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
 <!--        </table>-->
-<!--        <table schema="" tableName="store_car" enableCountByExample="false" enableUpdateByExample="false"-->
-<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
-<!--            <columnOverride column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>-->
-<!--            <columnOverride column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>-->
-<!--            <columnOverride column="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
-<!--            <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
-<!--            <columnOverride column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL"/>-->
-<!--            <columnOverride column="goods_ids" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
-<!--        </table>-->
         <!--        <table schema="" tableName="order" enableCountByExample="false" enableUpdateByExample="false"-->
         <!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
         <!--            <columnOverride column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>-->
@@ -99,22 +90,13 @@
         <!--            <columnOverride column="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
         <!--            <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
         <!--        </table>-->
-        <!--        <table schema="" tableName="paper_type" enableCountByExample="false" enableUpdateByExample="TIMESTAMP"-->
-        <!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="TIMESTAMP">-->
-        <!--            <columnOverride column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>-->
-        <!--            <columnOverride column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>-->
-        <!--            <columnOverride column="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
-        <!--            <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>-->
-        <!--        <property name="selectAllOrderByClause" value="createTime desc"/>-->
-        <!--        </table>-->
-        <table schema="" tableName="favorite" enableCountByExample="false" enableUpdateByExample="false"
+        <table schema="" tableName="message" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <columnOverride column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
             <columnOverride column="update_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
             <columnOverride column="status" javaType="java.lang.Integer" jdbcType="TINYINT"/>
             <columnOverride column="del_flag" javaType="java.lang.Integer" jdbcType="TINYINT"/>
-            <columnOverride column="goods_ids" javaType="java.lang.String" jdbcType="VARCHAR"/>
-            <columnOverride column="paper_ids" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <columnOverride column="message" javaType="java.lang.String" jdbcType="VARCHAR"/>
         </table>
     </context>
 </generatorConfiguration>

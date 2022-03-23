@@ -9,22 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class Goods extends BaseEntity {
-    private String id;
-
     private String name;
-
-    private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
-
-    private Integer delFlag;
-
     private BigDecimal price;
-
     private String content;
-
     private String fileInfoId;
-
     private String description;
-
 }

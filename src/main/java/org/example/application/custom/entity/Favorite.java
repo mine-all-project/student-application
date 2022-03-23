@@ -7,11 +7,7 @@ import org.example.application.common.BaseEntity;
 @Getter
 @Setter
 public class Favorite extends BaseEntity {
-    private String id;
-
     private String userId;
-
     private String goodsIds;
-
     private String paperIds;
 }

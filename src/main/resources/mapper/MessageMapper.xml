@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.application.custom.dao.mybatis.MessageMapper">
+    <resultMap id="BaseResultMap" type="org.example.application.custom.entity.Message">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="message" jdbcType="VARCHAR" property="message"/>
+        <result column="paper_id" jdbcType="VARCHAR" property="paperId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , message, paper_id, user_id
+    </sql>
+    <select id="selectByPaperId" resultType="org.example.application.custom.entity.Message">
+        select
+        <include refid="Base_Column_List"/>
+        from message where paper_id = #{paperId}
+    </select>
+    <insert id="insert" parameterType="org.example.application.custom.entity.Message">
+        insert into message (id, message, paper_id,
+                             user_id)
+        values (#{id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{paperId,jdbcType=VARCHAR},
+                #{userId,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="org.example.application.custom.entity.Message">
+        insert into message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="message != null">
+                message,
+            </if>
+            <if test="paperId != null">
+                paper_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="message != null">
+                #{message,jdbcType=VARCHAR},
+            </if>
+            <if test="paperId != null">
+                #{paperId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

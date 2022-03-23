@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 @Order(50)
 public class AopConfigure {
     private static final Logger logger = LoggerFactory.getLogger(AopConfigure.class);
-    private static final String CONTROLLER_AOP = "execution(* cn.crabapples.application.system.controller.*.*(..))";
+    private static final String CONTROLLER_AOP = "execution(* org.example.application.custom.controller.*.*(..))";
 
     @Pointcut(CONTROLLER_AOP)
     public void controllerAop() {
