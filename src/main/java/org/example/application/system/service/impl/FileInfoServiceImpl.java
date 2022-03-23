@@ -45,7 +45,7 @@ public class FileInfoServiceImpl implements FileInfoService {
     }
 
     @Override
-    public FileInfo getById(String id) {
+    public FileInfo getFileById(String id) {
         return fileInfoDAO.findById(id);
     }
 }

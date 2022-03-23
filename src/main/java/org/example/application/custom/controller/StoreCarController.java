@@ -2,14 +2,13 @@ package org.example.application.custom.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
+import org.example.application.custom.entity.Goods;
 import org.example.application.custom.service.StoreCarService;
 import org.example.application.system.dto.ResponseDTO;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -35,5 +34,13 @@ public class StoreCarController extends BaseController {
         storeCarService.deleteStoreCar(request,goodsId);
         log.info("返回结果->移出购物车结束");
         return ResponseDTO.returnSuccess();
+    }
+
+    @GetMapping("/get")
+    public ResponseDTO getStoreCar(HttpServletRequest request) {
+        log.info("收到请求->获取购物车");
+        List<Goods> list = storeCarService.getStoreCar(request);
+        log.info("返回结果->获取购物车结束,[{}]",list);
+        return ResponseDTO.returnSuccess(list);
     }
 }

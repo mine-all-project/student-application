@@ -51,7 +51,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<Goods> selectByIds(String[] goods_ids) {
+    public List<Goods> selectByIds(List<String> goods_ids) {
         return goodsDAO.selectByIds(goods_ids);
     }
 }

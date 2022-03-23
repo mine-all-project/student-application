@@ -25,5 +25,6 @@ public interface FileInfoService {
 
     FileInfo uploadFile(HttpServletRequest request);
 
-    FileInfo getById(String id);
+
+    FileInfo getFileById(String id);
 }

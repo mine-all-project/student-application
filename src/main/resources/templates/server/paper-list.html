@@ -5,6 +5,7 @@
 	<div data-th-replace="/components/base :: javascript"></div>
 	<div data-th-replace="/components/vue :: javascript"></div>
 	<div data-th-replace="/components/ui :: antd"></div>
+	<div data-th-replace="/components/base :: quill"></div>
 	<style>
       .drawer-bottom-button {
           position: absolute;
@@ -22,6 +23,8 @@
 <body>
 <div id="app">
 	<div>
+		<a-button type="default" @click="addPaper"> 添加文章</a-button>
+
 		<a-divider></a-divider>
 		<a-drawer width="50%" :visible="show.paper" @close="closePaperForm">
 			<a-form-model :model="form.paper" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -33,7 +36,8 @@
 						<a-select-option :value="item.id" v-for="item in options.paperTypes"> {{item.name}}</a-select-option>
 					</a-select>
 				</a-form-model-item>
-				<div id="editor"></div>
+				<div v-if="editor.create">编辑器初始化中..</div>
+				<div id="editor" style="height: 40vh"></div>
 			</a-form-model>
 			<div class="drawer-bottom-button">
 				<a-button :style="{ marginRight: '8px' }" @click="closePaperForm">关闭</a-button>
@@ -53,6 +57,7 @@
           </a-tooltip>
         </span>
 			<span slot="action" slot-scope="text, record">
+          <a-button type="primary" size="small" @click="editPaper(record)">编辑</a-button>
           <a-button type="danger" size="small" @click="removePaper(record)">删除</a-button>
 			</span>
 		</a-table>
@@ -105,6 +110,7 @@
                         id: '',
                         name: '',
                         content: '',
+                        typeId: '',
                     },
                 },
                 show: {
@@ -113,7 +119,19 @@
                 options: {
                     paperTypes: []
                 },
-                editor: new wangEditor('#editor'),
+                editor: {
+                    instance: null,
+                    create: true,
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'], //加粗，斜体，下划线，删除线
+                        ['blockquote', 'code-block'],  //引用，代码块
+                        [{'list': 'ordered'}, {'list': 'bullet'}],  //列表
+                        [{'color': []}, {'background': []}],  // 字体颜色，字体背景颜色
+                        [{'align': []}], //对齐方式
+                        ['clean'], //清除字体样式
+                        ['image'] //上传图片、上传视频
+                    ]
+                },
                 sysUser: sessionStorage.getItem("sysUser")
             };
         },
@@ -136,18 +154,22 @@
                     console.error('出现错误:', error);
                 });
             },
-            createEditor() {
-                this.$nextTick(() => {
-                    this.editor.uploadImgShowBase64 = true;
-                    this.editor.showLinkImg = false;
-                    this.editor.pasteIgnoreImg = true;
-                    this.editor.create();
-                })
+            createEditor(content) {
+                setTimeout(() => {
+                    if (this.editor.create) {
+                        this.editor.instance = new window.Quill('#editor', {
+                            theme: 'snow',
+                            modules: {
+                                toolbar: this.editor.toolbar
+                            }
+                        })
+                        this.editor.create = false
+                    }
+                    this.editor.instance.root.innerHTML = content
+                }, 1000)
             },
             destroyEditor() {
-                const _this = this
-                console.log(_this.editor)
-                _this.editor = null
+                this.editor.instance.root.innerHTML = ''
             },
             refreshData() {
                 this.getList()
@@ -196,10 +218,10 @@
                 console.log(e)
                 this.form.type = 1
                 this.show.paper = true
-                this.createEditor()
+                this.createEditor(e.content)
                 this.form.paper.id = e.id
-                this.form.paper.typeId = e.typeId
-                this.editor.txt.html(e.content)
+                this.form.paper.title = e.title
+                this.form.paper.typeId = e.type_id
             },
             savePaperForm() {
                 this.form.paper.content = this.editor.txt.html()

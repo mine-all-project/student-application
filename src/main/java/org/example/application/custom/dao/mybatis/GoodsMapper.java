@@ -1,11 +1,10 @@
 package org.example.application.custom.dao.mybatis;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.example.application.custom.entity.Goods;
 
 import java.util.List;
-@Mapper
+
 public interface GoodsMapper {
     int deleteByPrimaryKey(String id);
 
@@ -21,5 +20,5 @@ public interface GoodsMapper {
 
     List<Goods> findAll();
 
-    List<Goods> selectByIds(@Param("ids") String[] goods_ids);
+    List<Goods> selectByIds(@Param("goods_ids") List<String> goods_ids);
 }
