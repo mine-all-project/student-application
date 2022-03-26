@@ -1,6 +1,7 @@
 package org.example.application.system.service;
 
 import org.example.application.system.entity.SysMenu;
+import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.UserForm;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,4 +28,6 @@ public interface SysService {
      * @return 当前用户拥有的菜单
      */
     List<SysMenu> getSysMenus(HttpServletRequest request);
+
+    SysUser registry(UserForm form);
 }

@@ -12,14 +12,13 @@ request.interceptors.request.use(
 );
 request.interceptors.response.use(
     response => {
-        // console.info('api返回的数据-->', response)
         console.info('api返回的数据-->', response.data)
         if (response.status === 200) {
             if (response.data.status === 401) {
                 setTimeout(() => {
-                    // window.location.href = '/server/login'
+                    window.location.href = '/server/login'
                 }, 3000)
-
+                return
             }
         }
         return response

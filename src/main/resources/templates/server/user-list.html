@@ -29,16 +29,16 @@
 				<a-form-model-item label="用户名" prop="username">
 					<a-input v-model="form.userInfo.username" placeholder="请输入用户名"></a-input>
 				</a-form-model-item>
-				<a-form-model-item label="姓名" prop="name">
+				<a-form-model-item label="姓名" prop="name"v-if="false">
 					<a-input v-model="form.userInfo.name" placeholder="请输入姓名"></a-input>
 				</a-form-model-item>
-				<a-form-model-item label="年龄" prop="age">
+				<a-form-model-item label="年龄" prop="age"v-if="false">
 					<a-input-number style="width:100%" v-model="form.userInfo.age" placeholder="请输入年龄"></a-input-number>
 				</a-form-model-item>
-				<a-form-model-item label="邮箱" prop="mail">
+				<a-form-model-item label="邮箱" prop="mail"v-if="false">
 					<a-input v-model="form.userInfo.mail" placeholder="请输入邮箱"></a-input>
 				</a-form-model-item>
-				<a-form-model-item label="权限" prop="role">
+				<a-form-model-item label="权限" prop="role" v-if="false">
 					<a-radio-group v-model="form.userInfo.role" default-value="2">
 <!--						<a-radio value="0">系统管理员</a-radio>-->
 						<a-radio value="1">用户管理员</a-radio>
@@ -83,11 +83,11 @@
         <a-tag color="red" v-else>禁用</a-tag>
       </span>
 			<span slot="action" slot-scope="text, record">
-        <span v-if="record.role !== 0">
-          <a-button type="default" size="small" @click="changeStatus(record)" v-if="record.status === 0">禁用</a-button>
-          <a-button type="primary" size="small" @click="changeStatus(record)" v-if="record.status === 1">启用</a-button>
-					<a-divider type="vertical"></a-divider>
-        </span>
+<!--        <span v-if="record.role !== 0">-->
+<!--          <a-button type="default" size="small" @click="changeStatus(record)" v-if="record.status === 0">禁用</a-button>-->
+<!--          <a-button type="primary" size="small" @click="changeStatus(record)" v-if="record.status === 1">启用</a-button>-->
+<!--					<a-divider type="vertical"></a-divider>-->
+<!--        </span>-->
         <span v-if="record.role !== 0">
           <a-button type="danger" size="small" @click="removeUser(record)">删除</a-button>
 					<a-divider type="vertical"></a-divider>
@@ -144,33 +144,33 @@
                         key: 'username',
                         title: '用户名',
                     },
-                    {
-                        dataIndex: 'name',
-                        title: '姓名',
-                        key: 'name',
-                    },
-                    {
-                        dataIndex: 'age',
-                        title: '年龄',
-                        key: 'age',
-                    },
-                    {
-                        dataIndex: 'mail',
-                        title: '邮箱',
-                        key: 'mail',
-                    },
-                    {
-                        dataIndex: 'role',
-                        title: '角色',
-                        key: 'role',
-                        scopedSlots: {customRender: 'role'}
-                    },
-                    {
-                        dataIndex: 'status',
-                        title: '状态',
-                        key: 'status',
-                        scopedSlots: {customRender: 'status'}
-                    },
+                    // {
+                    //     dataIndex: 'name',
+                    //     title: '姓名',
+                    //     key: 'name',
+                    // },
+                    // {
+                    //     dataIndex: 'age',
+                    //     title: '年龄',
+                    //     key: 'age',
+                    // },
+                    // {
+                    //     dataIndex: 'mail',
+                    //     title: '邮箱',
+                    //     key: 'mail',
+                    // },
+                    // {
+                    //     dataIndex: 'role',
+                    //     title: '角色',
+                    //     key: 'role',
+                    //     scopedSlots: {customRender: 'role'}
+                    // },
+                    // {
+                    //     dataIndex: 'status',
+                    //     title: '状态',
+                    //     key: 'status',
+                    //     scopedSlots: {customRender: 'status'}
+                    // },
                     {
                         title: '操作',
                         key: 'action',

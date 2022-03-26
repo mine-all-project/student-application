@@ -14,12 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.List;
 
-/**
- * TODO 用户信息提交Form
- * <p>
- * <p>
- * 2020/1/27 11:26
- */
 @Getter
 @Setter
 public class UserForm extends BaseForm {

@@ -2,6 +2,7 @@ package org.example.application.custom.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
+import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.custom.entity.PaperType;
 import org.example.application.custom.service.PaperTypeService;
 import org.example.application.system.dto.ResponseDTO;
@@ -19,6 +20,7 @@ public class PaperTypeController extends BaseController {
         this.paperTypeService = paperTypeService;
     }
 
+    @JwtIgnore
     @GetMapping("/list")
     public ResponseDTO typeList() {
         log.info("收到请求->获取文章类型列表");

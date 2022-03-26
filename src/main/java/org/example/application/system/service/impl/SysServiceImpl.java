@@ -1,6 +1,8 @@
 package org.example.application.system.service.impl;
 
+import cn.hutool.crypto.digest.MD5;
 import org.example.application.common.ApplicationException;
+import org.example.application.common.DIC;
 import org.example.application.common.config.ApplicationConfigure;
 import org.example.application.common.utils.AssertUtils;
 import org.example.application.common.utils.jwt.JwtConfigure;
@@ -12,9 +14,9 @@ import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.UserForm;
 import org.example.application.system.service.SysService;
 import org.example.application.system.service.UserService;
-import cn.hutool.crypto.digest.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -97,6 +99,20 @@ public class SysServiceImpl implements SysService {
             return JwtTokenUtils.createJWT(sysUser.getId(), sysUser.getUsername(), jwtConfigure);
         }
         throw new ApplicationException("密码错误");
+    }
+
+    @Override
+    public SysUser registry(UserForm form) {
+        SysUser user = userDAO.findByUsername(form.getUsername());
+        if(user !=null){
+            throw new ApplicationException("用户名已经存在");
+        }
+        SysUser entity = new SysUser();
+        BeanUtils.copyProperties(form, entity);
+        entity.setDelFlag(DIC.NOT_DEL);
+        String password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
+        entity.setPassword(password);
+        return userDAO.save(entity);
     }
 
     /**

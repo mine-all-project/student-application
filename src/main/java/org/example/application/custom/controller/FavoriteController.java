@@ -2,6 +2,7 @@ package org.example.application.custom.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
+import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.custom.entity.Goods;
 import org.example.application.custom.service.FavoriteService;
 import org.example.application.system.dto.ResponseDTO;
@@ -29,7 +30,7 @@ public class FavoriteController extends BaseController {
         return ResponseDTO.returnSuccess();
     }
 
-
+    @JwtIgnore
     @GetMapping("/goods/get")
     public ResponseDTO getGoodsFavorite(HttpServletRequest request) {
         log.info("收到请求->获取我收藏的商品");
@@ -54,7 +55,7 @@ public class FavoriteController extends BaseController {
         log.info("返回结果->文章加入收藏结束");
         return ResponseDTO.returnSuccess();
     }
-
+    @JwtIgnore
     @GetMapping("/paper/get")
     public ResponseDTO getPaperFavorite(HttpServletRequest request) {
         log.info("收到请求->获取我收藏的文章");
@@ -72,6 +73,7 @@ public class FavoriteController extends BaseController {
     }
 
     @GetMapping("/get")
+    @JwtIgnore
     public ResponseDTO getFavorite(HttpServletRequest request) {
         log.info("收到请求->获取收藏");
         Map<String,String> data = favoriteService.getFavorite(request);

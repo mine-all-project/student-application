@@ -2,6 +2,7 @@ package org.example.application.custom.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
+import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.custom.entity.Paper;
 import org.example.application.custom.service.PaperService;
 import org.example.application.system.dto.ResponseDTO;
@@ -19,6 +20,7 @@ public class PaperController extends BaseController {
     public PaperController(PaperService paperService) {
         this.paperService = paperService;
     }
+    @JwtIgnore
     @GetMapping("/list")
     public ResponseDTO getAll() {
         log.info("收到请求->获取文章列表");
@@ -28,6 +30,7 @@ public class PaperController extends BaseController {
     }
 
     @GetMapping("/list/{typeId}")
+    @JwtIgnore
     public ResponseDTO getAllByTypeId(@PathVariable String typeId) {
         log.info("收到请求->获取文章列表,typeId:[{}]",typeId);
         List<Map> list = paperService.getAllByTypeId(typeId);
@@ -52,6 +55,7 @@ public class PaperController extends BaseController {
     }
 
     @GetMapping("/id/{id}")
+    @JwtIgnore
     public ResponseDTO findPaperById(@PathVariable String id) {
         log.info("收到请求->获取文章,id:[{}]", id);
         Map entity = paperService.findPaperById(id);

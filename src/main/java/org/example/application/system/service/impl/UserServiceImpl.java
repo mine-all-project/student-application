@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
     public SysUser addUser(UserForm form) {
         SysUser entity = new SysUser();
         BeanUtils.copyProperties(form, entity);
+        entity.setDelFlag(DIC.NOT_DEL);
         return userDAO.save(entity);
     }
 
