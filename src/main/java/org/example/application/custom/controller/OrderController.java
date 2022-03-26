@@ -5,10 +5,7 @@ import org.example.application.common.BaseController;
 import org.example.application.custom.entity.Order;
 import org.example.application.custom.service.OrderService;
 import org.example.application.system.dto.ResponseDTO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -31,11 +28,35 @@ public class OrderController extends BaseController {
         return ResponseDTO.returnSuccess();
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseDTO deleteOrder(@PathVariable String id) {
+        log.info("收到请求->删除订单,id:[{}]", id);
+        orderService.deleteOrder(id);
+        log.info("返回结果->删除订单结束");
+        return ResponseDTO.returnSuccess();
+    }
+
     @GetMapping("/get")
     public ResponseDTO getOrder(HttpServletRequest request) {
         log.info("收到请求->获取订单");
         List<Order> list = orderService.getOrder(request);
         log.info("返回结果->获取订单结束");
-        return ResponseDTO.returnSuccess();
+        return ResponseDTO.returnSuccess(list);
+    }
+
+    @GetMapping("/get/id/{id}")
+    public ResponseDTO getOrderById(HttpServletRequest request, @PathVariable String id) {
+        log.info("收到请求->获取订单,id:[{}]", id);
+        Order entity = orderService.getOrderById(id);
+        log.info("返回结果->获取订单结束,[{}]", entity);
+        return ResponseDTO.returnSuccess(entity);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseDTO getAllOrder(HttpServletRequest request) {
+        log.info("收到请求->获取所有订单");
+        List<Order> list = orderService.getAllOrder(request);
+        log.info("返回结果->获取订单结束");
+        return ResponseDTO.returnSuccess(list);
     }
 }

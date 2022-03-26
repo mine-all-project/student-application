@@ -25,6 +25,14 @@
         from paper as a
                  left join paper_type as b on a.type_id = b.id
     </select>
+    <select id="selectByIds" resultType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from paper where id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
     <select id="getAllByTypeId" resultType="java.util.Map">
         select a.*, b.name as type_name
         from paper as a

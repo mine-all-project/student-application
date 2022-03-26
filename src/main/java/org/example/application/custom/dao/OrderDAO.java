@@ -26,4 +26,16 @@ public class OrderDAO extends BaseDAO {
     public List<Order> selectByUserId(String userId) {
         return orderMapper.selectByUserId(userId);
     }
+
+    public List<Order> selectAll() {
+        return orderMapper.selectAll();
+    }
+
+    public Order selectById(String id) {
+        return orderMapper.selectByPrimaryKey(id);
+    }
+
+    public void deleteOrder(String id) {
+        orderMapper.deleteByPrimaryKey(id);
+    }
 }

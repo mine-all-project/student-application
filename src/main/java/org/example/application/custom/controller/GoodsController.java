@@ -43,6 +43,13 @@ public class GoodsController extends BaseController {
         return ResponseDTO.returnSuccess();
     }
 
+    @GetMapping("/ids/{ids}")
+    public ResponseDTO findGoodsByIds(@PathVariable String ids) {
+        log.info("收到请求->获取海产,ids:[{}]", ids);
+        List<Goods> list = goodsService.selectByIds(ids);
+        log.info("返回结果->获取海产结束:[{}]", list);
+        return ResponseDTO.returnSuccess(list);
+    }
     @GetMapping("/id/{id}")
     public ResponseDTO findGoodsById(@PathVariable String id) {
         log.info("收到请求->获取海产,id:[{}]", id);

@@ -13,9 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -106,9 +104,7 @@ public class FavoriteServiceImpl implements FavoriteService {
             favorite.setPaperIds("");
             favoriteDAO.addFavorite(favorite);
         }
-
     }
-
 
 
     @Override
@@ -121,5 +117,21 @@ public class FavoriteServiceImpl implements FavoriteService {
             map.put("paperIds", favorite.getPaperIds());
         }
         return map;
+    }
+
+    @Override
+    public List<Goods> getGoodsFavorite(HttpServletRequest request) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        Favorite favorite = favoriteDAO.selectByUserId(user.getId());
+        List<String> ids = Arrays.asList(favorite.getGoodsIds().split(","));
+        return goodsService.selectByIds(ids);
+    }
+
+    @Override
+    public List<Map> getPaperFavorite(HttpServletRequest request) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        Favorite favorite = favoriteDAO.selectByUserId(user.getId());
+        List<String> ids = Arrays.asList(favorite.getPaperIds().split(","));
+        return paperService.selectByIds(ids);
     }
 }

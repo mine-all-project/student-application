@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,6 +52,7 @@ public class OrderServiceImpl implements OrderService {
         order.setGoodsIds(goodsIds.toString());
         order.setPrice(prices);
         order.setUserId(userId);
+        order.setCreateTime(LocalDateTime.now());
         orderDAO.addOrder(order);
         storeCarService.cleanStoreCar(request);
     }
@@ -59,5 +61,20 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getOrder(HttpServletRequest request) {
         String userId = getUserInfo(request, jwtConfigure, userDAO, isDebug).getId();
         return orderDAO.selectByUserId(userId);
+    }
+
+    @Override
+    public List<Order> getAllOrder(HttpServletRequest request) {
+        return orderDAO.selectAll();
+    }
+
+    @Override
+    public Order getOrderById(String id) {
+        return orderDAO.selectById(id);
+    }
+
+    @Override
+    public void deleteOrder(String id) {
+         orderDAO.deleteOrder(id);
     }
 }

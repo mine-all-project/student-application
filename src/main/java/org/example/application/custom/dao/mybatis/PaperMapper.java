@@ -23,4 +23,6 @@ public interface PaperMapper {
     List<Map> selectAll();
 
     List<Map> getAllByTypeId(@Param("pid") String pid);
+
+    List<Map> selectByIds(@Param("ids")List<String> ids);
 }

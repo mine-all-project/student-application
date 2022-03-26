@@ -27,6 +27,11 @@
         from `order`
         where user_id = #{userId,jdbcType=VARCHAR}
     </select>
+    <select id="selectAll" resultType="org.example.application.custom.entity.Order">
+        select
+        <include refid="Base_Column_List"/>
+        from `order`
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete
         from order

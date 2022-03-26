@@ -8,6 +8,7 @@ import org.example.application.system.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -53,5 +54,11 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<Goods> selectByIds(List<String> goods_ids) {
         return goodsDAO.selectByIds(goods_ids);
+    }
+
+    @Override
+    public List<Goods> selectByIds(String goods_ids) {
+        List<String> ids = Arrays.asList(goods_ids.split(","));
+        return selectByIds(ids);
     }
 }

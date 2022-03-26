@@ -23,30 +23,14 @@
 <body>
 <div id="app">
 	<div>
-		<a-button type="default" @click="addPaper"> 添加文章</a-button>
-
+		<a-button type="default" @click="addPaper" v-if="false"> 添加文章</a-button>
 		<a-divider></a-divider>
-		<a-drawer width="50%" :visible="show.paper" @close="closePaperForm">
-			<a-form-model :model="form.paper" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-				<a-form-model-item label="名称" prop="title">
-					<a-input v-model="form.paper.title" placeholder="请输入名称"></a-input>
-				</a-form-model-item>
-				<a-form-model-item label="分类" prop="typeId">
-					<a-select style="width: 100%" v-model="form.paper.typeId">
-						<a-select-option :value="item.id" v-for="item in options.paperTypes"> {{item.name}}</a-select-option>
-					</a-select>
-				</a-form-model-item>
-				<div v-if="editor.create">编辑器初始化中..</div>
-				<div id="editor" style="height: 40vh"></div>
-			</a-form-model>
-			<div class="drawer-bottom-button">
-				<a-button :style="{ marginRight: '8px' }" @click="closePaperForm">关闭</a-button>
-				<a-button type="primary" @click="savePaperForm">保存</a-button>
-			</div>
-		</a-drawer>
 		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
 				<span slot="type" slot-scope="text, record">
           {{record.type_name}}
+				</span>
+			<span slot="id" slot-scope="text, record">
+          {{text.substring(0,8)}}
 				</span>
 			<span slot="content" slot-scope="text">
           <a-tooltip placement="topLeft">
@@ -80,16 +64,16 @@
                     {
                         dataIndex: 'id',
                         key: 'id',
-                        title: '唯一id',
+                        title: '订单ID',
+                        scopedSlots: {customRender: 'id'},
                     },
                     {
-                        dataIndex: 'title',
-                        title: '标题',
+                        dataIndex: 'createTime',
+                        title: '下单时间',
                     },
                     {
-                        dataIndex: 'type',
-                        title: '分类',
-                        scopedSlots: {customRender: 'type'},
+                        dataIndex: 'createTime',
+                        title: '下单人',
                     },
                     {
                         dataIndex: 'content',
@@ -116,22 +100,6 @@
                 show: {
                     paper: false,
                 },
-                options: {
-                    paperTypes: []
-                },
-                editor: {
-                    instance: null,
-                    create: true,
-                    toolbar: [
-                        ['bold', 'italic', 'underline', 'strike'], //加粗，斜体，下划线，删除线
-                        ['blockquote', 'code-block'],  //引用，代码块
-                        [{'list': 'ordered'}, {'list': 'bullet'}],  //列表
-                        [{'color': []}, {'background': []}],  // 字体颜色，字体背景颜色
-                        [{'align': []}], //对齐方式
-                        ['clean'], //清除字体样式
-                        ['image'] //上传图片、上传视频
-                    ]
-                },
                 sysUser: sessionStorage.getItem("sysUser")
             };
         },
@@ -140,42 +108,11 @@
             this.getPaperTypeList()
         },
         methods: {
-            getPaperTypeList() {
-                axios.get('/api/paperType/list').then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    if (result.data !== null) {
-                        this.options.paperTypes = result.data;
-                    }
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-            },
-            createEditor(content) {
-                setTimeout(() => {
-                    if (this.editor.create) {
-                        this.editor.instance = new window.Quill('#editor', {
-                            theme: 'snow',
-                            modules: {
-                                toolbar: this.editor.toolbar
-                            }
-                        })
-                        this.editor.create = false
-                    }
-                    this.editor.instance.root.innerHTML = content
-                }, 1000)
-            },
-            destroyEditor() {
-                this.editor.instance.root.innerHTML = ''
-            },
             refreshData() {
                 this.getList()
             },
             getList() {
-                axios.get('/api/paper/list').then(response => {
+                axios.get('/api/order/getAll').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);

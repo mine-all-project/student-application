@@ -42,4 +42,8 @@ public class PaperDAO extends BaseDAO {
     public List<Map> getAllByTypeId(String pid) {
         return paperMapper.getAllByTypeId(pid);
     }
+
+    public List<Map> selectByIds(List<String> ids) {
+        return paperMapper.selectByIds(ids);
+    }
 }

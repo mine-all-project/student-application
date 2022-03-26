@@ -19,4 +19,6 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
 
     List<Order> selectByUserId(@Param("userId") String userId);
+
+    List<Order> selectAll();
 }

@@ -32,6 +32,11 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
+    public List<Map> selectByIds(List<String> ids) {
+        return paperDAO.selectByIds(ids);
+    }
+
+    @Override
     public List<Map> getAllByTypeId(String typeId) {
         return paperDAO.getAllByTypeId(typeId);
     }

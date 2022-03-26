@@ -18,4 +18,6 @@ public interface PaperService extends BaseService {
     void updatePaper(Paper type);
 
     List<Map> getAllByTypeId(String typeId);
+
+    List<Map> selectByIds(List<String> ids);
 }

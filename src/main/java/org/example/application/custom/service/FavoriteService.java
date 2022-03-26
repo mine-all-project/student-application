@@ -18,4 +18,8 @@ public interface FavoriteService extends BaseService {
     void addGoodsFavorite(HttpServletRequest request, String id);
 
     Map<String,String> getFavorite(HttpServletRequest request);
+
+    List<Goods> getGoodsFavorite(HttpServletRequest request);
+
+    List<Map> getPaperFavorite(HttpServletRequest request);
 }
