@@ -92,4 +92,6 @@ public interface UserService extends BaseService {
     void talkCheckPass(String id);
 
     void talkCheckFailTalk(String id);
+
+    SysUser getUserById(String id);
 }

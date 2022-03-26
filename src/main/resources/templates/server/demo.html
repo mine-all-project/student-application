@@ -26,7 +26,7 @@
 		<a-button type="default" @click="addPaper" v-if="false"> 添加文章</a-button>
 		<a-divider></a-divider>
 		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
-				<span slot="type" slot-scope="text, record">
+			<span slot="type" slot-scope="text, record">
           {{record.type_name}}
 				</span>
 			<span slot="id" slot-scope="text, record">
@@ -41,10 +41,24 @@
           </a-tooltip>
         </span>
 			<span slot="action" slot-scope="text, record">
-          <a-button type="primary" size="small" @click="editPaper(record)">编辑</a-button>
-          <a-button type="danger" size="small" @click="removePaper(record)">删除</a-button>
+          <a-button type="primary" size="small" @click="showOrderInfo(record)">详情</a-button>
+          <a-button type="danger" size="small" @click="removeOrder(record)">删除</a-button>
 			</span>
 		</a-table>
+		<a-modal :visible="show.orderInfo" :footer="null" @cancel="closeOrderInfo">
+			<p>
+				<span>下单人:{{orderInfo.user.username}}</span>
+				<span>下单时间:{{orderInfo.createTime}}</span>
+			</p>
+			<p>商品列表:</p>
+			<hr>
+			<span v-for="(item,index) in orderInfo.goodsList">
+				<p>名称：{{item.name}}</p>
+				<p>价格：{{item.price}}</p>
+				<img :src="orderInfo.fileList[index]" alt="" style="width: 100%"/>
+				<hr>
+			</span>
+		</a-modal>
 	</div>
 </div>
 <script>
@@ -72,15 +86,6 @@
                         title: '下单时间',
                     },
                     {
-                        dataIndex: 'createTime',
-                        title: '下单人',
-                    },
-                    {
-                        dataIndex: 'content',
-                        title: '内容',
-                        scopedSlots: {customRender: 'content'},
-                    },
-                    {
                         title: '操作',
                         scopedSlots: {customRender: 'action'},
                     },
@@ -98,16 +103,64 @@
                     },
                 },
                 show: {
-                    paper: false,
+                    orderInfo: false,
                 },
+                orderInfo: {user: {}, goodsList: [], fileList: []},
                 sysUser: sessionStorage.getItem("sysUser")
             };
         },
         mounted() {
             this.getList()
-            this.getPaperTypeList()
         },
         methods: {
+            getFileById(id) {
+                axios.get(`/api/getFileById/${id}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.orderInfo.fileList.push(result.data.virtualPath)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            closeOrderInfo() {
+                this.show.orderInfo = false
+            },
+            showOrderInfo(record) {
+                this.show.orderInfo = true
+                this.orderInfo.createTime = record.createTime
+                axios.get(`/api/user/get/id/${record.userId}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.orderInfo.user = result.data;
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                axios.get(`/api/goods/ids/${record.goodsIds}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.orderInfo.goodsList = result.data;
+                        result.data.forEach((e, index) => {
+                            this.getFileById(e.fileInfoId)
+                        })
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             refreshData() {
                 this.getList()
             },
@@ -125,14 +178,14 @@
                     console.error('出现错误:', error);
                 });
             },
-            removePaper(e) {
+            removeOrder(e) {
                 const _this = this;
                 this.$confirm({
                     title: '确认删除?',
                     cancelText: '取消',
                     okText: '确定',
                     onOk() {
-                        axios.delete(`/api/paper/delete/${e.id}`).then(result => {
+                        axios.delete(`/api/order/delete/${e.id}`).then(result => {
                             console.log('通过api获取到的数据:', result);
                             if (result.status !== 200) {
                                 _this.$message.error(result.message);
@@ -146,42 +199,7 @@
                     },
                 });
             },
-            addPaper() {
-                this.form.type = 0
-                this.show.paper = true
-                this.createEditor('')
-            },
-            editPaper(e) {
-                console.log(e)
-                this.form.type = 1
-                this.show.paper = true
-                this.createEditor(e.content)
-                this.form.paper.id = e.id
-                this.form.paper.title = e.title
-                this.form.paper.typeId = e.type_id
-            },
-            savePaperForm() {
-                this.form.paper.content = this.editor.instance.root.innerHTML
-                let url = this.form.type === 0 ? '/api/paper/add' : '/api/paper/update'
-                axios.post(url, this.form.paper).then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    this.closePaperForm()
-                    this.refreshData()
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-            },
-            closePaperForm() {
-                this.form.paper = {
-                    id: '',
-                    name: '',
-                }
-                this.show.paper = false
-            },
+
         }
     })
 </script>

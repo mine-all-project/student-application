@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         for (Goods goods : storeCar) {
             prices = prices.add(goods.getPrice());
-            goodsIds.append(goods.getId());
+            goodsIds.append(goods.getId()).append(",");
         }
         order.setId(UUID.randomUUID().toString());
         order.setGoodsIds(goodsIds.toString());

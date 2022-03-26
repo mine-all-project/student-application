@@ -168,6 +168,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public SysUser getUserById(String id) {
+       return userDAO.findById(id);
+    }
+
+    @Override
     public void updateUserInfo(UpdateUserInfoForm form) {
         SysUser user = userDAO.findById(form.getId());
         AssertUtils.notNull(user, "用户不存在");

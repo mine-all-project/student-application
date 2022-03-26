@@ -40,6 +40,14 @@ public class UserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", user);
     }
 
+    @GetMapping("/get/id/{id}")
+    public ResponseDTO getUserById(@PathVariable String id) {
+        logger.info("收到请求->获取用户信息,id:[{}]", id);
+        SysUser user = userService.getUserById(id);
+        logger.info("返回结果->获取用户信息结束:[{}]",user);
+        return ResponseDTO.returnSuccess(user);
+    }
+
     @PostMapping("/editUser")
     public ResponseDTO editUser(@RequestBody UserForm form) {
         logger.info("收到请求->修改用户:[{}]", form);
@@ -148,5 +156,5 @@ public class UserController extends BaseController {
         logger.info("返回结果->禁用用户评论结束");
         return ResponseDTO.returnSuccess();
     }
-//1bbd886460827015e5d605ed44252251
+
 }
