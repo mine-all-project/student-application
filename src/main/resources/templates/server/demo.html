@@ -17,110 +17,309 @@
           text-align: right;
           z-index: 1;
       }
+
+      .ant-input-number {
+          width: 100%;
+      }
 	</style>
 </head>
 <body>
 <div id="app">
-	<div>
-		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
-      <span slot="tags" slot-scope="tags">
-        <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>
-      </span>
-			<span slot="role" slot-scope="role">
-          <a-tag color="green" v-if="role === 0">系统管理员</a-tag>
-          <a-tag color="orange" v-if="role === 1">用户管理员</a-tag>
-          <a-tag color="blue" v-if="role === 2">普通用户</a-tag>
-      </span>
-			<span slot="status" slot-scope="status">
-        <a-tag color="green" v-if="status === 0">正常</a-tag>
-        <a-tag color="red" v-else>禁用</a-tag>
-      </span>
-			<span slot="action" slot-scope="text, record">
-        <span v-if="record.role !== 5">
-          <a-button type="danger" size="small" @click="saveStatus(1,2,record)"
-										v-if="record.publishStatus === 0">禁止发布</a-button>
-          <a-button type="primary" size="small" @click="saveStatus(1,0,record)"
-										v-if="record.publishStatus === 2">允许发布</a-button>
-					<a-divider type="vertical"></a-divider>
+	<a-row>
+		<a-col :span="6">
+			<a-input placeholder="输入关键字搜索" v-model="form.searchText"></a-input>
+		</a-col>
+		<a-col :span="6" style="display: flex;justify-content: space-around">
+			<a-button type="primary" @click="search">搜索</a-button>
+			<a-button @click="resetList">重置</a-button>
+			<a-button @click="showAddOrder">添加账单</a-button>
+		</a-col>
+	</a-row>
+	<a-divider></a-divider>
+	<a-tabs type="card">
+		<a-tab-pane key="1" tab="全部账单">
+			<a-table :columns="columns.order" :data-source="tableDataList.allOrder" rowKey="id" :pagination="false">
+				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
+				<span slot="content" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
         </span>
-				 <span v-if="record.role !== 5">
-          <a-button type="danger" size="small" @click="saveStatus(2,2,record)"
-										v-if="record.talkStatus === 0">禁止评论</a-button>
-          <a-button type="primary" size="small" @click="saveStatus(2,0,record)"
-										v-if="record.talkStatus === 2">允许评论</a-button>
-					<a-divider type="vertical"></a-divider>
+				<span slot="publisher" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text.username }}</span>
+            </template>
+            <span class="step-content">{{ text.username }}</span>
+          </a-tooltip>
         </span>
-      </span>
-		</a-table>
-	</div>
+				<span slot="createTime" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="note" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="type" slot-scope="text">
+						<a-tag color="green" v-if="text === 1">闲置</a-tag>
+						<a-tag color="blue" v-if="text === 2">租赁</a-tag>
+				</span>
+				<span slot="status" slot-scope="text">
+          <a-tag color="green" v-if="text === 0">正常</a-tag>
+          <a-tag color="blue" v-if="text === 1">待审</a-tag>
+          <a-tag color="red" v-if="text === 2">驳回</a-tag>
+				</span>
+				<span slot="action" slot-scope="text, record">
+					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
+					<a-button type="danger" size="small" @click="showChangeGoodsStatus(record,2)">驳回</a-button>
+					<a-button type="default" size="small" @click="showGoodsInfo(record)">查看详情</a-button>
+      	</span>
+			</a-table>
+		</a-tab-pane>
+		<a-tab-pane key="2" tab="已缴费">
+			<a-table :columns="columns.order" :data-source="tableDataList.allOrder" rowKey="id" :pagination="false">
+				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
+				<span slot="content" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="publisher" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text.username }}</span>
+            </template>
+            <span class="step-content">{{ text.username }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="createTime" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="note" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="type" slot-scope="text">
+						<a-tag color="green" v-if="text === 1">闲置</a-tag>
+						<a-tag color="blue" v-if="text === 2">租赁</a-tag>
+				</span>
+				<span slot="status" slot-scope="text">
+          <a-tag color="green" v-if="text === 0">正常</a-tag>
+          <a-tag color="blue" v-if="text === 1">待审</a-tag>
+          <a-tag color="red" v-if="text === 2">驳回</a-tag>
+				</span>
+				<span slot="action" slot-scope="text, record">
+					<a-button type="primary" size="small" @click="showChangeGoodsStatus(record,0)">通过</a-button>
+					<a-button type="danger" size="small" @click="showChangeGoodsStatus(record,2)">驳回</a-button>
+					<a-button type="default" size="small" @click="showGoodsInfo(record)">查看详情</a-button>
+      	</span>
+			</a-table>
+		</a-tab-pane>
+		<a-tab-pane key="3" tab="未缴费">
+			<a-table :columns="columns.order" :data-source="tableDataList.allOrder" rowKey="id" :pagination="false">
+				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
+				<span slot="content" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="publisher" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text.username }}</span>
+            </template>
+            <span class="step-content">{{ text.username }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="createTime" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="note" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="type" slot-scope="text">
+						<a-tag color="green" v-if="text === 1">闲置</a-tag>
+						<a-tag color="blue" v-if="text === 2">租赁</a-tag>
+				</span>
+				<span slot="status" slot-scope="text">
+          <a-tag color="green" v-if="text === 0">正常</a-tag>
+          <a-tag color="blue" v-if="text === 1">待审</a-tag>
+          <a-tag color="red" v-if="text === 2">驳回</a-tag>
+				</span>
+				<span slot="action" slot-scope="text, record">
+					<a-button type="primary" size="small" @click="showChangeGoodsStatus(record,0)">通过</a-button>
+					<a-button type="danger" size="small" @click="showChangeGoodsStatus(record,2)">驳回</a-button>
+					<a-button type="default" size="small" @click="showGoodsInfo(record)">查看详情</a-button>
+      	</span>
+			</a-table>
+		</a-tab-pane>
+	</a-tabs>
+	<a-modal title="添加账单" :visible.sync="show.addOrder" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveOrder" @cancel="closeAddOrder">
+		<a-form-model ref="ruleForm" :model="form.goods" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item label="商品名称" prop="name">
+				<a-input v-model="form.goods.name"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="商品价格" prop="price">
+				<a-input-number :min="0" v-model="form.goods.price" style></a-input-number>
+			</a-form-model-item>
+			<a-form-model-item label="账单类型" prop="type">
+				<a-radio-group name="type" v-model="form.goods.type">
+					<a-radio :value="1">闲置</a-radio>
+					<a-radio :value="2">租赁</a-radio>
+				</a-radio-group>
+			</a-form-model-item>
+			<a-form-model-item label="商品描述" prop="content">
+				<a-textarea v-model="form.goods.content" :rows="4"></a-textarea>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
 </div>
 <script>
     const app = new Vue({
         el: '#app',
         data() {
             return {
-                columns: [
-                    {
-                        dataIndex: 'username',
-                        key: 'username',
-                        title: '用户名',
-                    },
-                    {
-                        dataIndex: 'name',
-                        title: '姓名',
-                        key: 'name',
-                    },
-                    {
-                        dataIndex: 'age',
-                        title: '年龄',
-                        key: 'age',
-                    },
-                    {
-                        dataIndex: 'mail',
-                        title: '邮箱',
-                        key: 'mail',
-                    },
-                    {
-                        dataIndex: 'role',
-                        title: '角色',
-                        key: 'role',
-                        scopedSlots: {customRender: 'role'}
-                    },
-                    {
-                        dataIndex: 'status',
-                        title: '状态',
-                        key: 'status',
-                        scopedSlots: {customRender: 'status'}
-                    },
-                    {
-                        title: '操作',
-                        key: 'action',
-                        scopedSlots: {customRender: 'action'},
-                    },
-                ],
-                dataSource: [],
+                headers: headers,
+                demands: [],
+                columns: {
+                    order: [
+                        {
+                            dataIndex: 'name',
+                            title: '名称',
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'price',
+                            title: '价格',
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'content',
+                            title: '描述',
+                            scopedSlots: {customRender: 'content'},
+                            ellipsis: true,
+                            width: '20%'
+                        },
+                        {
+                            dataIndex: 'type',
+                            title: '类型',
+                            scopedSlots: {customRender: 'type'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'status',
+                            title: '状态',
+                            scopedSlots: {customRender: 'status'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'publisher',
+                            title: '发布人',
+                            scopedSlots: {customRender: 'publisher'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'createTimeStr',
+                            title: '发布时间',
+                            scopedSlots: {customRender: 'createTime'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'note',
+                            title: '操作备注',
+                            scopedSlots: {customRender: 'note'},
+                            ellipsis: true,
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'action',
+                            title: '操作',
+                            scopedSlots: {customRender: 'action'},
+                            width: '20%'
+                        },
+                    ],
+                },
+                tableDataList: {
+                    allOrder: [],
+                },
+                rules: {
+                    name: [
+                        {required: true, message: '请输入商品名称', trigger: 'change'},
+                        {min: 1, max: 16, message: '长度为1-16位', trigger: 'change'},
+                    ],
+                    price: [
+                        {required: true, message: '请输入商品价格', trigger: 'change'},
+                    ],
+                    title: [
+                        {required: true, message: '请输入标题', trigger: 'change'},
+                    ],
+                    type: [
+                        {required: true, message: '请选择发布类型', trigger: 'change'},
+                    ],
+                },
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
-                tagsOptions: [],
                 form: {
-                    type: 0,
-                    userInfo: {
-                        id: '',
-                        name: '',
-                        age: '',
-                        mail: '',
-                        role: 1,
-                        status: null,
-                        tags: [],
-                    },
-                    resetPassword: {
-                        id: '',
-                        newPassword: '',
-                        againPassword: '',
-                    },
+                    order: {},
+                    searchText: '',
                 },
                 show: {
-                    userInfo: false,
+                    previewImg: false,
+                    addGoods: false,
+                    addDemand: false,
+                    goodsInfo: false,
+                    demandInfo: false,
+                    goodsMessage: false,
+                    demandMessage: false,
+                },
+                temp: {
+                    previewSrc: '',
+                    fileList: [],
+                    allGoods: [],
+                    searchGoods: [],
+                    messages: [],
+                    message: '',
+                    isAddGoods: false,
+                    isAddDemand: false,
+                    isMinePublish: false,
                 },
                 sysUser: sessionStorage.getItem("sysUser")
             };
@@ -129,55 +328,96 @@
             this.getList()
         },
         methods: {
-            refreshData() {
+            showAddOrder() {
+                this.form.order = {}
+                this.show.addOrder = true
+            },
+            closeAddOrder() {
+                this.show.addOrder = false
+                this.form.order = {}
+            },
+            saveOrder() {
+                let data = this.form.order
+                axios.post('/api/order/save', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeAddOrder()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            editGoods() {
+                this.show.addGoods = true
+                this.show.goodsInfo = false
+                this.temp.isAddGoods = false
+            },
+            deleteOrder(record) {
+                axios.delete(`/api/order/delete/${record.id}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            resetList() {
+                this.temp.search = ''
                 this.getList()
             },
-            getList() {
-                axios.get('/api/user/list').then(response => {
+            search() {
+                axios.get(`/api/goods/search/${this.form.searchText}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.dataSource = result.data;
+                        this.filterGoods(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-            saveStatus(type, status, e) {
-                const _this = this;
-                this.$confirm({
-                    title: '确认操作?',
-                    cancelText: '取消',
-                    okText: '确定',
-                    onOk() {
-                        let url = `/api/user`
-                        if (type === 1) {
-                            url += '/publish'
-                        } else if (type === 2) {
-                            url += '/talk'
-                        }
-                        if (status === 0) {
-                            url += '/checkPass'
-                        } else if (status === 2) {
-                            url += '/checkFail'
-                        }
-                        url += `/${e.id}`
-                        axios.post(url).then(response => {
-                            const result = response.data
-                            if (result.status !== 200) {
-                                _this.$message.error(result.message);
-                                return
-                            }
-                            _this.$message.success(result.message)
-                            _this.getList()
-                        }).catch(function (error) {
-                            console.log('请求出现错误:', error);
-                        });
-                    },
+            getList() {
+                axios.get('/api/order/list').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterList(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
                 });
+            },
+            filterList(source) {
+                const dataList = source.map(e => {
+                    return {
+                        id: e.id,
+                        status: e.status,
+                        note: e.note,
+                        name: e.name,
+                        price: e.price,
+                        content: e.content,
+                        type: e.type,
+                        messages: e.messages,
+                        createTime: e.createTime,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                    }
+                });
+                this.tableDataList.addOrder = dataList
+                this.tableDataList.addOrder = dataList.filter(e => e.type === 1)
+                this.tableDataList.addOrder = dataList.filter(e => e.type === 1)
             },
         }
     })

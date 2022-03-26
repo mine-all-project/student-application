@@ -1,7 +1,7 @@
 package org.example.application.system.service.impl;
 
+import cn.hutool.crypto.digest.MD5;
 import org.example.application.common.ApplicationException;
-import org.example.application.common.DIC;
 import org.example.application.common.utils.AssertUtils;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.system.dao.UserDAO;
@@ -10,7 +10,6 @@ import org.example.application.system.form.ResetPasswordForm;
 import org.example.application.system.form.UpdateUserInfoForm;
 import org.example.application.system.form.UserForm;
 import org.example.application.system.service.UserService;
-import cn.hutool.crypto.digest.MD5;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -140,7 +138,6 @@ public class UserServiceImpl implements UserService {
     public void publishCheckPass(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
-        user.setPublishStatus(DIC.CHECK_PASS);
         userDAO.save(user);
     }
 
@@ -148,7 +145,6 @@ public class UserServiceImpl implements UserService {
     public void publishCheckFail(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
-        user.setPublishStatus(DIC.CHECK_FAIL);
         userDAO.save(user);
     }
 
@@ -156,7 +152,6 @@ public class UserServiceImpl implements UserService {
     public void talkCheckPass(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
-        user.setTalkStatus(DIC.CHECK_PASS);
         userDAO.save(user);
     }
 
@@ -164,7 +159,6 @@ public class UserServiceImpl implements UserService {
     public void talkCheckFailTalk(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
-        user.setTalkStatus(DIC.CHECK_FAIL);
         userDAO.save(user);
     }
 }

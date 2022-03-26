@@ -52,7 +52,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
     /**
      * 删除标记 (0:正常 1:删除)
      */
-    @Column(columnDefinition = "int default 0 not null ")
+    @Column(columnDefinition = "tinyint default 0 not null ")
     private int delFlag;
 
     @Override
