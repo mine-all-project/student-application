@@ -37,9 +37,6 @@ public class UserDAO extends BaseDAO {
         userRepository.deleteById(id);
     }
 
-    public List<SysUser> findByName(String name) {
-        return userRepository.findByName(name);
-    }
 
     @Transactional
     public void unActiveUser(String id) {
@@ -51,9 +48,6 @@ public class UserDAO extends BaseDAO {
         userRepository.activeUser(id);
     }
 
-    public SysUser findByUsernameAndPasswordAndStatusNotAndDelFlagNot(String username, String password, int status, int delFlag) {
-        return userRepository.findByUsernameAndPasswordAndStatusNotAndDelFlagNot(username, password, status, delFlag).orElse(null);
-    }
 
     public List<SysUser> findAll() {
         return userRepository.findByDelFlag(ascByCreateTime, NOT_DEL);

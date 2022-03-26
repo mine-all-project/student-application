@@ -9,55 +9,34 @@ import org.example.application.common.BaseEntity;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * TODO 用户实体类
- *
-
- * 2019/7/4 14:51
-
-
-
- * <p>
- * Entity 表示这是一个和数据库表相关联的类
- */
 @Entity
 @Getter
 @Setter
+@Table(schema = "system")
 public class SysUser extends BaseEntity {
-
-    @Column(columnDefinition = "varchar(32) comment '用户名'", unique = true)
+    //用户名
+    @Column(columnDefinition = "varchar(32) ", unique = true)
     private String username;
-
-    @Column(columnDefinition = "varchar(64) comment '密码'")
+    //密码
+    @Column(columnDefinition = "varchar(64) ")
     private String password;
-
-    @Column(columnDefinition = "varchar(32) comment '姓名'")
+    //姓名
+    @Column(columnDefinition = "varchar(32) ")
     private String name;
-
-    @Column(columnDefinition = "varchar(64) comment '邮箱'")
-    private String mail;
-
+    //头像
     @OneToOne
-    @JoinColumn(columnDefinition = "comment '头像'")
+    @JoinColumn(columnDefinition = "")
     private FileInfo headImg;
-
-    @Column(columnDefinition = "tinyint comment '年龄'")
+    //年龄
+    @Column(columnDefinition = "int ")
     private Integer age;
-
-    @Column(columnDefinition = "tinyint comment '角色 0:超级管理员 1:科研人员 2: 科研管理员'")
+    //角色 0:系统管理员 1:普通管理员 2: 普通用户
     private Integer role;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JSONField(serialize = false)
-    private List<SysRole> sysRoles;
-
-    @Column(columnDefinition = "tinyint default 0 not null comment '用户状态标记 0:正常 1:禁用'")
+    //用户状态标记 0:正常 1:禁用
     private int status;
-
-    @Column(columnDefinition = "tinyint default 0 comment '是否允许发布状态标记 0:正常 1:禁用'")
+    //是否允许发布状态标记 0:正常 1:禁用
     private int publishStatus;
-
-    @Column(columnDefinition = "tinyint default 0 comment '是否运行评论状态标记 0:正常 1:禁用'")
+    //是否运行评论状态标记 0:正常 1:禁用
     private int talkStatus;
 
     @Override

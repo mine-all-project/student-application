@@ -2,11 +2,9 @@ package org.example.application.system.service.impl;
 
 import org.example.application.common.ApplicationException;
 import org.example.application.common.DIC;
-import org.example.application.common.config.ApplicationConfigure;
 import org.example.application.common.utils.AssertUtils;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.system.dao.UserDAO;
-import org.example.application.system.dto.SysUserDTO;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
 import org.example.application.system.form.UpdateUserInfoForm;
@@ -26,25 +24,20 @@ import java.util.List;
 
 /**
  * TODO 用户相关服务实现类
- * <p>
- * <p>
- * 2020/1/27 2:10
  */
 @Service
 public class UserServiceImpl implements UserService {
     private final JwtConfigure jwtConfigure;
-    private final String salt;
     @Value("${isDebug}")
     private boolean isDebug;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserDAO userDAO;
 
-    public UserServiceImpl(ApplicationConfigure applicationConfigure,
-                           JwtConfigure jwtConfigure, UserDAO userDAO) {
+    public UserServiceImpl(
+            JwtConfigure jwtConfigure, UserDAO userDAO) {
         this.jwtConfigure = jwtConfigure;
         this.userDAO = userDAO;
-        this.salt = applicationConfigure.salt;
     }
 
     /**
@@ -81,10 +74,6 @@ public class UserServiceImpl implements UserService {
         userDAO.save(user);
     }
 
-    @Override
-    public List<SysUser> findByName(String name) {
-        return userDAO.findByName(name);
-    }
 
     @Override
     public void changeStatus(String id) {
@@ -98,34 +87,6 @@ public class UserServiceImpl implements UserService {
     public List<SysUser> findAll() {
         logger.info("开始获取所有用户");
         return userDAO.findAll();
-    }
-
-    /**
-     * 根据[用户名] [密码] [状态] [删除标记] 查询用户
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @param status   状态
-     * @param delFlag  删除标记
-     * @return 查询到的用户
-     */
-    @Override
-    public SysUser findByUsernameAndPasswordAndStatusNotAndDelFlagNot(String username, String password, int status, int delFlag) {
-        return userDAO.findByUsernameAndPasswordAndStatusNotAndDelFlagNot(username, password, status, delFlag);
-    }
-
-
-    @Override
-    public List<SysUserDTO> getUserListDTO(HttpServletRequest request) {
-        String userId = getUserInfo(request, jwtConfigure, userDAO, isDebug).getId();
-        List<SysUser> userList = userDAO.getUserList(userId, 0);
-        List<SysUserDTO> userDTOS = new ArrayList<>(userList.size());
-        userList.forEach(e -> {
-            SysUserDTO sysUserDTO = new SysUserDTO();
-            BeanUtils.copyProperties(e, sysUserDTO);
-            userDTOS.add(sysUserDTO);
-        });
-        return userDTOS;
     }
 
     @Override

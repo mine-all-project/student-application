@@ -10,15 +10,6 @@ import org.example.application.common.ResponseCode;
 import java.io.Serializable;
 import java.util.Collection;
 
-/**
- * TODO 通用返回值DTO
- *
- * @author Mr.He
- * 2019/9/21 17:45
- * e-mail crabapples.cn@gmail.com
- * qq 294046317
- * pc-name 29404
- */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,15 +19,6 @@ public class ResponseDTO implements Serializable {
     private String message;
     private Object data;
     private long time;
-    private PageDTO page;
-
-    private ResponseDTO(ResponseCode status, String message, Object data, PageDTO page) {
-        this.status = status.getCode();
-        this.message = message;
-        this.data = data;
-        this.page = page;
-        this.time = System.currentTimeMillis();
-    }
 
     private ResponseDTO(ResponseCode status, String message, Object data) {
         this.status = status.getCode();
@@ -59,8 +41,8 @@ public class ResponseDTO implements Serializable {
     }
 
     /*---------------- SUCCESS -------------*/
-    public static <T> ResponseDTO returnSuccess(Collection<T> data, PageDTO page) {
-        return new ResponseDTO(ResponseCode.SUCCESS, DIC.BASE_SUCCESS_MESSAGE, data, page);
+    public static <T> ResponseDTO returnSuccess(Collection<T> data) {
+        return new ResponseDTO(ResponseCode.SUCCESS, DIC.BASE_SUCCESS_MESSAGE,data);
     }
 
     public static ResponseDTO returnSuccess(String message, Object data) {

@@ -9,16 +9,20 @@ import org.example.application.system.entity.SysUser;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Setter
 @Getter
 @Entity
+@Table(schema = "system")
 public class Message extends BaseEntity {
-    @Column(columnDefinition = "longtext default null comment '内容'")
+    //内容
+    @Column(columnDefinition = "varchar(256) default null ")
     private String content;
-    @Column(columnDefinition = "tinyint default 1 comment '状态 0:正常 1:待审 2:驳回 3:'")
+    //状态 0:正常 1:待审 2:驳回 
     private Integer status;
-    @Column(columnDefinition = "varchar(256) default null comment '审核备注'")
+    //审核备注
+    @Column(columnDefinition = "varchar(256) default null ")
     private String note;
 //    @OneToMany
 //    private List<Message> messageList;

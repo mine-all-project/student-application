@@ -5,7 +5,6 @@ import org.example.application.common.groups.IsEdit;
 import org.example.application.common.groups.IsNotNull;
 import org.example.application.common.groups.IsStatusChange;
 import org.example.application.system.dto.ResponseDTO;
-import org.example.application.system.dto.SysUserDTO;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
 import org.example.application.system.form.UpdateUserInfoForm;
@@ -102,13 +101,6 @@ public class UserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
 
-    @GetMapping("/getUserListDTO")
-    public ResponseDTO getUserListDTO(HttpServletRequest request) {
-        logger.info("收到请求->获取用户列表DTO");
-        List<SysUserDTO> list = userService.getUserListDTO(request);
-        logger.info("返回结果->获取用户列表DTO结束:[{}]", list);
-        return ResponseDTO.returnSuccess("操作成功", list);
-    }
 
     @GetMapping("/list")
     public ResponseDTO getUserList() {

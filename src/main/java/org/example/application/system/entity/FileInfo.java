@@ -7,20 +7,27 @@ import org.example.application.common.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Setter
 @Getter
 @Entity
+@Table(schema = "system")
 public class FileInfo extends BaseEntity {
-    @Column(columnDefinition = "varchar(256) default null comment '原文件名'")
+    //原文件名
+    @Column(columnDefinition = "varchar(256) default null ")
     private String oldName;
-    @Column(columnDefinition = "varchar(256) default null comment '文件虚拟访问路径'")
+    //文件虚拟访问路径
+    @Column(columnDefinition = "varchar(256) default null ")
     private String virtualPath;
-    @Column(columnDefinition = "varchar(256) default null comment '文件真实保存访问路径'")
+    //文件真实保存访问路径
+    @Column(columnDefinition = "varchar(256) default null ")
     private String uploadPath;
-    @Column(columnDefinition = "varchar(256) default null comment '文件类型'")
+    //文件类型
+    @Column(columnDefinition = "varchar(256) default null ")
     private String contentType;
-    @Column(columnDefinition = "long default null comment '文件大小'")
+    //文件大小
+    @Column(columnDefinition = "long default null ")
     private Long fileSize;
 
 

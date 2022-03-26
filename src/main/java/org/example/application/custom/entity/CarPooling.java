@@ -8,33 +8,38 @@ import org.example.application.common.BaseEntity;
 import org.example.application.system.entity.FileInfo;
 import org.example.application.system.entity.SysUser;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
 @Getter
 @Entity
+@Table(schema = "system")
 public class CarPooling extends BaseEntity {
-    @Column(columnDefinition = "varchar(256) default null comment '名称'")
+    //名称
+    @Column(columnDefinition = "varchar(256) default null ")
     private String title;
-    @Column(columnDefinition = "tinyint default null comment '人数'")
+    //人数
+    @Column(columnDefinition = "int default null ")
     private Integer personCount;
-    @Column(columnDefinition = "varchar(256) default null comment '出发地'")
+    //出发地
+    @Column(columnDefinition = "varchar(256) default null ")
     private String fromAddress;
-    @Column(columnDefinition = "varchar(256) default null comment '目的地'")
+    //目的地
+    @Column(columnDefinition = "varchar(256) default null ")
     private String targetAddress;
-    @Column(columnDefinition = "varchar(256) default null comment '详情'")
+    //详情
+    @Column(columnDefinition = "varchar(256) default null ")
     private String content;
-    @Column(columnDefinition = "timestamp  comment '出发时间'")
+    //出发时间
+    @Column(columnDefinition = "timestamp  ")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime beginTime;
-    @Column(columnDefinition = "tinyint default 1 comment '状态 0:正常 1:待审 2:驳回 3:'")
+    //状态 0:正常 1:待审 2:驳回 
     private Integer status;
-    @Column(columnDefinition = "varchar(256) default null comment '审核备注'")
+    //审核备注
+    @Column(columnDefinition = "varchar(256) default null ")
     private String note;
     @OneToOne
     private SysUser publisher;

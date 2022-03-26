@@ -7,27 +7,29 @@ import org.example.application.common.BaseEntity;
 import org.example.application.system.entity.FileInfo;
 import org.example.application.system.entity.SysUser;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.List;
 
 @Setter
 @Getter
 @Entity
+@Table(schema = "system")
 public class News extends BaseEntity {
-    @Column(columnDefinition = "varchar(256) default null comment '标题'")
+    //标题
+    @Column(columnDefinition = "varchar(256) default null ")
     private String title;
-    @Column(columnDefinition = "int default 0 comment '价格'")
+    //价格
+    @Column(columnDefinition = "int default 0 ")
     private Integer price;
-    @Column(columnDefinition = "varchar(256) default null comment '描述'")
+    //描述
+    @Column(columnDefinition = "varchar(256) default null ")
     private String content;
-    @Column(columnDefinition = "tinyint default null comment '商品类型 1:闲置 2:租赁'")
+    //类型 1:食堂意见 2:阅读推荐 3:话题讨论 4:校内新闻
     private Integer type;
-    @Column(columnDefinition = "tinyint default 1 comment '状态 0:正常 1:待审 2:驳回 3:'")
+    //状态 0:正常 1:待审 2:驳回 
     private Integer status;
-    @Column(columnDefinition = "varchar(256) default null comment '审核备注'")
+    //审核备注
+    @Column(columnDefinition = "varchar(256) default null ")
     private String note;
     @OneToOne
     private SysUser publisher;

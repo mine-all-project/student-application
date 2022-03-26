@@ -35,7 +35,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      * 创建时间
      * columnDefinition 设置默认值为当前时间
      */
-    @Column(columnDefinition = "timestamp default current_timestamp comment '创建时间'")
+    @Column(columnDefinition = "timestamp default current_timestamp ")
     @CreatedDate
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
@@ -44,7 +44,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
      * 更新时间
      * columnDefinition 设置默认值为当前时间，随每次更新数据时更新时间
      */
-    @Column(columnDefinition = "timestamp default current_timestamp on update current_timestamp comment '修改时间'")
+    @Column(columnDefinition = "timestamp default current_timestamp ")
     @LastModifiedDate
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
@@ -52,7 +52,7 @@ public abstract class BaseEntity implements Serializable, Cloneable {
     /**
      * 删除标记 (0:正常 1:删除)
      */
-    @Column(columnDefinition = "tinyint(1) default 0 not null comment '删除标记'")
+    @Column(columnDefinition = "int default 0 not null ")
     private int delFlag;
 
     @Override

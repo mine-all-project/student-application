@@ -167,12 +167,6 @@ const app = new Vue({
                         icon: 'appstore',
                         url: '/server/user-list',
                     },
-                    {
-                        key: '12',
-                        name: '用户列表1',
-                        icon: 'appstore',
-                        url: '/server/user-list-manage.html',
-                    },
                 ]
             },],
             userMenus: [{
@@ -406,7 +400,6 @@ const app = new Vue({
             } else if (rule === 2) {
                 this.menus = this.userMenus
             }
-            this.menus = this.allMenus
         },
 
         logout() {

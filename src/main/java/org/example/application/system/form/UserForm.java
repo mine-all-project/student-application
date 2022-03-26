@@ -16,9 +16,6 @@ import java.util.List;
 
 /**
  * TODO 用户信息提交Form
- * <p>
- * <p>
- * 2020/1/27 11:26
  */
 @Getter
 @Setter
@@ -39,10 +36,6 @@ public class UserForm extends BaseForm {
     @Length(max = 32)
     @NotBlank(message = "姓名不能为空", groups = {IsAdd.class, IsEdit.class})
     private String name;
-
-    @Length(max = 32)
-    @NotBlank(message = "邮箱不能为空", groups = {IsAdd.class, IsEdit.class})
-    private String mail;
 
     @Length(max = 3)
     @NotNull(message = "年龄不能为空", groups = {IsAdd.class, IsEdit.class})
