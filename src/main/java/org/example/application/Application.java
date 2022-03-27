@@ -17,6 +17,7 @@ public class Application {
         SpringApplication.run(Application.class, args);
         logger.info(">>>>>>>>服务启动成功 [jpa] [jwt] >>>>>>>>>");
     }
+    //1bbd886460827015e5d605ed44252251
 
     @Bean
     public RestTemplate restTemplate() {

@@ -19,11 +19,11 @@ public class SysUser extends BaseEntity {
     private String name;
     @OneToOne
     private FileInfo headImg;
-    @Column(columnDefinition = "int ")
+    @Column(columnDefinition = "tinyint  comment '年龄'")
     private Integer age;
-    //角色 0:系统管理员 1:普通管理员 2: 普通用户
+    @Column(columnDefinition = "tinyint  comment '权限 0:普通管理员 1:普通用户'")
     private Integer role;
-    //用户状态标记 0:正常 1:禁用
+    @Column(columnDefinition = "tinyint  comment '状态 0:正常 1:禁用'")
     private int status;
 
     @Override

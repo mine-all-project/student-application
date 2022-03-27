@@ -9,7 +9,7 @@ import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
 import org.example.application.system.form.UpdateUserInfoForm;
 import org.example.application.system.form.UserForm;
-import org.example.application.system.service.UserService;
+import org.example.application.system.service.SysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -24,15 +24,15 @@ import java.util.List;
  * TODO 用户相关服务实现类
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class SysUserServiceImpl implements SysUserService {
     private final JwtConfigure jwtConfigure;
     @Value("${isDebug}")
     private boolean isDebug;
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SysUserServiceImpl.class);
 
     private final UserDAO userDAO;
 
-    public UserServiceImpl(
+    public SysUserServiceImpl(
             JwtConfigure jwtConfigure, UserDAO userDAO) {
         this.jwtConfigure = jwtConfigure;
         this.userDAO = userDAO;

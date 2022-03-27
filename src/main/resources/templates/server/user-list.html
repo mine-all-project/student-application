@@ -35,14 +35,11 @@
 				<a-form-model-item label="年龄" prop="age">
 					<a-input-number style="width:100%" v-model="form.userInfo.age" placeholder="请输入年龄"></a-input-number>
 				</a-form-model-item>
-				<a-form-model-item label="邮箱" prop="mail">
-					<a-input v-model="form.userInfo.mail" placeholder="请输入邮箱"></a-input>
-				</a-form-model-item>
 				<a-form-model-item label="权限" prop="role">
 					<a-radio-group v-model="form.userInfo.role" default-value="2">
-<!--						<a-radio value="0">系统管理员</a-radio>-->
-						<a-radio value="1">用户管理员</a-radio>
-						<a-radio value="2">普通用户</a-radio>
+						<!--						<a-radio value="999">超级管理员*</a-radio>-->
+						<a-radio :value="1">用户管理员</a-radio>
+						<a-radio :value="2">普通用户</a-radio>
 					</a-radio-group>
 				</a-form-model-item>
 				<a-form-model-item label="标签" prop="tags" v-if="false">
@@ -74,6 +71,7 @@
         <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>
       </span>
 			<span slot="role" slot-scope="role">
+          <a-tag color="pink" v-if="role === 999">*超级管理员*</a-tag>
           <a-tag color="green" v-if="role === 0">系统管理员</a-tag>
           <a-tag color="orange" v-if="role === 1">用户管理员</a-tag>
           <a-tag color="blue" v-if="role === 2">普通用户</a-tag>
@@ -88,14 +86,16 @@
           <a-button type="primary" size="small" @click="changeStatus(record)" v-if="record.status === 1">启用</a-button>
 					<a-divider type="vertical"></a-divider>
         </span>
-        <span v-if="record.role !== 0">
+        <span v-if="record.role !== 999">
           <a-button type="danger" size="small" @click="removeUser(record)">删除</a-button>
 					<a-divider type="vertical"></a-divider>
         </span>
         <a-button type="primary" size="small" @click="editUser(record)">编辑</a-button>
 				<a-divider type="vertical"></a-divider>
-        <a-button type="primary" size="small" @click="showResetPassword(record)">重置密码</a-button>
-				<a-divider type="vertical"></a-divider>
+				<span v-if="record.role !== 999">
+					<a-button type="primary" size="small" @click="showResetPassword(record)">重置密码</a-button>
+					<a-divider type="vertical"></a-divider>
+				</span>
       </span>
 		</a-table>
 	</div>
@@ -155,13 +155,8 @@
                         key: 'age',
                     },
                     {
-                        dataIndex: 'mail',
-                        title: '邮箱',
-                        key: 'mail',
-                    },
-                    {
                         dataIndex: 'role',
-                        title: '角色',
+                        title: '权限',
                         key: 'role',
                         scopedSlots: {customRender: 'role'}
                     },
@@ -187,10 +182,8 @@
                         id: '',
                         name: '',
                         age: '',
-                        mail: '',
                         role: 1,
                         status: null,
-                        tags: [],
                     },
                     resetPassword: {
                         id: '',
@@ -208,7 +201,6 @@
         },
         mounted() {
             this.getList()
-            // this.getTagsList()
         },
         methods: {
             refreshData() {

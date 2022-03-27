@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * TODO 用户相关服务
  */
-public interface UserService extends BaseService {
+public interface SysUserService extends BaseService {
 
     SysUser findByUsername(String username);
 
