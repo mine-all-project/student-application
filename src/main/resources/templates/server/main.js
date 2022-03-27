@@ -4,7 +4,7 @@ const app = new Vue({
     data() {
         return {
             isDebug: true,
-            pageUrl: '/server/demo.html',
+            pageUrl: '/server/welcome.html',
             headers: headers,
             labelCol: {span: 5},
             wrapperCol: {span: 16},
@@ -18,7 +18,7 @@ const app = new Vue({
                 personSettings: {}
             },
             pagination: {total: 0, pageSize: 10},
-            title: "校园管理系统",
+            title: "账务管理系统",
             rules: {
                 name: [
                     {required: true, message: '请输入姓名', trigger: 'change'},
@@ -97,7 +97,7 @@ const app = new Vue({
                             key: '40',
                             name: '权限管理',
                             icon: 'appstore',
-                            url: '/server/check-news.html',
+                            url: '/server/user-list-manage.html',
                         },
                         {
                             key: '41',

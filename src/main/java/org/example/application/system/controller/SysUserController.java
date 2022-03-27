@@ -101,7 +101,6 @@ public class SysUserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
 
-
     @GetMapping("/list")
     public ResponseDTO getUserList() {
         logger.info("收到请求->获取用户列表");
@@ -110,34 +109,34 @@ public class SysUserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", list);
     }
 
-    @PostMapping("/publish/checkPass/{id}")
-    public ResponseDTO publishCheckPass(@PathVariable String id) {
-        logger.info("收到请求->允许用户发表[{}]", id);
-        sysUserService.publishCheckPass(id);
-        logger.info("返回结果->允许用户发表结束");
+    @PostMapping("/order/checkPass/{id}")
+    public ResponseDTO orderCheckPass(@PathVariable String id) {
+        logger.info("收到请求->允许管理账单[{}]", id);
+        sysUserService.orderCheckPass(id);
+        logger.info("返回结果->允许管理账单结束");
         return ResponseDTO.returnSuccess();
     }
 
-    @PostMapping("/publish/checkFail/{id}")
-    public ResponseDTO publishCheckFail(@PathVariable String id) {
-        logger.info("收到请求->禁用用户发表[{}]", id);
-        sysUserService.publishCheckFail(id);
-        logger.info("返回结果->禁用用户发表结束");
+    @PostMapping("/order/checkFail/{id}")
+    public ResponseDTO orderCheckFail(@PathVariable String id) {
+        logger.info("收到请求->禁止管理账单,id:[{}]", id);
+        sysUserService.orderCheckFail(id);
+        logger.info("返回结果->禁止管理账单结束");
         return ResponseDTO.returnSuccess();
     }
-    @PostMapping("/talk/checkPass/{id}")
-    public ResponseDTO talkCheckPass(@PathVariable String id) {
-        logger.info("收到请求->允许用户评论[{}]", id);
-        sysUserService.talkCheckPass(id);
-        logger.info("返回结果->禁用用户评论结束");
+    @PostMapping("/orderCount/checkPass/{id}")
+    public ResponseDTO orderCountCheckPass(@PathVariable String id) {
+        logger.info("收到请求->允许管理账务,id:[{}]", id);
+        sysUserService.orderCountCheckPass(id);
+        logger.info("返回结果->允许管理账务结束");
         return ResponseDTO.returnSuccess();
     }
 
-    @PostMapping("/talk/checkFail/{id}")
-    public ResponseDTO talkCheckFailTalk(@PathVariable String id) {
-        logger.info("收到请求->禁用用户评论[{}]", id);
-        sysUserService.talkCheckFailTalk(id);
-        logger.info("返回结果->禁用用户评论结束");
+    @PostMapping("/orderCount/checkFail/{id}")
+    public ResponseDTO orderCountCheckFail(@PathVariable String id) {
+        logger.info("收到请求->禁止管理账务,id:[{}]", id);
+        sysUserService.orderCountCheckFail(id);
+        logger.info("返回结果->禁止管理账务结束");
         return ResponseDTO.returnSuccess();
     }
 }

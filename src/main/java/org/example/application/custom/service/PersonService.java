@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface PersonService extends BaseService {
-    List<Person> getAll();
+    List<Person> getAll(HttpServletRequest request);
 
-    List<Person> search(String keywords);
+    List<Person> search(HttpServletRequest request,String keywords);
 
     Person save(HttpServletRequest request, PersonForm form);
 
-    void deleteById(String id);
+    void deleteById(HttpServletRequest request,String id);
 }

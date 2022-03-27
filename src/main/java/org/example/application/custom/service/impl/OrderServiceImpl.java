@@ -33,19 +33,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAll() {
+    public List<Order> getAll(HttpServletRequest request) {
+        checkOrderAuth(request,jwtConfigure,userDAO);
         return orderDAO.getAll();
     }
 
     @Override
-    public List<Order> search(String keywords) {
+    public List<Order> search(HttpServletRequest request,String keywords) {
+        checkOrderAuth(request,jwtConfigure,userDAO);
         return orderDAO.search(keywords);
     }
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public List<Order> searchDate(String beginTimeStr, String endTimeStr) {
+    public List<Order> searchDate(HttpServletRequest request,String beginTimeStr, String endTimeStr) {
+        checkOrderAuth(request,jwtConfigure,userDAO);
         LocalDateTime beginTime = LocalDateTime.parse(beginTimeStr, dateTimeFormatter);
         LocalDateTime endTime = LocalDateTime.parse(endTimeStr, dateTimeFormatter);
         return orderDAO.searchDate(beginTime, endTime);
@@ -53,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order save(HttpServletRequest request, OrderForm form) {
+        checkOrderAuth(request,jwtConfigure,userDAO);
         Order entity = form.toEntity();
         if (StringUtils.isEmpty(entity.getNo())) {
             entity.setNo(String.valueOf(System.currentTimeMillis()));
@@ -62,17 +66,20 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(HttpServletRequest request,String id) {
+        checkOrderAuth(request,jwtConfigure,userDAO);
         orderDAO.deleteById(id);
     }
 
     @Override
-    public void checkPass(String id) {
+    public void checkPass(HttpServletRequest request,String id) {
+        checkOrderAuth(request,jwtConfigure,userDAO);
         orderDAO.updateStatusById(id, DIC.CHECK_PASS);
     }
 
     @Override
-    public void checkFail(String id) {
+    public void checkFail(HttpServletRequest request,String id) {
+        checkOrderAuth(request,jwtConfigure,userDAO);
         orderDAO.updateStatusById(id, DIC.CHECK_FAIL);
     }
 }

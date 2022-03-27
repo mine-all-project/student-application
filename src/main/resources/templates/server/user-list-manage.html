@@ -36,21 +36,17 @@
         <a-tag color="red" v-else>禁用</a-tag>
       </span>
 			<span slot="action" slot-scope="text, record">
-        <span v-if="record.role !== 5">
-          <a-button type="danger" size="small" @click="saveStatus(1,2,record)"
-										v-if="record.publishStatus === 0">禁止发布</a-button>
           <a-button type="primary" size="small" @click="saveStatus(1,0,record)"
-										v-if="record.publishStatus === 2">允许发布</a-button>
+										v-if="record.orderStatus === 1">允许管理账单</a-button>
+				  <a-button type="danger" size="small" @click="saveStatus(1,1,record)"
+										v-if="record.orderStatus === 0">禁止管理账单</a-button>
 					<a-divider type="vertical"></a-divider>
-        </span>
-				 <span v-if="record.role !== 5">
-          <a-button type="danger" size="small" @click="saveStatus(2,2,record)"
-										v-if="record.talkStatus === 0">禁止评论</a-button>
           <a-button type="primary" size="small" @click="saveStatus(2,0,record)"
-										v-if="record.talkStatus === 2">允许评论</a-button>
-					<a-divider type="vertical"></a-divider>
+										v-if="record.orderCountStatus === 1">允许管理账务</a-button>
+          <a-button type="danger" size="small" @click="saveStatus(2,1,record)"
+										v-if="record.orderCountStatus === 0">禁止管理账务</a-button>
         </span>
-      </span>
+			</span>
 		</a-table>
 	</div>
 </div>
@@ -74,17 +70,6 @@
                         dataIndex: 'age',
                         title: '年龄',
                         key: 'age',
-                    },
-                    {
-                        dataIndex: 'mail',
-                        title: '邮箱',
-                        key: 'mail',
-                    },
-                    {
-                        dataIndex: 'role',
-                        title: '角色',
-                        key: 'role',
-                        scopedSlots: {customRender: 'role'}
                     },
                     {
                         dataIndex: 'status',
@@ -111,7 +96,6 @@
                         mail: '',
                         role: 1,
                         status: null,
-                        tags: [],
                     },
                     resetPassword: {
                         id: '',
@@ -155,13 +139,13 @@
                     onOk() {
                         let url = `/api/user`
                         if (type === 1) {
-                            url += '/publish'
+                            url += '/order'
                         } else if (type === 2) {
-                            url += '/talk'
+                            url += '/orderCount'
                         }
                         if (status === 0) {
                             url += '/checkPass'
-                        } else if (status === 2) {
+                        } else if (status === 1) {
                             url += '/checkFail'
                         }
                         url += `/${e.id}`

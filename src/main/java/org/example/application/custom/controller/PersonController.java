@@ -23,16 +23,17 @@ public class PersonController extends BaseController {
     }
 
     @GetMapping("/list")
-    public ResponseDTO getList() {
+    public ResponseDTO getList(HttpServletRequest request) {
         log.info("收到请求->获取人员列表");
-        List<Person> list = personService.getAll();
+        List<Person> list = personService.getAll(request);
         log.info("返回结果->获取人员列表结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
     }
+
     @GetMapping("/search/{keywords}")
-    public ResponseDTO search(@PathVariable String keywords) {
-        log.info("收到请求->搜索人员列表,keywords:[{}]",keywords);
-        List<Person> list = personService.search(keywords);
+    public ResponseDTO search(HttpServletRequest request, @PathVariable String keywords) {
+        log.info("收到请求->搜索人员列表,keywords:[{}]", keywords);
+        List<Person> list = personService.search(request,keywords);
         log.info("返回结果->搜索人员列表结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
     }
@@ -40,16 +41,16 @@ public class PersonController extends BaseController {
     @PostMapping("/save")
     public ResponseDTO save(HttpServletRequest request, @RequestBody PersonForm form) {
         validator(form, IsNotNull.class);
-        log.info("收到请求->保存人员:[{}]",form);
-        Person entity = personService.save(request,form);
+        log.info("收到请求->保存人员:[{}]", form);
+        Person entity = personService.save(request, form);
         log.info("返回结果->保存人员结束:[{}]", entity);
         return ResponseDTO.returnSuccess(entity);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseDTO deleteById(@PathVariable String id) {
-        log.info("收到请求->删除人员,id:[{}]",id);
-        personService.deleteById(id);
+    public ResponseDTO deleteById(HttpServletRequest request, @PathVariable String id) {
+        log.info("收到请求->删除人员,id:[{}]", id);
+        personService.deleteById(request,id);
         log.info("返回结果->删除的人员结束");
         return ResponseDTO.returnSuccess();
     }

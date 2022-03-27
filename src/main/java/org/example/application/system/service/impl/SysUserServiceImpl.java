@@ -2,6 +2,7 @@ package org.example.application.system.service.impl;
 
 import cn.hutool.crypto.digest.MD5;
 import org.example.application.common.ApplicationException;
+import org.example.application.common.DIC;
 import org.example.application.common.utils.AssertUtils;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.system.dao.UserDAO;
@@ -135,30 +136,34 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public void publishCheckPass(String id) {
+    public void orderCheckPass(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
+        user.setOrderStatus(DIC.AUTH);
         userDAO.save(user);
     }
 
     @Override
-    public void publishCheckFail(String id) {
+    public void orderCheckFail(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
+        user.setOrderStatus(DIC.UN_AUTH);
         userDAO.save(user);
     }
 
     @Override
-    public void talkCheckPass(String id) {
+    public void orderCountCheckPass(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
+        user.setOrderCountStatus(DIC.AUTH);
         userDAO.save(user);
     }
 
     @Override
-    public void talkCheckFailTalk(String id) {
+    public void orderCountCheckFail(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
+        user.setOrderCountStatus(DIC.UN_AUTH);
         userDAO.save(user);
     }
 }

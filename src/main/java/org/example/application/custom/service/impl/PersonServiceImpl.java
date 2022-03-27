@@ -29,23 +29,27 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<Person> getAll() {
+    public List<Person> getAll(HttpServletRequest request) {
+        checkOrderCountAuth(request,jwtConfigure,userDAO);
         return personDAO.getAll();
     }
 
     @Override
-    public List<Person> search(String keywords) {
+    public List<Person> search(HttpServletRequest request,String keywords) {
+        checkOrderCountAuth(request,jwtConfigure,userDAO);
         return personDAO.search(keywords);
     }
 
     @Override
     public Person save(HttpServletRequest request, PersonForm form) {
+        checkOrderCountAuth(request,jwtConfigure,userDAO);
         Person entity = form.toEntity();
         return personDAO.save(entity);
     }
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(HttpServletRequest request,String id) {
+        checkOrderCountAuth(request,jwtConfigure,userDAO);
         personDAO.deleteById(id);
     }
 

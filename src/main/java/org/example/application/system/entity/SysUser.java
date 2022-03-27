@@ -26,6 +26,10 @@ public class SysUser extends BaseEntity {
     @Column(columnDefinition = "tinyint  comment '状态 0:正常 1:禁用'")
     private int status;
 
+    @Column(columnDefinition = "tinyint default 1 comment '权限 0:允许管理账单 1:禁止管理账单'")
+    private Integer orderStatus;
+    @Column(columnDefinition = "tinyint default 1 comment '权限 0:允许管理账务 1:禁止管理账务'")
+    private Integer orderCountStatus;
     @Override
     public String toString() {
         return JSONObject.toJSONString(this);

@@ -1,6 +1,5 @@
 package org.example.application.common;
 
-import org.example.application.common.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintViolation;

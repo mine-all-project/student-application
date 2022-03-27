@@ -10,6 +10,9 @@ package org.example.application.common;
  * pc-name mrhe
  */
 public class DIC {
+    public final static int AUTH = 0;
+    public final static int UN_AUTH = 1;
+
     public final static int CHECK_PASS = 0;
     public final static int CHECK_WAIT = 1;
     public final static int CHECK_FAIL = 2;

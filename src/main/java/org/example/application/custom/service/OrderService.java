@@ -8,17 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface OrderService extends BaseService {
-    List<Order> getAll();
+    List<Order> getAll(HttpServletRequest request);
 
-    List<Order> search(String keywords);
+    List<Order> search(HttpServletRequest request,String keywords);
 
     Order save(HttpServletRequest request, OrderForm form);
 
-    void deleteById(String id);
+    void deleteById(HttpServletRequest request,String id);
 
-    void checkPass(String id);
+    void checkPass(HttpServletRequest request,String id);
 
-    void checkFail(String id);
+    void checkFail(HttpServletRequest request,String id);
 
-    List<Order> searchDate(String beginTime, String endTime);
+    List<Order> searchDate(HttpServletRequest request,String beginTime, String endTime);
 }

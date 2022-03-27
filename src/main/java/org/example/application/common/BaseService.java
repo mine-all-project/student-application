@@ -19,7 +19,26 @@ public interface BaseService {
             Claims claims = JwtTokenUtils.parseJWT(authHeader, configure.getBase64Secret());
             userId = String.valueOf(claims.get("userId"));
         }
-        System.err.println(userDAO.findById(userId));
         return userDAO.findById(userId);
+    }
+
+    default void checkOrderAuth(HttpServletRequest request, JwtConfigure configure, UserDAO userDAO) {
+        String authHeader = request.getHeader(configure.getAuthKey());
+        Claims claims = JwtTokenUtils.parseJWT(authHeader, configure.getBase64Secret());
+        String userId = String.valueOf(claims.get("userId"));
+        SysUser sysUser = userDAO.findById(userId);
+        if (sysUser.getOrderStatus() == DIC.UN_AUTH) {
+            throw new ApplicationException("暂无权限进行相关操作");
+        }
+    }
+
+    default void checkOrderCountAuth(HttpServletRequest request, JwtConfigure configure, UserDAO userDAO) {
+        String authHeader = request.getHeader(configure.getAuthKey());
+        Claims claims = JwtTokenUtils.parseJWT(authHeader, configure.getBase64Secret());
+        String userId = String.valueOf(claims.get("userId"));
+        SysUser sysUser = userDAO.findById(userId);
+        if (sysUser.getOrderCountStatus() == DIC.UN_AUTH) {
+            throw new ApplicationException("暂无权限进行相关操作");
+        }
     }
 }

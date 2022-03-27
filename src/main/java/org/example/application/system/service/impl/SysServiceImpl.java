@@ -1,5 +1,6 @@
 package org.example.application.system.service.impl;
 
+import cn.hutool.crypto.digest.MD5;
 import org.example.application.common.ApplicationException;
 import org.example.application.common.utils.AssertUtils;
 import org.example.application.common.utils.jwt.JwtConfigure;
@@ -8,8 +9,7 @@ import org.example.application.system.dao.UserDAO;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.UserForm;
 import org.example.application.system.service.SysService;
-import org.example.application.system.service.UserService;
-import cn.hutool.crypto.digest.MD5;
+import org.example.application.system.service.SysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,16 +28,13 @@ public class SysServiceImpl implements SysService {
     @Value("${isDebug}")
     private boolean isDebug;
 
-    private final UserService userService;
+    private final SysUserService sysUserService;
     private final UserDAO userDAO;
     private final JwtConfigure jwtConfigure;
 
 
-    public SysServiceImpl(
-            UserService userService,
-            UserDAO userDAO,
-            JwtConfigure jwtConfigure) {
-        this.userService = userService;
+    public SysServiceImpl(SysUserService sysUserService, UserDAO userDAO, JwtConfigure jwtConfigure) {
+        this.sysUserService = sysUserService;
         this.userDAO = userDAO;
         this.jwtConfigure = jwtConfigure;
     }
@@ -47,7 +44,7 @@ public class SysServiceImpl implements SysService {
         String username = form.getUsername();
         String password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
         logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
-        SysUser sysUser = userService.findByUsername(username);
+        SysUser sysUser = sysUserService.findByUsername(username);
         AssertUtils.notNull(sysUser, "用户名不存在");
         if (sysUser.getStatus() == 1) {
             throw new ApplicationException("账户已被禁用，请联系管理员");
