@@ -19,4 +19,5 @@ public interface OrderService extends BaseService {
     void checkPass(OrderForm form);
 
     void checkFail(OrderForm form);
+
 }

@@ -63,7 +63,7 @@ const app = new Vue({
                             key: '11',
                             name: '用户列表',
                             icon: 'appstore',
-                            url: '/server/person-list',
+                            url: '/server/person-list.html',
                         },
                     ]
                 },
@@ -77,7 +77,7 @@ const app = new Vue({
                             key: '31',
                             name: '帐单查询',
                             icon: 'appstore',
-                            url: '/server/trading.html',
+                            url: '/server/order-list.html',
                         },
                         {
                             key: '32',

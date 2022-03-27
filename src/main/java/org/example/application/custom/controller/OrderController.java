@@ -47,6 +47,15 @@ public class OrderController extends BaseController {
         return ResponseDTO.returnSuccess(entity);
     }
 
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseDTO deleteById(@PathVariable String id) {
+        log.info("收到请求->删除账单,id:[{}]", id);
+        orderService.deleteById(id);
+        log.info("返回结果->删除账单结束:");
+        return ResponseDTO.returnSuccess();
+    }
+
     @PostMapping("/checkPass")
     public ResponseDTO checkPass(@RequestBody OrderForm form) {
         log.info("收到请求->账单通过审核[{}]", form);

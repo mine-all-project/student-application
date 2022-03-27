@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 public class Order extends BaseEntity {
     @Column(columnDefinition = "varchar(256) default null comment '词条'")
     private String keyword;
-    @Column(columnDefinition = "tinyint default null comment '0:已缴费 1:未缴费'")
+    @Column(columnDefinition = "tinyint default null comment '0:已缴费 1:待缴费 2:逾期'")
     private Integer status;
     @Column(columnDefinition = "decimal(10,2) default 0 comment '金额'")
     private BigDecimal price;
@@ -26,6 +26,8 @@ public class Order extends BaseEntity {
     private Integer type;
     @Column(columnDefinition = "varchar(256) default null comment '备注'")
     private String note;
+    @Column(columnDefinition = "varchar(64) default null comment '流水号'")
+    private String no;
     @ManyToOne
     private Person person;
 
