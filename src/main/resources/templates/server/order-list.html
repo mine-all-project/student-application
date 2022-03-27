@@ -27,7 +27,7 @@
 <div id="app">
 	<a-row>
 		<a-col :span="6">
-			<a-input placeholder="输入关键字搜索" v-model="form.searchText"></a-input>
+			<a-input placeholder="输入词条搜索" v-model="form.searchText"></a-input>
 		</a-col>
 		<a-col :span="6" style="display: flex;justify-content: space-around">
 			<a-button type="primary" @click="search">搜索</a-button>
@@ -74,9 +74,10 @@
           <a-tag color="red" v-if="text === 2">逾期</a-tag>
 				</span>
 				<span slot="action" slot-scope="text, record">
-					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
+					<a-button type="default" size="small" @click="passOrder(record)">缴费</a-button>
+					<a-button type="default" size="small" @click="failOrder(record)">逾期</a-button>
 					<a-button type="primary" size="small" @click="showEditOrderForm(record,2)">编辑</a-button>
-					<!--					<a-button type="default" size="small" @click="showGoodsInfo(record)">查看详情</a-button>-->
+					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
       	</span>
 			</a-table>
 		</a-tab-pane>
@@ -117,9 +118,10 @@
           <a-tag color="red" v-if="text === 2">逾期</a-tag>
 				</span>
 				<span slot="action" slot-scope="text, record">
-					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
+						<a-button type="default" size="small" @click="passOrder(record)">缴费</a-button>
+					<a-button type="default" size="small" @click="failOrder(record)">逾期</a-button>
 					<a-button type="primary" size="small" @click="showEditOrderForm(record,2)">编辑</a-button>
-					<!--					<a-button type="default" size="small" @click="showGoodsInfo(record)">查看详情</a-button>-->
+					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
       	</span>
 			</a-table>
 		</a-tab-pane>
@@ -160,9 +162,10 @@
           <a-tag color="red" v-if="text === 2">逾期</a-tag>
 				</span>
 				<span slot="action" slot-scope="text, record">
-					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
+					<a-button type="default" size="small" @click="passOrder(record)">缴费</a-button>
+					<a-button type="default" size="small" @click="failOrder(record)">逾期</a-button>
 					<a-button type="primary" size="small" @click="showEditOrderForm(record,2)">编辑</a-button>
-					<!--					<a-button type="default" size="small" @click="showGoodsInfo(record)">查看详情</a-button>-->
+					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
       	</span>
 			</a-table>
 		</a-tab-pane>
@@ -203,9 +206,10 @@
           <a-tag color="red" v-if="text === 2">逾期</a-tag>
 				</span>
 				<span slot="action" slot-scope="text, record">
-					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
+					<a-button type="default" size="small" @click="passOrder(record)">缴费</a-button>
+					<a-button type="default" size="small" @click="failOrder(record)">逾期</a-button>
 					<a-button type="primary" size="small" @click="showEditOrderForm(record,2)">编辑</a-button>
-					<!--					<a-button type="default" size="small" @click="showGoodsInfo(record)">查看详情</a-button>-->
+					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
       	</span>
 			</a-table>
 		</a-tab-pane>
@@ -321,7 +325,7 @@
                 wrapperCol: {span: 16},
                 form: {
                     order: {},
-                    searchText: '',
+                    searchText: ' ',
                 },
                 show: {
                     addOrderForm: false,
@@ -337,6 +341,46 @@
             this.getPersonList()
         },
         methods: {
+            passOrder(record){
+                const _this = this
+                _this.$confirm({
+                    title: '确认缴费?',
+                    cancelText: '取消',
+                    okText: '确定',
+                    onOk() {
+                        axios.post(`/api/order/checkPass/${record.id}`).then(response => {
+                            const result = response.data
+                            if (result.status !== 200) {
+                                _this.$message.error(result.message);
+                                return;
+                            }
+                            _this.getList()
+                        }).catch(function (error) {
+                            console.error('出现错误:', error);
+                        });
+                    },
+                });
+            },
+            failOrder(record){
+                const _this = this
+                _this.$confirm({
+                    title: '确认逾期?',
+                    cancelText: '取消',
+                    okText: '确定',
+                    onOk() {
+                        axios.post(`/api/order/checkFail/${record.id}`).then(response => {
+                            const result = response.data
+                            if (result.status !== 200) {
+                                _this.$message.error(result.message);
+                                return;
+                            }
+                            _this.getList()
+                        }).catch(function (error) {
+                            console.error('出现错误:', error);
+                        });
+                    },
+                });
+            },
             changePerson(id) {
                 const ids = this.options.person.filter(e => {
                     return e.id === id
@@ -354,13 +398,12 @@
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterGoods(result.data)
+                        this.filterList(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
-
             getPersonList() {
                 axios.get('/api/person/list').then(response => {
                     const result = response.data
@@ -425,7 +468,7 @@
 
             },
             resetList() {
-                this.temp.search = ''
+                this.temp.search = ' '
                 this.getList()
             },
             getList() {

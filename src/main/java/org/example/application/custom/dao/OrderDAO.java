@@ -4,7 +4,9 @@ import org.example.application.common.BaseDAO;
 import org.example.application.custom.dao.jpa.OrderRepository;
 import org.example.application.custom.entity.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -32,4 +34,12 @@ public class OrderDAO extends BaseDAO {
         orderRepository.deleteById(id);
     }
 
+    @Transactional
+    public void updateStatusById(String id, int status) {
+        orderRepository.updateStatusById(id,status);
+    }
+
+    public List<Order> searchDate(LocalDateTime beginTime, LocalDateTime endTime) {
+        return orderRepository.findByCreateTimeBetween(beginTime, endTime,desByCreateTime);
+    }
 }

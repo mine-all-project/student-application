@@ -83,7 +83,7 @@ const app = new Vue({
                             key: '32',
                             name: '帐务查询',
                             icon: 'appstore',
-                            url: '/server/lost-items.html',
+                            url: '/server/order-count.html',
                         },
                     ]
                 },

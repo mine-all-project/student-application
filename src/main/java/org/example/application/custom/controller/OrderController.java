@@ -10,6 +10,7 @@ import org.example.application.system.dto.ResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -38,6 +39,14 @@ public class OrderController extends BaseController {
         return ResponseDTO.returnSuccess(list);
     }
 
+    @GetMapping("/searchDate/{beginTime}/{endTime}")
+    public ResponseDTO searchDate(@PathVariable String beginTime, @PathVariable String endTime) {
+        log.info("收到请求->搜索账单列表,time:[{} - {}]", beginTime, endTime);
+        List<Order> list = orderService.searchDate(beginTime, endTime);
+        log.info("返回结果->搜索账单列表结束:[{}]", list);
+        return ResponseDTO.returnSuccess(list);
+    }
+
     @PostMapping("/save")
     public ResponseDTO save(HttpServletRequest request, @RequestBody OrderForm form) {
         validator(form, IsNotNull.class);
@@ -56,19 +65,19 @@ public class OrderController extends BaseController {
         return ResponseDTO.returnSuccess();
     }
 
-    @PostMapping("/checkPass")
-    public ResponseDTO checkPass(@RequestBody OrderForm form) {
-        log.info("收到请求->账单通过审核[{}]", form);
-        orderService.checkPass(form);
-        log.info("返回结果->账单通过审核结束");
+    @PostMapping("/checkPass/{id}")
+    public ResponseDTO checkPass(@PathVariable String id) {
+        log.info("收到请求->账单缴费,id:[{}]", id);
+        orderService.checkPass(id);
+        log.info("返回结果->账单缴费结束");
         return ResponseDTO.returnSuccess();
     }
 
-    @PostMapping("/checkFail")
-    public ResponseDTO checkFail(@RequestBody OrderForm form) {
-        log.info("收到请求->账单驳回审核[{}]", form);
-        orderService.checkFail(form);
-        log.info("返回结果->账单驳回审核结束");
+    @PostMapping("/checkFail/{id}")
+    public ResponseDTO checkFail(@PathVariable String id) {
+        log.info("收到请求->账单逾期,id:[{}]", id);
+        orderService.checkFail(id);
+        log.info("返回结果->账单逾期结束");
         return ResponseDTO.returnSuccess();
     }
 }

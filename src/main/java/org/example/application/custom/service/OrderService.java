@@ -16,8 +16,9 @@ public interface OrderService extends BaseService {
 
     void deleteById(String id);
 
-    void checkPass(OrderForm form);
+    void checkPass(String id);
 
-    void checkFail(OrderForm form);
+    void checkFail(String id);
 
+    List<Order> searchDate(String beginTime, String endTime);
 }
