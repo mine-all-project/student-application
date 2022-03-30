@@ -1,85 +1,61 @@
 package org.example.application.custom.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
-import org.example.application.common.DIC;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.OrderDAO;
 import org.example.application.custom.entity.Order;
-import org.example.application.custom.form.OrderForm;
+import org.example.application.custom.service.GoodsService;
 import org.example.application.custom.service.OrderService;
 import org.example.application.system.dao.UserDAO;
+import org.example.application.system.entity.SysUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Slf4j
+
 @Service
 public class OrderServiceImpl implements OrderService {
     private final OrderDAO orderDAO;
+    private final GoodsService goodsService;
+
     @Value("${isDebug}")
     private boolean isDebug;
     private final UserDAO userDAO;
     private final JwtConfigure jwtConfigure;
 
-    public OrderServiceImpl(OrderDAO orderDAO, UserDAO userDAO, JwtConfigure jwtConfigure) {
+    public OrderServiceImpl(OrderDAO orderDAO, GoodsService goodsService, UserDAO userDAO, JwtConfigure jwtConfigure) {
         this.orderDAO = orderDAO;
+        this.goodsService = goodsService;
         this.userDAO = userDAO;
         this.jwtConfigure = jwtConfigure;
     }
 
     @Override
-    public List<Order> getAll(HttpServletRequest request) {
-        checkOrderAuth(request,jwtConfigure,userDAO);
-        return orderDAO.getAll();
+    public Order saveOrder(HttpServletRequest request, Order entity) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        entity.setUser(user);
+        return orderDAO.saveOrder(entity);
     }
 
     @Override
-    public List<Order> search(HttpServletRequest request,String keywords) {
-        checkOrderAuth(request,jwtConfigure,userDAO);
-        return orderDAO.search(keywords);
-    }
-
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    @Override
-    public List<Order> searchDate(HttpServletRequest request,String beginTimeStr, String endTimeStr) {
-        checkOrderAuth(request,jwtConfigure,userDAO);
-        LocalDateTime beginTime = LocalDateTime.parse(beginTimeStr, dateTimeFormatter);
-        LocalDateTime endTime = LocalDateTime.parse(endTimeStr, dateTimeFormatter);
-        return orderDAO.searchDate(beginTime, endTime);
+    public List<Order> getOrderList(HttpServletRequest request) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        return orderDAO.selectByUserId(user);
     }
 
     @Override
-    public Order save(HttpServletRequest request, OrderForm form) {
-        checkOrderAuth(request,jwtConfigure,userDAO);
-        Order entity = form.toEntity();
-        if (StringUtils.isEmpty(entity.getNo())) {
-            entity.setNo(String.valueOf(System.currentTimeMillis()));
-        }
-        return orderDAO.save(entity);
-    }
-
-
-    @Override
-    public void deleteById(HttpServletRequest request,String id) {
-        checkOrderAuth(request,jwtConfigure,userDAO);
-        orderDAO.deleteById(id);
+    public List<Order> getAllOrder(HttpServletRequest request) {
+        return orderDAO.selectAll();
     }
 
     @Override
-    public void checkPass(HttpServletRequest request,String id) {
-        checkOrderAuth(request,jwtConfigure,userDAO);
-        orderDAO.updateStatusById(id, DIC.CHECK_PASS);
+    public Order getOrderById(String id) {
+        return orderDAO.selectById(id);
     }
 
     @Override
-    public void checkFail(HttpServletRequest request,String id) {
-        checkOrderAuth(request,jwtConfigure,userDAO);
-        orderDAO.updateStatusById(id, DIC.CHECK_FAIL);
+    public void deleteOrder(String id) {
+        orderDAO.deleteOrder(id);
     }
 }

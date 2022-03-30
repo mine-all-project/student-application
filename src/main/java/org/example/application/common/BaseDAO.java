@@ -8,6 +8,9 @@ import org.springframework.data.domain.Sort;
 public abstract class BaseDAO {
     protected final Sort desByCreateTime = Sort.by("createTime").descending();
     protected final Sort ascByCreateTime = Sort.by("createTime").ascending();
+
+    protected final Sort DES_CREATE_TIME = Sort.by("createTime").descending();
+    protected final Sort ASC_CREATE_TIME = Sort.by("createTime").ascending();
     protected final int IS_DEL = 1;
     protected final int NOT_DEL = 0;
 

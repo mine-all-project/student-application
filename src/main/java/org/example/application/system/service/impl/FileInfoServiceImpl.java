@@ -40,7 +40,8 @@ public class FileInfoServiceImpl implements FileInfoService {
         return saveFileInfo(fileInfo);
     }
 
-    private FileInfo saveFileInfo(FileInfo fileInfo) {
+    @Override
+    public  FileInfo saveFileInfo(FileInfo fileInfo) {
         return fileInfoDAO.save(fileInfo);
     }
 
@@ -48,4 +49,5 @@ public class FileInfoServiceImpl implements FileInfoService {
     public FileInfo getById(String id) {
         return fileInfoDAO.findById(id);
     }
+
 }

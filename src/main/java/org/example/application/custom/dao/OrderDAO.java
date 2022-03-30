@@ -3,10 +3,9 @@ package org.example.application.custom.dao;
 import org.example.application.common.BaseDAO;
 import org.example.application.custom.dao.jpa.OrderRepository;
 import org.example.application.custom.entity.Order;
+import org.example.application.system.entity.SysUser;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -17,29 +16,23 @@ public class OrderDAO extends BaseDAO {
         this.orderRepository = orderRepository;
     }
 
-    public List<Order> getAll() {
-        return orderRepository.findAll(desByCreateTime);
-    }
-
-    public List<Order> search(String keywords) {
-        return orderRepository.findByKeywordLike(keywords, desByCreateTime);
-    }
-
-    public Order save(Order entity) {
+    public Order saveOrder(Order entity) {
         return orderRepository.saveAndFlush(entity);
     }
 
+    public List<Order> selectByUserId(SysUser user) {
+        return orderRepository.findByUser(user, desByCreateTime);
+    }
 
-    public void deleteById(String id) {
+    public List<Order> selectAll() {
+        return orderRepository.findAll();
+    }
+
+    public Order selectById(String id) {
+        return orderRepository.findById(id).orElse(new Order());
+    }
+
+    public void deleteOrder(String id) {
         orderRepository.deleteById(id);
-    }
-
-    @Transactional
-    public void updateStatusById(String id, int status) {
-        orderRepository.updateStatusById(id,status);
-    }
-
-    public List<Order> searchDate(LocalDateTime beginTime, LocalDateTime endTime) {
-        return orderRepository.findByCreateTimeBetween(beginTime, endTime,desByCreateTime);
     }
 }

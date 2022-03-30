@@ -1,9 +1,7 @@
 package org.example.application.system.controller;
 
 import org.example.application.common.BaseController;
-import org.example.application.common.groups.IsEdit;
-import org.example.application.common.groups.IsNotNull;
-import org.example.application.common.groups.IsStatusChange;
+import org.example.application.common.Groups;
 import org.example.application.system.dto.ResponseDTO;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
@@ -42,7 +40,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/editUser")
     public ResponseDTO editUser(@RequestBody UserForm form) {
         logger.info("收到请求->修改用户:[{}]", form);
-        super.validator(form, IsEdit.class);
+        super.validator(form, Groups.IsEdit.class);
         SysUser user = sysUserService.editUser(form);
         logger.info("返回结果->用户修改完成:[{}]", user);
         return ResponseDTO.returnSuccess("操作成功", user);
@@ -50,7 +48,7 @@ public class SysUserController extends BaseController {
 
     @PostMapping("/delUser")
     public ResponseDTO delUser(@RequestBody UserForm form) {
-        super.validator(form, IsStatusChange.class);
+        super.validator(form, Groups.IsStatusChange.class);
         logger.info("收到请求->删除用户:[{}]", form.getId());
         sysUserService.delUser(form.getId());
         logger.info("返回结果->用户删除完成");
@@ -59,7 +57,7 @@ public class SysUserController extends BaseController {
 
     @PostMapping("/changeStatus")
     public ResponseDTO changeStatus(@RequestBody UserForm form) {
-        super.validator(form, IsStatusChange.class);
+        super.validator(form, Groups.IsStatusChange.class);
         logger.info("收到请求->修改用户状态,id:[{}]", form.getId());
         sysUserService.changeStatus(form.getId());
         logger.info("返回结果->修改用户状态完成");
@@ -68,7 +66,7 @@ public class SysUserController extends BaseController {
 
     @PostMapping("/resetPassword")
     public ResponseDTO resetPassword(@RequestBody ResetPasswordForm form) {
-        super.validator(form, IsNotNull.class);
+        super.validator(form, Groups.IsNotNull.class);
         logger.info("收到请求->重置密码,id:[{}]", form.getId());
         sysUserService.resetPassword(form);
         logger.info("返回结果->重置密码完成");
@@ -77,7 +75,7 @@ public class SysUserController extends BaseController {
 
     @PostMapping("/updatePassword")
     public ResponseDTO updatePassword(@RequestBody ResetPasswordForm form) {
-        super.validator(form, IsNotNull.class);
+        super.validator(form, Groups.IsNotNull.class);
         logger.info("收到请求->修改密码,id:[{}]", form.getId());
         sysUserService.updatePassword(form);
         logger.info("返回结果->修改密码完成");
@@ -86,7 +84,7 @@ public class SysUserController extends BaseController {
 
     @PostMapping("/updateUserInfo")
     public ResponseDTO updateUserInfo(@RequestBody UpdateUserInfoForm form) {
-        super.validator(form, IsNotNull.class);
+        super.validator(form, Groups.IsNotNull.class);
         logger.info("收到请求->修改用户信息,id:[{}]", form.getId());
         sysUserService.updateUserInfo(form);
         logger.info("返回结果->修改用户信息完成");
