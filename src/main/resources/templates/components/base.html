@@ -9,11 +9,13 @@
         padding: 0;
         margin: 0;
     }
+
     body {
         padding: 0;
         margin: 0;
     }</style>
-<th th:fragment="style">
+<th th:fragment="quill">
+	<script th:src="@{/js/echarts/echarts.js}"></script>
 	<link rel="stylesheet" th:href="@{/css/quill.snow.css}">
 </th>
 
@@ -29,3 +31,4 @@
 <th th:fragment="echarts">
 	<script th:src="@{/js/echarts/echarts.js}"></script>
 </th>
+

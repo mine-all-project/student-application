@@ -4,7 +4,7 @@ const app = new Vue({
     data() {
         return {
             isDebug: true,
-            pageUrl: '/server/welcome.html',
+            pageUrl: '/server/demo.html',
             headers: headers,
             labelCol: {span: 5},
             wrapperCol: {span: 16},
@@ -18,7 +18,7 @@ const app = new Vue({
                 personSettings: {}
             },
             pagination: {total: 0, pageSize: 10},
-            title: "账务管理系统",
+            title: "居民疫情服务后台",
             rules: {
                 name: [
                     {required: true, message: '请输入姓名', trigger: 'change'},
@@ -69,23 +69,29 @@ const app = new Vue({
                 },
                 {
                     key: '3',
-                    name: '账务管理',
+                    name: '信息管理',
                     icon: 'appstore',
                     url: '',
                     children: [
                         {
                             key: '31',
-                            name: '帐单查询',
+                            name: '政策信息',
                             icon: 'appstore',
-                            url: '/server/order-list.html',
+                            url: '/server/policy-list.html',
                         },
                         {
                             key: '32',
-                            name: '帐务查询',
+                            name: '疫情防护信息',
                             icon: 'appstore',
-                            url: '/server/order-count.html',
+                            url: '/server/epidemic-list.html',
                         },
                     ]
+                },
+                {
+                    key: '5',
+                    name: '商品管理',
+                    icon: 'appstore',
+                    url: '/server/goods-list.html',
                 },
                 {
                     key: '4',
@@ -108,131 +114,8 @@ const app = new Vue({
                     ]
                 },
             ],
-            sysMenus: [{
-                key: '1',
-                name: '用户管理',
-                icon: 'appstore',
-                url: '',
-                children: [
-                    {
-                        key: '11',
-                        name: '用户列表',
-                        icon: 'appstore',
-                        url: '/server/user-list',
-                    },
-                ]
-            },],
-            userMenus: [
-                {
-                    key: '2',
-                    name: '校园咨询',
-                    icon: 'appstore',
-                    url: '/server/news.html',
-                },
-                {
-                    key: '3',
-                    name: '校园动态',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '31',
-                            name: '二手交易平台',
-                            icon: 'appstore',
-                            url: '/server/trading.html',
-                        },
-                        {
-                            key: '32',
-                            name: '失物招领',
-                            icon: 'appstore',
-                            url: '/server/lost-items.html',
-                        },
-                        {
-                            key: '33',
-                            name: '拼车',
-                            icon: 'appstore',
-                            url: '/server/car-pooling.html',
-                        },
-                        {
-                            key: '34',
-                            name: '就业速递',
-                            icon: 'appstore',
-                            url: '/server/employment.html',
-                        },
-                        {
-                            key: '35',
-                            name: '其它',
-                            icon: 'appstore',
-                            url: '/server/other.html',
-                        },
-                    ]
-                }
-            ],
-            managerMenus: [
-                {
-                    key: '2',
-                    name: '校园咨询',
-                    icon: 'appstore',
-                    url: '/server/news.html',
-                },
-                {
-                    key: '4',
-                    name: '数据审核',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '40',
-                            name: '校园咨询',
-                            icon: 'appstore',
-                            url: '/server/check-news.html',
-                        },
-                        {
-                            key: '41',
-                            name: '二手交易',
-                            icon: 'appstore',
-                            url: '/server/check-trading.html',
-                        },
-                        {
-                            key: '42',
-                            name: '失物招领',
-                            icon: 'appstore',
-                            url: '/server/check-lost-items.html',
-                        },
-                        {
-                            key: '43',
-                            name: '拼车',
-                            icon: 'appstore',
-                            url: '/server/check-car-pooling.html',
-                        },
-                        {
-                            key: '44',
-                            name: '就业速递',
-                            icon: 'appstore',
-                            url: '/server/check-employment.html',
-                        },
-                        {
-                            key: '45',
-                            name: '其它',
-                            icon: 'appstore',
-                            url: '/server/check-other.html',
-                        },
-                    ]
-                },
-                {
-                    key: '1',
-                    name: '用户管理',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '11',
-                            name: '用户列表',
-                            icon: 'appstore',
-                            url: '/server/user-list-manage.html',
-                        },
-                    ]
-                },],
+            sysMenus: [],
+            managerMenus: [],
             welcome: true,
             userInfo: {},
             temp: {
