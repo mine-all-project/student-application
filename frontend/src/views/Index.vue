@@ -1,12 +1,15 @@
 <template>
   <div class="container">
-    <PageHeader @login="showLogin"></PageHeader>
+    <PageHeader @login="showLogin" :isLogin="show.isLogin" :userInfo="userInfo"></PageHeader>
+    <div class="contact-us">
+      <h3 @click="showContactUs">
+        <span>Contact Us </span>
+        <a-icon type="message"/>
+      </h3>
+    </div>
     <a-tabs default-active-key="1" @change="changeTab" :tabBarStyle="tabStyle" :animated="false" :activeKey="activeTab">
       <a-tab-pane key="demo" tab="demo">
-        <Collection></Collection>
-      </a-tab-pane>
-      <a-tab-pane key="ContactUs" tab="ContactUs">
-        <ContactUs></ContactUs>
+        <Community @showInfo="showCommunityInfo"></Community>
       </a-tab-pane>
       <a-tab-pane key="Home" tab="Home">
         <Home></Home>
@@ -18,7 +21,7 @@
         <Collection></Collection>
       </a-tab-pane>
       <a-tab-pane key="Community" tab="Community">
-        Content of Tab Pane 1
+        <Community @showInfo="showCommunityInfo"></Community>
       </a-tab-pane>
       <a-tab-pane key="Club" tab="Club">
         <Club></Club>
@@ -27,28 +30,41 @@
         <Market></Market>
       </a-tab-pane>
     </a-tabs>
+    <a-modal v-model="show.createPost" :footer="null" :closable="false" width="20%">
+      <div class="flex-row around" style="align-items: baseline">
+        <h2>Write a New Post</h2>
+        <a-button type="primary" size="small">Publish</a-button>
+      </div>
+      <a-input placeholder="Input Subject..."/>
+      <a-textarea placeholder="Input Details..." :rows="8" style="margin-top: 20px"/>
+      <a-col>
+        <a-icon type="smile"/>
+        <a-icon type="picture"/>
+        <i class="iconfont">&#xe60e;</i>
+        <i class="iconfont">&#xe650;</i>
+      </a-col>
+    </a-modal>
+    <a-modal v-model="show.communityInfo" :footer="null" :closable="false" width="40%">
+      <CommunityInfo @showCreatePost="showCreatePost"></CommunityInfo>
+    </a-modal>
+    <a-modal v-model="show.contactUs" :footer="null" :closable="false" width="30%">
+      <ContactUs></ContactUs>
+    </a-modal>
     <a-modal v-model="show.login" :footer="null" :closable="false">
       <div style="text-align: center">
         <h1>CoolGames</h1>
-        <a-tabs default-active-key="1" @change="changeLoginTab" :animated="false" :activeKey="loginTab">
+        <a-tabs default-active-key="Email" @change="changeLoginTab" :animated="false" :activeKey="loginTab">
           <a-tab-pane key="Email" tab="Email">
-            <a-col class="flex-column" style="align-items: center">
-              <a-input v-model="form.email" placeholder="Email" style="width: 80%">
-                <a-icon slot="prefix" type="mail"/>
-              </a-input>
-              <a-input v-model="form.password" placeholder="password" style="width: 80%;margin-top: 1vh">
-                <a-icon slot="prefix" type="lock"/>
-              </a-input>
-              <a-button style="width: 80%;margin-top: 1vh"> Sign in</a-button>
-              <h4 style="width: 80%;margin-top: 1vh;text-align: right">Forgot Password?</h4>
-              <a-button type="primary" style="width: 80%;margin-top: 1vh">New to CoolGames? Register now!</a-button>
-            </a-col>
+            <Login @login="login" @register="register" :isLogon="show.isLogin"></Login>
           </a-tab-pane>
           <a-tab-pane key="Telephone" tab="Telephone">
-            <Register></Register>
+            <Register :show="show.register"></Register>
           </a-tab-pane>
         </a-tabs>
       </div>
+    </a-modal>
+    <a-modal v-model="show.register" :footer="null" :closable="false">
+      <Register @register="register"></Register>
     </a-modal>
   </div>
 </template>
@@ -56,45 +72,79 @@
 <script>
 // @ is an alias to /src
 import PageHeader from "@/components/PageHeader"
-import ContactUs from "@/views/ContactUs"
-import Club from "@/views/Club"
-import Market from "@/views/Market"
-import Collection from "@/views/Collection"
-import Home from "@/views/Home"
-import Register from "@/views/Register"
+import ContactUs from "@/components/ContactUs"
+import Club from "@/components/Club"
+import Market from "@/components/Market"
+import Collection from "@/components/Collection"
+import Home from "@/components/Home"
+import Register from "@/components/Register"
+import Login from "@/components/Login"
+import Community from "@/components/Community"
+import CommunityInfo from "@/components/CommunityInfo"
 
 export default {
   name: 'Index',
-  components: {PageHeader, ContactUs, Club, Market, Collection, Home,Register},
+  components: {
+    PageHeader,
+    ContactUs,
+    Club,
+    Market,
+    Collection,
+    Home,
+    Register,
+    Login,
+    Community,
+    CommunityInfo,
+  },
   data() {
     return {
-      form: {
-        email: '',
-        name: '',
-        code: '',
-        password: '',
-        againPassword: '',
-      },
       show: {
-        login: true,
+        isLogin: false,
+        register: false,
+        login: false,
+        contactUs: false,
+        communityInfo: false,
+        createPost: true,
       },
-      img: require('@/assets/image1.png'),
-      collections: [
-        {id: '1', name: 'Game1', rate: '4.7', image: require('@/assets/image1.png')},
-        {id: '2', name: 'Game2', rate: '4.8', image: require('@/assets/image1.png')},
-        {id: '3', name: 'Game3', rate: '2.4', image: require('@/assets/image1.png')},
-        {id: '4', name: 'Game4', rate: '3.9', image: require('@/assets/image1.png')},
-        {id: '5', name: 'Game4', rate: '3.9', image: require('@/assets/image1.png')},
-        {id: '6', name: 'Game4', rate: '3.9', image: require('@/assets/image1.png')},
+      games: [
+        {id: '1', gameName: 'Game 1', userName: 'user 1', image: require('@/assets/image1.png')},
+        {id: '2', gameName: 'Game 2', userName: 'user 2', image: require('@/assets/image1.png')},
+        {id: '3', gameName: 'Game 3', userName: 'user 3', image: require('@/assets/image1.png')},
       ],
+      userInfo: {name: ''},
+      image: require('@/assets/image1.png'),
       activeTab: 'demo',
-      loginTab: 'Telephone',
+      loginTab: 'Email',
       tabStyle: {display: "flex", justifyContent: 'space-around', flex: 1, marginTop: '5vh'},
     }
   },
   mounted() {
+    const userInfo = sessionStorage.getItem('userInfo')
+    if (userInfo) {
+      this.userInfo = JSON.parse(userInfo)
+      this.show.isLogin = true
+    }
   },
   methods: {
+    showCreatePost() {
+      this.show.createPost = true
+    },
+    showCommunityInfo() {
+      this.show.communityInfo = true
+    },
+    showContactUs() {
+      this.show.contactUs = true
+    },
+    register(e) {
+      console.log(e)
+      this.show.register = e
+    },
+    login() {
+      const userInfo = sessionStorage.getItem('userInfo')
+      this.userInfo = JSON.parse(userInfo)
+      this.show.login = false
+      this.show.isLogin = true
+    },
     showLogin() {
       this.show.login = true
     },
@@ -110,6 +160,17 @@ export default {
 }
 </script>
 <style>
+.contact-us {
+  position: fixed;
+  left: 0;
+  top: 50vh;
+  writing-mode: tb-rl;
+  border: 3px solid rgb(65, 80, 88);
+  border-radius: 5px;
+  border-left: none;
+  padding: 10px 0;
+}
+
 p {
   margin: 0;
   padding: 0;
@@ -121,7 +182,8 @@ p {
 }
 
 .border {
-  border: 1px solid red
+  border: 3px solid rgb(65, 80, 88);
+  border-radius: 5px;
 }
 
 .around {

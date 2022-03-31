@@ -15,7 +15,7 @@
       <a-input v-model="form.password" style="width: 80%"/>
       <h3 style="width: 80%;margin-top: 1vh;text-align: left">Confirm Password</h3>
       <a-input v-model="form.againPassword" style="width: 80%"/>
-      <a-button type="primary" style="width: 40%;margin-top: 1vh" @click="register" :loading="loading">Register
+      <a-button type="primary" style="width: 40%;margin-top: 1vh" @click="clickRegister" :loading="loading">Register
       </a-button>
     </a-col>
   </div>
@@ -27,6 +27,16 @@
 export default {
   name: 'Register',
   components: {},
+  props: {
+    show: {
+      type: Boolean,
+      default: false
+    },
+    register: {
+      type: Function,
+    }
+
+  },
   data() {
     return {
       form: {
@@ -42,12 +52,13 @@ export default {
   mounted() {
   },
   methods: {
-    register() {
+    clickRegister() {
       this.loading = true
-      setTimeout(()=>{
+      setTimeout(() => {
         this.$message.success("Register success!")
         this.loading = false
-      },3000)
+        this.$emit('register', false)
+      }, 3000)
     }
   }
 }

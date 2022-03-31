@@ -2,15 +2,15 @@
  <div>
    <a-row class="flex-row between" style="width: 100%;align-items: center">
      <a-col :span="18" class="border" style=";padding: 20px;">
-       <p class="flex-row between" style="font-size: 26px;height: 20%">
+       <p class="flex-row between" style="font-size: 26px;height: 20%;padding: 5px 20px">
          <span>Game Recommendation</span>
          <span>All  <a-icon type="right"/></span>
        </p>
-       <a-row class="flex-row around" style="height: 50vh">
+       <a-row class="flex-row around" style="height: 45vh">
          <a-col v-for="item in games" style="width: 100%;height:100%;text-align: center">
            <img :src="item.image" alt="" style="width: 80%;height: 32vh">
            <p style="font-size: 26px">{{ item.name }} : {{ item.rate }}/5.0 </p>
-           <a-button>Add in Collection</a-button>
+           <a-button style="margin-top: 2vh">Add in Collection</a-button>
          </a-col>
        </a-row>
      </a-col>
@@ -18,9 +18,9 @@
        <p class="flex-row around" style="font-size: 26px;height: 20%;align-items: center">
          <span>Latest News</span>
        </p>
-       <a-row class="flex-column around" style="height: 50vh;align-items: center">
+       <a-row class="flex-column around" style="height: 45vh;align-items: center">
          <a-col v-for="item in games" style="width: 100%;text-align: center;padding: 5px;">
-           <img :src="item.img" alt="" style="width: 80%;max-height: 10vh">
+           <img :src="item.image" alt="" style="width: 80%;max-height: 10vh">
          </a-col>
        </a-row>
      </a-col>

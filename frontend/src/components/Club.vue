@@ -44,7 +44,7 @@
         </div>
         <div class="flex-column between" style="margin-top: 2vh;">
           <div class="flex-column border" v-for="item in clubs"
-               style="width: 100%;padding:10px ;justify-content: start;">
+               style="width: 100%;padding:10px ;justify-content: start;margin-top: 2px">
             <div class="flex-row around" style="width: 100%;align-items: center">
               <img :src="item.image" alt="" style="height: 10vh">
               <div style="width: 70%;margin-left: 2vh">
@@ -67,7 +67,7 @@
           </div>
         </div>
         <div class="flex-row" style="margin: 10px auto;justify-content: center">
-          <a-pagination :default-current="6" :total="500"/>
+          <a-pagination :default-current="6" :total="100"/>
         </div>
       </a-col>
     </a-row>

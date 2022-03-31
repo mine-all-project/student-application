@@ -11,7 +11,7 @@
     </div>
     <div class="flex-column between" style="margin-top: 2vh;">
       <div class="flex-column border" v-for="item in markets"
-           style="width: 100%;padding:10px 0 ;justify-content: start;">
+           style="width: 100%;padding:10px 0 ;justify-content: start;margin-top: 2px">
         <div class="flex-row around" style="width: 100%;align-items: center">
           <img :src="item.image" alt="" style="height: 10vh">
           <div style="width: 70%">

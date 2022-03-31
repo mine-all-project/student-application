@@ -14,7 +14,24 @@
     </div>
     <div style="display: flex;width:20%;justify-content: space-around">
       <a-button>Accessibility</a-button>
-      <a-button @click="showLogin">Sign in/up</a-button>
+      <a-dropdown v-if="isLogin">
+        <span>
+          <a-avatar icon="user"/>
+          <span>{{ userInfo.name }}</span>
+        </span>
+        <a-menu slot="overlay">
+          <a-menu-item>
+            <a href="javascript:;">1st menu item</a>
+          </a-menu-item>
+          <a-menu-item>
+            <a href="javascript:;">2nd menu item</a>
+          </a-menu-item>
+          <a-menu-item>
+            <a href="javascript:;">3rd menu item</a>
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
+      <a-button @click="showLogin" v-else>Sign in/up</a-button>
     </div>
   </div>
 </template>
@@ -24,16 +41,28 @@
 
 export default {
   name: 'PageHeader',
-  props:{
-    login:{
-      type:Function
+  props: {
+    login: {
+      type: Function
+    },
+    userInfo: {
+      type: Object,
+      default: () => {
+        return {
+          name: ''
+        }
+      }
+    },
+    isLogin: {
+      type: Boolean,
+      default: false
     }
   },
   components: {},
   mounted() {
   },
-  methods:{
-    showLogin(){
+  methods: {
+    showLogin() {
       this.$emit('login')
     }
   }
