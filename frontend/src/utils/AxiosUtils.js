@@ -2,7 +2,6 @@ import axios from 'axios'
 import router from '@/router';
 import message from 'ant-design-vue/es/message'
 import notification from 'ant-design-vue/es/notification'
-import {encrypt} from './RsaUtils1'
 
 const settings = require('../../settings')
 const crypt = settings.crypt;
@@ -21,7 +20,6 @@ instance.interceptors.request.use(
                 router.push('/login')
         }
         config.headers['crabapples-token'] = token;
-        config.data = crypt && config.data ? encrypt(JSON.stringify(config.data)) : config.data
         if (/get/i.test(config.method)) {
             config.params = config.params || {}
             config.params.temp = Date.parse(new Date()) / 1000

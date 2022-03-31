@@ -3,6 +3,7 @@ import App from './App'
 import VueAxios from 'vue-axios'
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
+import '@/assets/iconfont.css';
 import router from './router'
 import AxiosUtils from '@/utils/AxiosUtils'
 // import settings from 'settings'
