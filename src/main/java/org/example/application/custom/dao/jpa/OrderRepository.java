@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
-    List<Order> findByKeywordLike(String keyword, Sort sort);
+    List<Order> findByKeywordContains(String keyword, Sort sort);
 
     List<Order> findByCreateTimeBetween(LocalDateTime beginTime, LocalDateTime endTime, Sort sort);
 

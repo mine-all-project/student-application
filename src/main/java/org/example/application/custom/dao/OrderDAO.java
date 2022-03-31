@@ -22,7 +22,7 @@ public class OrderDAO extends BaseDAO {
     }
 
     public List<Order> search(String keywords) {
-        return orderRepository.findByKeywordLike(keywords, desByCreateTime);
+        return orderRepository.findByKeywordContains(keywords, desByCreateTime);
     }
 
     public Order save(Order entity) {
