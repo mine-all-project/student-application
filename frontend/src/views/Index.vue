@@ -10,7 +10,7 @@
     </div>
     <a-tabs default-active-key="1" @change="changeTab" :tabBarStyle="tabStyle" :animated="false" :activeKey="activeTab">
       <a-tab-pane key="demo" tab="demo">
-        <Community @showInfo="showCommunityInfo"></Community>
+        <Community @clickDetail="showCommunityDetail" @showCommunityComment="showCommunityComment"></Community>
       </a-tab-pane>
       <a-tab-pane key="Home" tab="Home">
         <Home></Home>
@@ -22,7 +22,7 @@
         <Collection></Collection>
       </a-tab-pane>
       <a-tab-pane key="Community" tab="Community">
-        <Community @showDetail="showCommunityDetail"></Community>
+        <Community @showDetail="showCommunityDetail" @showCommunityComment="showCommunityComment"></Community>
       </a-tab-pane>
       <a-tab-pane key="Club" tab="Club">
         <Club @showClubDetail="showClubDetail"></Club>
@@ -56,7 +56,7 @@
       </div>
       <a-input placeholder="Input Subject..."/>
       <a-textarea placeholder="Input Details..." :rows="8" style="margin-top: 20px"/>
-      <a-col class="flex-row" style="justify-content: space-around;width:50%;align-items: center">
+      <a-col class="flex-row around" style="width:50%;align-items: center">
         <a-icon type="smile" style="font-size: 1.5em"/>
         <a-icon type="picture" style="font-size: 1.5em"/>
         <i class="iconfont" style="font-size: 1.5em;font-weight: 700">&#xe60e;</i>
@@ -65,6 +65,95 @@
     </a-modal>
     <a-modal v-model="show.communityDetail" :footer="null" :closable="false" width="40%">
       <CommunityDetail @showCreatePost="showCreatePost"></CommunityDetail>
+    </a-modal>
+    <a-modal v-model="show.communityComment" :footer="null" :closable="false" width="40%">
+      <a-col class="flex-column" style="border: 1px solid #858282">
+        <a-col class="flex-row" style="justify-content: center">
+          <h3>Subject</h3>
+        </a-col>
+        <a-col class="flex-column" style="justify-content: center">
+          <a-col class="flex-row"
+                 style="align-items: center;border-top: 1px solid #858282;border-bottom: 1px solid #858282;">
+            <a-col flex="1" class="flex-row" style="justify-content: center;">
+              <a-avatar size="large" icon="user"/>
+            </a-col>
+            <a-col flex="4" class="flex-column" style="align-items:center;justify-content: center;">
+              <h3>Details</h3>
+              <h3>Details</h3>
+              <h3>Details</h3>
+            </a-col>
+          </a-col>
+          <a-col class="flex-row">
+            <a-col flex="5"></a-col>
+            <a-col flex="1" class="flex-row around" style="margin-top: 1em">
+              <a-badge count="4"
+                       :number-style="{border:'none',backgroundColor: 'rgba(255,255,255,0)',color: '#999'}">
+                <a-icon type="like" style="font-size: 1.5em"/>
+              </a-badge>
+              <a-badge count="5"
+                       :number-style="{border:'none',backgroundColor: 'rgba(255,255,255,0)',color: '#999'}">
+                <a-icon type="star" style="font-size: 1.5em"/>
+              </a-badge>
+            </a-col>
+          </a-col>
+        </a-col>
+        <a-col class="flex-column" style="justify-content: center">
+          <a-col class="flex-row" style="align-items: center;border-top: 1px solid #858282;">
+            <a-col flex="1" class="flex-row" style="justify-content: center;">
+              <a-avatar size="large" icon="user"/>
+            </a-col>
+            <a-col flex="4" class="flex-column" style="align-items:center;justify-content: center">
+              <h3>Details</h3>
+              <h3>Details</h3>
+              <h3>Details</h3>
+            </a-col>
+          </a-col>
+          <a-col class="flex-row">
+            <a-col flex="5"></a-col>
+            <a-col flex="1" class="flex-row around">
+              <a-badge count="4"
+                       :number-style="{border:'none',backgroundColor: 'rgba(255,255,255,0)',color: '#999'}">
+                <a-icon type="like" style="font-size: 1.5em"/>
+              </a-badge>
+            </a-col>
+          </a-col>
+          <a-col class="flex-row" style="align-items: center">
+            <a-col flex="1"></a-col>
+            <a-col flex="4" class="flex-column"
+                   style="align-items:center;justify-content: start;border: 1px solid #858282;border-right: none">
+              <a-col class="flex-column" style="justify-content: start;width: 100%">
+                <a-col class="flex-row" style="align-items: center;border-bottom: 1px solid #858282;padding: 10px">
+                  <a-col flex="1" class="flex-column" style="justify-content: center">
+                    <a-avatar size="large" icon="user"/>
+                  </a-col>
+                  <a-col flex="4">
+                    <h3>Details</h3>
+                  </a-col>
+                </a-col>
+                <a-col class="flex-row" style="align-items: center;border-bottom: 1px solid #858282;padding: 10px">
+                  <a-col flex="1" class="flex-column" style="justify-content: center">
+                    <a-avatar size="large" icon="user"/>
+                  </a-col>
+                  <a-col flex="4">
+                    <h3>Details</h3>
+                  </a-col>
+                </a-col>
+                <a-col class="flex-row" style="align-items: center;padding: 10px">
+                  <a-input placeholder="Reply to this followup discussion..." style="width: 80%"/>
+                  <a-button type="primary" style="padding: 0 20px;margin-left: 2vh">Submit</a-button>
+                </a-col>
+              </a-col>
+            </a-col>
+          </a-col>
+          <a-col class="flex-row" style="align-items: center;width: 100%">
+            <a-col class="flex-row around" style="align-items: center;width: 100%;margin-top: 1vh">
+              <a-input placeholder="Reply..." style="width: 80%"/>
+              <a-button type="primary" style="padding: 0 20px;margin-left: 2vh">Submit</a-button>
+            </a-col>
+          </a-col>
+          <br>
+        </a-col>
+      </a-col>
     </a-modal>
     <a-modal v-model="show.contactUs" :footer="null" :closable="false" width="30%">
       <ContactUs></ContactUs>
@@ -104,7 +193,7 @@ import MyFollow from "@/components/MyFollow"
 import Community from "@/components/Community"
 import Club from "@/components/Club"
 
-import CommunityDetail from "@/views/CommunityDetail"
+import CommunityDetail from "@/components/CommunityDetail"
 import ClubDetail from "@/components/ClubDetail"
 import GameDetail from "@/views/GameDetail"
 import Game from "@/views/Game"
@@ -129,7 +218,7 @@ export default {
         isLogin: false, register: false, login: false, contactUs: false,
         communityDetail: false, createPost: false, myAccount: false,
         myFollow: false, myFans: false, myClub: false,
-        clubDetail: false
+        clubDetail: false, communityComment: false
       },
       games: [
         {id: '1', gameName: 'Game 1', userName: 'user 1', image: require('@/assets/image1.png')},
@@ -173,8 +262,12 @@ export default {
       this.show.createPost = true
       this.show.communityInfo = false
     },
-    showCommunityDetail() {
+    showCommunityDetail(e) {
       this.show.communityDetail = true
+    },
+    showCommunityComment(e) {
+      console.log(e)
+      this.show.communityComment = true
     },
     showContactUs() {
       this.show.contactUs = true

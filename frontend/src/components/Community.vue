@@ -34,7 +34,7 @@
                   </a>
                 </div>
                 <div style="flex: 1;display: flex;justify-content: space-around;font-size: 1.5em">
-                  <a-icon type="message"/>
+                  <a-icon type="message" @click="clickCommunityComment(item)"/>
                   <a-icon type="like"/>
                 </div>
               </a-col>
@@ -65,6 +65,9 @@ export default {
   props: {
     showDetail: {
       type: Function,
+    },
+    showCommunityComment: {
+      type: Function,
     }
   },
   data() {
@@ -85,7 +88,10 @@ export default {
   },
   methods: {
     clickDetail(e) {
-      this.$emit('showDetail',e)
+      this.$emit('showDetail', e)
+    },
+    clickCommunityComment(e) {
+      this.$emit('showCommunityComment', e)
     },
   }
 }
