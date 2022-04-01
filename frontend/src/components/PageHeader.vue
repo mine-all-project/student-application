@@ -21,17 +21,32 @@
         </span>
         <a-menu slot="overlay">
           <a-menu-item>
-            <a href="javascript:;">1st menu item</a>
+            <a href="javascript:" @click="clickMyAccount">
+              <a-icon type="home"/>
+              <span>My Account</span>
+            </a>
           </a-menu-item>
           <a-menu-item>
-            <a href="javascript:;">2nd menu item</a>
+            <a href="javascript:">
+              <a-icon type="mail"/>
+              <span>My Message</span>
+            </a>
           </a-menu-item>
           <a-menu-item>
-            <a href="javascript:;">3rd menu item</a>
+            <a href="javascript:">
+              <a-icon type="setting"/>
+              <span>Settings</span>
+            </a>
+          </a-menu-item>
+          <a-menu-item>
+            <a href="javascript:">
+              <i class="iconfont">&#xe64b;</i>
+              <span>Sign out</span>
+            </a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
-      <a-button @click="showLogin" v-else>Sign in/up</a-button>
+      <a-button @click="clickLogin" v-else>Sign in/up</a-button>
     </div>
   </div>
 </template>
@@ -43,6 +58,9 @@ export default {
   name: 'PageHeader',
   props: {
     login: {
+      type: Function
+    },
+    showMyAccount: {
       type: Function
     },
     userInfo: {
@@ -62,17 +80,14 @@ export default {
   mounted() {
   },
   methods: {
-    showLogin() {
+    clickLogin() {
       this.$emit('login')
+    },
+    clickMyAccount() {
+      this.$emit('showMyAccount')
     }
   }
 }
 </script>
 <style scoped>
-.container {
-  width: 60%;
-  margin: 0 auto;
-  margin-top: 5%;
-
-}
 </style>
