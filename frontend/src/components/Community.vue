@@ -29,7 +29,7 @@
               <a-col class="flex-row between"
                      style="width: 100%;align-items: center;padding: 0 10%;margin-top: 5px">
                 <div style="flex: 3">
-                  <a href="javascript:" style="text-decoration:underline;" @click="clickInfo(item)">
+                  <a href="javascript:" style="text-decoration:underline;" @click="clickDetail(item)">
                     {{ item.gameName }}
                   </a>
                 </div>
@@ -38,7 +38,6 @@
                   <a-icon type="like"/>
                 </div>
               </a-col>
-
             </a-col>
           </a-row>
         </a-col>
@@ -64,7 +63,7 @@
 export default {
   name: 'Community',
   props: {
-    showInfo: {
+    showDetail: {
       type: Function,
     }
   },
@@ -85,8 +84,8 @@ export default {
   mounted() {
   },
   methods: {
-    clickInfo(e) {
-      this.$emit('showInfo',e)
+    clickDetail(e) {
+      this.$emit('showDetail',e)
     },
   }
 }

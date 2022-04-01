@@ -22,15 +22,18 @@
         <Collection></Collection>
       </a-tab-pane>
       <a-tab-pane key="Community" tab="Community">
-        <Community @showInfo="showCommunityInfo"></Community>
+        <Community @showDetail="showCommunityDetail"></Community>
       </a-tab-pane>
       <a-tab-pane key="Club" tab="Club">
-        <Club></Club>
+        <Club @showClubDetail="showClubDetail"></Club>
       </a-tab-pane>
       <a-tab-pane key="Market" tab="Market">
         <Market></Market>
       </a-tab-pane>
     </a-tabs>
+    <a-modal v-model="show.clubDetail" :footer="null" :closable="false" width="50%" title="Club Detail">
+      <ClubDetail></ClubDetail>
+    </a-modal>
     <a-modal v-model="show.myFollow" :footer="null" :closable="false" width="30%" title="My Follow">
       <MyFollow></MyFollow>
     </a-modal>
@@ -60,8 +63,8 @@
         <i class="iconfont" style="font-size: 1.5em">&#xe650;</i>
       </a-col>
     </a-modal>
-    <a-modal v-model="show.communityInfo" :footer="null" :closable="false" width="40%">
-      <CommunityInfo @showCreatePost="showCreatePost"></CommunityInfo>
+    <a-modal v-model="show.communityDetail" :footer="null" :closable="false" width="40%">
+      <CommunityDetail @showCreatePost="showCreatePost"></CommunityDetail>
     </a-modal>
     <a-modal v-model="show.contactUs" :footer="null" :closable="false" width="30%">
       <ContactUs></ContactUs>
@@ -89,37 +92,44 @@
 // @ is an alias to /src
 import PageHeader from "@/components/PageHeader"
 import ContactUs from "@/components/ContactUs"
-import Club from "@/components/Club"
 import Market from "@/components/Market"
 import Collection from "@/components/Collection"
 import Home from "@/components/Home"
 import Register from "@/components/Register"
 import Login from "@/components/Login"
-import Community from "@/components/Community"
-import CommunityInfo from "@/components/CommunityInfo"
 import MyAccount from "@/components/MyAccount"
 import MyClub from "@/components/MyClub"
 import MyFans from "@/components/MyFans"
 import MyFollow from "@/components/MyFollow"
-import ClubDetail from "@/views/ClubDetail"
+import Community from "@/components/Community"
+import Club from "@/components/Club"
+
+import CommunityDetail from "@/views/CommunityDetail"
+import ClubDetail from "@/components/ClubDetail"
 import GameDetail from "@/views/GameDetail"
 import Game from "@/views/Game"
-import CommunityDetail from "@/views/CommunityDetail"
+
 
 export default {
   name: 'Index',
   components: {
     PageHeader, ContactUs, Club, Market, Collection,
-    Home, Register, Login, Community, CommunityInfo,
-    MyAccount, MyClub, MyFans, MyFollow,ClubDetail,
-    GameDetail,Game,CommunityDetail
+    Home, Register, Login, Community,
+    MyAccount, MyClub, MyFans, MyFollow, ClubDetail,
+    GameDetail, Game, CommunityDetail
   },
   data() {
     return {
+      games1: [
+        {id: '1', gameName: 'Game 1', userName: 'user 1', image: require('@/assets/image1.png')},
+        {id: '2', gameName: 'Game 2', userName: 'user 2', image: require('@/assets/image1.png')},
+        {id: '3', gameName: 'Game 3', userName: 'user 3', image: require('@/assets/image1.png')},
+      ],
       show: {
         isLogin: false, register: false, login: false, contactUs: false,
-        communityInfo: false, createPost: false, myAccount: false,
+        communityDetail: false, createPost: false, myAccount: false,
         myFollow: false, myFans: false, myClub: false,
+        clubDetail: false
       },
       games: [
         {id: '1', gameName: 'Game 1', userName: 'user 1', image: require('@/assets/image1.png')},
@@ -141,6 +151,9 @@ export default {
     }
   },
   methods: {
+    showClubDetail() {
+      this.show.clubDetail = true
+    },
     showFollowing() {
       this.show.myFollow = true
       this.show.myAccount = false
@@ -160,8 +173,8 @@ export default {
       this.show.createPost = true
       this.show.communityInfo = false
     },
-    showCommunityInfo() {
-      this.show.communityInfo = true
+    showCommunityDetail() {
+      this.show.communityDetail = true
     },
     showContactUs() {
       this.show.contactUs = true
@@ -190,6 +203,22 @@ export default {
 }
 </script>
 <style>
+.openTimeTable {
+  text-align: right;
+}
+
+.openTimeTd {
+  width: 70%;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid #f1f1f1;
+}
+
 .contact-us {
   position: fixed;
   left: 0;

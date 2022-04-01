@@ -57,7 +57,7 @@
                 </div>
               </div>
               <div style="margin-right: 4vh;margin-top: 4vh">
-                <a-button>View</a-button>
+                <a-button @click="clickClubDetail(item)">View</a-button>
               </div>
             </div>
             <div class="flex-row" style="margin-top: 10px;width:50%;justify-content: space-around">
@@ -78,6 +78,11 @@
 export default {
   name: 'Club',
   components: {},
+  props: {
+    showClubDetail: {
+      type: Function
+    }
+  },
   data() {
     return {
       clubs: [
@@ -110,6 +115,10 @@ export default {
   },
   mounted() {
   },
-  methods: {}
+  methods: {
+    clickClubDetail(e) {
+      this.$emit('showClubDetail',e)
+    }
+  }
 }
 </script>
