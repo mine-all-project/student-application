@@ -6,6 +6,7 @@ import 'ant-design-vue/dist/antd.css';
 import '@/assets/iconfont.css';
 import router from './router'
 import AxiosUtils from '@/utils/AxiosUtils'
+import moment from 'moment'
 // import settings from 'settings'
 
 Vue.config.productionTip = false
@@ -16,6 +17,7 @@ Vue.use(
 )
 
 Vue.prototype.$http = AxiosUtils
+Vue.prototype.$moment = moment;
 new Vue({
     router,
     render: h => h(App)

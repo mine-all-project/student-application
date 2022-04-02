@@ -8,7 +8,7 @@ module.exports = {
     fileurl: function (path) {
         return this.fileServBaseUrl + path;
     },
-    isDebug: false,
+    isDebug: true,
     crypt: false, //接口加密
     publicKey: '-----BEGIN PUBLIC KEY-----\n' +
         'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEdgPwBkPuulvFSr0ESP\n' +

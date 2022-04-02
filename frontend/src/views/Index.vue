@@ -9,14 +9,11 @@
       </h3>
     </div>
     <a-tabs default-active-key="1" @change="changeTab" :tabBarStyle="tabStyle" :animated="false" :activeKey="activeTab">
-      <a-tab-pane key="demo" tab="demo">
-        <Community @clickDetail="showCommunityDetail" @showCommunityComment="showCommunityComment"></Community>
-      </a-tab-pane>
       <a-tab-pane key="Home" tab="Home">
         <Home></Home>
       </a-tab-pane>
       <a-tab-pane key="Game" tab="Game">
-        Content of Tab Pane 1
+        <Game :games="games" @showGameDetail="showGameDetail"></Game>
       </a-tab-pane>
       <a-tab-pane key="Collection" tab="Collection">
         <Collection></Collection>
@@ -31,6 +28,9 @@
         <Market></Market>
       </a-tab-pane>
     </a-tabs>
+    <a-modal v-model="show.gameDetail" :footer="null" :closable="false" width="40%" title="Game Detail">
+      <GameDetail :detail="gameDetail" @saveGameDetail="saveGameDetail"></GameDetail>
+    </a-modal>
     <a-modal v-model="show.clubDetail" :footer="null" :closable="false" width="50%" title="Club Detail">
       <ClubDetail></ClubDetail>
     </a-modal>
@@ -191,13 +191,12 @@ import MyClub from "@/components/MyClub"
 import MyFans from "@/components/MyFans"
 import MyFollow from "@/components/MyFollow"
 import Community from "@/components/Community"
-import Club from "@/components/Club"
-
 import CommunityDetail from "@/components/CommunityDetail"
+import Club from "@/components/Club"
 import ClubDetail from "@/components/ClubDetail"
-import GameDetail from "@/views/GameDetail"
-import Game from "@/views/Game"
 
+import Game from "@/views/Game"
+import GameDetail from "@/views/GameDetail"
 
 export default {
   name: 'Index',
@@ -209,25 +208,21 @@ export default {
   },
   data() {
     return {
-      games1: [
-        {id: '1', gameName: 'Game 1', userName: 'user 1', image: require('@/assets/image1.png')},
-        {id: '2', gameName: 'Game 2', userName: 'user 2', image: require('@/assets/image1.png')},
-        {id: '3', gameName: 'Game 3', userName: 'user 3', image: require('@/assets/image1.png')},
-      ],
       show: {
         isLogin: false, register: false, login: false, contactUs: false,
         communityDetail: false, createPost: false, myAccount: false,
         myFollow: false, myFans: false, myClub: false,
-        clubDetail: false, communityComment: false
+        clubDetail: false, communityComment: false, gameDetail: false
       },
       games: [
-        {id: '1', gameName: 'Game 1', userName: 'user 1', image: require('@/assets/image1.png')},
-        {id: '2', gameName: 'Game 2', userName: 'user 2', image: require('@/assets/image1.png')},
-        {id: '3', gameName: 'Game 3', userName: 'user 3', image: require('@/assets/image1.png')},
+        {id: '1', name: 'Game 1', userName: 'user 1', image: require('@/assets/image1.png')},
+        {id: '2', name: 'Game 2', userName: 'user 2', image: require('@/assets/image1.png')},
+        {id: '3', name: 'Game 3', userName: 'user 3', image: require('@/assets/image1.png')},
       ],
+      gameDetail: {image: {}},
       userInfo: {name: ''},
       image: require('@/assets/image1.png'),
-      activeTab: 'demo',
+      activeTab: 'Game',
       loginTab: 'Email',
       tabStyle: {display: "flex", justifyContent: 'space-around', flex: 1, marginTop: '5vh'},
     }
@@ -238,8 +233,36 @@ export default {
       this.userInfo = JSON.parse(userInfo)
       this.show.isLogin = true
     }
+    this.getGameList()
   },
   methods: {
+    saveGameDetail(e) {
+      this.$http.post('/api/gameComment/save', e).then(result => {
+        if (result.status !== 200) {
+          this.$message.error(result.message)
+        } else {
+          this.$message.success('success')
+        }
+        this.getGameList()
+      })
+    },
+    getGameList() {
+      this.$http.get('/api/game/list').then(result => {
+        this.games = result.data.map(e => {
+          e.gameComments = e.gameComments.sort((a, b) => {
+            let createTimeA = this.$moment(a.createTime)
+            let createTimeB = this.$moment(b.createTime)
+            return createTimeB.diff(createTimeA, 's');
+          })
+          return e
+        })
+      })
+    },
+    showGameDetail(e) {
+      console.log(e)
+      this.gameDetail = e
+      this.show.gameDetail = true
+    },
     showClubDetail() {
       this.show.clubDetail = true
     },
@@ -266,7 +289,6 @@ export default {
       this.show.communityDetail = true
     },
     showCommunityComment(e) {
-      console.log(e)
       this.show.communityComment = true
     },
     showContactUs() {

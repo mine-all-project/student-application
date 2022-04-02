@@ -1,5 +1,5 @@
 // let url = global.setting && global.setting.baseUrl;
-let url = 'http://localhost:9093/';
+let url = 'http://localhost:80/';
 let env = process.env.NODE_ENV;
 console.log(env);
 module.exports = {
@@ -62,7 +62,7 @@ module.exports = {
             filename: 'index.html',
             // 当使用 title 选项时，
             // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
-            title: '科研管理系统',
+            title: 'index',
             // 在这个页面中包含的块，默认情况下会包含
             // 提取出来的通用 chunk 和 vendor chunk。
             chunks: ['chunk-vendors', 'chunk-common', 'index']

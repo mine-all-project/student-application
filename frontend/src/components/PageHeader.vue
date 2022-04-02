@@ -5,10 +5,10 @@
       <div>
         <!--        <a-input-search placeholder="Search..." enter-button style="width: 80vh"/>-->
         <a-input placeholder="Search" style="width: 80vh">
-                <span slot="suffix">
-                  <a-icon type="audio"/>
-                  <a-icon type="search"/>
-                </span>
+          <span slot="suffix">
+            <a-icon type="audio"/>
+            <a-icon type="search"/>
+          </span>
         </a-input>
       </div>
     </div>

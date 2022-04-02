@@ -3,65 +3,58 @@ package org.example.application.custom.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
 import org.example.application.common.utils.jwt.JwtIgnore;
-import org.example.application.custom.entity.Goods;
-import org.example.application.custom.service.GoodsService;
+import org.example.application.custom.entity.GameComment;
+import org.example.application.custom.service.GameCommentService;
 import org.example.application.system.dto.ResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/goods")
-public class GoodsController extends BaseController {
-    private final GoodsService goodsService;
+@RequestMapping("/api/gameComment")
+public class GameCommentController extends BaseController {
+    private final GameCommentService gameCommentService;
 
-    public GoodsController(GoodsService goodsService) {
-        this.goodsService = goodsService;
+    public GameCommentController(GameCommentService gameCommentService) {
+        this.gameCommentService = gameCommentService;
     }
 
     @GetMapping("/list")
     @JwtIgnore
     public ResponseDTO getList() {
         log.info("收到请求->获取商品列表");
-        List<Goods> list = goodsService.getAll();
+        List<GameComment> list = gameCommentService.getAll();
         log.info("返回结果->获取商品列表结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
     }
 
     @PostMapping("/save")
-    public ResponseDTO saveGoods(@RequestBody Goods form) {
+    public ResponseDTO saveGameComment(@RequestBody Map<String,String> form) {
         log.info("收到请求->保存商品:[{}]", form);
-        Goods entity = goodsService.saveGoods(form);
+        GameComment entity = gameCommentService.saveGameComment(form);
         log.info("返回结果->保存商品结束:[{}]", entity);
         return ResponseDTO.returnSuccess();
     }
 
     @GetMapping("/search")
-    public ResponseDTO searchGoods() {
+    public ResponseDTO searchGameComment() {
         return getList();
     }
 
-    @GetMapping("/search/{keyword}")
-    public ResponseDTO searchGoods(@PathVariable String keyword) {
-        log.info("收到请求->搜索商品,keyword:[{}]", keyword);
-        List<Goods> list = goodsService.searchGoods(keyword);
-        log.info("返回结果->搜索商品结束:[{}]", list);
-        return ResponseDTO.returnSuccess(list);
-    }
-
     @GetMapping("/id/{id}")
-    public ResponseDTO findGoodsById(@PathVariable String id) {
+    public ResponseDTO findGameCommentById(@PathVariable String id) {
         log.info("收到请求->获取商品,id:[{}]", id);
-        Goods entity = goodsService.findGoodsById(id);
+        GameComment entity = gameCommentService.findGameCommentById(id);
         log.info("返回结果->获取商品结束:[{}]", entity);
         return ResponseDTO.returnSuccess(entity);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseDTO deleteGoodsById(@PathVariable String id) {
+    public ResponseDTO deleteGameCommentById(@PathVariable String id) {
         log.info("收到请求->删除商品,id:[{}]", id);
-        goodsService.deleteGoodsById(id);
+        gameCommentService.deleteGameCommentById(id);
         log.info("返回结果->删除商品结束");
         return ResponseDTO.returnSuccess();
     }
