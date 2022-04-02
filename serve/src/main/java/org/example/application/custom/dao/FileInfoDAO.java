@@ -1,12 +1,11 @@
-package org.example.application.system.dao;
+package org.example.application.custom.dao;
 
-import org.example.application.common.BaseDAO;
-import org.example.application.system.dao.jpa.FileInfoRepository;
-import org.example.application.system.entity.FileInfo;
+import org.example.application.custom.dao.jpa.FileInfoRepository;
+import org.example.application.custom.entity.FileInfo;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FileInfoDAO extends BaseDAO {
+public class FileInfoDAO  {
     private final FileInfoRepository fileInfoRepository;
 
     public FileInfoDAO(FileInfoRepository fileInfoRepository) {

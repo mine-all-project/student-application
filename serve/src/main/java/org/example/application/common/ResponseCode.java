@@ -2,9 +2,6 @@ package org.example.application.common;
 
 import lombok.Getter;
 
-/**
- * http请求返回状态码
- */
 public enum ResponseCode {
     SUCCESS(200),
     ERROR(500),

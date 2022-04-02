@@ -117,7 +117,7 @@ export default {
   data() {
     return {
       show: {
-        accessibility: true
+        accessibility: false
       }
     }
   },

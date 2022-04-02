@@ -1,15 +1,13 @@
-package org.example.application.system.service;
+package org.example.application.custom.service;
 
 import org.example.application.common.utils.FileUtils;
-import org.example.application.system.entity.FileInfo;
+import org.example.application.custom.entity.FileInfo;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * 文件功能抽象接口
- */
+
 public interface FileInfoService {
     default FileInfo getFilePath(HttpServletRequest request, String uploadPath, String virtualPath) {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;

@@ -1,11 +1,8 @@
 package org.example.application.custom.service.impl;
 
-import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.GameDAO;
 import org.example.application.custom.entity.Game;
 import org.example.application.custom.service.GameService;
-import org.example.application.system.dao.UserDAO;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,15 +11,9 @@ import java.util.List;
 @Service
 public class GameServiceImpl implements GameService {
     private final GameDAO gameDAO;
-    @Value("${isDebug}")
-    private boolean isDebug;
-    private final UserDAO userDAO;
-    private final JwtConfigure jwtConfigure;
 
-    public GameServiceImpl(GameDAO gameDAO, UserDAO userDAO, JwtConfigure jwtConfigure) {
+    public GameServiceImpl(GameDAO gameDAO) {
         this.gameDAO = gameDAO;
-        this.userDAO = userDAO;
-        this.jwtConfigure = jwtConfigure;
     }
 
     @Override

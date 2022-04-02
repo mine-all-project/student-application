@@ -1,6 +1,5 @@
 package org.example.application.custom.dao;
 
-import org.example.application.common.BaseDAO;
 import org.example.application.custom.dao.jpa.GameCommentRepository;
 import org.example.application.custom.entity.GameComment;
 import org.springframework.stereotype.Component;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class GameCommentDAO extends BaseDAO {
+public class GameCommentDAO {
     private final GameCommentRepository gameCommentRepository;
 
     public GameCommentDAO(GameCommentRepository gameCommentRepository) {

@@ -1,10 +1,10 @@
-package org.example.application.system.controller;
+package org.example.application.custom.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
-import org.example.application.system.dto.ResponseDTO;
-import org.example.application.system.entity.FileInfo;
-import org.example.application.system.service.FileInfoService;
+import org.example.application.common.ResponseDTO;
+import org.example.application.custom.entity.FileInfo;
+import org.example.application.custom.service.FileInfoService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,9 +26,7 @@ public class FileInfoController extends BaseController {
 
     @RequestMapping("/uploadFile")
     public ResponseDTO uploadFile(HttpServletRequest request) {
-        log.info("收到请求->上传文件");
         FileInfo fileInfo = fileInfoService.uploadFile(request);
-        log.info("返回结果->上传文件结束:[{}]", fileInfo);
-        return ResponseDTO.returnSuccess("上传成功", fileInfo);
+        return ResponseDTO.returnSuccess("success", fileInfo);
     }
 }

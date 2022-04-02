@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.example.application.common.BaseEntity;
-import org.example.application.system.entity.FileInfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

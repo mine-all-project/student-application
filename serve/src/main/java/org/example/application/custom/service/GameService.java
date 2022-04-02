@@ -1,11 +1,10 @@
 package org.example.application.custom.service;
 
-import org.example.application.common.BaseService;
 import org.example.application.custom.entity.Game;
 
 import java.util.List;
 
-public interface GameService extends BaseService {
+public interface GameService {
     List<Game> getAll();
 
     Game saveGame(Game entity);

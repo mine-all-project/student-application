@@ -2,9 +2,6 @@ package org.example.application.common;
 
 import lombok.Getter;
 
-/**
- * 应用异常类
- */
 public class ApplicationException extends RuntimeException {
     @Getter
     private int code;

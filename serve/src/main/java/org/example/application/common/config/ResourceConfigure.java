@@ -7,16 +7,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class ResourceConfigure implements WebMvcConfigurer {
-    //文件存储路径
     @Value("${uploadPath}")
     private String uploadPath;
-    //文件访问路径
     @Value("${virtualPath}")
     private String virtualPath;
 
-    /**
-     * 虚拟路径配置
-     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(virtualPath + "/**").addResourceLocations("file:" + uploadPath + "/");

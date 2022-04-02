@@ -1,11 +1,9 @@
-package org.example.application.system.dto;
+package org.example.application.common;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.application.common.DIC;
-import org.example.application.common.ResponseCode;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -42,7 +40,7 @@ public class ResponseDTO implements Serializable {
 
     /*---------------- SUCCESS -------------*/
     public static <T> ResponseDTO returnSuccess(Collection<T> data) {
-        return new ResponseDTO(ResponseCode.SUCCESS, DIC.BASE_SUCCESS_MESSAGE,data);
+        return new ResponseDTO(ResponseCode.SUCCESS, "SUCCESS",data);
     }
 
     public static ResponseDTO returnSuccess(String message, Object data) {
@@ -50,11 +48,11 @@ public class ResponseDTO implements Serializable {
     }
 
     public static ResponseDTO returnSuccess(Object data) {
-        return returnSuccess(DIC.BASE_SUCCESS_MESSAGE, data);
+        return returnSuccess("SUCCESS", data);
     }
 
     public static ResponseDTO returnSuccess() {
-        return returnSuccess(DIC.BASE_SUCCESS_MESSAGE, null);
+        return returnSuccess("SUCCESS", null);
     }
 
 

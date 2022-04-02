@@ -13,45 +13,27 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/**
- * 实体类基础属性
- */
 @Getter
 @Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity implements Serializable, Cloneable {
-    /**
-     * Id uuid主键
-     * GeneratedValue 自增长
-     */
     @Id
     @Column(length = 64)
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    /**
-     * 创建时间
-     * columnDefinition 设置默认值为当前时间
-     */
     @Column(columnDefinition = "timestamp default current_timestamp ")
     @CreatedDate
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
-    /**
-     * 更新时间
-     * columnDefinition 设置默认值为当前时间，随每次更新数据时更新时间
-     */
     @Column(columnDefinition = "timestamp default current_timestamp ")
     @LastModifiedDate
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
-    /**
-     * 删除标记 (0:正常 1:删除)
-     */
     @Column(columnDefinition = "tinyint default 0 not null ")
     private int delFlag;
 

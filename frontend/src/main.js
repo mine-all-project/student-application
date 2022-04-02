@@ -7,13 +7,11 @@ import '@/assets/iconfont.css';
 import router from './router'
 import AxiosUtils from '@/utils/AxiosUtils'
 import moment from 'moment'
-// import settings from 'settings'
 
 Vue.config.productionTip = false
 Vue.use(
     Antd,
     VueAxios,
-    // settings,
 )
 
 Vue.prototype.$http = AxiosUtils

@@ -1,10 +1,10 @@
-package org.example.application.system.service.impl;
+package org.example.application.custom.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.utils.FileUtils;
-import org.example.application.system.dao.FileInfoDAO;
-import org.example.application.system.entity.FileInfo;
-import org.example.application.system.service.FileInfoService;
+import org.example.application.custom.dao.FileInfoDAO;
+import org.example.application.custom.entity.FileInfo;
+import org.example.application.custom.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,10 +28,6 @@ public class FileInfoServiceImpl implements FileInfoService {
         this.fileInfoDAO = fileInfoDAO;
     }
 
-    /**
-     * 上传文件
-     * @return
-     */
     @Override
     public FileInfo uploadFile(HttpServletRequest request) {
         MultipartFile multipartFile = getFile(request);

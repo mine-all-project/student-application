@@ -224,7 +224,7 @@ export default {
       gameDetail: {image: {}},
       userInfo: {name: ''},
       image: require('@/assets/image1.png'),
-      activeTab: 'Game',
+      activeTab: 'Home',
       loginTab: 'Email',
       tabStyle: {display: "flex", justifyContent: 'space-around', flex: 1, marginTop: '5vh'},
     }

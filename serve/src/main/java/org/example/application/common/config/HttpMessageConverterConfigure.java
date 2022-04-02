@@ -6,9 +6,6 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * springboot 消息转换配置(主要用于配置fastJson解析)
- */
 @Configuration
 public class HttpMessageConverterConfigure {
     @Bean
