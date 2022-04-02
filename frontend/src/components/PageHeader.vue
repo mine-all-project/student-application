@@ -13,7 +13,42 @@
       </div>
     </div>
     <div style="display: flex;width:20%;justify-content: space-around">
-      <a-button>Accessibility</a-button>
+      <a-popover v-model="show.accessibility" placement="bottom" trigger="click">
+        <template slot="content">
+          <div  style="padding-top: 10px;display: flex;justify-content: center;width: 100vh;margin: 0 -20vh 0 -25vh">
+<!--          <div  style="">-->
+            <div style="width: 8%;">
+              <i class="iconfont icon">&#xec13;</i>
+              <p class="text">Zoom in Screen</p>
+            </div>
+            <div style="width: 8%;">
+              <i class="iconfont icon">&#xec32;</i>
+              <p class="text">Zoom out Screen</p>
+            </div>
+            <div style="width: 8%;">
+              <i class="iconfont icon">&#xe645;</i>
+              <p class="text">Turn up Volume</p>
+            </div>
+            <div style="width: 8%;">
+              <i class="iconfont icon">&#xe644;</i>
+              <p class="text">Turn down Volume</p>
+            </div>
+            <div style="width: 8%;">
+              <i class="iconfont icon">&#xe63f;</i>
+              <p class="text">Adjust Colours</p>
+            </div>
+            <div style="width: 8%;">
+              <i class=" icon1">
+                <i class="iconfont icon2">&#xe7c4;</i>
+                <i class="iconfont icon2">&#xe605;</i>
+              </i>
+              <p class="text">Read Screen</p>
+            </div>
+          </div>
+
+        </template>
+        <a-button>Accessibility</a-button>
+      </a-popover>
       <a-dropdown v-if="isLogin">
         <span>
           <a-avatar icon="user"/>
@@ -63,6 +98,9 @@ export default {
     showMyAccount: {
       type: Function
     },
+    showAccessibility: {
+      type: Function
+    },
     userInfo: {
       type: Object,
       default: () => {
@@ -76,10 +114,21 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      show: {
+        accessibility: true
+      }
+    }
+  },
   components: {},
   mounted() {
   },
   methods: {
+    clickAccessibility() {
+      this.show.accessibility = true
+      this.$emit('showAccessibility')
+    },
     clickLogin() {
       this.$emit('login')
     },
@@ -90,4 +139,34 @@ export default {
 }
 </script>
 <style scoped>
+.text {
+  width: 90%;
+  overflow: hidden;
+  margin-top: 12px;
+  color: #000;
+  font-weight: 500;
+}
+
+.icon {
+  font-weight: 700;
+  font-size: 2em;
+  color: #000;
+  border: 3px solid #a6a0e1;
+  padding: 16px;
+}
+
+.icon1 {
+  font-weight: 700;
+  color: #000;
+  border: 3px solid #a6a0e1;
+  padding: 14px;
+  padding-top: 24px;
+}
+
+.icon2 {
+  font-weight: 700;
+  font-size: 2em;
+  color: #000;
+  padding: 10px;
+}
 </style>

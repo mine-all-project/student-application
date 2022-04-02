@@ -28,6 +28,7 @@
         <Market></Market>
       </a-tab-pane>
     </a-tabs>
+
     <a-modal v-model="show.gameDetail" :footer="null" :closable="false" width="40%" title="Game Detail">
       <GameDetail :detail="gameDetail" @saveGameDetail="saveGameDetail"></GameDetail>
     </a-modal>
@@ -212,7 +213,8 @@ export default {
         isLogin: false, register: false, login: false, contactUs: false,
         communityDetail: false, createPost: false, myAccount: false,
         myFollow: false, myFans: false, myClub: false,
-        clubDetail: false, communityComment: false, gameDetail: false
+        clubDetail: false, communityComment: false, gameDetail: false,
+        accessibility: true,
       },
       games: [
         {id: '1', name: 'Game 1', userName: 'user 1', image: require('@/assets/image1.png')},
@@ -236,6 +238,9 @@ export default {
     this.getGameList()
   },
   methods: {
+    showAccessibility() {
+      this.show.accessibility = true
+    },
     saveGameDetail(e) {
       this.$http.post('/api/gameComment/save', e).then(result => {
         if (result.status !== 200) {

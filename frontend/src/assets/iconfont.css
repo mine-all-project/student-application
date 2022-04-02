@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 964985 */
-  src: url('//at.alicdn.com/t/font_964985_x4rrv8ndlvs.woff2?t=1648750590605') format('woff2'),
-  url('//at.alicdn.com/t/font_964985_x4rrv8ndlvs.woff?t=1648750590605') format('woff'),
-  url('//at.alicdn.com/t/font_964985_x4rrv8ndlvs.ttf?t=1648750590605') format('truetype');
+  src: url('//at.alicdn.com/t/font_964985_oiix89j1gi.woff2?t=1648925831983') format('woff2'),
+  url('//at.alicdn.com/t/font_964985_oiix89j1gi.woff?t=1648925831983') format('woff'),
+  url('//at.alicdn.com/t/font_964985_oiix89j1gi.ttf?t=1648925831983') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,34 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-suoxiao:before {
+  content: "\ec13";
+}
+
+.icon-sousuofangda:before {
+  content: "\ec32";
+}
+
+.icon-yinliang:before {
+  content: "\e605";
+}
+
+.icon-huaban:before {
+  content: "\e63f";
+}
+
+.icon-touping:before {
+  content: "\e7c4";
+}
+
+.icon-yinliangjian-01:before {
+  content: "\e645";
+}
+
+.icon-yinliangjia-01:before {
+  content: "\e644";
 }
 
 .icon-logout:before {
