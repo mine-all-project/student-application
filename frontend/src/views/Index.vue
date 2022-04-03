@@ -29,28 +29,28 @@
       </a-tab-pane>
     </a-tabs>
 
-    <a-modal v-model="show.gameDetail" :footer="null" :closable="false" width="40%" title="Game Detail">
-      <GameDetail :detail="gameDetail" @saveGameDetail="saveGameDetail"></GameDetail>
+    <a-modal v-model="show.gameDetail" :footer="null"  width="40%" title="Game Detail">
+      <GameDetail :detail="gameDetail" :userInfo="userInfo" @saveGameDetail="saveGameDetail"></GameDetail>
     </a-modal>
-    <a-modal v-model="show.clubDetail" :footer="null" :closable="false" width="50%" title="Club Detail">
+    <a-modal v-model="show.clubDetail" :footer="null"  width="50%" title="Club Detail">
       <ClubDetail></ClubDetail>
     </a-modal>
-    <a-modal v-model="show.myFollow" :footer="null" :closable="false" width="30%" title="My Follow">
+    <a-modal v-model="show.myFollow" :footer="null"  width="30%" title="My Follow">
       <MyFollow></MyFollow>
     </a-modal>
-    <a-modal v-model="show.myClub" :footer="null" :closable="false" width="30%" title="My Club">
+    <a-modal v-model="show.myClub" :footer="null"  width="30%" title="My Club">
       <MyClub></MyClub>
     </a-modal>
-    <a-modal v-model="show.myFans" :footer="null" :closable="false" width="30%" title="My Fans">
+    <a-modal v-model="show.myFans" :footer="null"  width="30%" title="My Fans">
       <MyFans></MyFans>
     </a-modal>
-    <a-modal v-model="show.myAccount" :footer="null" :closable="false" width="30%" title="My Account">
+    <a-modal v-model="show.myAccount" :footer="null"  width="30%" title="My Account">
       <MyAccount :userInfo="userInfo"
                  @showFollowing="showFollowing"
                  @showFans="showFans"
                  @showClub="showClub"/>
     </a-modal>
-    <a-modal v-model="show.createPost" :footer="null" :closable="false" width="20%">
+    <a-modal v-model="show.createPost" :footer="null"  width="20%">
       <div class="flex-row around" style="align-items: baseline">
         <h2>Write a New Post</h2>
         <a-button type="primary" size="small">Publish</a-button>
@@ -64,10 +64,10 @@
         <i class="iconfont" style="font-size: 1.5em">&#xe650;</i>
       </a-col>
     </a-modal>
-    <a-modal v-model="show.communityDetail" :footer="null" :closable="false" width="40%">
+    <a-modal v-model="show.communityDetail" :footer="null" title="Community Detail" width="40%">
       <CommunityDetail @showCreatePost="showCreatePost"></CommunityDetail>
     </a-modal>
-    <a-modal v-model="show.communityComment" :footer="null" :closable="false" width="40%">
+    <a-modal v-model="show.communityComment" :footer="null" title="Community Comment"  width="40%">
       <a-col class="flex-column" style="border: 1px solid #858282">
         <a-col class="flex-row" style="justify-content: center">
           <h3>Subject</h3>
@@ -156,10 +156,10 @@
         </a-col>
       </a-col>
     </a-modal>
-    <a-modal v-model="show.contactUs" :footer="null" :closable="false" width="30%">
+    <a-modal v-model="show.contactUs" :footer="null"  width="30%">
       <ContactUs></ContactUs>
     </a-modal>
-    <a-modal v-model="show.login" :footer="null" :closable="false">
+    <a-modal v-model="show.login" :footer="null" >
       <div style="text-align: center">
         <h1>CoolGames</h1>
         <a-tabs default-active-key="Email" @change="changeLoginTab" :animated="false" :activeKey="loginTab">
@@ -172,7 +172,7 @@
         </a-tabs>
       </div>
     </a-modal>
-    <a-modal v-model="show.register" :footer="null" :closable="false">
+    <a-modal v-model="show.register" :footer="null" >
       <Register @register="register"></Register>
     </a-modal>
   </div>
@@ -197,7 +197,7 @@ import Club from "@/components/Club"
 import ClubDetail from "@/components/ClubDetail"
 
 import Game from "@/components/Game"
-import GameDetail from "@/views/GameDetail"
+import GameDetail from "@/components/GameDetail"
 
 export default {
   name: 'Index',
@@ -242,6 +242,10 @@ export default {
       this.show.accessibility = true
     },
     saveGameDetail(e) {
+      if (!this.show.isLogin) {
+        this.$message.error("please sign in")
+        return
+      }
       this.$http.post('/api/gameComment/save', e).then(result => {
         if (result.status !== 200) {
           this.$message.error(result.message)
@@ -293,6 +297,11 @@ export default {
       this.show.myAccount = true
     },
     showCreatePost() {
+      if (!this.show.isLogin) {
+        this.$message.error("please sign in")
+        this.showLogin()
+        return
+      }
       this.show.createPost = true
       this.show.communityInfo = false
     },
@@ -320,6 +329,13 @@ export default {
     },
     changeTab(e) {
       console.log(e)
+      if (e === 'Collection') {
+        if (!this.show.isLogin) {
+          this.$message.error("please sign in")
+          this.showLogin()
+          return
+        }
+      }
       this.activeTab = e
     },
     changeLoginTab(e) {

@@ -40,7 +40,8 @@
             <template v-if="detail.gameComments[0]">
               <span class="flex-row between"
                     style="align-items: baseline;font-weight: 700;padding: 10px;border-top: 1px solid #a19e9e;">
-                  <span style="">User 1 : </span>
+                  <span v-if="userInfo.name">{{ userInfo.name}}</span>
+                  <span v-else>User 1</span>
                   <a-tooltip placement="topLeft">
                     <template slot="title">
                       <span>{{ detail.gameComments[0].content }}</span>
@@ -55,7 +56,8 @@
             <template v-if="detail.gameComments[1]">
               <span class="flex-row between"
                     style="align-items: baseline;font-weight: 700;padding: 10px;border-top: 1px solid #a19e9e;">
-                  <span style="">User 2 : </span>
+                  <span v-if="userInfo.name">{{ userInfo.name}}</span>
+                  <span v-else>User 2</span>
                   <a-tooltip placement="topLeft">
                     <template slot="title">
                       <span>{{ detail.gameComments[1].content }}</span>
@@ -114,12 +116,21 @@ export default {
         return {image: {}, gameComments: [{content: '', createTime: ''}, {content: '', createTime: ''}]}
       }
     },
+    userInfo: {
+      type: Object,
+      default: () => {
+        return {
+          name: ''
+        }
+      }
+    },
   },
   data() {
     return {
       score: 0,
       content: '',
       image: require('@/assets/image1.png'),
+
     }
   },
   components: {},

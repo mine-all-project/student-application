@@ -74,7 +74,7 @@
             </a>
           </a-menu-item>
           <a-menu-item>
-            <a href="javascript:">
+            <a href="javascript:" @click="logout">
               <i class="iconfont">&#xe64b;</i>
               <span>Sign out</span>
             </a>
@@ -125,6 +125,10 @@ export default {
   mounted() {
   },
   methods: {
+    logout(){
+      sessionStorage.clear()
+      window.location.reload()
+    },
     clickAccessibility() {
       this.show.accessibility = true
       this.$emit('showAccessibility')
