@@ -28,7 +28,7 @@
         </div>
         <div class="flex-row around" style="width: 100%;flex-wrap: wrap;">
           <div v-for="item in collections" style="width: 30%;text-align: center;margin-top: 2em">
-            <img :src="item.image" alt="" style="width: 100%">
+            <img :src="item.image" alt="" style="width: 100%;height: 15vh">
             <p class="flex-row around" style="align-items: center">
               <a-icon type="share-alt" style="font-size: 2em"/>
               <i class="iconfont" style="font-size: 2em;font-weight: 800"
@@ -52,12 +52,12 @@ export default {
   data() {
     return {
       collections: [
-        {id: '1', name: 'Game1', rate: '4.7', image: require('@/assets/image1.png')},
-        {id: '2', name: 'Game2', rate: '4.8', image: require('@/assets/image1.png')},
-        {id: '3', name: 'Game3', rate: '2.4', image: require('@/assets/image1.png')},
-        {id: '4', name: 'Game4', rate: '3.9', image: require('@/assets/image1.png')},
-        {id: '5', name: 'Game4', rate: '3.9', image: require('@/assets/image1.png')},
-        {id: '6', name: 'Game4', rate: '3.9', image: require('@/assets/image1.png')},
+        {id: '1', name: 'Game1', rate: '4.7', image: require('@/assets/img10.png')},
+        {id: '2', name: 'Game2', rate: '4.8', image: require('@/assets/img11.png')},
+        {id: '3', name: 'Game3', rate: '2.4', image: require('@/assets/img12.png')},
+        {id: '4', name: 'Game4', rate: '3.9', image: require('@/assets/img13.png')},
+        {id: '5', name: 'Game4', rate: '3.9', image: require('@/assets/img14.png')},
+        {id: '6', name: 'Game4', rate: '3.9', image: require('@/assets/img15.png')},
       ],
     }
   },

@@ -196,7 +196,7 @@ import CommunityDetail from "@/components/CommunityDetail"
 import Club from "@/components/Club"
 import ClubDetail from "@/components/ClubDetail"
 
-import Game from "@/views/Game"
+import Game from "@/components/Game"
 import GameDetail from "@/views/GameDetail"
 
 export default {
@@ -253,7 +253,7 @@ export default {
     },
     getGameList() {
       this.$http.get('/api/game/list').then(result => {
-        this.games = result.data.map(e => {
+        let dataList = result.data.map(e => {
           e.gameComments = e.gameComments.sort((a, b) => {
             let createTimeA = this.$moment(a.createTime)
             let createTimeB = this.$moment(b.createTime)
@@ -261,6 +261,12 @@ export default {
           })
           return e
         })
+        this.games = dataList.sort((a, b) => {
+          let createTimeA = this.$moment(a.createTime)
+          let createTimeB = this.$moment(b.createTime)
+          return createTimeB.diff(createTimeA, 's');
+        })
+
       })
     },
     showGameDetail(e) {

@@ -5,7 +5,7 @@
         <h1>Find a club</h1>
         <div class="flex-row between" style="align-items: center">
           <h3> Country: </h3>
-          <a-select default-value="United Kingdom" style="width: 140px" size="small ">
+          <a-select default-value="United Kingdom" style="width: 140px" size="small">
             <a-select-option value="United Kingdom">United Kingdom</a-select-option>
             <a-select-option value="United States">United States</a-select-option>
             <a-select-option value="French">French</a-select-option>
@@ -13,13 +13,13 @@
         </div>
         <div class="flex-row between" style="align-items: center;margin-top: 10px">
           <h3> City/Town: </h3>
-          <a-select default-value="Edinburgh" style="width: 140px" size="small ">
+          <a-select default-value="Edinburgh" style="width: 140px" size="small">
             <a-select-option value="Edinburgh">Edinburgh</a-select-option>
           </a-select>
         </div>
         <div class="flex-row between" style="align-items: center;margin-top: 10px">
           <h3> Postcode: </h3>
-          <a-select default-value="EH7 9HE" style="width: 140px" size="small ">
+          <a-select default-value="EH7 9HE" style="width: 140px" size="small">
             <a-select-option value="EH7 9HE">EH7 9HE</a-select-option>
           </a-select>
         </div>
@@ -92,7 +92,7 @@ export default {
           briefDescription: 'xxxxxxxxxxxx',
           address: ['xxxxx', 'xxxxx', 'xxxxx'],
           content: '0.1 miles away',
-          image: require('@/assets/image1.png')
+          image: require('@/assets/img16.png')
         },
         {
           id: '2',
@@ -100,7 +100,7 @@ export default {
           briefDescription: 'xxxxxxxxxxxx',
           address: ['xxxxx', 'xxxxx', 'xxxxx'],
           content: '0.5 miles away',
-          image: require('@/assets/image1.png')
+          image: require('@/assets/img17.png')
         },
         {
           id: '3',
@@ -108,7 +108,7 @@ export default {
           briefDescription: 'xxxxxxxxxxxx',
           address: ['xxxxx', 'xxxxx', 'xxxxx'],
           content: '0.8 miles away',
-          image: require('@/assets/image1.png')
+          image: require('@/assets/img18.png')
         },
       ],
     }

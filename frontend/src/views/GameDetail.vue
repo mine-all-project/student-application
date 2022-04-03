@@ -118,7 +118,7 @@ export default {
   data() {
     return {
       score: 0,
-      comment: '0',
+      content: '',
       image: require('@/assets/image1.png'),
     }
   },
@@ -135,7 +135,6 @@ export default {
       this.$emit('saveGameDetail', data)
     },
     changeRate(e) {
-      this.$message.success(e)
       this.score = e
     },
   }

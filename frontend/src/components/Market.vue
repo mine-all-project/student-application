@@ -13,7 +13,7 @@
       <div class="flex-column border" v-for="item in markets"
            style="width: 100%;padding:10px 0 ;justify-content: start;margin-top: 2px">
         <div class="flex-row around" style="width: 100%;align-items: center">
-          <img :src="item.image" alt="" style="height: 10vh">
+          <img :src="item.image" alt="" style="height: 10vh;width: 18vh">
           <div style="width: 70%">
             <p>Description: {{ item.description }}</p>
             <p>Price: {{ item.price }}</p>
@@ -45,7 +45,7 @@ export default {
           description: 'xxxxxxxxxxxx',
           price: '4.7',
           fromWebsite: 'xxxxxxxxxxxxx',
-          image: require('@/assets/image1.png')
+          image: require('@/assets/img13.png')
         },
         {
           id: '2',
@@ -53,7 +53,7 @@ export default {
           description: 'xxxxxxxxxxxx',
           price: '4.7',
           fromWebsite: 'xxxxxxxxxxxxx',
-          image: require('@/assets/image1.png')
+          image: require('@/assets/img15.png')
         },
         {
           id: '3',
@@ -61,7 +61,7 @@ export default {
           description: 'xxxxxxxxxxxx',
           price: '4.7',
           fromWebsite: 'xxxxxxxxxxxxx',
-          image: require('@/assets/image1.png')
+          image: require('@/assets/img17.png')
         },
         {
           id: '4',
@@ -69,7 +69,7 @@ export default {
           description: 'xxxxxxxxxxxx',
           price: '4.7',
           fromWebsite: 'xxxxxxxxxxxxx',
-          image: require('@/assets/image1.png')
+          image: require('@/assets/img10.png')
         },
       ],
     }

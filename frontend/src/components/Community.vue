@@ -22,8 +22,9 @@
                   <a-avatar icon="user"/>
                   <p>{{ item.userName }}</p>
                 </a-col>
-                <a-col style="width: 70%;padding: 10px 0">
-                  <img :src="item.image" alt="" style="width: 100%;height: 10vh">
+                <a-col style="width: 70%;height:10vh;padding: 10px 0">
+                  xxxxx
+<!--                  <img :src="item.image" alt="" style="width: 100%;height: 10vh">-->
                 </a-col>
               </a-col>
               <a-col class="flex-row between"
@@ -78,9 +79,9 @@ export default {
         {id: '3', gameName: 'Game 3', userName: 'user 3', image: require('@/assets/image1.png')},
       ],
       games2: [
-        {id: '1', image: require('@/assets/image1.png')},
-        {id: '2', image: require('@/assets/image1.png')},
-        {id: '3', image: require('@/assets/image1.png')},
+        {id: '1', image: require('@/assets/img12.png')},
+        {id: '2', image: require('@/assets/img14.png')},
+        {id: '3', image: require('@/assets/img3.png')},
       ],
     }
   },
