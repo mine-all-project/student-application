@@ -1,0 +1,14 @@
+环境：oraclejdk8、mysql8.0、idea、maven、nodejs
+部署步骤：
+1、安装jdk1.8、安装idea、安装mysql8.0、安装nodejs
+2、配置jdk环境变量、配件nodejs环境变量
+3、解压文件到本地硬盘
+4、用idea导入解压后的文件夹(根目录)
+5、刷新maven依赖
+6、打开idea控制台,进入前端目录，cd frontend
+7、安装前端依赖文件，npm install
+8、启动前端模块，npm run serve
+9、修改server/resources/application-dev.properties里的数据库账号密码
+10、启动后端模块，运行server/Applicatin.java
+11、在D:\uploadPath目录下放入十张图片(如果没有这个目录可手动创建)，并分别重命名为img1.png...img10.png(文件名必须完全一致)，这十张图片是game模块下的十张图片，最好是竖图，显示效果较好
+12、浏览器打开打开前端模块显示的地址即可访问项目(默认为localhost:8080，实际情况可能会因为环境不同端口号不同，按照控制台显示输入即可)

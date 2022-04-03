@@ -25,7 +25,7 @@
               <span class="flex-row" style="align-items: baseline;">
                 <span>Score : </span>
                 <a-rate :value="detail.score/detail.scoreCount" disabled/>
-                <h4 style="margin-left: 10px">{{ detail.score / detail.scoreCount }}</h4>
+                <h4 style="margin-left: 10px">{{ (detail.score / detail.scoreCount).toFixed(1) }}</h4>
               </span>
             <span class="flex-row" style="align-items: baseline">
                 <span>Number of Ratings : </span>
@@ -40,8 +40,9 @@
             <template v-if="detail.gameComments[0]">
               <span class="flex-row between"
                     style="align-items: baseline;font-weight: 700;padding: 10px;border-top: 1px solid #a19e9e;">
-                  <span v-if="userInfo.name">{{ userInfo.name}}</span>
-                  <span v-else>User 1</span>
+<!--                  <span v-if="userInfo.name">{{ userInfo.name}}</span>-->
+<!--                  <span v-else>User 1</span>-->
+                  <span>User 1</span>
                   <a-tooltip placement="topLeft">
                     <template slot="title">
                       <span>{{ detail.gameComments[0].content }}</span>
@@ -56,8 +57,9 @@
             <template v-if="detail.gameComments[1]">
               <span class="flex-row between"
                     style="align-items: baseline;font-weight: 700;padding: 10px;border-top: 1px solid #a19e9e;">
-                  <span v-if="userInfo.name">{{ userInfo.name}}</span>
-                  <span v-else>User 2</span>
+<!--                  <span v-if="userInfo.name">{{ userInfo.name}}</span>-->
+<!--                  <span v-else>User 2</span>-->
+                  <span>User 2</span>
                   <a-tooltip placement="topLeft">
                     <template slot="title">
                       <span>{{ detail.gameComments[1].content }}</span>
