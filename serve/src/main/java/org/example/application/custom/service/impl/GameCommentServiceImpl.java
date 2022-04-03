@@ -29,7 +29,7 @@ public class GameCommentServiceImpl implements GameCommentService {
     @Override
     public GameComment saveGameComment(Map<String, String> entity) {
         Game game = gameDAO.findGameById(entity.getOrDefault("gameId", ""));
-        GameComment gameComment = new GameComment(entity.getOrDefault("comment", ""));
+        GameComment gameComment = new GameComment(entity.getOrDefault("content", ""));
         gameComment = gameCommentDAO.saveGameComment(gameComment);
         List<GameComment> commentList = game.getGameComments();
         commentList.add(gameComment);
