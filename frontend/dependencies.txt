@@ -1,0 +1,14 @@
+ant-design-vue：
+https://github.com/vueComponent/ant-design-vue
+axios:
+https://github.com/axios/axios
+core-js:
+https://github.com/zloirock/core-js
+moment:
+https://github.com/moment/moment
+vue:
+https://github.com/vuejs/core
+vue-axios:
+https://github.com/imcvampire/vue-axios
+vue-router:
+https://github.com/vuejs/router
