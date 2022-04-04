@@ -11,9 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * 文件功能实现类
- */
 @Slf4j
 @Service
 public class FileInfoServiceImpl implements FileInfoService {

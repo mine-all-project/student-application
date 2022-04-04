@@ -27,7 +27,7 @@ public class FileUtils {
         try {
             if (!fold.exists()) {
                 if (!fold.mkdirs()) {
-                    throw new ApplicationException("文件保存失败: 目录创建失败");
+                    throw new ApplicationException("File save Fail: dir create fail");
                 }
             }
             String originalFilename = multipartFile.getOriginalFilename();
@@ -57,12 +57,11 @@ public class FileUtils {
         return fileInfo;
     }
     private static void writeFile(MultipartFile mFile, File file) throws IOException {
-        logger.debug("开始写入文件");
         InputStream is = mFile.getInputStream();
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
         if (!file.exists()) {
             if (!file.createNewFile()) {
-                throw new ApplicationException("文件写入失败");
+                throw new ApplicationException("write fail error ");
             }
         }
         BufferedInputStream bis = new BufferedInputStream(is);
