@@ -8,7 +8,7 @@ import org.example.application.system.entity.FileInfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -21,8 +21,8 @@ public class Goods extends BaseEntity {
     private String name;
     @Column(columnDefinition = "decimal(10,2) default null comment '价格'")
     private BigDecimal price;
-    @Column(columnDefinition = "varchar(64) default null comment '详情'")
+    @Column(columnDefinition = "longtext default null comment '详情'")
     private String content;
-    @OneToMany
+    @ManyToMany
     private List<FileInfo> images;
 }

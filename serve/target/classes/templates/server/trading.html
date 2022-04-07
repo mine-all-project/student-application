@@ -1,0 +1,680 @@
+<!doctype html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org"
+			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<div data-th-replace="/components/base :: javascript"></div>
+	<div data-th-replace="/components/vue :: javascript"></div>
+	<div data-th-replace="/components/ui :: antd"></div>
+	<style>
+      .drawer-bottom-button {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          border-top: 1px solid #e9e9e9;
+          padding: 10px 16px;
+          background: #fff;
+          text-align: right;
+          z-index: 1;
+      }
+
+      .ant-input-number {
+          width: 100%;
+      }
+	</style>
+</head>
+<body>
+<div id="app">
+	<a-row>
+		<a-col :span="6">
+			<a-input placeholder="输入关键字搜索" v-model="form.searchText"></a-input>
+		</a-col>
+		<a-col :span="6" style="display: flex;justify-content: space-around">
+			<a-button type="primary" @click="search">搜索</a-button>
+			<a-button @click="resetList">重置</a-button>
+			<a-button @click="getMinePublish">我发布的</a-button>
+		</a-col>
+	</a-row>
+	<a-divider></a-divider>
+	<a-tabs type="card">
+		<a-col slot="tabBarExtraContent">
+			<a-button type="primary" @click="showAddGoods"> 发布商品</a-button>
+			<a-button type="default" @click="showAddDemand"> 发布需求</a-button>
+		</a-col>
+		<a-tab-pane key="1" tab="二手交易">
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in freeGoods" @click="showGoodsInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.name">
+						<template slot="description">
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+								<span>￥{{item.price}}</span>
+							</div>
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
+		</a-tab-pane>
+		<a-tab-pane key="2" tab="租赁">
+			<a-divider></a-divider>
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in leaseGoods" @click="showGoodsInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.name">
+						<template slot="description">
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+								<span>￥{{item.price}}</span>
+							</div>
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
+		</a-tab-pane>
+		<a-tab-pane key="3" tab="需求列表">
+			<a-divider></a-divider>
+			<a-space direction="vertical"
+							 style="display: flex;flex-wrap: wrap;justify-content: space-around;flex-direction: row">
+				<a-card hoverable style="width: 240px" v-for="item in demands" @click="showDemandInfo(item)">
+					<img slot="cover" :src="item.image"/>
+					<a-card-meta :title="item.title">
+						<template slot="description">
+							<div style="display: flex;justify-content: space-between">
+								<a-tooltip placement="top">
+									<template slot="title">
+										<span>{{item.content}}</span>
+									</template>
+									<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{item.content}}</span>
+								</a-tooltip>
+							</div>
+						</template>
+					</a-card-meta>
+				</a-card>
+			</a-space>
+		</a-tab-pane>
+	</a-tabs>
+	<a-modal title="发布商品" :visible.sync="show.addGoods" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveGoods" @cancel="closeAddGoods">
+		<a-form-model ref="ruleForm" :model="form.goods" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item label="商品名称" prop="name">
+				<a-input v-model="form.goods.name"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="商品价格" prop="price">
+				<a-input-number :min="0" v-model="form.goods.price" style></a-input-number>
+			</a-form-model-item>
+			<a-form-model-item label="发布类型" prop="type">
+				<a-radio-group name="type" v-model="form.goods.type">
+					<a-radio :value="1">闲置</a-radio>
+					<a-radio :value="2">租赁</a-radio>
+				</a-radio-group>
+			</a-form-model-item>
+			<a-form-model-item label="商品描述" prop="content">
+				<a-textarea v-model="form.goods.content" :rows="4"></a-textarea>
+			</a-form-model-item>
+			<a-form-model-item label="商品图片" prop="image">
+				<div class="clearfix">
+					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile"
+										:remove="removeUploadFile">
+						<div v-if="temp.fileList.length < 9">
+							<a-icon type="plus"></a-icon>
+							<div class="ant-upload-text"> 上传</div>
+						</div>
+					</a-upload>
+				</div>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="发布需求" :visible.sync="show.addDemand" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveDemand" @cancel="closeAddDemand">
+		<a-form-model ref="ruleForm" :model="form.demand" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item label="标题" prop="title">
+				<a-input v-model="form.demand.title"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="描述" prop="content">
+				<a-textarea v-model="form.demand.content" :rows="4"></a-textarea>
+			</a-form-model-item>
+			<a-form-model-item label="图片" prop="image">
+				<div class="clearfix">
+					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile"
+										:remove="removeUploadFile">
+						<div v-if="temp.fileList.length < 9">
+							<a-icon type="plus"></a-icon>
+							<div class="ant-upload-text"> 上传</div>
+						</div>
+					</a-upload>
+				</div>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="商品详情" :visible.sync="show.goodsInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showGoodsMessage" @cancel="closeGoodsInfo">
+		<a-col v-if="temp.isMinePublish">
+			<a-button type="primary" @click="editGoods">编辑</a-button>
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteGoods">
+				<template slot="title">
+					<p>确定要删除吗？</p>
+				</template>
+				<a-button type="danger">删除</a-button>
+			</a-popconfirm>
+			<a-divider></a-divider>
+		</a-col>
+		<p style="display: flex;justify-content: space-around">
+			<span>商品名称：{{form.goods.name}} </span>
+			<span>类型：
+				<span v-if="form.goods.type===1">闲置</span>
+				<span v-if="form.goods.type===2">租赁</span>
+			</span>
+			<span>商品价格：{{form.goods.price}} </span>
+		</p>
+		<a-divider></a-divider>
+		<p>{{form.goods.content}} </p>
+		<a-divider></a-divider>
+		<p v-if="temp.isMinePublish">
+			<span>审核意见：{{form.goods.note}}</span>
+			<a-tag color="green" v-if="form.goods.status === 0">正常</a-tag>
+			<a-tag color="blue" v-if="form.goods.status === 1">待审</a-tag>
+			<a-tag color="red" v-if="form.goods.status === 2">驳回</a-tag>
+		</p>
+		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
+	</a-modal>
+	<a-modal title="需求详情" :visible.sync="show.demandInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showDemandMessage" @cancel="closeDemandInfo">
+		<a-col v-if="temp.isMinePublish">
+			<a-button type="primary" @click="editDemand">编辑</a-button>
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteDemand">
+				<template slot="title">
+					<p>确定要删除吗？</p>
+				</template>
+				<a-button type="danger">删除</a-button>
+			</a-popconfirm>
+			<a-divider></a-divider>
+		</a-col>
+		<p> {{form.demand.title}} </p>
+		<a-divider></a-divider>
+		<p>{{form.demand.content}} </p>
+		<a-divider></a-divider>
+		<p v-if="temp.isMinePublish">
+			<span>审核意见：{{form.demand.note}}</span>
+			<a-tag color="green" v-if="form.demand.status === 0">正常</a-tag>
+			<a-tag color="blue" v-if="form.demand.status === 1">待审</a-tag>
+			<a-tag color="red" v-if="form.demand.status === 2">驳回</a-tag>
+		</p>
+		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
+	</a-modal>
+	<a-modal title="商品评论" :visible.sync="show.goodsMessage" width="60%" :footer="null" @cancel="closeGoodsMessage">
+		<a-list v-if="form.goods.messages.length" :data-source="form.goods.messages"
+						:header="form.goods.name"
+						item-layout="horizontal">
+			<a-list-item slot="renderItem" slot-scope="item, index">
+				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
+									 :datetime="item.datetime">
+					<a-avatar slot="avatar" :src="item.publisher.headImg.virtualPath" v-if="item.publisher.headImg"></a-avatar>
+				</a-comment>
+			</a-list-item>
+		</a-list>
+		<a-comment>
+			<div slot="content">
+				<a-form-item>
+					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
+				</a-form-item>
+				<a-form-item>
+					<a-button type="primary" @click="saveGoodsMessage"> 发表</a-button>
+				</a-form-item>
+			</div>
+		</a-comment>
+	</a-modal>
+	<a-modal title="需求评论" :visible.sync="show.demandMessage" width="60%" :footer="null" @cancel="closeDemandMessage">
+		<a-list v-if="form.demand.messages.length" :data-source="form.demand.messages"
+						:header="form.demand.name"
+						item-layout="horizontal">
+			<a-list-item slot="renderItem" slot-scope="item, index">
+				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
+									 :datetime="item.datetime">
+					<a-avatar slot="avatar" :src="item.publisher.headImg.virtualPath" v-if="item.publisher.headImg"></a-avatar>
+				</a-comment>
+			</a-list-item>
+		</a-list>
+		<a-comment>
+			<div slot="content">
+				<a-form-item>
+					<a-textarea :rows="4" v-model="temp.message"></a-textarea>
+				</a-form-item>
+				<a-form-item>
+					<a-button type="primary" @click="saveDemandMessage"> 发表</a-button>
+				</a-form-item>
+			</div>
+		</a-comment>
+	</a-modal>
+	<a-modal :visible="show.previewImg" :footer="null" @cancel="closePreview">
+		<img style="width: 100%" :src="temp.previewSrc"/>
+	</a-modal>
+</div>
+<script>
+    const app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                headers: headers,
+                freeGoods: [],
+                leaseGoods: [],
+                demands: [],
+                rules: {
+                    name: [
+                        {required: true, message: '请输入商品名称', trigger: 'change'},
+                        {min: 1, max: 16, message: '长度为1-16位', trigger: 'change'},
+                    ],
+                    price: [
+                        {required: true, message: '请输入商品价格', trigger: 'change'},
+                    ],
+                    title: [
+                        {required: true, message: '请输入标题', trigger: 'change'},
+                    ],
+                    type: [
+                        {required: true, message: '请选择发布类型', trigger: 'change'},
+                    ],
+                },
+                labelCol: {span: 5},
+                wrapperCol: {span: 16},
+                form: {
+                    goods: {messages: [], images: {}},
+                    demand: {messages: [], images: {}},
+                    searchText: '',
+                    messages: [],
+                },
+                show: {
+                    previewImg: false,
+                    addGoods: false,
+                    addDemand: false,
+                    goodsInfo: false,
+                    demandInfo: false,
+                    goodsMessage: false,
+                    demandMessage: false,
+                },
+                temp: {
+                    previewSrc: '',
+                    fileList: [],
+                    allGoods: [],
+                    searchGoods: [],
+                    messages: [],
+                    message: '',
+                    isAddGoods: false,
+                    isAddDemand: false,
+                    isMinePublish: false,
+                },
+                sysUser: sessionStorage.getItem("sysUser")
+            };
+        },
+        mounted() {
+            this.getList()
+        },
+        methods: {
+            showAddDemand() {
+                this.temp.isAddDemand = true
+                this.show.addDemand = true
+            },
+            closeAddDemand() {
+                this.show.addDemand = false
+                this.form.demand = {messages: []}
+                this.temp.fileList = []
+            },
+            saveDemand() {
+                let data = this.form.demand
+                let oldFile = data.images
+                let newFile = this.temp.fileList.map(e => {
+                    if (e.response) {
+                        return e.response.data
+                    } else {
+                        return null
+                    }
+                }).filter(e => {
+                    return e
+                })
+                if (this.temp.isAddDemand) {
+                    data.images = newFile
+                } else {
+                    data.images = [...oldFile, ...newFile]
+                }
+                axios.post('/api/demand/save', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeAddDemand()
+                    this.closeDemandMessage()
+                    this.closeDemandInfo()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            editDemand() {
+                this.show.addDemand = true
+                this.show.demandInfo = false
+                this.temp.isAddDemand = false
+            },
+            deleteDemand() {
+                axios.delete(`/api/demand/delete/${this.form.demand.id}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.closeDemandInfo()
+                    this.getMinePublish()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            showDemandInfo(demand) {
+                this.form.demand = demand
+                this.temp.fileList = demand.images.map(e => {
+                    return {
+                        uid: e.id,
+                        name: e.oldName,
+                        status: 'done',
+                        url: e.virtualPath,
+                    }
+                })
+                this.show.demandInfo = true
+            },
+            closeDemandInfo() {
+                this.show.demandInfo = false
+                this.form.demand = {messages: []}
+                this.temp.fileList = []
+            },
+            showDemandMessage() {
+                this.show.demandMessage = true
+            },
+            closeDemandMessage() {
+                this.temp.messages = ''
+                this.show.demandMessage = false
+            },
+            saveDemandMessage() {
+                this.form.demand.messages.push({content: this.temp.message})
+                this.saveDemand()
+                this.temp.message = ''
+            },
+
+            showAddGoods() {
+                this.form.goods = {messages: []}
+                this.temp.fileList = []
+                this.show.addGoods = true
+                this.temp.isAddGoods = true
+            },
+            closeAddGoods() {
+                this.show.addGoods = false
+                this.form.goods = {messages: []}
+                this.temp.fileList = []
+            },
+            saveGoods() {
+                let data = this.form.goods
+                let oldFile = data.images
+                let newFile = this.temp.fileList.map(e => {
+                    if (e.response) {
+                        return e.response.data
+                    } else {
+                        return null
+                    }
+                }).filter(e => {
+                    return e
+                })
+                if (this.temp.isAddGoods) {
+                    data.images = newFile
+                } else {
+                    data.images = [...oldFile, ...newFile]
+                }
+                axios.post('/api/goods/save', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeAddGoods()
+                    this.closeGoodsMessage()
+                    this.closeGoodsInfo()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            editGoods() {
+                this.show.addGoods = true
+                this.show.goodsInfo = false
+                this.temp.isAddGoods = false
+            },
+            deleteGoods() {
+                axios.delete(`/api/goods/delete/${this.form.goods.id}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.closeGoodsInfo()
+                    this.getMinePublish()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            showGoodsInfo(goods) {
+                this.form.goods = goods
+                this.temp.fileList = goods.images.map(e => {
+                    return {
+                        uid: e.id,
+                        name: e.oldName,
+                        status: 'done',
+                        url: e.virtualPath,
+                    }
+                })
+                this.show.goodsInfo = true
+            },
+            closeGoodsInfo() {
+                this.show.goodsInfo = false
+                this.form.goods = {messages: []}
+                this.temp.fileList = []
+            },
+            showGoodsMessage() {
+                this.show.goodsMessage = true
+            },
+            closeGoodsMessage() {
+                this.temp.messages = ''
+                this.show.goodsMessage = false
+            },
+            saveGoodsMessage() {
+                this.form.goods.messages.push({content: this.temp.message})
+                this.saveGoods()
+                this.temp.message = ''
+            },
+
+
+            getMinePublish() {
+                this.temp.isMinePublish = true
+                axios.get(`/api/goods/mine`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterGoods(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                axios.get(`/api/demand/mine`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterDemand(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            resetList() {
+                this.temp.search = ''
+                this.getList()
+            },
+            search() {
+                this.temp.isMinePublish = false
+                axios.get(`/api/goods/search/${this.form.searchText}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterGoods(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                axios.get(`/api/demand/search/${this.form.searchText}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterDemand(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            getList() {
+                this.temp.isMinePublish = false
+                axios.get('/api/goods/list').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterGoods(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                axios.get('/api/demand/list').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterDemand(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            filterGoods(source) {
+                const allGoods = source.map(e => {
+                    let images = e.images.sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    return {
+                        id: e.id,
+                        status: e.status,
+                        note: e.note,
+                        name: e.name,
+                        price: e.price,
+                        image: e.images.length ? e.images[0].virtualPath : '',
+                        images: images,
+                        content: e.content,
+                        type: e.type,
+                        messages: e.messages,
+                        createTime: e.createTime,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                    }
+                });
+                this.freeGoods = allGoods.filter(e => e.type === 1)
+                this.leaseGoods = allGoods.filter(e => e.type === 2)
+            },
+            filterDemand(source) {
+                const demands = source.map(e => {
+                    let images = e.images.sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    return {
+                        id: e.id,
+                        status: e.status,
+                        note: e.note,
+                        title: e.title,
+                        price: e.price,
+                        image: e.images.length ? e.images[0].virtualPath : '',
+                        images: images,
+                        content: e.content,
+                        type: e.type,
+                        messages: e.messages,
+                        createTime: e.createTime,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                    }
+                });
+
+                this.demands = demands
+                console.log('demands-->', demands)
+                console.log(this.demands)
+            },
+            closePreview() {
+                this.show.previewImg = false
+            },
+            async showPreview(file) {
+                if (file.response) {
+                    this.temp.previewSrc = file.response.data.virtualPath
+                } else {
+                    this.temp.previewSrc = file.url
+                }
+                this.show.previewImg = true
+            },
+            changeUploadFile(info) {
+                this.temp.fileList = info.fileList
+                if (info.file.status === 'done') {
+                    this.$message.success(`${info.file.name} 上传成功`);
+                } else if (info.file.status === 'error') {
+                    this.$message.error(`${info.file.name} 上传失败`);
+                }
+            },
+            removeUploadFile(file) {
+                try {
+                    this.form.goods.images = this.form.goods.images.filter(e => {
+                        return e.virtualPath !== file.url
+                    })
+                } catch (e) {
+                    this.form.demand.images = this.form.demand.images.filter(e => {
+                        return e.virtualPath !== file.url
+                    })
+                }
+
+            },
+
+        }
+    })
+</script>
+</body>
+</html>

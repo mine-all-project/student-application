@@ -39,14 +39,6 @@ public class PaperController extends BaseController {
         log.info("返回结果->保存文章结束:[{}]", entity);
         return ResponseDTO.returnSuccess(entity);
     }
-//
-//    @PostMapping("/update")
-//    public ResponseDTO updatePaper(@RequestBody Paper paper) {
-//        log.info("收到请求->修改文章");
-//        paperService.updatePaper(paper);
-//        log.info("返回结果->修改文章结束:[{}]", paper);
-//        return ResponseDTO.returnSuccess();
-//    }
 
     @GetMapping("/id/{id}")
     @JwtIgnore

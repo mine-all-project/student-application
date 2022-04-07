@@ -8,7 +8,7 @@ import org.example.application.system.entity.FileInfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
@@ -17,10 +17,10 @@ import javax.persistence.OneToOne;
 public class Paper extends BaseEntity {
     @Column(columnDefinition = "varchar(64) default null comment '标题'")
     private String title;
-    @Column(columnDefinition = "varchar(64) default null comment '正文'")
+    @Column(columnDefinition = "longtext default null comment '正文'")
     private String content;
     @Column(columnDefinition = "varchar(64) default null comment '分类'")
     private String type;
-    @OneToOne
+    @ManyToOne
     private FileInfo image;
 }

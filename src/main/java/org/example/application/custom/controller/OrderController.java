@@ -2,6 +2,7 @@ package org.example.application.custom.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
+import org.example.application.common.Groups;
 import org.example.application.custom.entity.Order;
 import org.example.application.custom.service.OrderService;
 import org.example.application.system.dto.ResponseDTO;
@@ -21,7 +22,8 @@ public class OrderController extends BaseController {
     }
 
     @PostMapping("/save")
-    public ResponseDTO saveOrder(HttpServletRequest request,Order form) {
+    public ResponseDTO saveOrder(HttpServletRequest request,@RequestBody Order form) {
+        validator(form, Groups.IsNotNull.class);
         log.info("收到请求->保存订单:[{}]",form);
         Order entity = orderService.saveOrder(request,form);
         log.info("返回结果->保存订单结束:[{}]",entity);

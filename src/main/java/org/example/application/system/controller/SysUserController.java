@@ -12,12 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
 /**
- * 用户管理接口类
+ * 用户接口类
  */
 @RestController
 @RequestMapping(value = "/api/user")
@@ -91,13 +90,6 @@ public class SysUserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @GetMapping("/getUserInfo")
-    public ResponseDTO getUserInfo(HttpServletRequest request) {
-        logger.info("收到请求->获取当前用户信息");
-        SysUser sysUser = sysUserService.getUserInfo(request);
-        logger.info("返回结果->获取当前用户信息结束:[{}]", sysUser);
-        return ResponseDTO.returnSuccess("操作成功", sysUser);
-    }
 
     @GetMapping("/list")
     public ResponseDTO getUserList() {

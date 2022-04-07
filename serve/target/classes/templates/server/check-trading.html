@@ -1,0 +1,595 @@
+<!doctype html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org"
+			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<div data-th-replace="/components/base :: javascript"></div>
+	<div data-th-replace="/components/vue :: javascript"></div>
+	<div data-th-replace="/components/ui :: antd"></div>
+	<style>
+      .drawer-bottom-button {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          border-top: 1px solid #e9e9e9;
+          padding: 10px 16px;
+          background: #fff;
+          text-align: right;
+          z-index: 1;
+      }
+
+      .ant-input-number {
+          width: 100%;
+      }
+	</style>
+</head>
+<body>
+<div id="app">
+	<a-row>
+		<a-col :span="6">
+			<a-input placeholder="输入关键字搜索" v-model="form.searchText"></a-input>
+		</a-col>
+		<a-col :span="6" style="display: flex;justify-content: space-around">
+			<a-button type="primary" @click="search">搜索</a-button>
+			<a-button @click="resetList">重置</a-button>
+		</a-col>
+	</a-row>
+	<a-divider></a-divider>
+	<a-tabs type="card">
+		<a-tab-pane key="1" tab="二手交易">
+			<a-table :columns="columns.goods" :data-source="tableDataList.goods" rowKey="id" :pagination="false">
+				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
+				<span slot="content" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="publisher" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text.username }}</span>
+            </template>
+            <span class="step-content">{{ text.username }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="createTime" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="note" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="type" slot-scope="text">
+						<a-tag color="green" v-if="text === 1">闲置</a-tag>
+						<a-tag color="blue" v-if="text === 2">租赁</a-tag>
+				</span>
+				<span slot="status" slot-scope="text">
+          <a-tag color="green" v-if="text === 0">正常</a-tag>
+          <a-tag color="blue" v-if="text === 1">待审</a-tag>
+          <a-tag color="red" v-if="text === 2">驳回</a-tag>
+				</span>
+				<span slot="action" slot-scope="text, record">
+					<a-button type="primary" size="small" @click="showChangeGoodsStatus(record,0)">通过</a-button>
+					<a-button type="danger" size="small" @click="showChangeGoodsStatus(record,2)">驳回</a-button>
+					<a-button type="default" size="small" @click="showGoodsInfo(record)">查看详情</a-button>
+      	</span>
+			</a-table>
+		</a-tab-pane>
+		<a-tab-pane key="2" tab="需求列表">
+			<a-table :columns="columns.demand" :data-source="tableDataList.demand" rowKey="id" :pagination="false">
+				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
+				<span slot="content" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="publisher" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text.username }}</span>
+            </template>
+            <span class="step-content">{{ text.username }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="createTime" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="note" slot-scope="text">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
+				<span slot="status" slot-scope="text">
+          <a-tag color="green" v-if="text === 0">正常</a-tag>
+          <a-tag color="blue" v-if="text === 1">待审</a-tag>
+          <a-tag color="red" v-if="text === 2">驳回</a-tag>
+				</span>
+				<span slot="action" slot-scope="text, record">
+					<a-button type="primary" size="small" @click="showChangeDemandStatus(record,0)">通过</a-button>
+					<a-button type="danger" size="small" @click="showChangeDemandStatus(record,2)">驳回</a-button>
+					<a-button type="default" size="small" @click="showDemandInfo(record)">查看详情</a-button>
+      	</span>
+			</a-table>
+		</a-tab-pane>
+	</a-tabs>
+	<a-modal title="审核" :visible.sync="show.changeGoodsStatus" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveGoodsCheck" @cancel="closeChangeGoodsStatus">
+		<a-form-model ref="ruleForm" :model="form.goods" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item label="审核意见" prop="note">
+				<a-input v-model="form.goods.note"></a-input>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="审核" :visible.sync="show.changeDemandStatus" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveDemandCheck" @cancel="closeChangeDemandStatus">
+		<a-form-model ref="ruleForm" :model="form.demand" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item label="审核意见" prop="note">
+				<a-input v-model="form.demand.note"></a-input>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="商品详情" :visible.sync="show.goodsInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showGoodsMessage" @cancel="closeGoodsInfo">
+		<p style="display: flex;justify-content: space-around">
+			<span>商品名称：{{form.goods.name}} </span>
+			<span>类型：
+				<span v-if="form.goods.type===1">闲置</span>
+				<span v-if="form.goods.type===2">租赁</span>
+			</span>
+			<span>商品价格：{{form.goods.price}} </span>
+		</p>
+		<a-divider></a-divider>
+		<p>{{form.goods.content}} </p>
+		<a-divider></a-divider>
+		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
+	</a-modal>
+	<a-modal title="需求详情" :visible.sync="show.demandInfo" width="60%" ok-text="查看评论"
+					 cancel-text="取消" @ok="showDemandMessage" @cancel="closeDemandInfo">
+		<p> {{form.demand.title}} </p>
+		<a-divider></a-divider>
+		<p>{{form.demand.content}} </p>
+		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>
+	</a-modal>
+	<a-modal title="商品评论" :visible.sync="show.goodsMessage" width="60%" :footer="null" @cancel="closeGoodsMessage">
+		<a-list v-if="form.goods.messages.length" :data-source="form.goods.messages"
+						:header="form.goods.name"
+						item-layout="horizontal">
+			<a-list-item slot="renderItem" slot-scope="item, index">
+				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
+									 :datetime="item.datetime">
+					<a-avatar slot="avatar" :src="item.publisher.headImg.virtualPath" v-if="item.publisher.headImg"></a-avatar>
+				</a-comment>
+			</a-list-item>
+		</a-list>
+	</a-modal>
+	<a-modal title="需求评论" :visible.sync="show.demandMessage" width="60%" :footer="null" @cancel="closeDemandMessage">
+		<a-list v-if="form.demand.messages.length" :data-source="form.demand.messages"
+						:header="form.demand.name"
+						item-layout="horizontal">
+			<a-list-item slot="renderItem" slot-scope="item, index">
+				<a-comment :author="item.author" :avatar="item.avatar" :content="item.content"
+									 :datetime="item.datetime">
+					<a-avatar slot="avatar" :src="item.publisher.headImg.virtualPath" v-if="item.publisher.headImg"></a-avatar>
+				</a-comment>
+			</a-list-item>
+		</a-list>
+	</a-modal>
+	<a-modal :visible="show.previewImg" :footer="null" @cancel="closePreview">
+		<img style="width: 100%" :src="temp.previewSrc"/>
+	</a-modal>
+</div>
+<script>
+    const app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                columns: {
+                    goods: [
+                        {
+                            dataIndex: 'name',
+                            title: '名称',
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'price',
+                            title: '价格',
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'content',
+                            title: '描述',
+                            scopedSlots: {customRender: 'content'},
+                            ellipsis: true,
+                            width: '20%'
+                        },
+                        {
+                            dataIndex: 'type',
+                            title: '类型',
+                            scopedSlots: {customRender: 'type'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'status',
+                            title: '状态',
+                            scopedSlots: {customRender: 'status'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'publisher',
+                            title: '发布人',
+                            scopedSlots: {customRender: 'publisher'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'createTimeStr',
+                            title: '发布时间',
+                            scopedSlots: {customRender: 'createTime'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'note',
+                            title: '操作备注',
+                            scopedSlots: {customRender: 'note'},
+                            ellipsis: true,
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'action',
+                            title: '操作',
+                            scopedSlots: {customRender: 'action'},
+                            width: '20%'
+                        },
+                    ],
+                    demand: [
+                        {
+                            dataIndex: 'title',
+                            title: '标题',
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'content',
+                            title: '描述',
+                            scopedSlots: {customRender: 'content'},
+                            ellipsis: true,
+                            width: '20%'
+                        },
+                        {
+                            dataIndex: 'status',
+                            title: '状态',
+                            scopedSlots: {customRender: 'status'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'publisher',
+                            title: '发布人',
+                            scopedSlots: {customRender: 'publisher'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'createTimeStr',
+                            title: '发布时间',
+                            scopedSlots: {customRender: 'createTime'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'note',
+                            title: '操作备注',
+                            scopedSlots: {customRender: 'note'},
+                            ellipsis: true,
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'action',
+                            title: '操作',
+                            scopedSlots: {customRender: 'action'},
+                            width: '20%'
+                        },
+                    ],
+                },
+                tableDataList: {
+                    goods: [],
+                    demand: [],
+                },
+                rules: {
+                    note: [
+                        {required: true, message: '请输入商品名称', trigger: 'change'},
+                    ],
+                },
+                labelCol: {span: 5},
+                wrapperCol: {span: 16},
+                form: {
+                    goods: {messages: [], images: {}},
+                    demand: {messages: [], images: {}},
+                    searchText: '',
+                    messages: [],
+                },
+                show: {
+                    previewImg: false,
+                    goodsInfo: false,
+                    demandInfo: false,
+                    goodsMessage: false,
+                    demandMessage: false,
+                    changeGoodsStatus: false,
+                    changeDemandStatus: false,
+                },
+                temp: {
+                    previewSrc: '',
+                    fileList: [],
+                    allGoods: [],
+                    searchGoods: [],
+                    messages: [],
+                    message: '',
+                    isMinePublish: false,
+                },
+                sysUser: sessionStorage.getItem("sysUser")
+            };
+        },
+        mounted() {
+            this.getList()
+        },
+        methods: {
+            showChangeGoodsStatus(record, status) {
+                this.form.goods = record
+                this.form.goods.status = status
+                this.show.changeGoodsStatus = true
+            },
+            closeChangeGoodsStatus() {
+                this.show.changeGoodsStatus = false
+            },
+            saveGoodsCheck() {
+                let data = this.form.goods
+                let url = '/api/goods'
+                if (data.status === 0) {
+                    url += '/checkPass'
+                } else if (data.status === 2) {
+                    url += '/checkFail'
+                }
+                axios.post(url, data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.form.demand = {messages: []}
+                    this.getList()
+                    this.show.changeGoodsStatus = false
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+
+            showChangeDemandStatus(record, status) {
+                this.form.demand = record
+                this.form.demand.status = status
+                this.show.changeDemandStatus = true
+            },
+            closeChangeDemandStatus() {
+                this.show.changeDemandStatus = false
+            },
+            saveDemandCheck() {
+                let data = this.form.demand
+                let url = '/api/demand'
+                if (data.status === 0) {
+                    url += '/checkPass'
+                } else if (data.status === 2) {
+                    url += '/checkFail'
+                }
+                axios.post(url, data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.form.demand = {messages: []}
+                    this.getList()
+                    this.show.changeDemandStatus = false
+
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+
+            showDemandInfo(demand) {
+                this.form.demand = demand
+                this.temp.fileList = demand.images.map(e => {
+                    return {
+                        uid: e.id,
+                        name: e.oldName,
+                        status: 'done',
+                        url: e.virtualPath,
+                    }
+                })
+                this.show.demandInfo = true
+            },
+            closeDemandInfo() {
+                this.show.demandInfo = false
+            },
+            showDemandMessage() {
+                this.show.demandMessage = true
+            },
+            closeDemandMessage() {
+                this.temp.messages = ''
+                this.show.demandMessage = false
+            },
+            saveDemandMessage() {
+                this.form.demand.messages.push({content: this.temp.message})
+                this.saveDemand()
+                this.temp.message = ''
+            },
+
+            showGoodsInfo(goods) {
+                this.form.goods = goods
+                this.temp.fileList = goods.images.map(e => {
+                    return {
+                        uid: e.id,
+                        name: e.oldName,
+                        status: 'done',
+                        url: e.virtualPath,
+                    }
+                })
+                this.show.goodsInfo = true
+            },
+            closeGoodsInfo() {
+                this.show.goodsInfo = false
+            },
+            showGoodsMessage() {
+                this.show.goodsMessage = true
+            },
+            closeGoodsMessage() {
+                this.temp.messages = ''
+                this.show.goodsMessage = false
+            },
+            saveGoodsMessage() {
+                this.form.goods.messages.push({content: this.temp.message})
+                this.saveGoods()
+                this.temp.message = ''
+            },
+
+            resetList() {
+                this.temp.search = ''
+                this.getList()
+            },
+            search() {
+                this.temp.isMinePublish = false
+                axios.get(`/api/goods/search/${this.form.searchText}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterGoods(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                axios.get(`/api/demand/search/${this.form.searchText}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterDemand(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            getList() {
+                this.temp.isMinePublish = false
+                axios.get('/api/goods/list').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterGoods(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                axios.get('/api/demand/list').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterDemand(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            filterGoods(source) {
+                const allGoods = source.map(e => {
+                    let images = e.images.sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    return {
+                        id: e.id,
+                        name: e.name,
+                        price: e.price,
+                        image: e.images.length ? e.images[0].virtualPath : '',
+                        images: images,
+                        content: e.content,
+                        type: e.type,
+                        status: e.status,
+                        note: e.note,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                        publisher: e.publisher,
+                        messages: e.messages,
+                    }
+                });
+                this.tableDataList.goods = allGoods
+            },
+            filterDemand(source) {
+                const demand = source.map(e => {
+                    let images = e.images.sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    return {
+                        id: e.id,
+                        name: e.name,
+                        title: e.title,
+                        price: e.price,
+                        image: e.images.length ? e.images[0].virtualPath : '',
+                        images: images,
+                        content: e.content,
+                        type: e.type,
+                        status: e.status,
+                        note: e.note,
+                        publisher: e.publisher,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                        messages: e.messages,
+                    }
+                });
+                this.tableDataList.demand = demand
+            },
+            closePreview() {
+                this.show.previewImg = false
+            },
+            async showPreview(file) {
+                if (file.response) {
+                    this.temp.previewSrc = file.response.data.virtualPath
+                } else {
+                    this.temp.previewSrc = file.url
+                }
+                this.show.previewImg = true
+            },
+        }
+    })
+</script>
+</body>
+</html>
