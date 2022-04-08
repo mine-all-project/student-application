@@ -10,6 +10,7 @@ import org.example.application.custom.service.PaperService;
 import org.example.application.system.dto.ResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -32,10 +33,10 @@ public class PaperController extends BaseController {
     }
 
     @PostMapping("/save")
-    public ResponseDTO savePaper(@RequestBody PaperForm form) {
+    public ResponseDTO savePaper(HttpServletRequest request, @RequestBody PaperForm form) {
         validator(form, Groups.IsNotNull.class);
         log.info("收到请求->保存文章:[{}]", form);
-        Paper entity = paperService.savePaper(form);
+        Paper entity = paperService.savePaper(request,form);
         log.info("返回结果->保存文章结束:[{}]", entity);
         return ResponseDTO.returnSuccess(entity);
     }
@@ -50,9 +51,9 @@ public class PaperController extends BaseController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseDTO deletePaperById(@PathVariable String id) {
+    public ResponseDTO deletePaperById(HttpServletRequest request,@PathVariable String id) {
         log.info("收到请求->删除文章,id:[{}]", id);
-        paperService.deletePaperById(id);
+        paperService.deletePaperById(request,id);
         log.info("返回结果->删除文章结束");
         return ResponseDTO.returnSuccess();
     }

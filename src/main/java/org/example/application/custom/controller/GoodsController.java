@@ -8,6 +8,7 @@ import org.example.application.custom.service.GoodsService;
 import org.example.application.system.dto.ResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -30,9 +31,9 @@ public class GoodsController extends BaseController {
     }
 
     @PostMapping("/save")
-    public ResponseDTO saveGoods(@RequestBody Goods form) {
+    public ResponseDTO saveGoods(HttpServletRequest request, @RequestBody Goods form) {
         log.info("收到请求->保存商品:[{}]", form);
-        Goods entity = goodsService.saveGoods(form);
+        Goods entity = goodsService.saveGoods(request, form);
         log.info("返回结果->保存商品结束:[{}]", entity);
         return ResponseDTO.returnSuccess();
     }
@@ -59,9 +60,9 @@ public class GoodsController extends BaseController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseDTO deleteGoodsById(@PathVariable String id) {
+    public ResponseDTO deleteGoodsById(HttpServletRequest request, @PathVariable String id) {
         log.info("收到请求->删除商品,id:[{}]", id);
-        goodsService.deleteGoodsById(id);
+        goodsService.deleteGoodsById(request, id);
         log.info("返回结果->删除商品结束");
         return ResponseDTO.returnSuccess();
     }

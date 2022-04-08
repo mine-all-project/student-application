@@ -64,7 +64,6 @@ public class ResponseDTO implements Serializable {
     }
 
     /*---------------- AUTH_FAIL -------------*/
-
     public static ResponseDTO returnAuthFail(String message) {
         return new ResponseDTO(ResponseCode.AUTH_FAIL, message);
     }

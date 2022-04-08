@@ -1,6 +1,6 @@
 <!doctype html>
-<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org"
-			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html class="x-admin-sm"
+>
 <head>
 	<div data-th-replace="/components/base :: javascript"></div>
 	<div data-th-replace="/components/vue :: javascript"></div>
@@ -25,30 +25,25 @@
 </head>
 <body>
 <div id="app">
-	<a-row>
-		<a-col :span="6">
-			<a-input placeholder="输入词条搜索" v-model="form.searchText"></a-input>
-		</a-col>
-		<a-col :span="6" style="display: flex;justify-content: space-around">
-			<a-button type="primary" @click="search">搜索</a-button>
-			<a-button @click="resetList">重置</a-button>
-			<a-button @click="showAddOrderForm">添加账单</a-button>
-		</a-col>
-	</a-row>
-	<a-divider></a-divider>
-	<a-tabs type="card">
-		<a-tab-pane key="1" tab="全部账单">
-			<a-table :columns="columns.order" :data-source="tableDataList.allOrder" rowKey="id" :pagination="false">
-				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
-				<span slot="person" slot-scope="text,record">
+	<a-table :columns="columns.order" :data-source="tableDataList.allOrder" rowKey="id" :pagination="false">
+		<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
+		<span slot="goods" slot-scope="text,record">
           <a-tooltip placement="topLeft">
             <template slot="title">
-              <span>{{ text.name }}</span>
+              <span>{{ record.goods.name }}</span>
             </template>
-            <span class="step-content">{{ text.name }}</span>
+            <span class="step-content">{{ record.goods.name }}</span>
           </a-tooltip>
         </span>
-				<span slot="createTime" slot-scope="text">
+		<span slot="price" slot-scope="text,record">
+          <a-tooltip placement="topLeft">
+            <template slot="title">
+              <span>{{ record.goods.price }}</span>
+            </template>
+            <span class="step-content">{{ record.goods.price }}</span>
+          </a-tooltip>
+        </span>
+		<span slot="createTime" slot-scope="text">
           <a-tooltip placement="topLeft">
             <template slot="title">
               <span>{{ text }}</span>
@@ -56,190 +51,18 @@
             <span class="step-content">{{ text }}</span>
           </a-tooltip>
         </span>
-				<span slot="note" slot-scope="text">
+		<span slot="user" slot-scope="text,record">
           <a-tooltip placement="topLeft">
             <template slot="title">
-              <span>{{ text }}</span>
+              <span>{{ record.user.username }}</span>
             </template>
-            <span class="step-content">{{ text }}</span>
+            <span class="step-content">{{ record.user.username }}</span>
           </a-tooltip>
         </span>
-				<span slot="type" slot-scope="text">
-						<a-tag color="green" v-if="text === 1">月供账单</a-tag>
-						<a-tag color="blue" v-if="text === 2">其他账单</a-tag>
-				</span>
-				<span slot="status" slot-scope="text">
-          <a-tag color="green" v-if="text === 0">已缴费</a-tag>
-          <a-tag color="blue" v-if="text === 1">待缴费</a-tag>
-          <a-tag color="red" v-if="text === 2">逾期</a-tag>
-				</span>
-				<span slot="action" slot-scope="text, record">
-					<a-button type="default" size="small" @click="passOrder(record)">缴费</a-button>
-					<a-button type="default" size="small" @click="failOrder(record)">逾期</a-button>
-					<a-button type="primary" size="small" @click="showEditOrderForm(record,2)">编辑</a-button>
+		<span slot="action" slot-scope="text, record">
 					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
       	</span>
-			</a-table>
-		</a-tab-pane>
-		<a-tab-pane key="2" tab="已缴费">
-			<a-table :columns="columns.order" :data-source="tableDataList.passOrder" rowKey="id" :pagination="false">
-				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
-				<span slot="person" slot-scope="text,record">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text.name }}</span>
-            </template>
-            <span class="step-content">{{ text.name }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="createTime" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="note" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="type" slot-scope="text">
-						<a-tag color="green" v-if="text === 1">月供账单</a-tag>
-						<a-tag color="blue" v-if="text === 2">其他账单</a-tag>
-				</span>
-				<span slot="status" slot-scope="text">
-          <a-tag color="green" v-if="text === 0">已缴费</a-tag>
-          <a-tag color="blue" v-if="text === 1">待缴费</a-tag>
-          <a-tag color="red" v-if="text === 2">逾期</a-tag>
-				</span>
-				<span slot="action" slot-scope="text, record">
-						<a-button type="default" size="small" @click="passOrder(record)">缴费</a-button>
-					<a-button type="default" size="small" @click="failOrder(record)">逾期</a-button>
-					<a-button type="primary" size="small" @click="showEditOrderForm(record,2)">编辑</a-button>
-					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
-      	</span>
-			</a-table>
-		</a-tab-pane>
-		<a-tab-pane key="3" tab="未缴费">
-			<a-table :columns="columns.order" :data-source="tableDataList.waitOrder" rowKey="id" :pagination="false">
-				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
-				<span slot="person" slot-scope="text,record">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text.name }}</span>
-            </template>
-            <span class="step-content">{{ text.name }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="createTime" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="note" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="type" slot-scope="text">
-						<a-tag color="green" v-if="text === 1">月供账单</a-tag>
-						<a-tag color="blue" v-if="text === 2">其他账单</a-tag>
-				</span>
-				<span slot="status" slot-scope="text">
-          <a-tag color="green" v-if="text === 0">已缴费</a-tag>
-          <a-tag color="blue" v-if="text === 1">待缴费</a-tag>
-          <a-tag color="red" v-if="text === 2">逾期</a-tag>
-				</span>
-				<span slot="action" slot-scope="text, record">
-					<a-button type="default" size="small" @click="passOrder(record)">缴费</a-button>
-					<a-button type="default" size="small" @click="failOrder(record)">逾期</a-button>
-					<a-button type="primary" size="small" @click="showEditOrderForm(record,2)">编辑</a-button>
-					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
-      	</span>
-			</a-table>
-		</a-tab-pane>
-		<a-tab-pane key="4" tab="逾期账单">
-			<a-table :columns="columns.order" :data-source="tableDataList.failOrder" rowKey="id" :pagination="false">
-				<span slot="indexNum" slot-scope="text">{{ text + 1 }}</span>
-				<span slot="person" slot-scope="text,record">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text.name }}</span>
-            </template>
-            <span class="step-content">{{ text.name }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="createTime" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="note" slot-scope="text">
-          <a-tooltip placement="topLeft">
-            <template slot="title">
-              <span>{{ text }}</span>
-            </template>
-            <span class="step-content">{{ text }}</span>
-          </a-tooltip>
-        </span>
-				<span slot="type" slot-scope="text">
-						<a-tag color="green" v-if="text === 1">月供账单</a-tag>
-						<a-tag color="blue" v-if="text === 2">其他账单</a-tag>
-				</span>
-				<span slot="status" slot-scope="text">
-          <a-tag color="green" v-if="text === 0">已缴费</a-tag>
-          <a-tag color="blue" v-if="text === 1">待缴费</a-tag>
-          <a-tag color="red" v-if="text === 2">逾期</a-tag>
-				</span>
-				<span slot="action" slot-scope="text, record">
-					<a-button type="default" size="small" @click="passOrder(record)">缴费</a-button>
-					<a-button type="default" size="small" @click="failOrder(record)">逾期</a-button>
-					<a-button type="primary" size="small" @click="showEditOrderForm(record,2)">编辑</a-button>
-					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
-      	</span>
-			</a-table>
-		</a-tab-pane>
-	</a-tabs>
-	<a-modal title="添加账单" :visible.sync="show.addOrderForm" width="30%" ok-text="确认"
-					 cancel-text="取消" @ok="saveOrderForm" @cancel="closeAddOrderForm">
-		<a-form-model ref="orderForm" :model="form.order" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-			<a-form-model-item label="账单人" prop="personId">
-				<a-select style="width: 100%" @change="changePerson" v-model="form.order.personId">
-					<a-select-option :value="item.id" :key="item.id" v-for="item in options.person"> {{item.name}}
-					</a-select-option>
-				</a-select>
-			</a-form-model-item>
-			<a-form-model-item label="金额" prop="price">
-				<a-input-number :min="0" v-model="form.order.price"></a-input-number>
-			</a-form-model-item>
-			<a-form-model-item label="词条" prop="keyword">
-				<a-input v-model="form.order.keyword"></a-input>
-			</a-form-model-item>
-			<a-form-model-item label="账单类型" prop="type">
-				<a-radio-group name="type" v-model="form.order.type">
-					<a-radio :value="1">月供账单</a-radio>
-					<a-radio :value="2">其他账单</a-radio>
-				</a-radio-group>
-			</a-form-model-item>
-			<a-form-model-item label="备注" prop="note">
-				<a-textarea v-model="form.order.note" :rows="4"></a-textarea>
-			</a-form-model-item>
-		</a-form-model>
-	</a-modal>
+	</a-table>
 </div>
 <script>
     const app = new Vue({
@@ -251,46 +74,39 @@
                 columns: {
                     order: [
                         {
-                            dataIndex: 'no',
-                            title: '流水号',
+                            dataIndex: 'id',
+                            title: '账单id',
                         },
                         {
                             dataIndex: 'price',
                             title: '金额',
+                            scopedSlots: {customRender: 'price'},
                         },
                         {
-                            dataIndex: 'keyword',
-                            title: '词条',
-                            ellipsis: true,
+                            dataIndex: 'goods',
+                            title: '商品',
+                            scopedSlots: {customRender: 'goods'},
                         },
                         {
-                            dataIndex: 'type',
-                            title: '类型',
-                            scopedSlots: {customRender: 'type'},
-                        },
-                        {
-                            dataIndex: 'status',
-                            title: '状态',
-                            scopedSlots: {customRender: 'status'},
+                            dataIndex: 'user',
+                            title: '用户',
+                            scopedSlots: {customRender: 'user'},
                             width: '10%'
                         },
                         {
-                            dataIndex: 'person',
-                            title: '账单人',
-                            scopedSlots: {customRender: 'person'},
+                            dataIndex: 'address',
+                            title: '地址',
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'phone',
+                            title: '电话',
                             width: '10%'
                         },
                         {
                             dataIndex: 'createTime',
                             title: '时间',
                             scopedSlots: {customRender: 'createTime'},
-                            width: '10%'
-                        },
-                        {
-                            dataIndex: 'note',
-                            title: '备注',
-                            scopedSlots: {customRender: 'note'},
-                            ellipsis: true,
                             width: '10%'
                         },
                         {
@@ -338,10 +154,9 @@
         },
         mounted() {
             this.getList()
-            this.getPersonList()
         },
         methods: {
-            passOrder(record){
+            passOrder(record) {
                 const _this = this
                 _this.$confirm({
                     title: '确认缴费?',
@@ -361,7 +176,7 @@
                     },
                 });
             },
-            failOrder(record){
+            failOrder(record) {
                 const _this = this
                 _this.$confirm({
                     title: '确认逾期?',
@@ -389,20 +204,6 @@
             },
             showOrderInfo(e) {
                 console.log(e)
-            },
-            search() {
-                axios.get(`/api/order/search/${this.form.searchText}`).then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    if (result.data !== null) {
-                        this.filterList(result.data)
-                    }
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
             },
             getPersonList() {
                 axios.get('/api/person/list').then(response => {
@@ -472,7 +273,7 @@
                 this.getList()
             },
             getList() {
-                axios.get('/api/order/list').then(response => {
+                axios.get('/api/order/get/list').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
@@ -486,25 +287,19 @@
                 });
             },
             filterList(source) {
-                const dataList = source.map(e => {
+                this.tableDataList.allOrder = source.map(e => {
                     return {
                         id: e.id,
                         no: e.no,
-                        price: e.price,
-                        keyword: e.keyword,
-                        type: e.type,
+                        address: e.address,
                         status: e.status,
+                        phone: e.phone,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
-                        note: e.note,
-                        person: e.person,
-                        personId: e.person.id,
+                        goods: e.goods,
+                        user: e.user,
                     }
-                });
-                this.tableDataList.allOrder = dataList
-                this.tableDataList.passOrder = dataList.filter(e => e.status === 0)
-                this.tableDataList.waitOrder = dataList.filter(e => e.status === 1)
-                this.tableDataList.failOrder = dataList.filter(e => e.status === 2)
+                })
             },
         }
     })

@@ -8,6 +8,7 @@ import org.example.application.system.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -31,7 +32,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public Goods saveGoods(Goods entity) {
+    public Goods saveGoods(HttpServletRequest request, Goods entity) {
+        checkGoodsAuth(request, jwtConfigure, userDAO);
         return goodsDAO.saveGoods(entity);
     }
 
@@ -42,7 +44,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public void deleteGoodsById(String id) {
+    public void deleteGoodsById(HttpServletRequest request, String id) {
+        checkGoodsAuth(request, jwtConfigure, userDAO);
         goodsDAO.deleteGoodsById(id);
     }
 

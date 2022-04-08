@@ -10,4 +10,6 @@ public interface SystemService {
     String loginCheck(UserForm form);
 
     SysUser getUserInfo(HttpServletRequest request);
+
+    SysUser registry(UserForm form);
 }

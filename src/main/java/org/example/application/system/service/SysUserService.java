@@ -35,11 +35,11 @@ public interface SysUserService extends BaseService {
 
     void updateUserInfo(UpdateUserInfoForm form);
 
-    void orderCheckPass(String id);
+    void goodsCheckPass(String id);
 
-    void orderCheckFail(String id);
+    void goodsCheckFail(String id);
 
-    void orderCountCheckPass(String id);
+    void paperCheckPass(String id);
 
-    void orderCountCheckFail(String id);
+    void paperCheckFail(String id);
 }

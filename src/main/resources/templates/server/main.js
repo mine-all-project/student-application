@@ -3,7 +3,7 @@ const app = new Vue({
     components: {},
     data() {
         return {
-            isDebug: true,
+            isDebug: false,
             pageUrl: '/server/demo.html',
             headers: headers,
             labelCol: {span: 5},
@@ -54,20 +54,6 @@ const app = new Vue({
             menus: [],
             allMenus: [
                 {
-                    key: '1',
-                    name: '用户管理',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '11',
-                            name: '用户列表',
-                            icon: 'appstore',
-                            url: '/server/person-list.html',
-                        },
-                    ]
-                },
-                {
                     key: '3',
                     name: '信息管理',
                     icon: 'appstore',
@@ -94,6 +80,18 @@ const app = new Vue({
                     url: '/server/goods-list.html',
                 },
                 {
+                    key: '7',
+                    name: '订单管理',
+                    icon: 'appstore',
+                    url: '/server/order-list.html',
+                },
+                {
+                    key: '2',
+                    name: '体温查看',
+                    icon: 'appstore',
+                    url: '/server/temperature-list.html',
+                },
+                {
                     key: '4',
                     name: '管理员管理',
                     icon: 'appstore',
@@ -107,15 +105,75 @@ const app = new Vue({
                         },
                         {
                             key: '41',
-                            name: '管理员信息管理',
+                            name: '用户管理',
                             icon: 'appstore',
                             url: '/server/user-list.html',
                         },
                     ]
                 },
             ],
-            sysMenus: [],
-            managerMenus: [],
+            sysMenus: [
+                {
+                    key: '4',
+                    name: '管理员管理',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '40',
+                            name: '权限管理',
+                            icon: 'appstore',
+                            url: '/server/user-list-manage.html',
+                        },
+                        {
+                            key: '41',
+                            name: '用户管理',
+                            icon: 'appstore',
+                            url: '/server/user-list.html',
+                        },
+                    ]
+                },
+            ],
+            managerMenus: [
+                {
+                key: '3',
+                name: '信息管理',
+                icon: 'appstore',
+                url: '',
+                children: [
+                    {
+                        key: '31',
+                        name: '政策信息',
+                        icon: 'appstore',
+                        url: '/server/policy-list.html',
+                    },
+                    {
+                        key: '32',
+                        name: '疫情防护信息',
+                        icon: 'appstore',
+                        url: '/server/epidemic-list.html',
+                    },
+                ]
+            },
+                {
+                    key: '5',
+                    name: '商品管理',
+                    icon: 'appstore',
+                    url: '/server/goods-list.html',
+                },
+                {
+                    key: '7',
+                    name: '订单管理',
+                    icon: 'appstore',
+                    url: '/server/order-list.html',
+                },
+                {
+                    key: '2',
+                    name: '体温查看',
+                    icon: 'appstore',
+                    url: '/server/temperature-list.html',
+                },
+            ],
             welcome: true,
             userInfo: {},
             temp: {
@@ -216,7 +274,7 @@ const app = new Vue({
             // window.location.href = url
         },
         getUserInfo() {
-            this.axios.get('/api/user/getUserInfo').then(response => {
+            this.axios.get('/api/getUserInfo').then(response => {
                 const result = response.data
                 if (result.status !== 200) {
                     this.$message.error(result.message);
@@ -232,12 +290,12 @@ const app = new Vue({
         },
         initUserMenus() {
             let rule = this.userInfo.role
-            if (rule === 0) {
+            if (rule === 1) {
                 this.menus = this.sysMenus
-            } else if (rule === 1) {
-                this.menus = this.managerMenus
             } else if (rule === 2) {
-                this.menus = this.userMenus
+                this.menus = this.managerMenus
+            }else if (rule === 0) {
+                this.menus = this.allMenus
             }
             if (this.isDebug) {
                 this.menus = this.allMenus

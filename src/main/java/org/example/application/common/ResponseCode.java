@@ -10,7 +10,7 @@ public enum ResponseCode {
     ERROR(500),
     AUTH_FAIL(401);
     @Getter
-    private int code;
+    private final int code;
 
     ResponseCode(int code) {
         this.code = code;

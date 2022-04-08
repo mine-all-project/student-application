@@ -99,34 +99,34 @@ public class SysUserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", list);
     }
 
-    @PostMapping("/order/checkPass/{id}")
-    public ResponseDTO orderCheckPass(@PathVariable String id) {
-        logger.info("收到请求->允许管理账单[{}]", id);
-        sysUserService.orderCheckPass(id);
-        logger.info("返回结果->允许管理账单结束");
+    @PostMapping("/goods/checkPass/{id}")
+    public ResponseDTO goodsCheckPass(@PathVariable String id) {
+        logger.info("收到请求->允许管理商品[{}]", id);
+        sysUserService.goodsCheckPass(id);
+        logger.info("返回结果->允许管理商品结束");
         return ResponseDTO.returnSuccess();
     }
 
-    @PostMapping("/order/checkFail/{id}")
-    public ResponseDTO orderCheckFail(@PathVariable String id) {
-        logger.info("收到请求->禁止管理账单,id:[{}]", id);
-        sysUserService.orderCheckFail(id);
-        logger.info("返回结果->禁止管理账单结束");
+    @PostMapping("/goods/checkFail/{id}")
+    public ResponseDTO goodsCheckFail(@PathVariable String id) {
+        logger.info("收到请求->禁止管理商品,id:[{}]", id);
+        sysUserService.goodsCheckFail(id);
+        logger.info("返回结果->禁止管理商品结束");
         return ResponseDTO.returnSuccess();
     }
-    @PostMapping("/orderCount/checkPass/{id}")
-    public ResponseDTO orderCountCheckPass(@PathVariable String id) {
-        logger.info("收到请求->允许管理账务,id:[{}]", id);
-        sysUserService.orderCountCheckPass(id);
-        logger.info("返回结果->允许管理账务结束");
+    @PostMapping("/paper/checkPass/{id}")
+    public ResponseDTO paperCheckPass(@PathVariable String id) {
+        logger.info("收到请求->允许管理信息,id:[{}]", id);
+        sysUserService.paperCheckPass(id);
+        logger.info("返回结果->允许管理信息结束");
         return ResponseDTO.returnSuccess();
     }
 
-    @PostMapping("/orderCount/checkFail/{id}")
-    public ResponseDTO orderCountCheckFail(@PathVariable String id) {
-        logger.info("收到请求->禁止管理账务,id:[{}]", id);
-        sysUserService.orderCountCheckFail(id);
-        logger.info("返回结果->禁止管理账务结束");
+    @PostMapping("/paper/checkFail/{id}")
+    public ResponseDTO paperCheckFail(@PathVariable String id) {
+        logger.info("收到请求->禁止管理信息,id:[{}]", id);
+        sysUserService.paperCheckFail(id);
+        logger.info("返回结果->禁止管理信息结束");
         return ResponseDTO.returnSuccess();
     }
 }

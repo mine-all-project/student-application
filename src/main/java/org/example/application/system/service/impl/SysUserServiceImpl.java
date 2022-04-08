@@ -54,6 +54,8 @@ public class SysUserServiceImpl implements SysUserService {
     public SysUser addUser(UserForm form) {
         SysUser entity = new SysUser();
         BeanUtils.copyProperties(form, entity);
+        String password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
+        entity.setPassword(password);
         return userDAO.save(entity);
     }
 
@@ -136,34 +138,34 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public void orderCheckPass(String id) {
+    public void goodsCheckPass(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
-        user.setOrderStatus(DIC.AUTH);
+        user.setGoodsStatus(DIC.AUTH);
         userDAO.save(user);
     }
 
     @Override
-    public void orderCheckFail(String id) {
+    public void goodsCheckFail(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
-        user.setOrderStatus(DIC.UN_AUTH);
+        user.setGoodsStatus(DIC.UN_AUTH);
         userDAO.save(user);
     }
 
     @Override
-    public void orderCountCheckPass(String id) {
+    public void paperCheckPass(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
-        user.setOrderCountStatus(DIC.AUTH);
+        user.setPaperStatus(DIC.AUTH);
         userDAO.save(user);
     }
 
     @Override
-    public void orderCountCheckFail(String id) {
+    public void paperCheckFail(String id) {
         SysUser user = userDAO.findById(id);
         AssertUtils.notNull(user, "用户不存在");
-        user.setOrderCountStatus(DIC.UN_AUTH);
+        user.setPaperStatus(DIC.UN_AUTH);
         userDAO.save(user);
     }
 }

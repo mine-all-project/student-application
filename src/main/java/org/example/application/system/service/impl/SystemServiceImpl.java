@@ -2,6 +2,7 @@ package org.example.application.system.service.impl;
 
 import cn.hutool.crypto.digest.MD5;
 import org.example.application.common.ApplicationException;
+import org.example.application.common.DIC;
 import org.example.application.common.utils.AssertUtils;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.common.utils.jwt.JwtTokenUtils;
@@ -47,7 +48,7 @@ public class SystemServiceImpl implements SystemService {
         logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
         SysUser sysUser = sysUserService.findByUsername(username);
         AssertUtils.notNull(sysUser, "用户名不存在");
-        if (sysUser.getStatus() == 1) {
+        if (sysUser.getStatus() == DIC.USER_LOCK) {
             throw new ApplicationException("账户已被禁用，请联系管理员");
         }
         if (sysUser.getPassword().equals(password)) {
@@ -59,5 +60,11 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public SysUser getUserInfo(HttpServletRequest request) {
         return sysUserService.getUserInfo(request);
+    }
+
+    @Override
+    public SysUser registry(UserForm form) {
+        form.setRole(2);
+        return sysUserService.addUser(form);
     }
 }

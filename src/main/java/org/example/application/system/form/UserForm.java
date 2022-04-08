@@ -12,7 +12,6 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.util.List;
 
 /**
  * TODO 用户信息提交Form
@@ -26,11 +25,11 @@ public class UserForm extends BaseForm<SysUser> {
     private String id;
 
     @Length(max = 32, message = "长度错误", groups = {Groups.IsCheckLength.class, Groups.IsLogin.class})
-    @NotBlank(message = "用户名不能为空", groups = {Groups.IsNotNull.class, Groups.IsLogin.class})
+    @NotBlank(message = "用户名不能为空", groups = {Groups.IsAdd.class, Groups.IsNotNull.class, Groups.IsLogin.class})
     private String username;
 
     @Length(max = 32, message = "长度错误", groups = {Groups.IsCheckLength.class, Groups.IsLogin.class})
-    @NotBlank(message = "密码不能为空", groups = {Groups.IsNotNull.class, Groups.IsLogin.class})
+    @NotBlank(message = "密码不能为空", groups = {Groups.IsAdd.class, Groups.IsNotNull.class, Groups.IsLogin.class})
     private String password;
 
     @Length(max = 32)
@@ -40,7 +39,6 @@ public class UserForm extends BaseForm<SysUser> {
     @Length(max = 3)
     @NotNull(message = "年龄不能为空", groups = {Groups.IsAdd.class, Groups.IsEdit.class})
     private Integer age;
-    private List<String> tags;
 
     private Integer role;
 

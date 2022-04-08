@@ -35,17 +35,6 @@
         <a-tag color="green" v-if="status === 0">正常</a-tag>
         <a-tag color="red" v-else>禁用</a-tag>
       </span>
-			<span slot="action" slot-scope="text, record" v-if="record.role === 1">
-          <a-button type="primary" size="small" @click="saveStatus(1,0,record)"
-										v-if="record.goodsStatus === 1">允许管理商品</a-button>
-				  <a-button type="danger" size="small" @click="saveStatus(1,1,record)"
-										v-if="record.goodsStatus === 0">禁止管理商品</a-button>
-					<a-divider type="vertical"></a-divider>
-          <a-button type="primary" size="small" @click="saveStatus(2,0,record)"
-										v-if="record.paperStatus === 1">允许管理信息</a-button>
-          <a-button type="danger" size="small" @click="saveStatus(2,1,record)"
-										v-if="record.paperStatus === 0">禁止管理信息</a-button>
-        </span>
 			</span>
 		</a-table>
 	</div>
@@ -117,7 +106,7 @@
                 this.getList()
             },
             getList() {
-                axios.get('/api/user/list').then(response => {
+                axios.get('/api/temperature/list').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
@@ -128,39 +117,6 @@
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
-                });
-            },
-            saveStatus(type, status, e) {
-                const _this = this;
-                this.$confirm({
-                    title: '确认操作?',
-                    cancelText: '取消',
-                    okText: '确定',
-                    onOk() {
-                        let url = `/api/user`
-                        if (type === 1) {
-                            url += '/goods'
-                        } else if (type === 2) {
-                            url += '/paper'
-                        }
-                        if (status === 0) {
-                            url += '/checkPass'
-                        } else if (status === 1) {
-                            url += '/checkFail'
-                        }
-                        url += `/${e.id}`
-                        axios.post(url).then(response => {
-                            const result = response.data
-                            if (result.status !== 200) {
-                                _this.$message.error(result.message);
-                                return
-                            }
-                            _this.$message.success(result.message)
-                            _this.getList()
-                        }).catch(function (error) {
-                            console.log('请求出现错误:', error);
-                        });
-                    },
                 });
             },
         }

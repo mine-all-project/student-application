@@ -37,9 +37,9 @@
 				</a-form-model-item>
 				<a-form-model-item label="权限" prop="role">
 					<a-radio-group v-model="form.userInfo.role" default-value="2">
-						<!--						<a-radio value="999">超级管理员*</a-radio>-->
-						<a-radio :value="1">用户管理员</a-radio>
-						<a-radio :value="2">普通用户</a-radio>
+<!--						<a-radio value="9">超级管理员*</a-radio>-->
+						<a-radio :value="1">系统管理员</a-radio>
+						<a-radio :value="2">社区管理员</a-radio>
 					</a-radio-group>
 				</a-form-model-item>
 				<a-form-model-item label="标签" prop="tags" v-if="false">
@@ -72,9 +72,9 @@
       </span>
 			<span slot="role" slot-scope="role">
           <a-tag color="pink" v-if="role === 999">*超级管理员*</a-tag>
-          <a-tag color="green" v-if="role === 0">系统管理员</a-tag>
-          <a-tag color="orange" v-if="role === 1">用户管理员</a-tag>
-          <a-tag color="blue" v-if="role === 2">普通用户</a-tag>
+          <a-tag color="green" v-if="role === 999">系统管理员</a-tag>
+          <a-tag color="orange" v-if="role === 1">系统管理员</a-tag>
+          <a-tag color="blue" v-if="role === 2">社区管理员</a-tag>
       </span>
 			<span slot="status" slot-scope="status">
         <a-tag color="green" v-if="status === 0">正常</a-tag>
@@ -314,7 +314,6 @@
                 this.show.resetPassword = true
             },
             submitResetPassword() {
-                console.log(this.form.resetPassword)
                 axios.post('/api/user/resetPassword', this.form.resetPassword).then(result => {
                     console.log('通过api获取到的数据:', result);
                     if (result.status !== 200) {

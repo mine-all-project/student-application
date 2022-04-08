@@ -1,6 +1,5 @@
 package org.example.application.system.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
 import org.example.application.common.Groups;
 import org.example.application.common.utils.jwt.JwtIgnore;
@@ -45,6 +44,16 @@ public class SystemController extends BaseController {
         String token = systemService.loginCheck(form);
         logger.info("登录验证结束->token:[{}]", token);
         return ResponseDTO.returnSuccess("登录成功", token);
+    }
+
+    @JwtIgnore
+    @PostMapping("/registry")
+    public ResponseDTO registry(@RequestBody UserForm form) {
+        logger.info("收到请求->用户注册:[{}]", form);
+        super.validator(form, Groups.IsAdd.class);
+        SysUser user = systemService.registry(form);
+        logger.info("返回结果->注册结束[{}]", user);
+        return ResponseDTO.returnSuccess("注册成功", user);
     }
 
     @PostMapping("/logout")

@@ -1,7 +1,6 @@
 package org.example.application.common;
 
 import org.example.application.system.dto.ResponseDTO;
-import org.example.application.common.ApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -25,7 +24,7 @@ public class CustomExceptionHandler {
         if (e instanceof HttpMessageNotReadableException) {
             return ResponseDTO.returnError("参数错误");
         }
-        if (e instanceof org.example.application.common.ApplicationException) {
+        if (e instanceof ApplicationException) {
             if (401 == ((ApplicationException) e).getCode()) {
                 return ResponseDTO.returnAuthFail("身份认证失败");
             }

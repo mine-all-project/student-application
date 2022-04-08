@@ -11,6 +11,7 @@ import org.example.application.system.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -37,7 +38,8 @@ public class PaperServiceImpl implements PaperService {
 
 
     @Override
-    public Paper savePaper(PaperForm form) {
+    public Paper savePaper(HttpServletRequest request, PaperForm form) {
+        checkPaperAuth(request,jwtConfigure,userDAO);
         Paper entity = form.toEntity();
         FileInfo fileInfo = fileInfoService.saveFileInfo(entity.getImage());
         entity.setImage(fileInfo);
@@ -50,7 +52,8 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public void deletePaperById(String id) {
+    public void deletePaperById(HttpServletRequest request, String id) {
+        checkPaperAuth(request,jwtConfigure,userDAO);
         paperDAO.deletePaperById(id);
     }
 }
