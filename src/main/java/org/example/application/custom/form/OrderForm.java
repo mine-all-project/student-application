@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -24,6 +25,7 @@ public class OrderForm extends BaseForm {
     private BigDecimal price;
     @NotNull(message = "类型不能为空", groups = IsNotNull.class)
     private Integer type;
+    private LocalDate lastTime;
     private String note;
     private String no;
     @ManyToOne

@@ -3,6 +3,7 @@ package org.example.application.custom.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
 import org.example.application.common.groups.IsNotNull;
+import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.custom.entity.Person;
 import org.example.application.custom.form.PersonForm;
 import org.example.application.custom.service.PersonService;
@@ -44,6 +45,16 @@ public class PersonController extends BaseController {
         log.info("收到请求->保存人员:[{}]", form);
         Person entity = personService.save(request, form);
         log.info("返回结果->保存人员结束:[{}]", entity);
+        return ResponseDTO.returnSuccess(entity);
+    }
+
+    @JwtIgnore
+    @PostMapping("/registry")
+    public ResponseDTO registry(HttpServletRequest request, @RequestBody PersonForm form) {
+        validator(form, IsNotNull.class);
+        log.info("收到请求->注册人员:[{}]", form);
+        Person entity = personService.save(request, form);
+        log.info("返回结果->注册人员结束:[{}]", entity);
         return ResponseDTO.returnSuccess(entity);
     }
 

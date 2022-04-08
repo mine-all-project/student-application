@@ -52,8 +52,14 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public SysUser addUser(UserForm form) {
+        SysUser user = findByUsername(form.getUsername());
+        if (null != user) {
+            throw new ApplicationException("用户名已经存在");
+        }
         SysUser entity = new SysUser();
         BeanUtils.copyProperties(form, entity);
+        String password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
+        entity.setPassword(password);
         return userDAO.save(entity);
     }
 

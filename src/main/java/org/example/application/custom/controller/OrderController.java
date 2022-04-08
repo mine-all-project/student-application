@@ -64,6 +64,14 @@ public class OrderController extends BaseController {
         return ResponseDTO.returnSuccess();
     }
 
+    @PostMapping("/allPass")
+    public ResponseDTO allPass(HttpServletRequest request) {
+        log.info("收到请求->一键缴费");
+        orderService.allPass(request);
+        log.info("返回结果->一键缴费结束");
+        return ResponseDTO.returnSuccess();
+    }
+
     @PostMapping("/checkPass/{id}")
     public ResponseDTO checkPass(HttpServletRequest request,@PathVariable String id) {
         log.info("收到请求->账单缴费,id:[{}]", id);

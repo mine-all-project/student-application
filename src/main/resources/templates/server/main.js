@@ -3,8 +3,8 @@ const app = new Vue({
     components: {},
     data() {
         return {
-            isDebug: true,
-            pageUrl: '/server/welcome.html',
+            isDebug: false,
+            pageUrl: '/server/demo.html',
             headers: headers,
             labelCol: {span: 5},
             wrapperCol: {span: 16},
@@ -108,26 +108,6 @@ const app = new Vue({
                     ]
                 },
             ],
-            userMenus: [{
-                key: '3',
-                name: '账务管理',
-                icon: 'appstore',
-                url: '',
-                children: [
-                    {
-                        key: '31',
-                        name: '帐单查询',
-                        icon: 'appstore',
-                        url: '/server/order-list.html',
-                    },
-                    {
-                        key: '32',
-                        name: '帐务查询',
-                        icon: 'appstore',
-                        url: '/server/order-count.html',
-                    },
-                ]
-            },],
             managerMenus: [{
                 key: '4',
                 name: '管理员管理',
@@ -148,6 +128,41 @@ const app = new Vue({
                     },
                 ]
             },],
+            userMenus: [
+                {
+                    key: '1',
+                    name: '用户管理',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '11',
+                            name: '用户列表',
+                            icon: 'appstore',
+                            url: '/server/person-list.html',
+                        },
+                    ]
+                },
+                {
+                    key: '3',
+                    name: '账务管理',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '31',
+                            name: '帐单查询',
+                            icon: 'appstore',
+                            url: '/server/order-list.html',
+                        },
+                        {
+                            key: '32',
+                            name: '帐务查询',
+                            icon: 'appstore',
+                            url: '/server/order-count.html',
+                        },
+                    ]
+                },],
             welcome: true,
             userInfo: {},
             temp: {
@@ -248,7 +263,7 @@ const app = new Vue({
             // window.location.href = url
         },
         getUserInfo() {
-            this.axios.get('/api/user/getUserInfo').then(response => {
+            this.axios.get('/api/getUserInfo').then(response => {
                 const result = response.data
                 if (result.status !== 200) {
                     this.$message.error(result.message);
@@ -263,17 +278,17 @@ const app = new Vue({
             });
         },
         initUserMenus() {
-            let rule = this.userInfo.role
-            if (rule === 0) {
-                this.menus = this.sysMenus
-            } else if (rule === 1) {
+            let role = this.userInfo.role
+            if (role === 9) {
+                this.menus = this.allMenus
+            } else if (role === 1) {
                 this.menus = this.managerMenus
-            } else if (rule === 2) {
+            } else if (role === 2) {
                 this.menus = this.userMenus
             }
-            // if (this.isDebug) {
-            //     this.menus = this.allMenus
-            // }
+            if (this.isDebug) {
+                this.menus = this.allMenus
+            }
         },
 
         logout() {

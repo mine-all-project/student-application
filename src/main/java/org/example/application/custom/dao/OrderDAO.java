@@ -42,4 +42,8 @@ public class OrderDAO extends BaseDAO {
     public List<Order> searchDate(LocalDateTime beginTime, LocalDateTime endTime) {
         return orderRepository.findByCreateTimeBetween(beginTime, endTime,desByCreateTime);
     }
+
+    public List<Order> saveAll(List<Order> list) {
+        return orderRepository.saveAll(list);
+    }
 }

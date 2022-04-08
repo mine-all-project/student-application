@@ -26,11 +26,11 @@ public class UserForm extends BaseForm {
     private String id;
 
     @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
-    @NotBlank(message = "用户名不能为空", groups = {IsNotNull.class, IsLogin.class})
+    @NotBlank(message = "用户名不能为空", groups = {IsAdd.class,IsNotNull.class, IsLogin.class})
     private String username;
 
     @Length(max = 32, message = "长度错误", groups = {IsCheckLength.class, IsLogin.class})
-    @NotBlank(message = "密码不能为空", groups = {IsNotNull.class, IsLogin.class})
+    @NotBlank(message = "密码不能为空", groups = {IsAdd.class,IsNotNull.class, IsLogin.class})
     private String password;
 
     @Length(max = 32)

@@ -27,7 +27,7 @@ public interface BaseService {
         Claims claims = JwtTokenUtils.parseJWT(authHeader, configure.getBase64Secret());
         String userId = String.valueOf(claims.get("userId"));
         SysUser sysUser = userDAO.findById(userId);
-        if (sysUser.getOrderStatus() == DIC.UN_AUTH) {
+        if (DIC.AUTH != sysUser.getOrderStatus()) {
             throw new ApplicationException("暂无权限进行相关操作");
         }
     }
@@ -37,7 +37,7 @@ public interface BaseService {
         Claims claims = JwtTokenUtils.parseJWT(authHeader, configure.getBase64Secret());
         String userId = String.valueOf(claims.get("userId"));
         SysUser sysUser = userDAO.findById(userId);
-        if (sysUser.getOrderCountStatus() == DIC.UN_AUTH) {
+        if (DIC.AUTH != sysUser.getOrderCountStatus()) {
             throw new ApplicationException("暂无权限进行相关操作");
         }
     }

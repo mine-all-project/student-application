@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 
 
@@ -55,4 +56,13 @@ public class SysServiceImpl implements SysService {
         throw new ApplicationException("密码错误");
     }
 
+    @Override
+    public SysUser registry(UserForm form) {
+        return sysUserService.addUser(form);
+    }
+
+    @Override
+    public SysUser getUserInfo(HttpServletRequest request) {
+        return sysUserService.getUserInfo(request);
+    }
 }

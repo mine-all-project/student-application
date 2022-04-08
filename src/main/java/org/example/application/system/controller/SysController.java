@@ -2,12 +2,16 @@ package org.example.application.system.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
+import org.example.application.common.groups.IsAdd;
 import org.example.application.common.groups.IsLogin;
 import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.system.dto.ResponseDTO;
+import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.UserForm;
 import org.example.application.system.service.SysService;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -43,5 +47,20 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess();
     }
 
+    @PostMapping("/registry")
+    public ResponseDTO registry(@RequestBody UserForm form) {
+        log.info("收到请求->注册");
+        super.validator(form, IsAdd.class);
+        SysUser user = sysService.registry(form);
+        log.info("返回结果->注册结束:[{}]", user);
+        return ResponseDTO.returnSuccess(user);
+    }
+    @GetMapping("/getUserInfo")
+    public ResponseDTO getUserInfo(HttpServletRequest request) {
+        log.info("收到请求->获取当前用户信息");
+        SysUser sysUser = sysService.getUserInfo(request);
+        log.info("返回结果->获取当前用户信息结束:[{}]", sysUser);
+        return ResponseDTO.returnSuccess("操作成功", sysUser);
+    }
 
 }

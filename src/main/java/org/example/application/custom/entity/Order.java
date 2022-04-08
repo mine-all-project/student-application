@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -28,6 +29,8 @@ public class Order extends BaseEntity {
     private String note;
     @Column(columnDefinition = "varchar(64) default null comment '流水号'")
     private String no;
+    @Column(columnDefinition = "timestamp  comment '到期时间'")
+    private LocalDate lastTime;
     @ManyToOne
     private Person person;
 

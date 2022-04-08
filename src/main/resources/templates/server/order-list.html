@@ -235,6 +235,9 @@
 					<a-radio :value="2">其他账单</a-radio>
 				</a-radio-group>
 			</a-form-model-item>
+			<a-form-model-item label="到期时间" prop="lastTime">
+				<a-date-picker v-model="form.lastTime"/>
+			</a-form-model-item>
 			<a-form-model-item label="备注" prop="note">
 				<a-textarea v-model="form.order.note" :rows="4"></a-textarea>
 			</a-form-model-item>
@@ -282,8 +285,13 @@
                         },
                         {
                             dataIndex: 'createTime',
-                            title: '时间',
+                            title: '账单时间',
                             scopedSlots: {customRender: 'createTime'},
+                            width: '10%'
+                        },
+                        {
+                            dataIndex: 'lastTime',
+                            title: '逾期时间',
                             width: '10%'
                         },
                         {
@@ -324,7 +332,7 @@
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
-                    order: {},
+                    order: {lastTime:''},
                     searchText: ' ',
                 },
                 show: {
@@ -433,6 +441,7 @@
             },
             saveOrderForm() {
                 let data = this.form.order
+                data.status = 1
                 axios.post('/api/order/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
@@ -495,7 +504,8 @@
                         type: e.type,
                         status: e.status,
                         createTime: e.createTime,
-                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                        createTimeStr: new moment(e.updateTime).format('YYYY-MM-DD HH:mm:ss'),
+                        lastTimeStr: new moment(e.lastTime).format('YYYY-MM-DD HH:mm:ss'),
                         note: e.note,
                         person: e.person,
                         personId: e.person.id,

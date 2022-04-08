@@ -17,7 +17,7 @@ request.interceptors.response.use(
         if (response.status === 200) {
             if (response.data.status === 401) {
                 setTimeout(() => {
-                    // window.location.href = '/server/login'
+                    window.location.href = '/server/login'
                 }, 3000)
 
             }

@@ -21,4 +21,6 @@ public interface OrderService extends BaseService {
     void checkFail(HttpServletRequest request,String id);
 
     List<Order> searchDate(HttpServletRequest request,String beginTime, String endTime);
+
+    void allPass(HttpServletRequest request);
 }
