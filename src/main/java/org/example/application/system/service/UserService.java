@@ -25,9 +25,7 @@ public interface UserService extends BaseService {
 
     void changeStatus(String id);
 
-
     List<SysUser> findAll();
-
 
     SysUser getUserInfo(HttpServletRequest request);
 

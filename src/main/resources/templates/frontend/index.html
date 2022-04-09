@@ -1,0 +1,186 @@
+<!doctype html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org"
+			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<div data-th-include="/components/base :: meta"></div>
+	<title>首页</title>
+	<div data-th-replace="/components/base :: css"></div>
+	<div data-th-replace="/components/base :: javascript"></div>
+	<div data-th-replace="/components/vue :: javascript"></div>
+	<div data-th-replace="/components/ui :: antd"></div>
+	<link rel="stylesheet" th:href="@{/css/banner.css}">
+	<style>
+      p {
+          padding: 0;
+          margin: 0
+      }
+
+      .school-name {
+          height: 10vh;
+          text-align: center;
+          background-repeat: no-repeat;
+          background-size: auto 100%;
+          background-position: center;
+          background-color: #D9D9D9;
+          opacity: 0.3;
+      }
+
+      .module-5 {
+          height: 10vh;
+          width: 100%;
+          background-color: rgb(213, 238, 248);
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center
+      }
+
+      .module-5 div img {
+          width: 5vh;
+      }
+
+      .school-news {
+          height: 10vh;
+          text-align: center;
+          background-image: url(/images/newsicon.png);
+          background-repeat: no-repeat;
+          background-size: auto 100%;
+          background-position: center;
+          background-color: #D9D9D9;
+          opacity: 0.2;
+      }
+
+      .xiaoxun {
+          background-size: 100%;
+          background-position: center;
+          height: 10vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: cursive;
+      }
+
+      .sysname {
+          height: 10vh;
+          background-color: #505050;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .headImage {
+          width: 5rem;
+          height: 5rem;
+          border-radius: 50%;
+      }
+	</style>
+</head>
+<body>
+
+<div id="app">
+	<a-modal th:fragment="a-person-settings" title="个人信息" :visible.sync="show.personSettings" width="40%" ok-text="保存"
+					 cancel-text="取消"
+					 @ok="savePersonSettings" @cancel="closePersonSettings">
+		<a-form-model ref="personSettingsForm" :model="form.personSettings" :rules="rules" :label-col="labelCol"
+									:wrapper-col="wrapperCol">
+			<a-form-model-item label="姓名" prop="name">
+				<a-input v-model="form.personSettings.name"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="性别" prop="gender">
+				<a-radio-group name="gender" v-model="form.personSettings.gender">
+					<a-radio :value="1">男</a-radio>
+					<a-radio :value="2">女</a-radio>
+				</a-radio-group>
+			</a-form-model-item>
+			<a-form-model-item label="年龄" prop="age">
+				<a-input-number :min="0" v-model="form.personSettings.age" style="width: 100%"></a-input-number>
+			</a-form-model-item>
+			</a-form-model-item>
+			<a-form-model-item label="邮箱" prop="mail">
+				<a-input v-model="form.personSettings.mail"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="头像" prop="image">
+				<div class="clearfix">
+					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile"
+										:remove="removeUploadFile">
+						<div v-if="temp.fileList.length < 1">
+							<a-icon type="plus"></a-icon>
+							<div class="ant-upload-text"> 上传</div>
+						</div>
+					</a-upload>
+				</div>
+			</a-form-model-item>
+			<a-modal :visible="show.previewImg" :footer="null" @cancel="closePreview">
+				<img style="width: 100%" :src="temp.previewSrc"/>
+			</a-modal>
+		</a-form-model>
+	</a-modal>
+	<div style="background-color:rgb(43,88,155);height: 10vh">
+		<a-col :span="2" :offset="4"
+					 :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`"></a-col>
+		<a-col :span="12" class="school-name" :style="`background-image:url(${image.schoolName})`">
+			<p style="font-size: 40px;color: rgb(249 183 0);">{{static.schoolName}}</p>
+			<p style="font-size: 16px;color: rgb(249 183 0);">{{static.schoolNameEn}}</p>
+		</a-col>
+		<a-col :span="1" :offset="4" style="height: 10vh;text-align: center">
+			<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" class="headImage" @click="showPersonSettings">
+			<p>{{userInfo.name}}</p>
+		</a-col>
+	</div>
+	<div class="m-banner-wrap" v-if="bannerData.length">
+		<div class="m-banner-list">
+			<div class="u-banner-item fade"
+					 v-for="(item, index) in bannerData" :key="index"
+					 v-show="index===activeIndex"
+					 @mouseover="onOver()" @mouseout="onOut()">
+				<img :src="item.src" alt="" style="width: 100%;height: 100%">
+			</div>
+		</div>
+		<div class="m-dot-list" v-if="bannerData.length > 1">
+			<div v-for="(item, index) in bannerData" :key="index" :class="['u-dot-item', {active: index===activeIndex}]"
+					 @mouseenter="onEnter(index)" @mouseleave="onLeave">
+			</div>
+		</div>
+	</div>
+	<div class="module-5">
+		<a-col :span="2" @click="changeTab('/frontend/news.html')">
+			<img :src="image.moduleIcon">
+			<p>校园咨询</p>
+		</a-col>
+		<a-col :span="2" @click="changeTab('/frontend/trading.html')">
+			<img :src="image.moduleIcon">
+			<p>二手交易</p>
+		</a-col>
+		<a-col :span="2" @click="changeTab('/frontend/employment.html')">
+			<img :src="image.moduleIcon">
+			<p>就业速递</p>
+		</a-col>
+		<a-col :span="2" @click="changeTab('/frontend/lost-items.html')">
+			<img :src="image.moduleIcon">
+			<p>失物招领</p>
+		</a-col>
+		<a-col :span="2">
+			<img :src="image.moduleIcon" @click="changeTab('/frontend/other.html')">
+			<a-select size="small" default-value="question" style="width: 100%" @change="handleChange">
+				<a-select-option value="question"> 校园问答</a-select-option>
+				<a-select-option value="friend"> 校园交友</a-select-option>
+				<a-select-option value="other"> 其他</a-select-option>
+			</a-select>
+		</a-col>
+	</div>
+	<iframe :src="pageUrl" style="width: 100%;height: 80vh;border: none;padding: 0;margin: 0"></iframe>
+	<div class="xiaoxun" :style="`background-image:url(${image.xiaoxun})`">
+		<p style="font-size: 30px">{{static.xiaoxun}}</p>
+	</div>
+	<br>
+	<div class="sysname" style="text-align: center">
+		<p style="font-size: 30px">{{static.sysName}}</p>
+	</div>
+	<br>
+</div>
+
+
+<script src="./main.js"></script>
+</body>
+</html>
