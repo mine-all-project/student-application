@@ -39,6 +39,7 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess("登录成功", token);
     }
 
+    @JwtIgnore
     @PostMapping("/logout")
     public ResponseDTO logout() {
         log.info("收到请求->退出登陆");
@@ -47,6 +48,7 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess();
     }
 
+    @JwtIgnore
     @PostMapping("/registry")
     public ResponseDTO registry(@RequestBody UserForm form) {
         log.info("收到请求->注册");
@@ -55,6 +57,7 @@ public class SysController extends BaseController {
         log.info("返回结果->注册结束:[{}]", user);
         return ResponseDTO.returnSuccess(user);
     }
+
     @GetMapping("/getUserInfo")
     public ResponseDTO getUserInfo(HttpServletRequest request) {
         log.info("收到请求->获取当前用户信息");

@@ -60,6 +60,8 @@ public class SysUserServiceImpl implements SysUserService {
         BeanUtils.copyProperties(form, entity);
         String password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
         entity.setPassword(password);
+        entity.setOrderStatus(DIC.UN_AUTH);
+        entity.setOrderCountStatus(DIC.UN_AUTH);
         return userDAO.save(entity);
     }
 
