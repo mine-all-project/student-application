@@ -120,8 +120,8 @@
 		<a-col :span="2" :offset="4"
 					 :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`"></a-col>
 		<a-col :span="12" class="school-name" :style="`background-image:url(${image.schoolName})`">
-			<p style="font-size: 40px;color: rgb(249 183 0);">{{static.schoolName}}</p>
-			<p style="font-size: 16px;color: rgb(249 183 0);">{{static.schoolNameEn}}</p>
+			<p style="font-size: 40px;color: rgb(249 183 0);">{{page.schoolName}}</p>
+			<p style="font-size: 16px;color: rgb(249 183 0);">{{page.schoolNameEn}}</p>
 		</a-col>
 		<a-col :span="1" :offset="4" style="height: 10vh;text-align: center">
 			<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" class="headImage" @click="showPersonSettings">
@@ -171,11 +171,11 @@
 	</div>
 	<iframe :src="pageUrl" style="width: 100%;height: 80vh;border: none;padding: 0;margin: 0"></iframe>
 	<div class="xiaoxun" :style="`background-image:url(${image.xiaoxun})`">
-		<p style="font-size: 30px">{{static.xiaoxun}}</p>
+		<p style="font-size: 30px">{{page.xiaoxun}}</p>
 	</div>
 	<br>
 	<div class="sysname" style="text-align: center">
-		<p style="font-size: 30px">{{static.sysName}}</p>
+		<p style="font-size: 30px">{{page.sysName}}</p>
 	</div>
 	<br>
 </div>

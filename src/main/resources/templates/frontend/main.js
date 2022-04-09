@@ -9,7 +9,7 @@ const app = new Vue({
                 moduleIcon: '/images/icon.svg',
                 xiaoxun: '/images/xiaohui.png',
             },
-            static: {
+            page: {
                 schoolName: '学校名字',
                 schoolNameEn: '学校英文名',
                 xiaoxun: '校训',
@@ -17,8 +17,6 @@ const app = new Vue({
             },
             pageUrl: '/frontend/demo.html',
             headers: headers,
-            labelCol: {span: 5},
-            wrapperCol: {span: 16},
             axios: axios,
             form: {
                 updatePassword: {
@@ -61,9 +59,6 @@ const app = new Vue({
                 personSettings: false,
                 previewImg: false,
             },
-            // timer: null,
-            menus: [],
-            welcome: true,
             userInfo: {},
             temp: {
                 previewSrc: '',
