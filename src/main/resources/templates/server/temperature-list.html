@@ -23,19 +23,9 @@
 <div id="app">
 	<div>
 		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
-      <span slot="tags" slot-scope="tags">
-        <a-tag v-for="tag in tags" :rowKey="tag.id" :color="tag.color">{{ tag.name }}</a-tag>
+      <span slot="user" slot-scope="user,record">
+        <span>{{user.name}}</span>
       </span>
-			<span slot="role" slot-scope="role">
-          <a-tag color="green" v-if="role === 0">系统管理员</a-tag>
-          <a-tag color="orange" v-if="role === 1">用户管理员</a-tag>
-          <a-tag color="blue" v-if="role === 2">普通用户</a-tag>
-      </span>
-			<span slot="status" slot-scope="status">
-        <a-tag color="green" v-if="status === 0">正常</a-tag>
-        <a-tag color="red" v-else>禁用</a-tag>
-      </span>
-			</span>
 		</a-table>
 	</div>
 </div>
@@ -46,30 +36,20 @@
             return {
                 columns: [
                     {
-                        dataIndex: 'username',
-                        key: 'username',
-                        title: '用户名',
-                    },
-                    {
-                        dataIndex: 'name',
+                        dataIndex: 'user',
                         title: '姓名',
-                        key: 'name',
+                        key: 'user',
+                        scopedSlots: {customRender: 'user'}
                     },
                     {
-                        dataIndex: 'age',
-                        title: '年龄',
-                        key: 'age',
+                        dataIndex: 'value',
+                        title: '体温℃',
+                        key: 'value',
                     },
                     {
-                        dataIndex: 'status',
-                        title: '状态',
-                        key: 'status',
-                        scopedSlots: {customRender: 'status'}
-                    },
-                    {
-                        title: '操作',
-                        key: 'action',
-                        scopedSlots: {customRender: 'action'},
+                        dataIndex: 'createTime',
+                        title: '登记时间',
+                        key: 'createTime',
                     },
                 ],
                 dataSource: [],
@@ -114,6 +94,14 @@
                     }
                     if (result.data !== null) {
                         this.dataSource = result.data;
+                        result.data.map(e=>{
+                            return {
+                                id:e.id,
+                                user:e.user,
+                                value:e.value,
+                                createTimeStr:new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                            }
+                        })
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);

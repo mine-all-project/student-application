@@ -35,7 +35,7 @@
         <a-tag color="green" v-if="status === 0">正常</a-tag>
         <a-tag color="red" v-else>禁用</a-tag>
       </span>
-			<span slot="action" slot-scope="text, record" v-if="record.role === 1">
+			<span slot="action" slot-scope="text, record" v-if="record.role === 2">
           <a-button type="primary" size="small" @click="saveStatus(1,0,record)"
 										v-if="record.goodsStatus === 1">允许管理商品</a-button>
 				  <a-button type="danger" size="small" @click="saveStatus(1,1,record)"

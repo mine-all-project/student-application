@@ -4,7 +4,7 @@ const app = new Vue({
     data() {
         return {
             isDebug: false,
-            pageUrl: '/server/demo.html',
+            pageUrl: '/server/welcome.html',
             headers: headers,
             labelCol: {span: 5},
             wrapperCol: {span: 16},
