@@ -49,7 +49,7 @@ const app = new Vue({
                 personSettings: false,
                 previewImg: false,
             },
-            timer: null,
+            // timer: null,
             menus: [],
             allMenus: [
                 {
@@ -282,7 +282,21 @@ const app = new Vue({
             temp: {
                 previewSrc: '',
                 fileList: []
-            }
+            },
+            activeIndex: 0,
+            timer: null,
+            bannerData: [
+                {
+                    src: '/images/banner01.png'
+                },
+                {
+                    src: '/images/banner02.png'
+                },
+                {
+                    src: '/images/banner03.png'
+                },
+            ],
+            interval:2000,
         }
 
     },
@@ -291,6 +305,39 @@ const app = new Vue({
         this.getUserInfo()
     },
     methods: {
+        showMine(){
+           this.showPersonSettings()
+        },
+        onOver() {
+            clearInterval(this.timer)
+        },
+        onOut() {
+            this.startSlider()
+        },
+        onEnter(index) {
+            this.activeIndex = index
+            clearInterval(this.timer)
+        },
+        onLeave() {
+            this.startSlider()
+        },
+        startSlider() {
+            clearInterval(this.timer)
+            if (this.bannerData.length > 1) {
+                this.timer = setInterval(this.onMove, this.interval)
+            }
+        },
+        onMove() {
+            if (this.activeIndex === this.bannerData.length - 1) {
+                this.activeIndex = 0
+            } else {
+                this.activeIndex++
+            }
+        },
+        beforeDestroy() {
+            clearInterval(this.timer)
+            this.timer = null
+        },
         showPersonSettings() {
             this.show.personSettings = true
         },
