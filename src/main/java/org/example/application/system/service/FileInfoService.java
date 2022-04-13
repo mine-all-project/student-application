@@ -1,5 +1,6 @@
 package org.example.application.system.service;
 
+import org.example.application.common.ApplicationException;
 import org.example.application.common.utils.FileUtils;
 import org.example.application.system.entity.FileInfo;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +20,12 @@ public interface FileInfoService {
     }
 
     default MultipartFile getFile(HttpServletRequest request) {
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        return multipartRequest.getFile("file");
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            return multipartRequest.getFile("file");
+        }catch (Exception e){
+            throw new ApplicationException("文件读取失败");
+        }
     }
 
     FileInfo uploadFile(HttpServletRequest request);

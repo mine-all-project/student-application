@@ -23,6 +23,16 @@
 <body>
 <div id="app">
 	<div>
+		<a-row>
+			<a-col :span="6">
+				<a-input placeholder="输入关键字搜索" v-model="form.searchText"></a-input>
+			</a-col>
+			<a-col :span="6" style="display: flex;justify-content: space-around">
+				<a-button type="primary" @click="search">搜索</a-button>
+				<a-button @click="resetList">重置</a-button>
+			</a-col>
+		</a-row>
+		<a-divider></a-divider>
 		<a-button type="default" @click="showAddPaper"> 添加文章</a-button>
 		<a-divider></a-divider>
 		<a-drawer width="50%" :visible="show.paper" @close="closePaperForm">
@@ -118,6 +128,7 @@
                         title: '',
                         content: '',
                     },
+                    searchText: '',
                 },
                 show: {
                     paper: false,
