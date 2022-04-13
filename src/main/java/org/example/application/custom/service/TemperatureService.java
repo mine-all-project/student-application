@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface TemperatureService extends BaseService {
     List<Temperature> getAll();
+    List<Temperature> getMine(HttpServletRequest request);
 
     Temperature saveTemperature(HttpServletRequest request, Temperature form);
 

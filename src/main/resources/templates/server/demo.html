@@ -17,63 +17,95 @@
           text-align: right;
           z-index: 1;
       }
+
+      .ant-input-number {
+          width: 100%;
+      }
 	</style>
 </head>
 <body>
 <div id="app">
-	<div>
-		<a-table :data-source="dataSource" rowKey="id" :columns="columns" :pagination="false">
-      <span slot="user" slot-scope="user,record">
-        <span>{{user.name}}</span>
-      </span>
-		</a-table>
-	</div>
+	<a-row>
+		<a-col :span="6">
+			<a-input placeholder="输入关键字搜索" v-model="form.searchText"></a-input>
+		</a-col>
+		<a-col :span="6" style="display: flex;justify-content: space-around">
+			<a-button type="primary" @click="search">搜索</a-button>
+			<a-button @click="resetList">重置</a-button>
+		</a-col>
+	</a-row>
+	<a-divider></a-divider>
+	<a-tabs type="card">
+		<a-tab-pane key="1" tab="轮播图">
+			<div class="clearfix">
+				<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
+									action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile"
+									:remove="removeUploadFile">
+					<div v-if="temp.fileList.length < 9">
+						<a-icon type="plus"></a-icon>
+						<div class="ant-upload-text"> 上传</div>
+					</div>
+				</a-upload>
+			</div>
+		</a-tab-pane>
+	</a-tabs>
+	<a-modal title="发布商品" :visible.sync="show.addGoods" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveGoods" @cancel="closeAddGoods">
+		<a-form-model ref="ruleForm" :model="form.goods" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item label="名称" prop="name">
+				<a-input v-model="form.goods.name"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="价格" prop="price">
+				<a-input v-model="form.goods.price"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="详情" prop="content">
+				<a-textarea v-model="form.goods.content" :rows="4"></a-textarea>
+			</a-form-model-item>
+			<a-form-model-item label="图片" prop="image">
+				<div class="clearfix">
+					<a-upload name="file" list-type="picture-card" :file-list="temp.fileList" :headers="headers"
+										action="/api/uploadFile" @preview="showPreview" @change="changeUploadFile"
+										:remove="removeUploadFile">
+						<div v-if="temp.fileList.length < 9">
+							<a-icon type="plus"></a-icon>
+							<div class="ant-upload-text"> 上传</div>
+						</div>
+					</a-upload>
+				</div>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal :visible="show.previewImg" :footer="null" @cancel="closePreview">
+		<img style="width: 100%" :src="temp.previewSrc"/>
+	</a-modal>
 </div>
 <script>
     const app = new Vue({
         el: '#app',
         data() {
             return {
-                columns: [
-                    {
-                        dataIndex: 'user',
-                        title: '姓名',
-                        key: 'user',
-                        scopedSlots: {customRender: 'user'}
-                    },
-                    {
-                        dataIndex: 'value',
-                        title: '体温℃',
-                        key: 'value',
-                    },
-                    {
-                        dataIndex: 'createTime',
-                        title: '登记时间',
-                        key: 'createTime',
-                    },
-                ],
-                dataSource: [],
+                headers: headers,
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
-                tagsOptions: [],
                 form: {
-                    type: 0,
-                    userInfo: {
-                        id: '',
-                        name: '',
-                        age: '',
-                        mail: '',
-                        role: 1,
-                        status: null,
-                    },
-                    resetPassword: {
-                        id: '',
-                        newPassword: '',
-                        againPassword: '',
-                    },
+                    goods: {messages: []},
+                    searchText: '',
+                    messages: [],
                 },
                 show: {
-                    userInfo: false,
+                    previewImg: false,
+                    addGoods: false,
+                    goodsInfo: false,
+                    goodsMessage: false,
+                },
+                temp: {
+                    previewSrc: '',
+                    fileList: [],
+                    allGoods: [],
+                    searchGoods: [],
+                    messages: [],
+                    message: '',
+                    isAddGoods: false,
                 },
                 sysUser: sessionStorage.getItem("sysUser")
             };
@@ -82,30 +114,174 @@
             this.getList()
         },
         methods: {
-            refreshData() {
+            showAddGoods() {
+                this.temp.isAddGoods = true
+                this.show.addGoods = true
+            },
+            closeAddGoods() {
+                this.show.addGoods = false
+                this.form.goods = {messages: []}
+                this.temp.fileList = []
+            },
+            saveGoods() {
+                let data = this.form.goods
+                let oldFile = data.images
+                let newFile = this.temp.fileList.map(e => {
+                    if (e.response) {
+                        return e.response.data
+                    } else {
+                        return null
+                    }
+                }).filter(e => {
+                    return e
+                })
+                if (this.temp.isAddGoods) {
+                    data.images = newFile
+                } else {
+                    data.images = [...oldFile, ...newFile]
+                }
+                axios.post('/api/goods/save', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeAddGoods()
+                    this.closeGoodsInfo()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            editGoods() {
+                this.show.addGoods = true
+                this.show.goodsInfo = false
+                this.temp.isAddGoods = false
+            },
+            deleteGoods() {
+                axios.delete(`/api/goods/delete/${this.form.goods.id}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.closeGoodsInfo()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            showGoodsInfo(goods) {
+                this.form.goods = goods
+                this.temp.fileList = goods.images.map(e => {
+                    return {
+                        uid: e.id,
+                        name: e.oldName,
+                        status: 'done',
+                        url: e.virtualPath,
+                    }
+                })
+                this.show.goodsInfo = true
+            },
+            closeGoodsInfo() {
+                this.show.goodsInfo = false
+                this.form.goods = {messages: []}
+                this.temp.fileList = []
+            },
+            saveBanners(){
+                console.log(this.temp.fileList)
+                // axios.post('/api/custom/save/banner', data).then(response => {
+                //     const result = response.data
+                //     if (result.status !== 200) {
+                //         this.$message.error(result.message);
+                //         return;
+                //     }
+                //     this.$message.success(result.message);
+                //     this.getList()
+                // }).catch(function (error) {
+                //     console.error('出现错误:', error);
+                // });
+						},
+            resetList() {
+                this.form.searchText = ''
                 this.getList()
             },
-            getList() {
-                axios.get('/api/temperature/list').then(response => {
+            search() {
+                axios.get(`/api/goods/search/${this.form.searchText}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.dataSource = result.data;
-                        result.data.map(e=>{
-                            return {
-                                id:e.id,
-                                user:e.user,
-                                value:e.value,
-                                createTimeStr:new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
-														}
-												})
+                        this.filterGoods(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
+            },
+            getList() {
+                axios.get('/api/custom/get/banner').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.formatList(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            formatList(source) {
+                console.log()
+                // const allGoods = source.map(e => {
+                //     let images = e.images.sort((a, b) => {
+                //         let createTimeA = new moment(a.createTime)
+                //         let createTimeB = new moment(b.createTime)
+                //         return createTimeA.diff(createTimeB, 's');
+                //     })
+                //     return {
+                //         id: e.id,
+                //         name: e.name,
+                //         title: e.title,
+                //         price: e.price,
+                //         image: e.images.length ? e.images[0].virtualPath : '',
+                //         images: images,
+                //         content: e.content,
+                //         type: e.type,
+                //         createTime: e.createTime,
+                //         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                //     }
+                // });
+                // this.goods = allGoods
+            },
+            closePreview() {
+                this.show.previewImg = false
+            },
+            async showPreview(file) {
+                if (file.response) {
+                    this.temp.previewSrc = file.response.data.virtualPath
+                } else {
+                    this.temp.previewSrc = file.url
+                }
+                this.show.previewImg = true
+            },
+            changeUploadFile(info) {
+                this.temp.fileList = info.fileList
+                if (info.file.status === 'done') {
+                    this.$message.success(`${info.file.name} 上传成功`);
+                    this.saveBanners()
+                } else if (info.file.status === 'error') {
+                    this.$message.error(`${info.file.name} 上传失败`);
+                }
+            },
+            removeUploadFile(file) {
+                this.form.goods.images = this.form.goods.images.filter(e => {
+                    return e.virtualPath !== file.url
+                })
             },
         }
     })

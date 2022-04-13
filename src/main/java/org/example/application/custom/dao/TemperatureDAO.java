@@ -3,6 +3,7 @@ package org.example.application.custom.dao;
 import org.example.application.common.BaseDAO;
 import org.example.application.custom.dao.jpa.TemperatureRepository;
 import org.example.application.custom.entity.Temperature;
+import org.example.application.system.entity.SysUser;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,6 +22,10 @@ public class TemperatureDAO extends BaseDAO {
 
 
     public List<Temperature> getAll() {
-        return temperatureRepository.findAll();
+        return temperatureRepository.findAll(DES_CREATE_TIME);
+    }
+
+    public List<Temperature> findByUser(SysUser user) {
+        return temperatureRepository.findByUser(user,DES_CREATE_TIME);
     }
 }

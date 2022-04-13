@@ -31,6 +31,14 @@ public class TemperatureController extends BaseController {
         return ResponseDTO.returnSuccess(list);
     }
 
+    @GetMapping("/mine")
+    public ResponseDTO getMine(HttpServletRequest request) {
+        log.info("收到请求->获取我的体温列表");
+        List<Temperature> list = temperatureService.getMine(request);
+        log.info("返回结果->获取我的体温列表结束:[{}]", list);
+        return ResponseDTO.returnSuccess(list);
+    }
+
     @PostMapping("/save")
     public ResponseDTO saveTemperature(HttpServletRequest request, @RequestBody Temperature form) {
         validator(form, Groups.IsNotNull.class);

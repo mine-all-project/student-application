@@ -119,35 +119,12 @@
                 },
                 tableDataList: {
                     allOrder: [],
-                    passOrder: [],
-                    waitOrder: [],
-                    failOrder: [],
-                },
-                rules: {
-                    price: [
-                        {required: true, message: '请输入账单金额', trigger: 'change'},
-                    ],
-                    keyword: [
-                        {required: true, message: '请输入词条', trigger: 'change'},
-                    ],
-                    personId: [
-                        {required: true, message: '请选择账单人', trigger: 'change'},
-                    ],
-                    type: [
-                        {required: true, message: '请选择账单类型', trigger: 'change'},
-                    ],
                 },
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
                     order: {},
                     searchText: ' ',
-                },
-                show: {
-                    addOrderForm: false,
-                },
-                temp: {
-                    isAddGoods: false,
                 },
                 sysUser: sessionStorage.getItem("sysUser")
             };
@@ -156,97 +133,6 @@
             this.getList()
         },
         methods: {
-            passOrder(record) {
-                const _this = this
-                _this.$confirm({
-                    title: '确认缴费?',
-                    cancelText: '取消',
-                    okText: '确定',
-                    onOk() {
-                        axios.post(`/api/order/checkPass/${record.id}`).then(response => {
-                            const result = response.data
-                            if (result.status !== 200) {
-                                _this.$message.error(result.message);
-                                return;
-                            }
-                            _this.getList()
-                        }).catch(function (error) {
-                            console.error('出现错误:', error);
-                        });
-                    },
-                });
-            },
-            failOrder(record) {
-                const _this = this
-                _this.$confirm({
-                    title: '确认逾期?',
-                    cancelText: '取消',
-                    okText: '确定',
-                    onOk() {
-                        axios.post(`/api/order/checkFail/${record.id}`).then(response => {
-                            const result = response.data
-                            if (result.status !== 200) {
-                                _this.$message.error(result.message);
-                                return;
-                            }
-                            _this.getList()
-                        }).catch(function (error) {
-                            console.error('出现错误:', error);
-                        });
-                    },
-                });
-            },
-            changePerson(id) {
-                const ids = this.options.person.filter(e => {
-                    return e.id === id
-                })
-                this.form.order.person = ids[0]
-            },
-            showOrderInfo(e) {
-                console.log(e)
-            },
-            getPersonList() {
-                axios.get('/api/person/list').then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    if (result.data !== null) {
-                        this.options.person = result.data;
-                    }
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-            },
-            showAddOrderForm() {
-                this.form.order = {}
-                this.show.addOrderForm = true
-            },
-            showEditOrderForm(e) {
-                this.form.order = e
-                this.form.order.personId = e.personId
-                this.show.addOrderForm = true
-            },
-            closeAddOrderForm() {
-                this.show.addOrderForm = false
-                this.form.order = {}
-            },
-            saveOrderForm() {
-                let data = this.form.order
-                axios.post('/api/order/save', data).then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    this.$message.success(result.message);
-                    this.closeAddOrderForm()
-                    this.getList()
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-            },
             deleteOrder(record) {
                 const _this = this
                 _this.$confirm({
@@ -273,7 +159,7 @@
                 this.getList()
             },
             getList() {
-                axios.get('/api/order/get/list').then(response => {
+                axios.get('/api/order/getAll').then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);

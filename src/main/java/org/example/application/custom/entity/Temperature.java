@@ -19,11 +19,13 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class Temperature extends BaseEntity {
     @NotBlank(message = "姓名不能为空", groups = {Groups.IsNotNull.class})
-    @Column(columnDefinition = "varchar(64) default null comment '名称'")
+    @Column(columnDefinition = "varchar(64) default null comment '姓名'")
     private String name;
     @NotNull(message = "体温不能为空", groups = {Groups.IsNotNull.class})
-    @Column(columnDefinition = "tinyint default null comment '价格'")
+    @Column(columnDefinition = "tinyint default null comment '体温'")
     private Integer value;
+    @Column(columnDefinition = "longtext default null comment '备注'")
+    private String content;
     @ManyToOne
     private SysUser user;
 }

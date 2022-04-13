@@ -35,6 +35,11 @@ public class TemperatureServiceImpl implements TemperatureService {
         return temperatureDAO.getAll();
     }
 
+    @Override
+    public List<Temperature> getMine(HttpServletRequest request) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        return temperatureDAO.findByUser(user);
+    }
 
     @Override
     public Temperature saveTemperature(HttpServletRequest request, Temperature form) {
