@@ -169,7 +169,35 @@
 			</a-select>
 		</a-col>
 	</div>
-	<iframe :src="pageUrl" style="width: 100%;height: 80vh;border: none;padding: 0;margin: 0"></iframe>
+	<div style="width: 100%;background-color:rgba(153, 153, 153, 0.32);">
+		<div style="display: flex;justify-content: space-between;padding: 16px 3rem 0 2rem;">
+			<div style="font-size: 2rem">
+				<a-icon type="mail"></a-icon>
+				<span>校园资讯</span>
+			</div>
+			<div style="font-size: 1.5rem">
+				<span>查看更多</span>
+				<a-icon type="right"></a-icon>
+			</div>
+		</div>
+		<div style="height: 1px;border-top: 1px solid #000;width: 98%;margin: 0 auto"></div>
+		<div style="display: flex;padding: 10px;margin-top: 10px;">
+			<div style="flex:18;padding: 20px;display: flex;justify-content: space-between;background-color:rgb(196,196,196);">
+				<img :src="image.schoolLogo" alt="" style="width: 49%;height: 30vh">
+				<div style="width: 49%;height: 30vh;background-color:rgba(204, 204, 204, 1);">{{page.schoolName}}</div>
+			</div>
+			<a-divider type="vertical" style="height:35vh;background: #000"></a-divider>
+			<div style="flex:15;padding: 10px;background-color:rgba(153, 153, 153, 1);display: flex;
+			flex-direction:column;align-items:center;justify-content: space-between;font-size: 2rem">
+				<div style="width: 95%;background-color:rgba(204, 204, 204, 1)	;">{{page.schoolName}}</div>
+				<div style="width: 95%;background-color:rgba(204, 204, 204, 1)	;">{{page.schoolName}}</div>
+				<div style="width: 95%;background-color:rgba(204, 204, 204, 1)	;">{{page.schoolName}}</div>
+				<div style="width: 95%;background-color:rgba(204, 204, 204, 1)	;">{{page.schoolName}}</div>
+				<div style="width: 95%;background-color:rgba(204, 204, 204, 1)	;">{{page.schoolName}}</div>
+			</div>
+		</div>
+	</div>
+	<!--	<iframe :src="pageUrl" style="width: 100%;height: 80vh;border: none;padding: 0;margin: 0"></iframe>-->
 	<div class="xiaoxun" :style="`background-image:url(${image.xiaoxun})`">
 		<p style="font-size: 30px">{{page.xiaoxun}}</p>
 	</div>

@@ -3,6 +3,8 @@ const app = new Vue({
     components: {},
     data() {
         return {
+            labelCol: {span: 5},
+            wrapperCol: {span: 16},
             image: {
                 schoolLogo: '/images/xiaohui.png',
                 schoolName: '/images/blackimg.png',
