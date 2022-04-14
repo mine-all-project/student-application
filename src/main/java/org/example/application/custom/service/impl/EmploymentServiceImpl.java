@@ -6,7 +6,6 @@ import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.EmploymentDAO;
 import org.example.application.custom.entity.Employment;
 import org.example.application.custom.form.EmploymentForm;
-import org.example.application.custom.form.OtherForm;
 import org.example.application.custom.service.EmploymentService;
 import org.example.application.custom.service.MessageService;
 import org.example.application.system.dao.UserDAO;
@@ -48,7 +47,7 @@ public class EmploymentServiceImpl implements EmploymentService {
     public Employment save(HttpServletRequest request, EmploymentForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         Employment entity = form.toEntity();
-        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
+
         entity.setPublisher(user);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
         entity.setStatus(DIC.CHECK_WAIT);

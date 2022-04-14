@@ -45,7 +45,7 @@ public class OtherServiceImpl implements OtherService {
     public Other save(HttpServletRequest request, OtherForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         Other entity = form.toEntity();
-        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
+        
         entity.setPublisher(user);
         entity.setStatus(DIC.CHECK_WAIT);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));

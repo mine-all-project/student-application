@@ -110,35 +110,5 @@ public class UserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", list);
     }
 
-    @PostMapping("/publish/checkPass/{id}")
-    public ResponseDTO publishCheckPass(@PathVariable String id) {
-        logger.info("收到请求->允许用户发表[{}]", id);
-        userService.publishCheckPass(id);
-        logger.info("返回结果->允许用户发表结束");
-        return ResponseDTO.returnSuccess();
-    }
-
-    @PostMapping("/publish/checkFail/{id}")
-    public ResponseDTO publishCheckFail(@PathVariable String id) {
-        logger.info("收到请求->禁用用户发表[{}]", id);
-        userService.publishCheckFail(id);
-        logger.info("返回结果->禁用用户发表结束");
-        return ResponseDTO.returnSuccess();
-    }
-    @PostMapping("/talk/checkPass/{id}")
-    public ResponseDTO talkCheckPass(@PathVariable String id) {
-        logger.info("收到请求->允许用户评论[{}]", id);
-        userService.talkCheckPass(id);
-        logger.info("返回结果->禁用用户评论结束");
-        return ResponseDTO.returnSuccess();
-    }
-
-    @PostMapping("/talk/checkFail/{id}")
-    public ResponseDTO talkCheckFailTalk(@PathVariable String id) {
-        logger.info("收到请求->禁用用户评论[{}]", id);
-        userService.talkCheckFailTalk(id);
-        logger.info("返回结果->禁用用户评论结束");
-        return ResponseDTO.returnSuccess();
-    }
 //1bbd886460827015e5d605ed44252251
 }

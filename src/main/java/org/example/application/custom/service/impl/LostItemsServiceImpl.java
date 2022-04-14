@@ -47,7 +47,7 @@ public class LostItemsServiceImpl implements LostItemsService {
     public LostItems save(HttpServletRequest request, LostItemsForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         LostItems entity = form.toEntity();
-        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
+        
         entity.setPublisher(user);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
         entity.setStatus(DIC.CHECK_WAIT);

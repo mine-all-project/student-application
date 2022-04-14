@@ -49,9 +49,6 @@ public class SysServiceImpl implements SysService {
         logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
         SysUser sysUser = userService.findByUsername(username);
         AssertUtils.notNull(sysUser, "用户名不存在");
-        if (sysUser.getStatus() == 1) {
-            throw new ApplicationException("账户已被禁用，请联系管理员");
-        }
         if (sysUser.getPassword().equals(password)) {
             return JwtTokenUtils.createJWT(sysUser.getId(), sysUser.getUsername(), jwtConfigure);
         }

@@ -38,8 +38,6 @@ public class SysController extends BaseController {
     @PostMapping("/logout")
     public ResponseDTO logout() {
         log.info("收到请求->退出登陆");
-//        sysService.logout();
-        log.info("返回结果->退出登录结束");
         return ResponseDTO.returnSuccess();
     }
 

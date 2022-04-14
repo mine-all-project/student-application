@@ -5,7 +5,6 @@ import org.example.application.system.dao.jpa.UserRepository;
 import org.example.application.system.entity.SysUser;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Component
@@ -28,33 +27,9 @@ public class UserDAO extends BaseDAO {
         return userRepository.findById(id).orElse(null);
     }
 
-    public List<SysUser> findByIds(List<String> ids) {
-        return userRepository.findByIdInAndStatusAndDelFlag(ids, 0, NOT_DEL);
-    }
-
-    @Transactional
-    public void delUser(String id) {
-        userRepository.deleteById(id);
-    }
-
-
-    @Transactional
-    public void unActiveUser(String id) {
-        userRepository.unActiveUser(id);
-    }
-
-    @Transactional
-    public void activeUser(String id) {
-        userRepository.activeUser(id);
-    }
-
-
     public List<SysUser> findAll() {
         return userRepository.findByDelFlag(ascByCreateTime, NOT_DEL);
 
     }
 
-    public List<SysUser> getUserList(String userId, int status) {
-        return userRepository.findByIdNotAndStatusAndDelFlag(userId, status, NOT_DEL);
-    }
 }

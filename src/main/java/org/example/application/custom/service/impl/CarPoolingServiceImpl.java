@@ -47,7 +47,6 @@ public class CarPoolingServiceImpl implements CarPoolingService {
     public CarPooling save(HttpServletRequest request, CarPoolingForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         CarPooling entity = form.toEntity();
-        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
         entity.setPublisher(user);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
         entity.setStatus(DIC.CHECK_WAIT);

@@ -45,7 +45,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Goods save(HttpServletRequest request, GoodsForm form) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         Goods entity = form.toEntity();
-        checkPublishStatus(entity, request, jwtConfigure, userDAO, isDebug);
+        
         entity.setPublisher(user);
         entity.setStatus(DIC.CHECK_WAIT);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
