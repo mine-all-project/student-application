@@ -73,6 +73,102 @@
           height: 5rem;
           border-radius: 50%;
       }
+
+
+      .banner-wrap {
+          width: 100%;
+          /*height: 500px;*/
+          margin: 0 auto;
+          overflow: hidden;
+          position: relative;
+      }
+
+      .banner-wrap .banner-list {
+          /*height: 500px;*/
+      }
+
+      .banner-wrap .banner-list .banner-item {
+          /*height: 500px;*/
+          width: 100%;
+          background-size: cover;
+      }
+
+      .banner-wrap .banner-list .u-banner-item a {
+          display: block;
+          height: 100%;
+          background-size: cover;
+      }
+
+      .banner-wrap .banner-list .fade {
+          animation: fade 0.5s ease-in-out;
+          background-size: cover;
+      }
+
+      @keyframes fade {
+          0% {
+              opacity: 0;
+          }
+          5% {
+              opacity: 0.05;
+          }
+          10% {
+              opacity: 0.1;
+          }
+          20% {
+              opacity: 0.2;
+          }
+          35% {
+              opacity: 0.35;
+          }
+          50% {
+              opacity: 0.5;
+          }
+          65% {
+              opacity: 0.65;
+          }
+          80% {
+              opacity: 0.8;
+          }
+          90% {
+              opacity: 0.9;
+          }
+          95% {
+              opacity: 0.95;
+          }
+          100% {
+              opacity: 1;
+          }
+      }
+
+      .banner-wrap .dot-list {
+          width: 500px;
+          position: absolute;
+          bottom: -5px;
+          left: 50%;
+          margin-left: -300px;
+          text-align: center;
+      }
+
+      .banner-wrap .dot-list .dot-item {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          margin: 0 5px;
+          background: #fff;
+          cursor: pointer;
+          border: 1px solid #fff;
+          border-radius: 50%;
+          opacity: 0.8;
+      }
+
+      .banner-wrap .dot-list .active {
+          width: 30px;
+          background: #108ee9;
+          border: 1px solid #108ee9;
+          border-radius: 12px;
+          opacity: 1;
+      }
+
 	</style>
 </head>
 <body>
@@ -182,9 +278,23 @@
 		</div>
 		<div style="height: 1px;border-top: 1px solid #000;width: 98%;margin: 0 auto"></div>
 		<div style="display: flex;padding: 10px;margin-top: 10px;">
-			<div style="flex:18;padding: 20px;display: flex;justify-content: space-between;background-color:rgb(196,196,196);">
-				<img :src="image.schoolLogo" alt="" style="width: 49%;height: 30vh">
-				<div style="width: 49%;height: 30vh;background-color:rgba(204, 204, 204, 1);">{{page.schoolName}}</div>
+			<div class="banner-wrap" v-if="bannerData.length" style="flex:25">
+				<div class="banner-list">
+					<div class="banner-item fade"
+							 v-for="(item, index) in bannerData" :key="index"
+							 v-show="index===activeIndex"
+							 @mouseover="onOver()" @mouseout="onOut()">
+						<div style="padding: 20px;display: flex;justify-content: space-between;background-color:rgb(196,196,196);">
+							<img :src="image.schoolLogo" alt="" style="width: 49%;height: 30vh">
+							<div style="width: 49%;height: 30vh;background-color:rgba(204, 204, 204, 1);">{{page.schoolName}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="dot-list" v-if="bannerData.length > 1">
+					<div v-for="(item, index) in bannerData" :key="index" :class="['dot-item', {active: index===activeIndex}]"
+							 @mouseenter="onEnter(index)" @mouseleave="onLeave">
+					</div>
+				</div>
 			</div>
 			<a-divider type="vertical" style="height:35vh;background: #000"></a-divider>
 			<div style="flex:15;padding: 10px;background-color:rgba(153, 153, 153, 1);display: flex;
@@ -194,6 +304,41 @@
 				<div style="width: 95%;background-color:rgba(204, 204, 204, 1)	;">{{page.schoolName}}</div>
 				<div style="width: 95%;background-color:rgba(204, 204, 204, 1)	;">{{page.schoolName}}</div>
 				<div style="width: 95%;background-color:rgba(204, 204, 204, 1)	;">{{page.schoolName}}</div>
+			</div>
+		</div>
+	</div>
+
+	<div style="width: 100%;background-color:rgba(177, 86, 86, 0.14);display: flex;flex-direction: row">
+		<div style="flex:2;font-size: 2rem">
+			<a-icon type="star" theme="filled"></a-icon>
+			<span>就业速递</span>
+		</div>
+		<div style="width: 1px;border-right: 1px solid #000;margin: 1rem 0"></div>
+		<div style="flex:15;display: flex;padding: 10px;margin-top: 10px;">
+			<div style="flex: 5;display: flex;flex-direction: column;align-items: center;justify-content: center">
+				<img :src="image.schoolName" alt="" style="width: 80%;height: 50%">
+				<div style="width: 80%;height: 50%;font-size: 30px">此处为用户管理员发布的就业相关信息，上部分图片简介，下部分可为详细简介</div>
+			</div>
+			<div style="flex: 5;display: flex;flex-direction: column;align-items: center;justify-content: center">
+				<img :src="image.schoolName" alt="" style="width: 80%;height: 50%">
+				<div style="width: 80%;height: 50%;font-size: 30px">此处为用户管理员发布的就业相关信息，上部分图片简介，下部分可为详细简介</div>
+			</div>
+		</div>
+		<div style="flex:8;display: flex;padding: 10px;margin-top: 10px;flex-direction: column">
+			<div style="flex: 1;background-color:rgba(153, 153, 153, 1);font-size: 21px">1</div>
+			<br>
+			<div style="flex: 1;background-color:rgba(153, 153, 153, 1);font-size: 21px">1</div>
+			<br>
+			<div style="flex: 1;background-color:rgba(153, 153, 153, 1);font-size: 21px">1</div>
+			<br>
+			<div style="flex: 1;border: 1px solid #adacac;border-left: none;
+			border-right: none;font-size: 21px;line-height: 21px;display: flex;justify-content: center;align-items: center">
+				<span>查看更多</span>
+				<a-icon type="right"></a-icon>
+			</div>
+			<br>
+			<div style="flex: 3">
+				<img :src="image.schoolName" alt="" style="width: 100%;height: 20vh">
 			</div>
 		</div>
 	</div>
