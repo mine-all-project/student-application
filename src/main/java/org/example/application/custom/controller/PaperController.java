@@ -32,6 +32,14 @@ public class PaperController extends BaseController {
         return ResponseDTO.returnSuccess(list);
     }
 
+    @GetMapping("/search/{keyword}")
+    public ResponseDTO search(@PathVariable String keyword) {
+        log.info("收到请求->搜索文章列表");
+        List<Paper> list = paperService.search(keyword);
+        log.info("返回结果->搜索文章列表结束:[{}]", list);
+        return ResponseDTO.returnSuccess(list);
+    }
+
     @PostMapping("/save")
     public ResponseDTO savePaper(HttpServletRequest request, @RequestBody PaperForm form) {
         validator(form, Groups.IsNotNull.class);

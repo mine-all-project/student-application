@@ -56,4 +56,9 @@ public class PaperServiceImpl implements PaperService {
         checkPaperAuth(request,jwtConfigure,userDAO);
         paperDAO.deletePaperById(id);
     }
+
+    @Override
+    public List<Paper> search(String keyword) {
+        return   paperDAO.getByTitle(keyword);
+    }
 }

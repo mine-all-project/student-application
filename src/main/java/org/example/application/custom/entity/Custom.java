@@ -16,9 +16,9 @@ import java.util.List;
 @Entity
 @ToString
 public class Custom extends BaseEntity {
-    @Column(columnDefinition = "varchar(64) default null comment '全局通知'")
+    @Column(columnDefinition = "longtext default null comment '全局通知'")
     private String baseNotice;
-    @Column(columnDefinition = "tinyint default null comment '体温通知'")
+    @Column(columnDefinition = "longtext default null comment '体温通知'")
     private String temperatureNotice;
     @ManyToMany
     private List<FileInfo> banner;

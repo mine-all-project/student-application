@@ -1,6 +1,7 @@
 package org.example.application.custom.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.custom.service.CustomService;
 import org.example.application.system.dto.ResponseDTO;
 import org.example.application.system.entity.FileInfo;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -20,6 +22,7 @@ public class CustomController {
         this.customService = customService;
     }
 
+    @JwtIgnore
     @RequestMapping("/get/banner")
     public ResponseDTO getBanner() {
         log.info("收到请求->获取轮播图列表");
@@ -36,6 +39,7 @@ public class CustomController {
         return ResponseDTO.returnSuccess();
     }
 
+    @JwtIgnore
     @RequestMapping("/get/notice/base")
     public ResponseDTO getBaseNotice() {
         log.info("收到请求->获取全局通知");
@@ -45,13 +49,15 @@ public class CustomController {
     }
 
     @RequestMapping("/save/notice/base")
-    public ResponseDTO saveBaseNotice(String content) {
+    public ResponseDTO saveBaseNotice(@RequestBody Map<String,Object> data) {
+        String content = String.valueOf(data.getOrDefault("content",""));
         log.info("收到请求->保存全局通知:[{}]", content);
         customService.saveBaseNotice(content);
         log.info("返回结果->保存全局通知结束");
         return ResponseDTO.returnSuccess();
     }
 
+    @JwtIgnore
     @RequestMapping("/get/notice/temperature")
     public ResponseDTO getTemperatureNotice() {
         log.info("收到请求->获取体温通知");
@@ -61,7 +67,8 @@ public class CustomController {
     }
 
     @RequestMapping("/save/notice/temperature")
-    public ResponseDTO saveTemperatureNotice(String content) {
+    public ResponseDTO saveTemperatureNotice(@RequestBody Map<String,Object> data) {
+        String content = String.valueOf(data.getOrDefault("content",""));
         log.info("收到请求->保存体温通知:[{}]", content);
         customService.saveTemperatureNotice(content);
         log.info("返回结果->保存体温通知结束");

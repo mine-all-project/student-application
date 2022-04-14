@@ -208,7 +208,24 @@
                     }
                 })
             },
-
+            search() {
+                axios.get(`/api/paper/search/${this.form.searchText}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.formatList(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            resetList() {
+                this.getList()
+                this.form.searchText = ''
+            },
             showAddPaper() {
                 this.temp.fileList = []
                 this.show.paper = true

@@ -31,4 +31,8 @@ public class PaperDAO extends BaseDAO {
     public List<Paper> getAll() {
         return paperRepository.findAll();
     }
+
+    public List<Paper> getByTitle(String keyword) {
+        return paperRepository.findAllByTitleContains(keyword);
+    }
 }

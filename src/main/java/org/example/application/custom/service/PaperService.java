@@ -16,4 +16,5 @@ public interface PaperService  extends BaseService {
 
     void deletePaperById(HttpServletRequest request, String id);
 
+    List<Paper> search(String keyword);
 }

@@ -136,6 +136,12 @@ const app = new Vue({
             ],
             managerMenus: [
                 {
+                    key: '11',
+                    name: '综合管理',
+                    icon: 'appstore',
+                    url: '/server/custom.html',
+                },
+                {
                 key: '3',
                 name: '信息管理',
                 icon: 'appstore',
