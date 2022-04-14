@@ -1,0 +1,228 @@
+<!doctype html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<div data-th-include="/components/base :: meta"></div>
+	<title>校园资讯</title>
+	<div data-th-replace="/components/base :: css"></div>
+	<div data-th-replace="/components/base :: javascript"></div>
+	<div data-th-replace="/components/vue :: javascript"></div>
+	<div data-th-replace="/components/ui :: antd"></div>
+	<link rel="stylesheet" th:href="@{/css/banner.css}">
+	<div data-th-replace="/components/frontend/page-common :: style"></div>
+	<style>
+      .body {
+          width: 100%;
+          height: 65vh;
+          position: relative;
+          display: flex;
+      }
+
+      .body-bgi {
+          background-repeat: no-repeat;
+          background-size: 100%;
+          background-position: center;
+          width: 100%;
+          height: 100%;
+          opacity: 0.63;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          z-index: 10;
+      }
+
+
+      .menus {
+          margin: 2rem 0 0 1rem;
+          width: 257px;
+          height: 46px;
+          background-color: #999999;
+          color: #505050;
+          display: flex;
+          text-align: center;
+          align-items: center;
+      }
+
+      .menus:first-child {
+          margin: 5rem 0 0 1rem;
+      }
+	</style>
+</head>
+<body>
+
+<div id="app">
+	<div style="background-color:#999999;height: 10vh;color:#505050;
+	display:flex;justify-content: space-around;font-size:39px;align-items: center">
+		<span>草</span>
+		<span>书</span>
+		<span>文</span>
+		<span>字</span>
+	</div>
+	<div class="body">
+		<div class="body-bgi" :style="`background-image:url(${image.settings})`"></div>
+		<div style="flex:2;height: 100%;text-align: right;z-index: 999">
+			<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" alt=""
+					 style="width: 169px;height: 169px;margin: 5rem 1rem 0 0">
+		</div>
+		<div style="flex:3;height: 100%;display:flex;z-index: 999;flex-direction: column">
+			<div class="menus" v-for="item in menus" @click="clickMenu(item)" :key="item.id">
+				<span style="flex:6">{{item.name}}</span>
+				<a-icon style="flex:2;font-size: 40px" type="unordered-list"></a-icon>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+    const app = new Vue({
+        el: '#app',
+        components: {},
+        data() {
+            return {
+                image: {
+                    settings: '/images/settings.jpg',
+                },
+                headers: headers,
+                axios: axios,
+                userInfo: {},
+                menus: [
+                    {key: 'name', show: true, name: '名称'},
+                    {key: 'password', show: true, name: '修改密码	'},
+                    {key: 'published', show: true, name: '已发布动态'},
+                    {key: 'checkWait', show: true, name: '审核中动态'},
+                    {key: 'publish', show: true, name: '发布动态'},
+                    {key: 'check', show: true, name: '审核'},
+                    {key: 'comment', show: true, name: '评论'},
+                ],
+            }
+        },
+        mounted() {
+            this.getUserInfo()
+        },
+        methods: {
+            clickMenu(e) {
+                console.log(e)
+            },
+            showPersonSettings() {
+                this.show.personSettings = true
+            },
+            closePersonSettings() {
+                this.show.personSettings = false
+            },
+            savePersonSettings() {
+                const _this = this
+                let data = {
+                    id: _this.userInfo.id,
+                    age: _this.form.personSettings.age,
+                    name: _this.form.personSettings.name,
+                    gender: _this.form.personSettings.gender,
+                    mail: _this.form.personSettings.mail,
+                    headImg: _this.temp.fileList.length > 0 ? _this.temp.fileList[0].response.data : _this.userInfo.headImg,
+                }
+                this.$refs.personSettingsForm.validate(valid => {
+                    if (valid) {
+                        console.info('valid success-->', data, _this.temp.fileList);
+                        axios.post('/api/user/updateUserInfo', data).then(response => {
+                            const result = response.data
+                            if (result.status !== 200) {
+                                this.$message.error(result.message);
+                                return;
+                            }
+                            _this.$message.success(result.message);
+                            _this.closePersonSettings()
+                        }).catch(function (error) {
+                            console.error('出现错误:', error);
+                        });
+                    } else {
+                        console.log('验证失败');
+                        return false;
+                    }
+                })
+            },
+            showUpdatePassword() {
+                this.show.updatePassword = true
+            },
+            closeUpdatePassword() {
+                this.show.updatePassword = false
+                this.$refs.updatePasswordForm.resetFields();
+            },
+            saveUpdatePassword() {
+                const _this = this
+                _this.$refs.updatePasswordForm.validate(valid => {
+                    let data = {
+                        id: _this.userInfo.id,
+                        oldPassword: _this.form.updatePassword.oldPassword,
+                        newPassword: _this.form.updatePassword.newPassword,
+                        againPassword: _this.form.updatePassword.againPassword,
+                    }
+                    if (valid) {
+                        console.info('valid success-->', data);
+                        if (data.newPassword !== data.againPassword) {
+                            _this.$message.error('两次密码不一致');
+                            return
+                        }
+                        axios.post('/api/user/updatePassword', data).then(response => {
+                            const result = response.data
+                            if (result.status !== 200) {
+                                _this.$message.error(result.message);
+                                return;
+                            }
+                            _this.$message.success(result.message);
+                            _this.closeUpdatePassword()
+                        }).catch(function (error) {
+                            console.error('出现错误:', error);
+                        });
+                    } else {
+                        console.log('验证失败');
+                        return false;
+                    }
+                })
+            },
+            getUserInfo() {
+                this.axios.get('/api/user/getUserInfo').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.userInfo = result.data;
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            logout() {
+                sessionStorage.clear()
+                window.location.href = '/server/login'
+            },
+            closePreview() {
+                this.show.previewImg = false
+            },
+            async showPreview(file) {
+                if (file.response) {
+                    this.temp.previewSrc = file.response.data.virtualPath
+                } else {
+                    this.temp.previewSrc = file.url
+                }
+                this.show.previewImg = true
+            },
+            changeUploadFile(info) {
+                this.temp.fileList = info.fileList
+                if (info.file.status === 'done') {
+                    this.$message.success(`${info.file.name} 上传成功`);
+                } else if (info.file.status === 'error') {
+                    this.$message.error(`${info.file.name} 上传失败`);
+                }
+            },
+            removeUploadFile(file) {
+                this.temp.fileList = []
+            },
+        }
+    })
+
+</script>
+</body>
+</html>

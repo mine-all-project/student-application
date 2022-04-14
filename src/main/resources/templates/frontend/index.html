@@ -1,6 +1,5 @@
 <!doctype html>
-<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org"
-			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div data-th-include="/components/base :: meta"></div>
 	<title>首页</title>
@@ -9,167 +8,7 @@
 	<div data-th-replace="/components/vue :: javascript"></div>
 	<div data-th-replace="/components/ui :: antd"></div>
 	<link rel="stylesheet" th:href="@{/css/banner.css}">
-	<style>
-      p {
-          padding: 0;
-          margin: 0
-      }
-
-      .school-name {
-          height: 10vh;
-          text-align: center;
-          background-repeat: no-repeat;
-          background-size: auto 100%;
-          background-position: center;
-          background-color: #D9D9D9;
-          opacity: 0.3;
-      }
-
-      .module-5 {
-          height: 10vh;
-          width: 100%;
-          background-color: rgb(213, 238, 248);
-          display: flex;
-          flex-direction: row;
-          justify-content: space-around;
-          align-items: center
-      }
-
-      .module-5 div img {
-          width: 5vh;
-      }
-
-      .school-news {
-          height: 10vh;
-          text-align: center;
-          background-image: url(/images/newsicon.png);
-          background-repeat: no-repeat;
-          background-size: auto 100%;
-          background-position: center;
-          background-color: #D9D9D9;
-          opacity: 0.2;
-      }
-
-      .xiaoxun {
-          background-size: 100%;
-          background-position: center;
-          height: 10vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-family: cursive;
-      }
-
-      .sysname {
-          height: 10vh;
-          background-color: #505050;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-      }
-
-      .headImage {
-          width: 5rem;
-          height: 5rem;
-          border-radius: 50%;
-      }
-
-
-      .banner-wrap {
-          width: 100%;
-          /*height: 500px;*/
-          margin: 0 auto;
-          overflow: hidden;
-          position: relative;
-      }
-
-      .banner-wrap .banner-list {
-          /*height: 500px;*/
-      }
-
-      .banner-wrap .banner-list .banner-item {
-          /*height: 500px;*/
-          width: 100%;
-          background-size: cover;
-      }
-
-      .banner-wrap .banner-list .u-banner-item a {
-          display: block;
-          height: 100%;
-          background-size: cover;
-      }
-
-      .banner-wrap .banner-list .fade {
-          animation: fade 0.5s ease-in-out;
-          background-size: cover;
-      }
-
-      @keyframes fade {
-          0% {
-              opacity: 0;
-          }
-          5% {
-              opacity: 0.05;
-          }
-          10% {
-              opacity: 0.1;
-          }
-          20% {
-              opacity: 0.2;
-          }
-          35% {
-              opacity: 0.35;
-          }
-          50% {
-              opacity: 0.5;
-          }
-          65% {
-              opacity: 0.65;
-          }
-          80% {
-              opacity: 0.8;
-          }
-          90% {
-              opacity: 0.9;
-          }
-          95% {
-              opacity: 0.95;
-          }
-          100% {
-              opacity: 1;
-          }
-      }
-
-      .banner-wrap .dot-list {
-          width: 500px;
-          position: absolute;
-          bottom: -5px;
-          left: 50%;
-          margin-left: -300px;
-          text-align: center;
-      }
-
-      .banner-wrap .dot-list .dot-item {
-          display: inline-block;
-          width: 12px;
-          height: 12px;
-          margin: 0 5px;
-          background: #fff;
-          cursor: pointer;
-          border: 1px solid #fff;
-          border-radius: 50%;
-          opacity: 0.8;
-      }
-
-      .banner-wrap .dot-list .active {
-          width: 30px;
-          background: #108ee9;
-          border: 1px solid #108ee9;
-          border-radius: 12px;
-          opacity: 1;
-      }
-
-	</style>
+	<div data-th-replace="/components/frontend/page-common :: style"></div>
 </head>
 <body>
 
@@ -212,59 +51,11 @@
 			</a-modal>
 		</a-form-model>
 	</a-modal>
-	<div style="background-color:rgb(43,88,155);height: 10vh">
-		<a-col :span="2" :offset="4"
-					 :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`"></a-col>
-		<a-col :span="12" class="school-name" :style="`background-image:url(${image.schoolName})`">
-			<p style="font-size: 40px;color: rgb(249 183 0);">{{page.schoolName}}</p>
-			<p style="font-size: 16px;color: rgb(249 183 0);">{{page.schoolNameEn}}</p>
-		</a-col>
-		<a-col :span="1" :offset="4" style="height: 10vh;text-align: center">
-			<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" class="headImage" @click="showPersonSettings">
-			<p>{{userInfo.name}}</p>
-		</a-col>
-	</div>
-	<div class="m-banner-wrap" v-if="bannerData.length">
-		<div class="m-banner-list">
-			<div class="u-banner-item fade"
-					 v-for="(item, index) in bannerData" :key="index"
-					 v-show="index===activeIndex"
-					 @mouseover="onOver()" @mouseout="onOut()">
-				<img :src="item.src" alt="" style="width: 100%;height: 100%">
-			</div>
-		</div>
-		<div class="m-dot-list" v-if="bannerData.length > 1">
-			<div v-for="(item, index) in bannerData" :key="index" :class="['u-dot-item', {active: index===activeIndex}]"
-					 @mouseenter="onEnter(index)" @mouseleave="onLeave">
-			</div>
-		</div>
-	</div>
-	<div class="module-5">
-		<a-col :span="2" @click="changeTab('/frontend/news.html')">
-			<img :src="image.moduleIcon">
-			<p>校园咨询</p>
-		</a-col>
-		<a-col :span="2" @click="changeTab('/frontend/trading.html')">
-			<img :src="image.moduleIcon">
-			<p>二手交易</p>
-		</a-col>
-		<a-col :span="2" @click="changeTab('/frontend/employment.html')">
-			<img :src="image.moduleIcon">
-			<p>就业速递</p>
-		</a-col>
-		<a-col :span="2" @click="changeTab('/frontend/lost-items.html')">
-			<img :src="image.moduleIcon">
-			<p>失物招领</p>
-		</a-col>
-		<a-col :span="2">
-			<img :src="image.moduleIcon" @click="changeTab('/frontend/other.html')">
-			<a-select size="small" default-value="question" style="width: 100%" @change="handleChange">
-				<a-select-option value="question"> 校园问答</a-select-option>
-				<a-select-option value="friend"> 校园交友</a-select-option>
-				<a-select-option value="other"> 其他</a-select-option>
-			</a-select>
-		</a-col>
-	</div>
+	<!--common-->
+	<div data-th-replace="/components/frontend/page-common :: title"></div>
+	<div data-th-replace="/components/frontend/page-common :: banner"></div>
+	<div data-th-replace="/components/frontend/page-common :: nav"></div>
+	<!--校园资讯-->
 	<div style="width: 100%;background-color:rgba(153, 153, 153, 0.32);">
 		<div style="display: flex;justify-content: space-between;padding: 16px 3rem 0 2rem;">
 			<div style="font-size: 2rem">
@@ -307,7 +98,7 @@
 			</div>
 		</div>
 	</div>
-
+	<!--	就业速递-->
 	<div style="width: 100%;background-color:rgba(177, 86, 86, 0.14);display: flex;flex-direction: row">
 		<div style="flex:2;font-size: 2rem">
 			<a-icon type="star" theme="filled"></a-icon>
@@ -342,18 +133,251 @@
 			</div>
 		</div>
 	</div>
-	<!--	<iframe :src="pageUrl" style="width: 100%;height: 80vh;border: none;padding: 0;margin: 0"></iframe>-->
-	<div class="xiaoxun" :style="`background-image:url(${image.xiaoxun})`">
-		<p style="font-size: 30px">{{page.xiaoxun}}</p>
-	</div>
+	<!--common-->
+	<div data-th-replace="/components/frontend/page-common :: xiaoxun"></div>
 	<br>
-	<div class="sysname" style="text-align: center">
-		<p style="font-size: 30px">{{page.sysName}}</p>
-	</div>
+	<div data-th-replace="/components/frontend/page-common :: sysname"></div>
 	<br>
 </div>
-
-
-<script src="./main.js"></script>
+<script>
+    const app = new Vue({
+        el: '#app',
+        components: {},
+        data() {
+            return {
+                labelCol: {span: 5},
+                wrapperCol: {span: 16},
+                image: {
+                    schoolLogo: '/images/xiaohui.png',
+                    schoolName: '/images/blackimg.png',
+                    moduleIcon: '/images/icon.svg',
+                    xiaoxun: '/images/xiaohui.png',
+                },
+                page: {
+                    schoolName: '学校名字',
+                    schoolNameEn: '学校英文名',
+                    xiaoxun: '校训',
+                    sysName: '系统名字',
+                },
+                pageUrl: '/frontend/demo.html',
+                headers: headers,
+                axios: axios,
+                form: {
+                    updatePassword: {
+                        oldPassword: '',
+                        newPassword: '',
+                        againPassword: '',
+                    },
+                    personSettings: {}
+                },
+                pagination: {total: 0, pageSize: 10},
+                title: "校园管理系统",
+                rules: {
+                    name: [
+                        {required: true, message: '请输入姓名', trigger: 'change'},
+                    ],
+                    age: [
+                        {required: true, message: '请输入年龄', trigger: 'change'},
+                    ],
+                    gender: [
+                        {required: true, message: '请选择性别', trigger: 'change'},
+                    ],
+                    mail: [
+                        {required: true, message: '请输入邮箱', trigger: 'change'},
+                    ],
+                    oldPassword: [
+                        {required: true, message: '请输入原密码', trigger: 'change'},
+                        {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                    ],
+                    newPassword: [
+                        {required: true, message: '请输入新密码', trigger: 'change'},
+                        {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                    ],
+                    againPassword: [
+                        {required: true, message: '请重复新密码', trigger: 'change'},
+                        {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                    ],
+                },
+                show: {
+                    updatePassword: false,
+                    personSettings: false,
+                    previewImg: false,
+                },
+                userInfo: {},
+                temp: {
+                    previewSrc: '',
+                    fileList: []
+                },
+                activeIndex: 0,
+                timer: null,
+                bannerData: [
+                    {src: '/images/banner01.png'},
+                    {src: '/images/banner02.png'},
+                    {src: '/images/banner03.png'},
+                ],
+                interval: 2000,
+            }
+        },
+        mounted() {
+            this.menus = this.allMenus
+            this.getUserInfo()
+        },
+        methods: {
+            changeTab(e) {
+                console.log(e)
+                this.pageUrl = e
+                window.location.href = e
+            },
+            handleChange(e) {
+                console.log(e)
+            },
+            onOver() {
+                clearInterval(this.timer)
+            },
+            onOut() {
+                this.startSlider()
+            },
+            onEnter(index) {
+                this.activeIndex = index
+                clearInterval(this.timer)
+            },
+            onLeave() {
+                this.startSlider()
+            },
+            startSlider() {
+                clearInterval(this.timer)
+                if (this.bannerData.length > 1) {
+                    this.timer = setInterval(this.onMove, this.interval)
+                }
+            },
+            onMove() {
+                if (this.activeIndex === this.bannerData.length - 1) {
+                    this.activeIndex = 0
+                } else {
+                    this.activeIndex++
+                }
+            },
+            beforeDestroy() {
+                clearInterval(this.timer)
+                this.timer = null
+            },
+            showPersonSettings() {
+                this.show.personSettings = true
+            },
+            closePersonSettings() {
+                this.show.personSettings = false
+            },
+            savePersonSettings() {
+                const _this = this
+                let data = {
+                    id: _this.userInfo.id,
+                    age: _this.form.personSettings.age,
+                    name: _this.form.personSettings.name,
+                    gender: _this.form.personSettings.gender,
+                    mail: _this.form.personSettings.mail,
+                    headImg: _this.temp.fileList.length > 0 ? _this.temp.fileList[0].response.data : _this.userInfo.headImg,
+                }
+                this.$refs.personSettingsForm.validate(valid => {
+                    if (valid) {
+                        console.info('valid success-->', data, _this.temp.fileList);
+                        axios.post('/api/user/updateUserInfo', data).then(response => {
+                            const result = response.data
+                            if (result.status !== 200) {
+                                this.$message.error(result.message);
+                                return;
+                            }
+                            _this.$message.success(result.message);
+                            _this.closePersonSettings()
+                        }).catch(function (error) {
+                            console.error('出现错误:', error);
+                        });
+                    } else {
+                        console.log('验证失败');
+                        return false;
+                    }
+                })
+            },
+            showUpdatePassword() {
+                this.show.updatePassword = true
+            },
+            closeUpdatePassword() {
+                this.show.updatePassword = false
+                this.$refs.updatePasswordForm.resetFields();
+            },
+            saveUpdatePassword() {
+                const _this = this
+                _this.$refs.updatePasswordForm.validate(valid => {
+                    let data = {
+                        id: _this.userInfo.id,
+                        oldPassword: _this.form.updatePassword.oldPassword,
+                        newPassword: _this.form.updatePassword.newPassword,
+                        againPassword: _this.form.updatePassword.againPassword,
+                    }
+                    if (valid) {
+                        console.info('valid success-->', data);
+                        if (data.newPassword !== data.againPassword) {
+                            _this.$message.error('两次密码不一致');
+                            return
+                        }
+                        axios.post('/api/user/updatePassword', data).then(response => {
+                            const result = response.data
+                            if (result.status !== 200) {
+                                _this.$message.error(result.message);
+                                return;
+                            }
+                            _this.$message.success(result.message);
+                            _this.closeUpdatePassword()
+                        }).catch(function (error) {
+                            console.error('出现错误:', error);
+                        });
+                    } else {
+                        console.log('验证失败');
+                        return false;
+                    }
+                })
+            },
+            getUserInfo() {
+                this.axios.get('/api/user/getUserInfo').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.userInfo = result.data;
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            logout() {
+                sessionStorage.clear()
+                window.location.href = '/server/login'
+            },
+            closePreview() {
+                this.show.previewImg = false
+            },
+            async showPreview(file) {
+                if (file.response) {
+                    this.temp.previewSrc = file.response.data.virtualPath
+                } else {
+                    this.temp.previewSrc = file.url
+                }
+                this.show.previewImg = true
+            },
+            changeUploadFile(info) {
+                this.temp.fileList = info.fileList
+                if (info.file.status === 'done') {
+                    this.$message.success(`${info.file.name} 上传成功`);
+                } else if (info.file.status === 'error') {
+                    this.$message.error(`${info.file.name} 上传失败`);
+                }
+            },
+            removeUploadFile(file) {
+                this.temp.fileList = []
+            },
+        }
+    })
+</script>
 </body>
 </html>

@@ -28,34 +28,6 @@ const app = new Vue({
                 },
                 personSettings: {}
             },
-            pagination: {total: 0, pageSize: 10},
-            title: "校园管理系统",
-            rules: {
-                name: [
-                    {required: true, message: '请输入姓名', trigger: 'change'},
-                ],
-                age: [
-                    {required: true, message: '请输入年龄', trigger: 'change'},
-                ],
-                gender: [
-                    {required: true, message: '请选择性别', trigger: 'change'},
-                ],
-                mail: [
-                    {required: true, message: '请输入邮箱', trigger: 'change'},
-                ],
-                oldPassword: [
-                    {required: true, message: '请输入原密码', trigger: 'change'},
-                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
-                ],
-                newPassword: [
-                    {required: true, message: '请输入新密码', trigger: 'change'},
-                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
-                ],
-                againPassword: [
-                    {required: true, message: '请重复新密码', trigger: 'change'},
-                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
-                ],
-            },
             show: {
                 updatePassword: false,
                 personSettings: false,
@@ -74,16 +46,48 @@ const app = new Vue({
                 {src: '/images/banner03.png'},
             ],
             interval: 2000,
+
+            pagination: {
+                pageSize: 3,
+                pageIndex: 1,
+                pageCount: 50,
+            },
+            title:'二手交易',
+            menus: [
+                {key: '', name: '二手交易'},
+                {key: '', name: '二手交易'},
+                {key: '', name: '租赁'},
+            ],
+            dataList: [
+                {
+                    title: 'title',
+                    content: 'xxxxx'
+                },
+                {
+                    title: 'title',
+                    content: 'xxxxx'
+                }
+            ]
         }
     },
     mounted() {
-        this.menus = this.allMenus
         this.getUserInfo()
     },
     methods: {
+        changePage(e) {
+            console.log(e)
+        },
+        changeType(e) {
+            console.log(e.name)
+        },
+        handleChange(e) {
+            console.log(e)
+        },
+
         changeTab(e) {
             console.log(e)
-           this.pageUrl = e
+            this.pageUrl = e
+            window.location.href = e
         },
         handleChange(e) {
             console.log(e)

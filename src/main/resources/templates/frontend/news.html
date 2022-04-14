@@ -1,8 +1,14 @@
-<html>
+<!doctype html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
 <head>
+	<div data-th-include="/components/base :: meta"></div>
+	<title>校园资讯</title>
+	<div data-th-replace="/components/base :: css"></div>
 	<div data-th-replace="/components/base :: javascript"></div>
 	<div data-th-replace="/components/vue :: javascript"></div>
 	<div data-th-replace="/components/ui :: antd"></div>
+	<link rel="stylesheet" th:href="@{/css/banner.css}">
+	<div data-th-replace="/components/frontend/page-common :: style"></div>
 	<style>
       p {
           padding: 0;
@@ -33,50 +39,68 @@
           height: 10vh;
           font-family: 'Microsoft YaHei';
       }
-
-      .menus li:first-child {
-          font-weight: 100;
-          font-size: 2.5rem;
-          height: 20vh;
-          text-align: center;
-          background-repeat: no-repeat;
-          background-size: auto 100%;
-          background-position: center;
-          background-color: rgb(89, 145, 205);
-          color: rgba(99, 107, 107, 0.7);
-      }
-      .ant-pagination-item-link {
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-      }
 	</style>
 </head>
-<body style="margin: 0;scroll: no; overflow-y: hidden">
-<div style="" class="content" id="app">
-	<ul class="menus">
-		<li v-for="item in menus" @click="changeType(item)">{{item.name}}</li>
-	</ul>
-	<div style="flex:9;height: 100%;padding: 2rem">
-		<p style="font-size: 30px;font-weight: 600">{{title}}</p>
-		<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
-		<div>
-			<a-col v-for="item in dataList" style="padding: 10px">
-				<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
-				<p style="font-size: 24px;word-break: break-all">{{item.content}}</p>
-				<hr>
-			</a-col>
-			<a-pagination v-model="pagination.pageIndex" :total="pagination.pageCount" @change="changePage"
-										:default-page-size="pagination.pageSize" :hide-on-single-page="true"></a-pagination>
+<body>
+
+<div id="app">
+	<!--common-->
+	<div data-th-replace="/components/frontend/page-common :: title"></div>
+	<div data-th-replace="/components/frontend/page-common :: banner"></div>
+	<div data-th-replace="/components/frontend/page-common :: nav"></div>
+	<div style="" class="content">
+		<ul class="menus">
+			<li v-for="item in menus" @click="changeType(item)">{{item.name}}</li>
+		</ul>
+		<div style="flex:9;height: 100%;padding: 2rem">
+			<p style="font-size: 30px;font-weight: 600">{{title}}</p>
+			<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
+			<div>
+				<a-col v-for="item in dataList" style="padding: 10px">
+					<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
+					<p style="font-size: 24px;word-break: break-all">{{item.content}}</p>
+					<hr>
+				</a-col>
+			</div>
 		</div>
 	</div>
+	<!--common-->
+	<div data-th-replace="/components/frontend/page-common :: xiaoxun"></div>
+	<br>
+	<div data-th-replace="/components/frontend/page-common :: sysname"></div>
+	<br>
 </div>
+
+
 <script>
     const app = new Vue({
         el: '#app',
         components: {},
         data() {
             return {
+                image: {
+                    schoolLogo: '/images/xiaohui.png',
+                    schoolName: '/images/blackimg.png',
+                    moduleIcon: '/images/icon.svg',
+                    xiaoxun: '/images/xiaohui.png',
+                },
+                page: {
+                    schoolName: '学校名字',
+                    schoolNameEn: '学校英文名',
+                    xiaoxun: '校训',
+                    sysName: '系统名字',
+                },
+                headers: headers,
+                axios: axios,
+                userInfo: {},
+                activeIndex: 0,
+                timer: null,
+                bannerData: [
+                    {src: '/images/banner01.png'},
+                    {src: '/images/banner02.png'},
+                    {src: '/images/banner03.png'},
+                ],
+                interval: 2000,
                 pagination: {
                     pageSize: 3,
                     pageIndex: 1,
@@ -102,21 +126,70 @@
                     }
                 ]
             }
-
         },
         mounted() {
+            this.getUserInfo()
         },
         methods: {
-            changePage(e) {
-                console.log(e)
+            toModulePage(e) {
+                this.$message.info(e)
+                window.location.href = e
             },
             changeType(e) {
                 console.log(e.name)
             },
             handleChange(e) {
                 console.log(e)
+                window.location.href = `/frontend/other.html?key=${e}`
             },
-
+            onOver() {
+                clearInterval(this.timer)
+            },
+            onOut() {
+                this.startSlider()
+            },
+            onEnter(index) {
+                this.activeIndex = index
+                clearInterval(this.timer)
+            },
+            onLeave() {
+                this.startSlider()
+            },
+            startSlider() {
+                clearInterval(this.timer)
+                if (this.bannerData.length > 1) {
+                    this.timer = setInterval(this.onMove, this.interval)
+                }
+            },
+            onMove() {
+                if (this.activeIndex === this.bannerData.length - 1) {
+                    this.activeIndex = 0
+                } else {
+                    this.activeIndex++
+                }
+            },
+            beforeDestroy() {
+                clearInterval(this.timer)
+                this.timer = null
+            },
+            getUserInfo() {
+                this.axios.get('/api/user/getUserInfo').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.userInfo = result.data;
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            logout() {
+                sessionStorage.clear()
+                window.location.href = '/server/login'
+            },
         }
     })
 
