@@ -49,8 +49,8 @@ public class CustomController {
     }
 
     @RequestMapping("/save/notice/base")
-    public ResponseDTO saveBaseNotice(@RequestBody Map<String,Object> data) {
-        String content = String.valueOf(data.getOrDefault("content",""));
+    public ResponseDTO saveBaseNotice(@RequestBody Map<String, Object> data) {
+        String content = String.valueOf(data.getOrDefault("content", ""));
         log.info("收到请求->保存全局通知:[{}]", content);
         customService.saveBaseNotice(content);
         log.info("返回结果->保存全局通知结束");
@@ -67,11 +67,28 @@ public class CustomController {
     }
 
     @RequestMapping("/save/notice/temperature")
-    public ResponseDTO saveTemperatureNotice(@RequestBody Map<String,Object> data) {
-        String content = String.valueOf(data.getOrDefault("content",""));
+    public ResponseDTO saveTemperatureNotice(@RequestBody Map<String, Object> data) {
+        String content = String.valueOf(data.getOrDefault("content", ""));
         log.info("收到请求->保存体温通知:[{}]", content);
         customService.saveTemperatureNotice(content);
         log.info("返回结果->保存体温通知结束");
+        return ResponseDTO.returnSuccess();
+    }
+
+    @JwtIgnore
+    @RequestMapping("/get/count")
+    public ResponseDTO getCount() {
+        log.info("收到请求->获取疫情信息");
+        Map<String, Object> data = customService.getCount();
+        log.info("返回结果->获取疫情信息结束:[{}]", data);
+        return ResponseDTO.returnSuccess("操作成功", data);
+    }
+
+    @RequestMapping("/save/count")
+    public ResponseDTO saveCount(@RequestBody Map<String, Object> data) {
+        log.info("收到请求->保存疫情信息通知:[{}]", data);
+        customService.saveCount(data);
+        log.info("返回结果->保存疫情信息结束");
         return ResponseDTO.returnSuccess();
     }
 }

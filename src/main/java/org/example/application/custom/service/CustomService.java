@@ -4,6 +4,7 @@ import org.example.application.common.BaseService;
 import org.example.application.system.entity.FileInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CustomService extends BaseService {
 
@@ -18,4 +19,8 @@ public interface CustomService extends BaseService {
     String getTemperatureNotice();
 
     void saveTemperatureNotice(String content);
+
+    Map<String, Object> getCount();
+
+    void saveCount(Map<String, Object> data);
 }

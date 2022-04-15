@@ -26,6 +26,14 @@
       <span slot="user" slot-scope="user,record">
         <span>{{user.name}}</span>
       </span>
+			<span slot="symptoms" slot-scope="text,record">
+          <a-tooltip placement="topLeft">
+            <template slot="text">
+              <span>{{ text }}</span>
+            </template>
+            <span class="step-content">{{ text }}</span>
+          </a-tooltip>
+        </span>
 		</a-table>
 	</div>
 </div>
@@ -45,6 +53,11 @@
                         dataIndex: 'value',
                         title: '体温℃',
                         key: 'value',
+                    },
+										{
+                        dataIndex: 'symptoms',
+                        title: '症状',
+                        scopedSlots: {customRender: 'symptoms'}
                     },
                     {
                         dataIndex: 'createTime',
@@ -99,6 +112,7 @@
                                 id:e.id,
                                 user:e.user,
                                 value:e.value,
+                                symptoms:e.symptoms,
                                 createTimeStr:new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                             }
                         })
