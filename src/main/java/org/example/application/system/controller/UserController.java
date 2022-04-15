@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -29,6 +30,23 @@ public class UserController extends BaseController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping("/updateName")
+    public ResponseDTO updateName(HttpServletRequest request, @RequestParam("name") String name) {
+        logger.info("收到请求->修改名称:[{}]", name);
+        SysUser user = userService.updateName(request, name);
+        logger.info("返回结果->修改名称完成:[{}]", user);
+        return ResponseDTO.returnSuccess("操作成功", user);
+    }
+
+    @PostMapping("/updatePassword")
+    public ResponseDTO updatePassword(HttpServletRequest request,@RequestBody ResetPasswordForm form) {
+        super.validator(form, IsNotNull.class);
+        logger.info("收到请求->修改密码,id:[{}]", form.getId());
+        userService.updatePassword(request,form);
+        logger.info("返回结果->修改密码完成");
+        return ResponseDTO.returnSuccess("操作成功");
     }
 
     @PostMapping("/addUser")
@@ -47,6 +65,7 @@ public class UserController extends BaseController {
         logger.info("返回结果->用户修改完成:[{}]", user);
         return ResponseDTO.returnSuccess("操作成功", user);
     }
+
 
     @PostMapping("/delUser")
     public ResponseDTO delUser(@RequestBody UserForm form) {
@@ -75,14 +94,7 @@ public class UserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功");
     }
 
-    @PostMapping("/updatePassword")
-    public ResponseDTO updatePassword(@RequestBody ResetPasswordForm form) {
-        super.validator(form, IsNotNull.class);
-        logger.info("收到请求->修改密码,id:[{}]", form.getId());
-        userService.updatePassword(form);
-        logger.info("返回结果->修改密码完成");
-        return ResponseDTO.returnSuccess("操作成功");
-    }
+
 
     @PostMapping("/updateUserInfo")
     public ResponseDTO updateUserInfo(@RequestBody UpdateUserInfoForm form) {

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -39,15 +38,6 @@ public abstract class BaseEntity implements Serializable, Cloneable {
     @CreatedDate
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
-
-    /**
-     * 更新时间
-     * columnDefinition 设置默认值为当前时间，随每次更新数据时更新时间
-     */
-    @Column(columnDefinition = "timestamp default current_timestamp ")
-    @LastModifiedDate
-    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updateTime;
 
     /**
      * 删除标记 (0:正常 1:删除)

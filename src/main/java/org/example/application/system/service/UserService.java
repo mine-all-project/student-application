@@ -15,6 +15,10 @@ import java.util.List;
  */
 public interface UserService extends BaseService {
 
+    SysUser updateName(HttpServletRequest request,String name);
+
+    SysUser updatePassword(HttpServletRequest request,ResetPasswordForm form);
+
     SysUser findByUsername(String username);
 
     SysUser addUser(UserForm form);
@@ -30,8 +34,6 @@ public interface UserService extends BaseService {
     SysUser getUserInfo(HttpServletRequest request);
 
     void resetPassword(ResetPasswordForm form);
-
-    void updatePassword(ResetPasswordForm form);
 
     void updateUserInfo(UpdateUserInfoForm form);
 

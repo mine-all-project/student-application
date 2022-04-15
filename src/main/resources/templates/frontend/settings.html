@@ -72,6 +72,28 @@
 			</div>
 		</div>
 	</div>
+	<a-modal :visible.sync="show.updateName" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="saveName" @cancel="closeUpdateName">
+		<a-form-model ref="updateNameForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item label="名称">
+				<a-input v-model="form.name"></a-input>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal :visible.sync="show.updatePassword" width="30%" ok-text="确认"
+					 cancel-text="取消" @ok="savePassword" @cancel="closeUpdatePassword">
+		<a-form-model ref="updatePasswordForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-form-model-item label="原密码" prop="oldPassword">
+				<a-input v-model="form.oldPassword" type="password"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="新密码" prop="newPassword">
+				<a-input v-model="form.newPassword" type="password"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="重复密码" prop="againPassword">
+				<a-input v-model="form.againPassword" type="password"></a-input>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
 </div>
 
 
@@ -81,6 +103,8 @@
         components: {},
         data() {
             return {
+                labelCol: {span: 5},
+                wrapperCol: {span: 16},
                 image: {
                     settings: '/images/settings.jpg',
                 },
@@ -96,6 +120,22 @@
                     {key: 'check', show: true, name: '审核'},
                     {key: 'comment', show: true, name: '评论'},
                 ],
+                show: {
+                    updateName: false,
+                    updatePassword: false,
+                },
+                rules: {
+                    name: [{required: true, message: '请输入名称', trigger: 'change'}],
+                    oldPassword: [{required: true, message: '请输入原密码', trigger: 'change'}],
+                    newPassword: [{required: true, message: '请输入新密码', trigger: 'change'}],
+                    againPassword: [{required: true, message: '请重复输入密码', trigger: 'change'}],
+                },
+                form: {
+                    name: '',
+                    oldPassword: '',
+                    newPassword: '',
+                    againPassword: '',
+                }
             }
         },
         mounted() {
@@ -104,58 +144,28 @@
         methods: {
             clickMenu(e) {
                 console.log(e)
-            },
-            showPersonSettings() {
-                this.show.personSettings = true
-            },
-            closePersonSettings() {
-                this.show.personSettings = false
-            },
-            savePersonSettings() {
-                const _this = this
-                let data = {
-                    id: _this.userInfo.id,
-                    age: _this.form.personSettings.age,
-                    name: _this.form.personSettings.name,
-                    gender: _this.form.personSettings.gender,
-                    mail: _this.form.personSettings.mail,
-                    headImg: _this.temp.fileList.length > 0 ? _this.temp.fileList[0].response.data : _this.userInfo.headImg,
+                switch (e.key) {
+                    case 'name' :
+                        this.showUpdateName()
+                        break;
+                    case 'password' :
+                        this.showUpdatePassword()
+                        break;
+                    case 'published' :
+                        window.location.href = '/frontend/published.html'
+                        break;
                 }
-                this.$refs.personSettingsForm.validate(valid => {
-                    if (valid) {
-                        console.info('valid success-->', data, _this.temp.fileList);
-                        axios.post('/api/user/updateUserInfo', data).then(response => {
-                            const result = response.data
-                            if (result.status !== 200) {
-                                this.$message.error(result.message);
-                                return;
-                            }
-                            _this.$message.success(result.message);
-                            _this.closePersonSettings()
-                        }).catch(function (error) {
-                            console.error('出现错误:', error);
-                        });
-                    } else {
-                        console.log('验证失败');
-                        return false;
-                    }
-                })
             },
-            showUpdatePassword() {
-                this.show.updatePassword = true
-            },
-            closeUpdatePassword() {
-                this.show.updatePassword = false
-                this.$refs.updatePasswordForm.resetFields();
-            },
-            saveUpdatePassword() {
+
+            /*password*/
+            savePassword() {
                 const _this = this
                 _this.$refs.updatePasswordForm.validate(valid => {
                     let data = {
                         id: _this.userInfo.id,
-                        oldPassword: _this.form.updatePassword.oldPassword,
-                        newPassword: _this.form.updatePassword.newPassword,
-                        againPassword: _this.form.updatePassword.againPassword,
+                        oldPassword: _this.form.oldPassword,
+                        newPassword: _this.form.newPassword,
+                        againPassword: _this.form.againPassword,
                     }
                     if (valid) {
                         console.info('valid success-->', data);
@@ -179,6 +189,46 @@
                         return false;
                     }
                 })
+                let data = {
+                    id: this.userInfo.id,
+                    oldPassword: this.form.oldPassword,
+                    newPassword: this.form.newPassword,
+                    againPassword: this.form.againPassword,
+                }
+            },
+            showUpdatePassword() {
+                this.show.updatePassword = true
+            },
+            closeUpdatePassword() {
+                this.show.updatePassword = false
+                this.form.oldPassword = ''
+                this.form.newPassword = ''
+                this.form.againPassword = ''
+                this.getUserInfo()
+            },
+            /*name*/
+            saveName() {
+                let url = `/api/user/updateName?name=${this.form.name}`
+                axios.post(url).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeUpdateName()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            showUpdateName() {
+                this.show.updateName = true
+                this.form.name = this.userInfo.name
+            },
+            closeUpdateName() {
+                this.show.updateName = false
+                this.form.name = ''
+                this.getUserInfo()
             },
             getUserInfo() {
                 this.axios.get('/api/user/getUserInfo').then(response => {
@@ -198,6 +248,7 @@
                 sessionStorage.clear()
                 window.location.href = '/server/login'
             },
+            /*upload*/
             closePreview() {
                 this.show.previewImg = false
             },

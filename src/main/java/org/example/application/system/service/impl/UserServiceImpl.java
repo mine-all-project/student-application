@@ -107,20 +107,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePassword(ResetPasswordForm form) {
+    public SysUser updatePassword(HttpServletRequest request,ResetPasswordForm form) {
         String newPassword = form.getNewPassword();
         String againPassword = form.getAgainPassword();
         if (!newPassword.equals(againPassword)) {
             throw new ApplicationException("两次密码不一致");
         }
-        SysUser user = userDAO.findById(form.getId());
+        SysUser user = getUserInfo(request);
         AssertUtils.notNull(user, "用户不存在");
         String oldPassword = MD5.create().digestHex(form.getOldPassword().getBytes(StandardCharsets.UTF_8));
         if (user.getPassword().equals(oldPassword)) {
             newPassword = MD5.create().digestHex(newPassword.getBytes(StandardCharsets.UTF_8));
             user.setPassword(newPassword);
-            userDAO.save(user);
-            return;
+            return userDAO.save(user);
         }
         throw new ApplicationException("密码错误");
     }
@@ -133,5 +132,10 @@ public class UserServiceImpl implements UserService {
         userDAO.save(user);
     }
 
-
+    @Override
+    public SysUser updateName(HttpServletRequest request, String name) {
+        SysUser user = getUserInfo(request);
+        user.setName(name);
+        return  userDAO.save(user);
+    }
 }
