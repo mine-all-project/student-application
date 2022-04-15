@@ -50,7 +50,6 @@
           justify-content: center !important;
       }
 	</style>
-	<script src="../../../../../../../外包/20220322-淘宝-安卓(hbuild+mybatis)/src/main/resources/static/js/quill.js"></script>
 </head>
 <body style="margin: 0;scroll: no; overflow-y: hidden">
 <div style="" class="content" id="app">
@@ -65,19 +64,8 @@
 			<div id="editor" style="height: 40vh"></div>
 			<!-- Create toolbar container -->
 			<div id="toolbar" style="border: 1px solid red">
-				<!-- Add font size dropdown -->
-				<select class="ql-size">
-					<option value="small"></option>
-					<!-- Note a missing, thus falsy value, is used to reset to default -->
-					<option selected></option>
-					<option value="large"></option>
-					<option value="huge"></option>
-				</select>
-				<!-- Add a bold button -->
-				<button class="ql-bold"></button>
-				<!-- Add subscript and superscript buttons -->
-				<button class="ql-script" value="sub"></button>
-				<button class="ql-script" value="super"></button>
+				<button class="ql-emoji"></button>
+				<button class="ql-image"></button>
 			</div>
 		</div>
 	</div>
@@ -123,7 +111,8 @@
                         [{'color': []}, {'background': []}],  // 字体颜色，字体背景颜色
                         [{'align': []}], //对齐方式
                         ['clean'], //清除字体样式
-                        ['image'] //上传图片、上传视频
+                        ['image'], //上传图片、上传视频
+                        ['emoji'], //上传图片、上传视频
                     ]
                 },
 
@@ -144,8 +133,8 @@
                                 // toolbar: this.editor.toolbar,
                                 toolbar: '#toolbar',
                                 "emoji-toolbar": true,
-                                "emoji-shortname": true,
-                                "emoji-textarea": true
+                                // "emoji-shortname": true,
+                                // "emoji-textarea": true
                             }
                         })
                         this.editor.create = false
