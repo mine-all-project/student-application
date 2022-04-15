@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<div data-th-include="/components/base :: meta"></div>
 	<title>校园资讯</title>
@@ -94,6 +94,11 @@
 			</a-form-model-item>
 		</a-form-model>
 	</a-modal>
+	<a-modal :visible.sync="show.publishSelect" width="20%" :footer="false" @cancel="show.publishSelect = false">
+		<a-col style="display: flex;flex-direction: column;align-items: center">
+			<a-button style="width: 80%;margin-top: 10px;"@click="toPublish(item)" v-for="item in publishType" >{{item.name}}</a-button>
+		</a-col>
+	</a-modal>
 </div>
 
 
@@ -114,7 +119,7 @@
                 menus: [
                     {key: 'name', show: true, name: '名称'},
                     {key: 'password', show: true, name: '修改密码	'},
-                    {key: 'published', show: true, name: '已发布动态'},
+                    {key: 'published', show: true, name: '已发布动态', url: '/frontend/published.html'},
                     {key: 'checkWait', show: true, name: '审核中动态'},
                     {key: 'publish', show: true, name: '发布动态'},
                     {key: 'check', show: true, name: '审核'},
@@ -123,6 +128,7 @@
                 show: {
                     updateName: false,
                     updatePassword: false,
+                    publishSelect: false,
                 },
                 rules: {
                     name: [{required: true, message: '请输入名称', trigger: 'change'}],
@@ -135,7 +141,15 @@
                     oldPassword: '',
                     newPassword: '',
                     againPassword: '',
-                }
+                },
+                publishType: [
+                    {key: 'news', show: true, name: '校园资讯'},
+                    {key: 'trading', show: true, name: '二手交易'},
+                    {key: 'employment', show: true, name: '就业速递'},
+                    {key: 'lost-items', show: true, name: '失物招领'},
+                    {key: 'question', show: true, name: '校园问答'},
+                    {key: 'friends', show: true, name: '校园交友'},
+                ]
             }
         },
         mounted() {
@@ -152,11 +166,20 @@
                         this.showUpdatePassword()
                         break;
                     case 'published' :
-                        window.location.href = '/frontend/published.html'
+                        window.location.href = e.url
+                        break;
+                    case 'publish' :
+                        this.showPublishSelect()
                         break;
                 }
             },
-
+            toPublish(e) {
+                console.log(e)
+								window.location.href = `/frontend/publish.html?key=${e.key}`
+            },
+            showPublishSelect() {
+                this.show.publishSelect = true
+            },
             /*password*/
             savePassword() {
                 const _this = this

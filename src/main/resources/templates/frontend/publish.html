@@ -1,0 +1,200 @@
+<html>
+<head>
+	<div data-th-replace="/components/base :: javascript"></div>
+	<div data-th-replace="/components/base :: quill"></div>
+	<div data-th-replace="/components/vue :: javascript"></div>
+	<div data-th-replace="/components/ui :: antd"></div>
+	<style>
+      p {
+          padding: 0;
+          margin: 0
+      }
+
+      .content {
+          display: flex;
+          flex-direction: row;
+          height: max-content
+      }
+
+      .menus {
+          flex: 2;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+      }
+
+      .menus li {
+          background-color: #999999;
+          color: #505050;
+          font-size: 14px;
+          list-style: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 85px;
+          font-family: 'Microsoft YaHei';
+      }
+
+      .menus li:first-child {
+          font-size: 14px;
+          text-align: center;
+          background-repeat: no-repeat;
+          background-size: auto 100%;
+          background-position: center;
+          background-color: #47bcbc;
+      }
+
+      .ant-pagination-item-link {
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+      }
+	</style>
+	<script src="../../../../../../../外包/20220322-淘宝-安卓(hbuild+mybatis)/src/main/resources/static/js/quill.js"></script>
+</head>
+<body style="margin: 0;scroll: no; overflow-y: hidden">
+<div style="" class="content" id="app">
+	<ul class="menus">
+		<li v-for="item in menus" @click="changeType(item)">{{item.name}}</li>
+	</ul>
+	<div style="flex:10;height: 100%;padding: 2rem">
+		<p style="font-size: 30px;font-weight: 600">{{title}}</p>
+		<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
+		<div>
+			<div v-if="editor.create">编辑器初始化中..</div>
+			<div id="editor" style="height: 40vh"></div>
+			<!-- Create toolbar container -->
+			<div id="toolbar" style="border: 1px solid red">
+				<!-- Add font size dropdown -->
+				<select class="ql-size">
+					<option value="small"></option>
+					<!-- Note a missing, thus falsy value, is used to reset to default -->
+					<option selected></option>
+					<option value="large"></option>
+					<option value="huge"></option>
+				</select>
+				<!-- Add a bold button -->
+				<button class="ql-bold"></button>
+				<!-- Add subscript and superscript buttons -->
+				<button class="ql-script" value="sub"></button>
+				<button class="ql-script" value="super"></button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+    const app = new Vue({
+        el: '#app',
+        components: {},
+        data() {
+            return {
+                pagination: {
+                    pageSize: 3,
+                    pageIndex: 1,
+                    pageCount: 50,
+                },
+                title: '校园资讯',
+                menus: [
+                    {key: '', name: '发布动态'},
+                    {key: '', name: '校园资讯'},
+                    {key: '', name: '二手交易'},
+                    {key: '', name: '就业速递'},
+                    {key: '', name: '失物招领'},
+                    {key: '', name: '校园问答'},
+                    {key: '', name: '校园交友'},
+                ],
+                dataList: [
+                    {
+                        title: 'title',
+                        content: 'xxxxx'
+                    },
+                    {
+                        title: 'title',
+                        content: 'xxxxx'
+                    }
+                ],
+                editor: {
+                    instance: null,
+                    create: true,
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'], //加粗，斜体，下划线，删除线
+                        ['blockquote', 'code-block'],  //引用，代码块
+                        [{'list': 'ordered'}, {'list': 'bullet'}],  //列表
+                        [{'color': []}, {'background': []}],  // 字体颜色，字体背景颜色
+                        [{'align': []}], //对齐方式
+                        ['clean'], //清除字体样式
+                        ['image'] //上传图片、上传视频
+                    ]
+                },
+
+            }
+
+        },
+        mounted() {
+            this.initType()
+            this.createEditor('')
+        },
+        methods: {
+            createEditor(content) {
+                setTimeout(() => {
+                    if (this.editor.create) {
+                        this.editor.instance = new window.Quill('#editor', {
+                            theme: 'snow',
+                            modules: {
+                                // toolbar: this.editor.toolbar,
+                                toolbar: '#toolbar',
+                                "emoji-toolbar": true,
+                                "emoji-shortname": true,
+                                "emoji-textarea": true
+                            }
+                        })
+                        this.editor.create = false
+                    }
+                    this.editor.instance.root.innerHTML = content
+                }, 1000)
+            },
+            destroyEditor() {
+                this.editor.instance.root.innerHTML = ''
+            },
+            initType() {
+                let url = window.location.href
+                let key = url.split('?key=')[1]
+                switch (key) {
+                    case 'news' :
+                        this.title = '校园资讯';
+                        break;
+                    case 'trading' :
+                        this.title = '二手交易';
+                        break;
+                    case 'employment' :
+                        this.title = '就业速递';
+                        break;
+                    case 'lost-items' :
+                        this.title = '失物招领';
+                        break;
+                    case 'question' :
+                        this.title = '校园问答';
+                        break;
+                    case 'friends' :
+                        this.title = '校园交友';
+                        break;
+                }
+                this.titleKey = key
+                console.log(key)
+            },
+            changePage(e) {
+                console.log(e)
+            },
+            changeType(e) {
+                console.log(e.name)
+            },
+            handleChange(e) {
+                console.log(e)
+            },
+
+        }
+    })
+
+</script>
+</body>
+</html>
