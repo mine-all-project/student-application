@@ -14,15 +14,16 @@ import java.util.List;
 @Getter
 @Entity
 @Table(schema = "system")
-public class LostItems extends BaseEntity {
+public class Paper extends BaseEntity {
     //名称
     @Column
     private String title;
-    //描述
+    //详情
     @Column
     private String content;
     //状态 0:正常 1:待审 2:驳回
     private Integer status;
+    private String type;
     @OneToOne
     private SysUser publisher;
     @OneToMany

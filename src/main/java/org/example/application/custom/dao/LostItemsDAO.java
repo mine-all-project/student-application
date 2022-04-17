@@ -39,7 +39,7 @@ public class LostItemsDAO extends BaseDAO {
 
 
     @Transactional
-    public void updateStatusById(String id, int status,String note) {
-        lostItemsRepository.updateStatusById(id, status, note);
+    public void updateStatusById(String id, int status) {
+        lostItemsRepository.updateStatusById(id, status);
     }
 }

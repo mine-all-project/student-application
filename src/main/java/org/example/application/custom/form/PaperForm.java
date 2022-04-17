@@ -1,35 +1,34 @@
-package org.example.application.custom.entity;
+package org.example.application.custom.form;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.application.common.BaseEntity;
+import org.example.application.common.BaseForm;
+import org.example.application.custom.entity.Message;
+import org.example.application.custom.entity.Paper;
 import org.example.application.system.entity.FileInfo;
 import org.example.application.system.entity.SysUser;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Setter
 @Getter
-@Entity
-@Table(schema = "system")
-public class LostItems extends BaseEntity {
-    //名称
-    @Column
+@Setter
+public class PaperForm extends BaseForm<Paper> {
     private String title;
-    //描述
-    @Column
     private String content;
-    //状态 0:正常 1:待审 2:驳回
     private Integer status;
-    @OneToOne
+    private String type;
     private SysUser publisher;
-    @OneToMany
     private List<FileInfo> images;
-    @OneToMany
     private List<Message> messages;
 
+    @Override
+    public Paper toEntity() {
+        Paper entity = new Paper();
+        BeanUtils.copyProperties(this, entity);
+        return entity;
+    }
 
     @Override
     public String toString() {

@@ -49,6 +49,15 @@
           align-items: center !important;
           justify-content: center !important;
       }
+
+      .ql-snow .ql-stroke {
+          stroke: rgba(153, 153, 153, 1) !important;
+
+      }
+
+      .ql-snow .ql-fill {
+          fill: rgba(153, 153, 153, 1) !important;
+      }
 	</style>
 </head>
 <body style="margin: 0;scroll: no; overflow-y: hidden">
@@ -59,14 +68,16 @@
 	<div style="flex:10;height: 100%;padding: 2rem">
 		<p style="font-size:14px;background-color:#999999;color: #505050;width: max-content;padding: 1rem 3rem;">
 			{{title}}</p>
-		<div style="height: 3px;background-color:#999999;margin-top: 10px"></div>
-		<div style="margin-top: 10px">
+		<div style="height: 3px;background-color:#999999;margin-top: 10px;width: 889px"></div>
+		<div
+				style="
+				width:866px;height:271px;margin-top: 10px;background-color:rgba(153, 153, 153, 0.11);padding: 8px 27px 90px 9px;position: relative">
 			<div v-if="editor.create">编辑器初始化中..</div>
-			<div id="editor" style="height: 40vh"></div>
+			<div id="editor" style="height: 173px;width:830px;background-color:#cccccc;"></div>
 			<!-- Create toolbar container -->
-			<div id="toolbar">
-				<button class="ql-emoji"></button>
-				<button class="ql-image"></button>
+			<div id="toolbar" style="border: none">
+				<button class="ql-emoji" style="width: 50px;height: 50px;"></button>
+				<button class="ql-image" style="width: 50px;height: 50px;"></button>
 				<a-upload class="ql-file" name="file" action="/api/uploadFile"
 									:multiple="true" :file-list="temp.fileList" :remove="removeUploadFile"
 									@preview="showPreview" @change="changeUploadFile">
@@ -75,6 +86,10 @@
 						<span>上传</span>
 					</div>
 				</a-upload>
+			</div>
+			<div style="text-align: center;width: 113px;height: 43px;
+			font-size: 27px;background-color:#999999;color: #505050;
+position: absolute;top:185px;right: 19px" @click="publish">发布
 			</div>
 		</div>
 	</div>
@@ -85,6 +100,7 @@
         components: {},
         data() {
             return {
+                apiUrl:'',
                 headers: headers,
                 pagination: {
                     pageSize: 3,
@@ -92,6 +108,7 @@
                     pageCount: 50,
                 },
                 title: '校园资讯',
+                titleKey: '',
                 menus: [
                     {key: '', name: '发布动态'},
                     {key: '', name: '校园资讯'},
@@ -136,6 +153,26 @@
             this.createEditor('')
         },
         methods: {
+            publish(){
+                let data = {
+                    title:'',
+                    messages:[],
+                    content:this.editor.instance.root.innerHTML,
+                    type:this.titleKey,
+								}
+                data.images = []
+                console.log(data)
+                axios.post('/api/paper/save', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    console.log("已发布，等待管理员审核")
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+						},
             /*upload*/
             changeUploadFile(info) {
                 this.temp.fileList = info.fileList
@@ -205,7 +242,6 @@
                         break;
                 }
                 this.titleKey = key
-                console.log(key)
             },
             changePage(e) {
                 console.log(e)

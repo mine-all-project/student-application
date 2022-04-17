@@ -46,10 +46,9 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Message> saveAll(HttpServletRequest request, List<Message> list) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
-        final List<Message> collect = list.stream().map(e -> {
+        final List<Message> collect = list.stream().peek(e -> {
             e.setPublisher(user);
             e.setStatus(DIC.CHECK_WAIT);
-            return e;
         }).collect(Collectors.toList());
         return messageDAO.saveAll(collect);
     }
