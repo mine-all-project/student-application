@@ -57,15 +57,24 @@
 		<li v-for="item in menus" @click="changeType(item)">{{item.name}}</li>
 	</ul>
 	<div style="flex:10;height: 100%;padding: 2rem">
-		<p style="font-size: 30px;font-weight: 600">{{title}}</p>
-		<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
-		<div>
+		<p style="font-size:14px;background-color:#999999;color: #505050;width: max-content;padding: 1rem 3rem;">
+			{{title}}</p>
+		<div style="height: 3px;background-color:#999999;margin-top: 10px"></div>
+		<div style="margin-top: 10px">
 			<div v-if="editor.create">编辑器初始化中..</div>
 			<div id="editor" style="height: 40vh"></div>
 			<!-- Create toolbar container -->
-			<div id="toolbar" style="border: 1px solid red">
+			<div id="toolbar">
 				<button class="ql-emoji"></button>
 				<button class="ql-image"></button>
+				<a-upload class="ql-file" name="file" action="/api/uploadFile"
+									:multiple="true" :file-list="temp.fileList" :remove="removeUploadFile"
+									@preview="showPreview" @change="changeUploadFile">
+					<div style="display: flex;flex-direction: column;align-items: center;color: #fff">
+						<a-icon type="upload"></a-icon>
+						<span>上传</span>
+					</div>
+				</a-upload>
 			</div>
 		</div>
 	</div>
@@ -76,6 +85,7 @@
         components: {},
         data() {
             return {
+                headers: headers,
                 pagination: {
                     pageSize: 3,
                     pageIndex: 1,
@@ -115,7 +125,9 @@
                         ['emoji'], //上传图片、上传视频
                     ]
                 },
-
+                temp: {
+                    fileList: []
+                },
             }
 
         },
@@ -124,6 +136,30 @@
             this.createEditor('')
         },
         methods: {
+            /*upload*/
+            changeUploadFile(info) {
+                this.temp.fileList = info.fileList
+                if (info.file.status === 'done') {
+                    this.$message.success(`${info.file.name} 上传成功`);
+                } else if (info.file.status === 'error') {
+                    this.$message.error(`${info.file.name} 上传失败`);
+                }
+            },
+            removeUploadFile(file) {
+                this.temp.fileList = []
+            },
+            closePreview() {
+                this.show.previewImg = false
+            },
+            async showPreview(file) {
+                if (file.response) {
+                    this.temp.previewSrc = file.response.data.virtualPath
+                } else {
+                    this.temp.previewSrc = file.url
+                }
+                this.show.previewImg = true
+            },
+
             createEditor(content) {
                 setTimeout(() => {
                     if (this.editor.create) {
