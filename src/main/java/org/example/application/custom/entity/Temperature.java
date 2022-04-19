@@ -24,6 +24,8 @@ public class Temperature extends BaseEntity {
     @NotNull(message = "体温不能为空", groups = {Groups.IsNotNull.class})
     @Column(columnDefinition = "tinyint default null comment '体温'")
     private Integer value;
+    @Column(columnDefinition = "varchar(64) default null comment '联系电话'")
+    private String phone;
     @Column(columnDefinition = "longtext default null comment '症状'")
     private String symptoms;
     @Column(columnDefinition = "longtext default null comment '备注'")

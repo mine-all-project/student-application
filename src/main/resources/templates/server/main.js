@@ -3,8 +3,8 @@ const app = new Vue({
     components: {},
     data() {
         return {
-            isDebug: true,
-            pageUrl: '/server/demo.html',
+            isDebug: false,
+            pageUrl: '/server/welcome.html',
             headers: headers,
             labelCol: {span: 5},
             wrapperCol: {span: 16},

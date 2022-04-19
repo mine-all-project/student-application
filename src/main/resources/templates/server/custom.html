@@ -21,6 +21,10 @@
       .ant-input-number {
           width: 100%;
       }
+
+      .input {
+          margin-top: 10px;
+      }
 	</style>
 </head>
 <body>
@@ -39,15 +43,30 @@
 				<a-button type="primary" @click="saveBanners" style="margin-top: 1rem">保存</a-button>
 			</div>
 		</a-tab-pane>
-		<a-tab-pane key="2" tab="首页通知">
-			<div class="clearfix">
-				<a-textarea placeholder="首页通知内容" v-model="form.baseNotice"></a-textarea>
+		<a-tab-pane key="2" tab="疫情信息">
+			<div style="width: 50%;">
+				<a-input class="input" addon-before="新增确诊" placeholder="新增确诊" v-model="form.addDiagnosis"></a-input>
+				<a-input class="input" addon-before="现有确诊" placeholder="现有确诊" v-model="form.nowDiagnosis"></a-input>
+				<a-input class="input" addon-before="现有确诊 较昨日新增" placeholder="现有确诊 较昨日新增"
+								 v-model="form.nowDiagnosisAdd"></a-input>
+				<a-input class="input" addon-before="境外输入确诊" placeholder="境外输入确诊" v-model="form.overseasDiagnosis"></a-input>
+				<a-input class="input" addon-before="境外输入确诊 较昨日新增" placeholder="境外输入确诊 较昨日新增"
+								 v-model="form.overseasDiagnosisAdd"></a-input>
+				<a-input class="input" addon-before="现有疑似" placeholder="现有疑似" v-model="form.nowSuspected"></a-input>
+				<a-input class="input" addon-before="现有疑似" placeholder="现有疑似 较昨日新增" v-model="form.nowSuspectedAdd"></a-input>
+				<a-button type="primary" @click="saveCount" style="margin-top: 1rem">保存</a-button>
+			</div>
+		</a-tab-pane>
+		<a-tab-pane key="3" tab="首页通知">
+			<div style="width: 50%;">
+				<a-textarea :autosize="{ minRows: 5, maxRows: 6 }" placeholder="首页通知内容" v-model="form.baseNotice"></a-textarea>
 				<a-button type="primary" @click="saveBaseNotice" style="margin-top: 1rem">保存</a-button>
 			</div>
 		</a-tab-pane>
-		<a-tab-pane key="3" tab="疫情通知">
-			<div class="clearfix">
-				<a-textarea placeholder="体温填报页通知内容" v-model="form.temperatureNotice"></a-textarea>
+		<a-tab-pane key="4" tab="体温通知">
+			<div style="width: 50%;">
+				<a-textarea :autosize="{ minRows: 5, maxRows: 6 }" placeholder="体温填报页通知内容"
+										v-model="form.temperatureNotice"></a-textarea>
 				<a-button type="primary" @click="saveTemperatureNotice" style="margin-top: 1rem">保存</a-button>
 			</div>
 		</a-tab-pane>
@@ -68,6 +87,13 @@
                     goods: {messages: []},
                     baseNotice: '',
                     temperatureNotice: '',
+                    addDiagnosis: '',
+                    nowDiagnosis: '',
+                    nowDiagnosisAdd: '',
+                    overseasDiagnosis: '',
+                    overseasDiagnosisAdd: '',
+                    nowSuspected: '',
+                    nowSuspectedAdd: '',
                 },
                 show: {
                     previewImg: false,
@@ -83,8 +109,51 @@
             this.getBannerList()
             this.getBaseNotice()
             this.getTemperatureNotice()
+            this.getCount()
         },
         methods: {
+            saveCount() {
+                let data = {
+                    addDiagnosis: this.form.addDiagnosis,
+                    nowDiagnosis: this.form.nowDiagnosis,
+                    nowDiagnosisAdd: this.form.nowDiagnosisAdd,
+                    overseasDiagnosis: this.form.overseasDiagnosis,
+                    overseasDiagnosisAdd: this.form.overseasDiagnosisAdd,
+                    nowSuspected: this.form.nowSuspected,
+                    nowSuspectedAdd: this.form.nowSuspectedAdd,
+                }
+                axios.post('/api/custom/save/count', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.getCount()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            getCount() {
+                axios.get('/api/custom/get/count').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.form.addDiagnosis = result.data.addDiagnosis
+                        this.form.nowDiagnosis = result.data.nowDiagnosis
+                        this.form.nowDiagnosisAdd = result.data.nowDiagnosisAdd
+                        this.form.overseasDiagnosis = result.data.overseasDiagnosis
+                        this.form.overseasDiagnosisAdd = result.data.overseasDiagnosisAdd
+                        this.form.nowSuspected = result.data.nowSuspected
+                        this.form.nowSuspectedAdd = result.data.nowSuspectedAdd
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             saveTemperatureNotice() {
                 let data = {
                     content: this.form.temperatureNotice
