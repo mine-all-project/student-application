@@ -209,7 +209,7 @@
 	</a-col>
 	<a-col :span="2">
 		<img :src="image.moduleIcon">
-		<a-select size="small" default-value="question" style="width: 100%" @change="handleChange">
+		<a-select size="small" v-model="titleKey" style="width: 100%" @change="handleChange">
 			<a-select-option value="question"> 校园问答</a-select-option>
 			<a-select-option value="friend"> 校园交友</a-select-option>
 			<a-select-option value="other"> 其他</a-select-option>

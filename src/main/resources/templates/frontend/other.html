@@ -58,7 +58,7 @@
 			<div>
 				<a-col v-for="item in dataList" style="padding: 10px">
 					<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
-					<p style="font-size: 24px;word-break: break-all">{{item.content}}</p>
+					<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
 					<hr>
 				</a-col>
 			</div>
@@ -106,26 +106,10 @@
                     pageIndex: 1,
                     pageCount: 50,
                 },
-                title: '校园交友',
-								titleKey:'friend',
-                menus: [
-                    {key: '', name: '就业速递'},
-                    {key: '', name: '物联网学院'},
-                    {key: '', name: '计算机学院'},
-                    {key: '', name: '人文政法学院'},
-                    {key: '', name: '轨道交通学院'},
-                    {key: '', name: '通知公告'},
-                ],
-                dataList: [
-                    {
-                        title: 'title',
-                        content: 'xxxxx'
-                    },
-                    {
-                        title: 'title',
-                        content: 'xxxxx'
-                    }
-                ]
+                title: '',
+                menus: [],
+								dataList: [],
+                titleKey:'friend',
             }
         },
         mounted() {
@@ -151,12 +135,48 @@
                         break;
                 }
 								this.titleKey = key
-                console.log(key)
+                this.getList()
             },
             toModulePage(e) {
                 this.$message.info(e)
                 window.location.href = e
             },
+            getList(){
+                axios.get(`/api/paper/list/${this.titleKey}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterDataList(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            filterDataList(source) {
+                this.dataList = source.map(e => {
+                    let images = e.images.sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    return {
+                        id: e.id,
+                        title: '题目',
+                        price: e.price,
+                        image: e.images.length ? e.images[0].virtualPath : '',
+                        images: images,
+                        content: e.content,
+                        type: e.type,
+                        messages: e.messages,
+                        createTime: e.createTime,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                    }
+                });
+            },
+
             changeType(e) {
                 console.log(e.name)
             },

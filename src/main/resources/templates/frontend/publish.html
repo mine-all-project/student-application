@@ -58,6 +58,18 @@
       .ql-snow .ql-fill {
           fill: rgba(153, 153, 153, 1) !important;
       }
+
+      .publish-button {
+          text-align: center;
+          width: 113px;
+          height: 43px;
+          font-size: 27px;
+          background-color: #999999;
+          color: #505050;
+          position: absolute;
+          top: 185px;
+          right: 19px
+      }
 	</style>
 </head>
 <body style="margin: 0;scroll: no; overflow-y: hidden">
@@ -75,21 +87,25 @@
 			<div v-if="editor.create">编辑器初始化中..</div>
 			<div id="editor" style="height: 173px;width:830px;background-color:#cccccc;"></div>
 			<!-- Create toolbar container -->
-			<div id="toolbar" style="border: none">
+			<div id="toolbar" style="border: none;display: flex;align-items: center;">
 				<button class="ql-emoji" style="width: 50px;height: 50px;"></button>
-				<button class="ql-image" style="width: 50px;height: 50px;"></button>
+				<a-upload class="ql-image" name="file" action="/api/uploadFile"
+									:multiple="true" :file-list="temp.imageList" :remove="removeUploadImage"
+									@preview="showPreview" @change="changeUploadImage" >
+					<div style="margin-left: 35px;">
+						<a-icon type="camera" theme="filled" style="font-size: 40px;color:rgba(153, 153, 153, 1)"></a-icon>
+					</div>
+				</a-upload>
 				<a-upload class="ql-file" name="file" action="/api/uploadFile"
 									:multiple="true" :file-list="temp.fileList" :remove="removeUploadFile"
-									@preview="showPreview" @change="changeUploadFile">
-					<div style="display: flex;flex-direction: column;align-items: center;color: #fff">
+									@change="changeUploadFile" >
+					<div style="display: flex;flex-direction: column;align-items: center;color: #fff;margin-left: 35px;">
 						<a-icon type="upload"></a-icon>
 						<span>上传</span>
 					</div>
 				</a-upload>
 			</div>
-			<div style="text-align: center;width: 113px;height: 43px;
-			font-size: 27px;background-color:#999999;color: #505050;
-position: absolute;top:185px;right: 19px" @click="publish">发布
+			<div class="publish-button" @click="publish">发布
 			</div>
 		</div>
 	</div>
@@ -100,7 +116,8 @@ position: absolute;top:185px;right: 19px" @click="publish">发布
         components: {},
         data() {
             return {
-                apiUrl:'',
+                demo:{showPreviewIcon: false, showRemoveIcon: false},
+                apiUrl: '',
                 headers: headers,
                 pagination: {
                     pageSize: 3,
@@ -143,6 +160,7 @@ position: absolute;top:185px;right: 19px" @click="publish">发布
                     ]
                 },
                 temp: {
+                    imageList: [],
                     fileList: []
                 },
             }
@@ -153,13 +171,13 @@ position: absolute;top:185px;right: 19px" @click="publish">发布
             this.createEditor('')
         },
         methods: {
-            publish(){
+            publish() {
                 let data = {
-                    title:'',
-                    messages:[],
-                    content:this.editor.instance.root.innerHTML,
-                    type:this.titleKey,
-								}
+                    title: '',
+                    messages: [],
+                    content: this.editor.instance.root.innerHTML,
+                    type: this.titleKey,
+                }
                 data.images = []
                 console.log(data)
                 axios.post('/api/paper/save', data).then(response => {
@@ -172,7 +190,7 @@ position: absolute;top:185px;right: 19px" @click="publish">发布
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
-						},
+            },
             /*upload*/
             changeUploadFile(info) {
                 this.temp.fileList = info.fileList
@@ -184,6 +202,18 @@ position: absolute;top:185px;right: 19px" @click="publish">发布
             },
             removeUploadFile(file) {
                 this.temp.fileList = []
+            },
+						/*image*/
+            changeUploadImage(info) {
+                this.temp.imageList = info.fileList
+                if (info.file.status === 'done') {
+                    this.$message.success(`${info.file.name} 上传成功`);
+                } else if (info.file.status === 'error') {
+                    this.$message.error(`${info.file.name} 上传失败`);
+                }
+            },
+            removeUploadImage(file) {
+                this.temp.imageList = []
             },
             closePreview() {
                 this.show.previewImg = false
@@ -207,7 +237,10 @@ position: absolute;top:185px;right: 19px" @click="publish">发布
                                 toolbar: '#toolbar',
                                 "emoji-toolbar": true,
                                 // "emoji-shortname": true,
-                                // "emoji-textarea": true
+                                // "emoji-textarea": true,
+                                // handlers: {
+                                //     // 'image': customFormulaHandler
+                                // }
                             }
                         })
                         this.editor.create = false
@@ -239,6 +272,12 @@ position: absolute;top:185px;right: 19px" @click="publish">发布
                         break;
                     case 'friends' :
                         this.title = '校园交友';
+                        break;
+                    case 'other' :
+                        this.title = '其他';
+                        break;
+                    case 'car' :
+                        this.title = '校园拼车';
                         break;
                 }
                 this.titleKey = key
