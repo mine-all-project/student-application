@@ -186,15 +186,19 @@
         },
         methods: {
             publish() {
-                let fileList = [...this.temp.fileList, this.temp.imageList]
+                let fileList = []
+                this.temp.fileList.forEach(e => {
+                    fileList.push(e.currentData)
+                })
+                this.temp.imageList.forEach(e => {
+                    fileList.push(e.currentData)
+                })
                 let data = {
                     title: '',
                     messages: [],
                     content: this.editor.instance.root.innerHTML,
                     type: this.titleKey,
-                    files: fileList.map(e => {
-                        return e.currentData
-                    })
+                    files: fileList
                 }
                 this.axios.post('/api/paper/save', data).then(response => {
                     const result = response.data

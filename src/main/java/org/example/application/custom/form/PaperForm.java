@@ -20,7 +20,7 @@ public class PaperForm extends BaseForm<Paper> {
     private Integer status;
     private String type;
     private SysUser publisher;
-    private List<FileInfo> images;
+    private List<FileInfo> files;
     private List<Message> messages;
 
     @Override

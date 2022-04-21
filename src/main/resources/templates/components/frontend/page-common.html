@@ -42,19 +42,24 @@
     .xiaoxun {
         background-size: 100%;
         background-position: center;
-        height: 10vh;
+        height: 132px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: cursive;
+        /*font-family: cursive;*/
+        opacity: 0.3;
+				font-weight: 500;
+        font-size: 90px;
     }
 
     .sysname {
-        height: 10vh;
-        background-color: #505050;
+        height: 86px;
+        background-color: rgb(153,153,153);
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 60px;
+				color:#505050
     }
 
     .headImage {
@@ -219,9 +224,9 @@
 </div>
 
 <div th:fragment="xiaoxun" class="xiaoxun" :style="`background-image:url(${image.xiaoxun})`">
-	<p style="font-size: 30px">{{page.xiaoxun}}</p>
+	<p >{{page.xiaoxun}}</p>
 </div>
 
 <div th:fragment="sysname" class="sysname" style="text-align: center">
-	<p style="font-size: 30px">{{page.sysName}}</p>
+	<p >{{page.sysName}}</p>
 </div>
