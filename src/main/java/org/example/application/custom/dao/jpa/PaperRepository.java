@@ -22,4 +22,6 @@ public interface PaperRepository extends JpaRepository<Paper, String> {
     void updateStatusById(@Param("id") String id, @Param("status") int status);
 
     List<Paper> findAllByType(String type, Sort sort);
+
+    List<Paper> getByPublisherAndType(SysUser user, String type, Sort sort);
 }

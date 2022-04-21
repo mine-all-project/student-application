@@ -5,6 +5,7 @@ import org.example.application.common.groups.IsEdit;
 import org.example.application.common.groups.IsNotNull;
 import org.example.application.common.groups.IsStatusChange;
 import org.example.application.system.dto.ResponseDTO;
+import org.example.application.system.entity.FileInfo;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
 import org.example.application.system.form.UpdateUserInfoForm;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -30,6 +30,14 @@ public class UserController extends BaseController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PostMapping("/updateHeadImage")
+    public ResponseDTO updateHeadImage(HttpServletRequest request, @RequestBody FileInfo headImage) {
+        logger.info("收到请求->修改头像:[{}]", headImage);
+        SysUser user = userService.updateHeadImage(request, headImage);
+        logger.info("返回结果->修改头像完成:[{}]", user);
+        return ResponseDTO.returnSuccess("操作成功", user);
     }
 
     @PostMapping("/updateName")

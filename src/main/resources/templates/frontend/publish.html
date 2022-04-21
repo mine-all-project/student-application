@@ -75,7 +75,7 @@
 <body style="margin: 0;scroll: no; overflow-y: hidden">
 <div style="" class="content" id="app">
 	<ul class="menus">
-		<li v-for="item in menus" @click="changeType(item)">{{item.name}}</li>
+		<li v-for="item in menus" @click="changeType(item)"  v-if="item.show()">{{item.name}}</li>
 	</ul>
 	<div style="flex:10;height: 100%;padding: 2rem">
 		<p style="font-size:14px;background-color:#999999;color: #505050;width: max-content;padding: 1rem 3rem;">
@@ -115,24 +115,21 @@
         components: {},
         data() {
             return {
-                demo: {showPreviewIcon: false, showRemoveIcon: false},
                 apiUrl: '',
+                axios: axios,
+                userInfo: {},
+                isAdmin: false,
                 headers: headers,
-                pagination: {
-                    pageSize: 3,
-                    pageIndex: 1,
-                    pageCount: 50,
-                },
                 title: '校园资讯',
                 titleKey: '',
                 menus: [
-                    {key: '', name: '发布动态'},
-                    {key: '', name: '校园资讯'},
-                    {key: '', name: '二手交易'},
-                    {key: '', name: '就业速递'},
-                    {key: '', name: '失物招领'},
-                    {key: '', name: '校园问答'},
-                    {key: '', name: '校园交友'},
+                    {key: '',  show: ()=>{return true}, name: '已发布动态'},
+                    {key: 'news',  show: ()=>{return this.isAdmin}, name: '校园资讯'},
+                    {key: 'trading',  show: ()=>{return true}, name: '二手交易'},
+                    {key: 'employment', show: ()=>{return this.isAdmin},  name: '就业速递'},
+                    {key: 'lost-items', show: ()=>{return true},  name: '失物招领'},
+                    {key: 'question', show: ()=>{return true},  name: '校园问答'},
+                    {key: 'friends',  show: ()=>{return true}, name: '校园交友'},
                 ],
                 dataList: [],
                 editor: {
@@ -154,7 +151,6 @@
                     fileList: []
                 },
             }
-
         },
         mounted() {
             this.initType()
@@ -172,7 +168,7 @@
                         return e.currentData
                     })
                 }
-                axios.post('/api/paper/save', data).then(response => {
+                this.axios.post('/api/paper/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);

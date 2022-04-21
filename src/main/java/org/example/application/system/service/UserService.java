@@ -1,6 +1,7 @@
 package org.example.application.system.service;
 
 import org.example.application.common.BaseService;
+import org.example.application.system.entity.FileInfo;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
 import org.example.application.system.form.UpdateUserInfoForm;
@@ -37,4 +38,5 @@ public interface UserService extends BaseService {
 
     void updateUserInfo(UpdateUserInfoForm form);
 
+    SysUser updateHeadImage(HttpServletRequest request, FileInfo headImage);
 }

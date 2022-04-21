@@ -77,10 +77,8 @@
                 isAdmin: false,
                 title: '校园资讯',
                 menus: [
-                    {key: '',  show: ()=>{return true}, name: '已发布动态'},
-                    {key: 'news',  show: ()=>{return this.isAdmin}, name: '校园资讯'},
+                    {key: '',  show: ()=>{return true}, name: '审核中动态'},
                     {key: 'trading',  show: ()=>{return true}, name: '二手交易'},
-                    {key: 'employment', show: ()=>{return this.isAdmin},  name: '就业速递'},
                     {key: 'lost-items', show: ()=>{return true},  name: '失物招领'},
                     {key: 'question', show: ()=>{return true},  name: '校园问答'},
                     {key: 'friends',  show: ()=>{return true}, name: '校园交友'},

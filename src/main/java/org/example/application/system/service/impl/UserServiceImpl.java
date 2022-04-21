@@ -5,6 +5,7 @@ import org.example.application.common.ApplicationException;
 import org.example.application.common.utils.AssertUtils;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.system.dao.UserDAO;
+import org.example.application.system.entity.FileInfo;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.ResetPasswordForm;
 import org.example.application.system.form.UpdateUserInfoForm;
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SysUser updatePassword(HttpServletRequest request,ResetPasswordForm form) {
+    public SysUser updatePassword(HttpServletRequest request, ResetPasswordForm form) {
         String newPassword = form.getNewPassword();
         String againPassword = form.getAgainPassword();
         if (!newPassword.equals(againPassword)) {
@@ -136,6 +137,13 @@ public class UserServiceImpl implements UserService {
     public SysUser updateName(HttpServletRequest request, String name) {
         SysUser user = getUserInfo(request);
         user.setName(name);
-        return  userDAO.save(user);
+        return userDAO.save(user);
+    }
+
+    @Override
+    public SysUser updateHeadImage(HttpServletRequest request, FileInfo headImage) {
+        SysUser user = getUserInfo(request);
+        user.setHeadImg(headImage);
+        return userDAO.save(user);
     }
 }

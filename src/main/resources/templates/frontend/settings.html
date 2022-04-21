@@ -62,8 +62,14 @@
 	<div class="body">
 		<div class="body-bgi" :style="`background-image:url(${image.settings})`"></div>
 		<div style="flex:2;height: 100%;text-align: right;z-index: 999">
-			<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" alt=""
-					 style="width: 169px;height: 169px;margin: 5rem 1rem 0 0">
+			<a-upload class="ql-file" name="file" action="/api/uploadFile"
+								:multiple="true" :file-list="temp.fileList" :remove="removeUploadFile"
+								@change="changeUploadFile" :show-upload-list="false">
+				<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" alt=""
+						 style="width: 169px;height: 169px;margin: 5rem 1rem 0 0" >
+				<img v-else :src="image.defaultHeadImg" alt=""
+						 style="width: 169px;height: 169px;margin: 5rem 1rem 0 0">
+			</a-upload>
 		</div>
 		<div style="flex:3;height: 100%;display:flex;z-index: 999;flex-direction: column">
 			<div class="menus" v-for="item in menus" @click="clickMenu(item)" :key="item.id" v-if="item.show()">
@@ -114,19 +120,48 @@
                 wrapperCol: {span: 16},
                 image: {
                     settings: '/images/settings.jpg',
+                    defaultHeadImg: '/images/defaultHeadImg.jpg',
                 },
                 headers: headers,
                 axios: axios,
                 isAdmin: false,
                 userInfo: {},
                 menus: [
-                    {key: 'name', show: ()=>{return true}, name: '名称'},
-                    {key: 'password', show: ()=>{return true}, name: '修改密码	'},
-                    {key: 'published', show: ()=>{return true}, name: '已发布动态', url: '/frontend/published.html'},
-                    {key: 'checkWait', show: ()=>{return this.isAdmin}, name: '审核中动态'},
-                    {key: 'publish', show: ()=>{return true}, name: '发布动态'},
-                    {key: 'check', show: ()=>{return this.isAdmin}, name: '审核'},
-                    {key: 'comment', show: ()=>{return this.isAdmin}, name: '评论'},
+                    {
+                        key: 'name', show: () => {
+                            return true
+                        }, name: '名称'
+                    },
+                    {
+                        key: 'password', show: () => {
+                            return true
+                        }, name: '修改密码	'
+                    },
+                    {
+                        key: 'published', show: () => {
+                            return true
+                        }, name: '已发布动态', url: '/frontend/published.html'
+                    },
+                    {
+                        key: 'checking', show: () => {
+                            return this.isAdmin
+                        }, name: '审核中动态', url: '/frontend/checking.html'
+                    },
+                    {
+                        key: 'publish', show: () => {
+                            return true
+                        }, name: '发布动态'
+                    },
+                    {
+                        key: 'check', show: () => {
+                            return this.isAdmin
+                        }, name: '审核', url: '/frontend/check.html'
+                    },
+                    {
+                        key: 'comment', show: () => {
+                            return this.isAdmin
+                        }, name: '评论', url: '/frontend/comment.html'
+                    },
                 ],
                 show: {
                     updateName: false,
@@ -146,15 +181,50 @@
                     againPassword: '',
                 },
                 publishType: [
-                    {key: 'news', show: ()=>{return this.isAdmin}, name: '校园资讯'},
-                    {key: 'trading', show: ()=>{return true}, name: '二手交易'},
-                    {key: 'employment', show: ()=>{return true}, name: '就业速递'},
-                    {key: 'lost-items', show: ()=>{return true}, name: '失物招领'},
-                    {key: 'question', show: ()=>{return true}, name: '校园问答'},
-                    {key: 'friends', show: ()=>{return true}, name: '校园交友'},
-                    {key: 'other', show: ()=>{return true}, name: '其他'},
-                    {key: 'car', show: ()=>{return true}, name: '校园拼车'},
+                    {
+                        key: 'news', show: () => {
+                            return this.isAdmin
+                        }, name: '校园资讯'
+                    },
+                    {
+                        key: 'trading', show: () => {
+                            return true
+                        }, name: '二手交易'
+                    },
+                    {
+                        key: 'employment', show: () => {
+                            return true
+                        }, name: '就业速递'
+                    },
+                    {
+                        key: 'lost-items', show: () => {
+                            return true
+                        }, name: '失物招领'
+                    },
+                    {
+                        key: 'question', show: () => {
+                            return true
+                        }, name: '校园问答'
+                    },
+                    {
+                        key: 'friends', show: () => {
+                            return true
+                        }, name: '校园交友'
+                    },
+                    {
+                        key: 'other', show: () => {
+                            return true
+                        }, name: '其他'
+                    },
+                    {
+                        key: 'car', show: () => {
+                            return true
+                        }, name: '校园拼车'
+                    },
                 ],
+                temp: {
+                    fileList: []
+                },
             }
         },
         mounted() {
@@ -175,6 +245,15 @@
                         break;
                     case 'publish' :
                         this.showPublishSelect()
+                        break;
+                    case 'check' :
+                        window.location.href = e.url
+                        break;
+                    case 'checking' :
+                        window.location.href = e.url
+                        break;
+                    case 'comment' :
+                        window.location.href = e.url
                         break;
                 }
             },
@@ -233,6 +312,20 @@
                 this.form.newPassword = ''
                 this.form.againPassword = ''
                 this.getUserInfo()
+            },
+            /*headImg*/
+            saveHeadImg(data) {
+                let url = `/api/user/updateHeadImage`
+                axios.post(url,data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                   this.userInfo = result.data
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
             },
             /*name*/
             saveName() {
@@ -293,6 +386,20 @@
                 this.temp.fileList = info.fileList
                 if (info.file.status === 'done') {
                     this.$message.success(`${info.file.name} 上传成功`);
+                    // this.userInfo.headImg = info.file.response.data
+                    this.saveHeadImg(info.file.response.data)
+										this.getUserInfo()
+                    // let data = {
+                    //     id: info.file.response.data.id,
+                    //     uid: info.file.response.data.id,
+                    //     name: info.file.response.data.oldName,
+                    //     status: 'done',
+                    //     url: info.file.response.data.virtualPath,
+                    //     currentData: info.file.response.data
+                    // }
+                    // info.currentData = info.file.response.data
+                    // this.temp.fileList.pop()
+                    // this.temp.fileList.push(data)
                 } else if (info.file.status === 'error') {
                     this.$message.error(`${info.file.name} 上传失败`);
                 }

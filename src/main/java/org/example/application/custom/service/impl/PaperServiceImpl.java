@@ -62,13 +62,6 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public List<Paper> getListByMine(HttpServletRequest request) {
-        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
-        return paperDAO.getBySysUser(user);
-    }
-
-
-    @Override
     public void deleteById(String id) {
         paperDAO.deleteById(id);
     }
@@ -81,5 +74,17 @@ public class PaperServiceImpl implements PaperService {
     @Override
     public void checkFail(PaperForm form) {
         paperDAO.updateStatusById(form.getId(), DIC.CHECK_FAIL);
+    }
+
+    @Override
+    public List<Paper> getMineAll(HttpServletRequest request) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        return paperDAO.getBySysUser(user);
+    }
+
+    @Override
+    public List<Paper> getMineListByType(HttpServletRequest request, String type) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        return paperDAO.getBySysUserAndType(user,type);
     }
 }

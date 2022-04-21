@@ -15,12 +15,13 @@ public interface PaperService extends BaseService {
 
     Paper save(HttpServletRequest request, PaperForm form);
 
-    List<Paper> getListByMine(HttpServletRequest request);
-
     void deleteById(String id);
 
     void checkPass(PaperForm form);
 
     void checkFail(PaperForm form);
 
+    List<Paper> getMineAll(HttpServletRequest request);
+
+    List<Paper> getMineListByType(HttpServletRequest request, String type);
 }

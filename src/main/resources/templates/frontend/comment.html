@@ -12,56 +12,76 @@
       .content {
           display: flex;
           flex-direction: row;
-          height: max-content
+          height: max-content;
+          background-color: rgb(217, 217, 217);
       }
 
       .menus {
           flex: 2;
-          height: 100%;
-          margin: 0;
+          height: 416px;
           padding: 0;
+          margin: 19px 0 0 0;
+          border-right: 1px solid #999999;
       }
 
       .menus li {
           background-color: #999999;
           color: #505050;
-          font-size: 14px;
+          font-size: 39px;
           list-style: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 85px;
+          height: 69px;
+          width: 154px;
+
           font-family: 'Microsoft YaHei';
       }
 
-      .menus li:first-child {
-          font-size: 14px;
-          text-align: center;
-          background-repeat: no-repeat;
-          background-size: auto 100%;
-          background-position: center;
-          background-color: #47bcbc;
-      }
       .ant-pagination-item-link {
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
+      }
+
+      .comment-item {
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          background-color: #999999;
+          color: #505050;
+          height: 60px;
+					margin-left: 115px;
+          width: 376px;
+      }
+
+      .comment-content {
+          width: 304px;
+          font-size: 39px;
+          text-align: center;
+      }
+
+      .comment-result {
+          vertical-align: center;
+          width: 72px;
+          font-size: 19px;
+          text-align: center;
       }
 	</style>
 </head>
 <body style="margin: 0;scroll: no; overflow-y: hidden">
 <div style="" class="content" id="app">
 	<ul class="menus">
-		<li v-for="item in menus" @click="changeType(item)" v-if="item.show()">{{item.name}}</li>
+		<li>评论</li>
 	</ul>
 	<div style="flex:10;height: 100%;padding: 2rem">
-		<p style="font-size: 30px;font-weight: 600">{{title}}</p>
-		<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
-		<div>
-			<a-col v-for="item in dataList" style="padding: 10px">
-				<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
-				<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
-				<hr>
+		<div style="margin-top: 88px">
+			<a-col v-for="item in dataList" style="padding: 10px;">
+				<div class="comment-item">
+					<div class="comment-content" style="">评论</div>
+					<div class="comment-result" style="">回复</div>
+				</div>
+				<div style="width: 656px;border-bottom:1px solid #999999;margin-top: 23px"></div>
 			</a-col>
 		</div>
 	</div>
@@ -75,25 +95,55 @@
                 axios: axios,
                 userInfo: {},
                 isAdmin: false,
-                title: '校园资讯',
+                title: '',
                 menus: [
-                    {key: '',  show: ()=>{return true}, name: '已发布动态'},
-                    {key: 'news',  show: ()=>{return this.isAdmin}, name: '校园资讯'},
-                    {key: 'trading',  show: ()=>{return true}, name: '二手交易'},
-                    {key: 'employment', show: ()=>{return this.isAdmin},  name: '就业速递'},
-                    {key: 'lost-items', show: ()=>{return true},  name: '失物招领'},
-                    {key: 'question', show: ()=>{return true},  name: '校园问答'},
-                    {key: 'friends',  show: ()=>{return true}, name: '校园交友'},
+                    {
+                        key: '', show: () => {
+                            return true
+                        }, name: '已发布动态'
+                    },
+                    {
+                        key: 'news', show: () => {
+                            return this.isAdmin
+                        }, name: '校园资讯'
+                    },
+                    {
+                        key: 'trading', show: () => {
+                            return true
+                        }, name: '二手交易'
+                    },
+                    {
+                        key: 'employment', show: () => {
+                            return this.isAdmin
+                        }, name: '就业速递'
+                    },
+                    {
+                        key: 'lost-items', show: () => {
+                            return true
+                        }, name: '失物招领'
+                    },
+                    {
+                        key: 'question', show: () => {
+                            return true
+                        }, name: '校园问答'
+                    },
+                    {
+                        key: 'friends', show: () => {
+                            return true
+                        }, name: '校园交友'
+                    },
                 ],
-                dataList: [],
+                dataList: [
+                    {id:'',content:'评论'},
+                    {id:'',content:'评论'},
+                    {id:'',content:'评论'},
+								],
                 typeKey: '',
             }
-
         },
         mounted() {
             this.getUserInfo()
-            // this.initTitle()
-            this.getList()
+            // this.getList()
         },
         methods: {
             initTitle() {
@@ -116,7 +166,7 @@
                 this.titleKey = key
                 this.getList()
             },
-            getList(){
+            getList() {
                 axios.get(`/api/paper/mine/list/${this.typeKey}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {

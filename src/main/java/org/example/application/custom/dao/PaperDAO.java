@@ -46,4 +46,8 @@ public class PaperDAO extends BaseDAO {
     public List<Paper> getListByType(String type) {
         return paperRepository.findAllByType(type,desByCreateTime);
     }
+
+    public List<Paper> getBySysUserAndType(SysUser user, String type) {
+        return paperRepository.getByPublisherAndType(user,type,desByCreateTime);
+    }
 }
