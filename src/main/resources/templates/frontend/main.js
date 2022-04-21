@@ -47,40 +47,24 @@ const app = new Vue({
             ],
             interval: 2000,
 
-            pagination: {
-                pageSize: 3,
-                pageIndex: 1,
-                pageCount: 50,
-            },
             title:'二手交易',
             menus: [
                 {key: '', name: '二手交易'},
                 {key: '', name: '二手交易'},
                 {key: '', name: '租赁'},
             ],
-            dataList: [
-                {
-                    title: 'title',
-                    content: 'xxxxx'
-                },
-                {
-                    title: 'title',
-                    content: 'xxxxx'
-                }
-            ]
+            dataList: [],
+            titleText: '校园问答',
         }
     },
     mounted() {
         this.getUserInfo()
     },
     methods: {
-        changePage(e) {
-            console.log(e)
-        },
-        changeType(e) {
+        changeSecondType(e) {
             console.log(e.name)
         },
-        handleChange(e) {
+        changeOtherType(e) {
             console.log(e)
         },
 
@@ -88,9 +72,6 @@ const app = new Vue({
             console.log(e)
             this.pageUrl = e
             window.location.href = e
-        },
-        handleChange(e) {
-            console.log(e)
         },
         onOver() {
             clearInterval(this.timer)

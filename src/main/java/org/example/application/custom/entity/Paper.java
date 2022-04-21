@@ -24,6 +24,7 @@ public class Paper extends BaseEntity {
     //状态 0:正常 1:待审 2:驳回
     private Integer status;
     private String type;
+    private String secondType;
     @ManyToOne
     private SysUser publisher;
     @ManyToMany

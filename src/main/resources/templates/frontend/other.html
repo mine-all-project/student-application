@@ -50,7 +50,7 @@
 	<div data-th-replace="/components/frontend/page-common :: nav"></div>
 	<div style="" class="content">
 		<ul class="menus">
-			<!--			<li v-for="item in menus" @click="changeType(item)">{{item.name}}</li>-->
+			<!--			<li v-for="item in menus" @click="changeSecondType(item)">{{item.name}}</li>-->
 		</ul>
 		<div style="flex:9;height: 100%;padding: 2rem">
 			<p style="font-size: 30px;font-weight: 600">{{title}}</p>
@@ -101,15 +101,12 @@
                     {src: '/images/banner03.png'},
                 ],
                 interval: 2000,
-                pagination: {
-                    pageSize: 3,
-                    pageIndex: 1,
-                    pageCount: 50,
-                },
                 title: '',
                 menus: [],
 								dataList: [],
+								dataListBak: [],
                 titleKey:'friend',
+                titleText:'校园交友',
             }
         },
         mounted() {
@@ -123,15 +120,19 @@
                 switch (key) {
                     case 'other' :
                         this.title = '其他';
+                        this.titleText = '其他';
                         break;
                     case 'question' :
                         this.title = '校园问答';
+                        this.titleText = '校园问答';
                         break;
                     case 'friend' :
                         this.title = '校园交友';
+                        this.titleText = '校园交友';
                         break;
                     case 'car' :
                         this.title = '校园拼车';
+                        this.titleText = '校园拼车';
                         break;
                 }
 								this.titleKey = key
@@ -149,14 +150,15 @@
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterDataList(result.data)
+                        this.dataList = this.filterDataList(result.data)
+                        this.dataListBak = this.filterDataList(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
             filterDataList(source) {
-                this.dataList = source.map(e => {
+                return source.map(e => {
                     let files = e.files.sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
@@ -169,6 +171,7 @@
                         files: files,
                         content: e.content,
                         type: e.type,
+                        secondType: e.secondType,
                         messages: e.messages,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
@@ -176,11 +179,13 @@
                 });
             },
 
-            changeType(e) {
-                console.log(e.name)
+            changeSecondType(e) {
+                this.dataList = this.dataListBak.filter(item => {
+                    return item.secondType === e.name
+                })
+                this.title = e.name
             },
-            handleChange(e) {
-                console.log(e)
+            changeOtherType(e) {
                 window.location.href = `/frontend/other.html?key=${e}`
             },
             onOver() {

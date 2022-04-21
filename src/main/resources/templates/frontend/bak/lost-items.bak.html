@@ -55,7 +55,7 @@
 <body style="margin: 0;scroll: no; overflow-y: hidden">
 <div style="" class="content" id="app">
 	<ul class="menus">
-		<!--		<li v-for="item in menus" @click="changeType(item)">{{item.name}}</li>-->
+		<!--		<li v-for="item in menus" @click="changeSecondType(item)">{{item.name}}</li>-->
 	</ul>
 	<div style="flex:9;height: 100%;padding: 2rem">
 		<p style="font-size: 30px;font-weight: 600">{{title}}</p>
@@ -110,7 +110,7 @@
             changePage(e) {
                 console.log(e)
             },
-            changeType(e) {
+            changeSecondType(e) {
                 console.log(e.name)
             },
             handleChange(e) {

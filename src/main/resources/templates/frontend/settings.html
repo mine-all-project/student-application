@@ -62,8 +62,8 @@
 	<div class="body">
 		<div class="body-bgi" :style="`background-image:url(${image.settings})`"></div>
 		<div style="flex:2;height: 100%;text-align: right;z-index: 999">
-			<a-upload class="ql-file" name="file" action="/api/uploadFile"
-								:multiple="true" :file-list="temp.fileList" :remove="removeUploadFile"
+			<a-upload  name="file" action="/api/uploadFile"
+								:multiple="false" :file-list="temp.fileList"
 								@change="changeUploadFile" :show-upload-list="false">
 				<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" alt=""
 						 style="width: 169px;height: 169px;margin: 5rem 1rem 0 0" >
@@ -371,41 +371,14 @@
                 window.location.href = '/server/login'
             },
             /*upload*/
-            closePreview() {
-                this.show.previewImg = false
-            },
-            async showPreview(file) {
-                if (file.response) {
-                    this.temp.previewSrc = file.response.data.virtualPath
-                } else {
-                    this.temp.previewSrc = file.url
-                }
-                this.show.previewImg = true
-            },
             changeUploadFile(info) {
                 this.temp.fileList = info.fileList
                 if (info.file.status === 'done') {
                     this.$message.success(`${info.file.name} 上传成功`);
-                    // this.userInfo.headImg = info.file.response.data
                     this.saveHeadImg(info.file.response.data)
-										this.getUserInfo()
-                    // let data = {
-                    //     id: info.file.response.data.id,
-                    //     uid: info.file.response.data.id,
-                    //     name: info.file.response.data.oldName,
-                    //     status: 'done',
-                    //     url: info.file.response.data.virtualPath,
-                    //     currentData: info.file.response.data
-                    // }
-                    // info.currentData = info.file.response.data
-                    // this.temp.fileList.pop()
-                    // this.temp.fileList.push(data)
                 } else if (info.file.status === 'error') {
                     this.$message.error(`${info.file.name} 上传失败`);
                 }
-            },
-            removeUploadFile(file) {
-                this.temp.fileList = []
             },
         }
     })

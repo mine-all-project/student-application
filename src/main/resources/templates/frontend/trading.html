@@ -50,7 +50,7 @@
 	<div data-th-replace="/components/frontend/page-common :: nav"></div>
 	<div style="" class="content">
 		<ul class="menus">
-			<li v-for="item in menus" @click="changeType(item)">{{item.name}}</li>
+			<li v-for="item in menus" @click="changeSecondType(item)">{{item.name}}</li>
 		</ul>
 		<div style="flex:9;height: 100%;padding: 2rem">
 			<p style="font-size: 30px;font-weight: 600">{{title}}</p>
@@ -113,8 +113,9 @@
                     {key: '', name: '租赁'},
                 ],
                 dataList: [ ],
+                dataListBak: [ ],
                 titleKey:'trading',
-                titleText:'二手交易',
+                titleText:'校园问答',
             }
         },
         mounted() {
@@ -130,14 +131,15 @@
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterDataList(result.data)
+                        this.dataList = this.filterDataList(result.data)
+                        this.dataListBak = this.filterDataList(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
             },
             filterDataList(source) {
-                this.dataList = source.map(e => {
+                return  source.map(e => {
                     let files = e.files.sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
@@ -150,6 +152,7 @@
                         files: files,
                         content: e.content,
                         type: e.type,
+                        secondType: e.secondType,
                         messages: e.messages,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
@@ -161,11 +164,13 @@
                 this.$message.info(e)
                 window.location.href = e
             },
-            changeType(e) {
-                console.log(e.name)
+            changeSecondType(e) {
+                this.dataList = this.dataListBak.filter(item => {
+                    return item.secondType === e.name
+                })
+                this.title = e.name
             },
-            handleChange(e) {
-                console.log(e)
+            changeOtherType(e) {
                 window.location.href = `/frontend/other.html?key=${e}`
             },
             onOver() {
