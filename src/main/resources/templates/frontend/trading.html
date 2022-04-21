@@ -137,7 +137,7 @@
             },
             filterDataList(source) {
                 this.dataList = source.map(e => {
-                    let images = e.images.sort((a, b) => {
+                    let files = e.files.sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
                         return createTimeA.diff(createTimeB, 's');
@@ -146,8 +146,7 @@
                         id: e.id,
                         title: '题目',
                         price: e.price,
-                        image: e.images.length ? e.images[0].virtualPath : '',
-                        images: images,
+                        files: files,
                         content: e.content,
                         type: e.type,
                         messages: e.messages,

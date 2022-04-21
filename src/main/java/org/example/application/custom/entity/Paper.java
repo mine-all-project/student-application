@@ -26,8 +26,8 @@ public class Paper extends BaseEntity {
     private String type;
     @OneToOne
     private SysUser publisher;
-    @OneToMany
-    private List<FileInfo> images;
+    @ManyToMany
+    private List<FileInfo> files;
     @OneToMany
     private List<Message> messages;
 

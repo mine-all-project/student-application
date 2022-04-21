@@ -84,21 +84,20 @@
 		<div
 				style="
 				width:866px;height:271px;margin-top: 10px;background-color:rgba(153, 153, 153, 0.11);padding: 8px 27px 90px 9px;position: relative">
-			<div v-if="editor.create">编辑器初始化中..</div>
 			<div id="editor" style="height: 173px;width:830px;background-color:#cccccc;"></div>
 			<!-- Create toolbar container -->
 			<div id="toolbar" style="border: none;display: flex;align-items: center;">
 				<button class="ql-emoji" style="width: 50px;height: 50px;"></button>
 				<a-upload class="ql-image" name="file" action="/api/uploadFile"
 									:multiple="true" :file-list="temp.imageList" :remove="removeUploadImage"
-									@preview="showPreview" @change="changeUploadImage" >
+									@preview="showPreview" @change="changeUploadImage" :show-upload-list="false">
 					<div style="margin-left: 35px;">
 						<a-icon type="camera" theme="filled" style="font-size: 40px;color:rgba(153, 153, 153, 1)"></a-icon>
 					</div>
 				</a-upload>
 				<a-upload class="ql-file" name="file" action="/api/uploadFile"
 									:multiple="true" :file-list="temp.fileList" :remove="removeUploadFile"
-									@change="changeUploadFile" >
+									@change="changeUploadFile" :show-upload-list="false">
 					<div style="display: flex;flex-direction: column;align-items: center;color: #fff;margin-left: 35px;">
 						<a-icon type="upload"></a-icon>
 						<span>上传</span>
@@ -116,7 +115,7 @@
         components: {},
         data() {
             return {
-                demo:{showPreviewIcon: false, showRemoveIcon: false},
+                demo: {showPreviewIcon: false, showRemoveIcon: false},
                 apiUrl: '',
                 headers: headers,
                 pagination: {
@@ -135,16 +134,7 @@
                     {key: '', name: '校园问答'},
                     {key: '', name: '校园交友'},
                 ],
-                dataList: [
-                    {
-                        title: 'title',
-                        content: 'xxxxx'
-                    },
-                    {
-                        title: 'title',
-                        content: 'xxxxx'
-                    }
-                ],
+                dataList: [],
                 editor: {
                     instance: null,
                     create: true,
@@ -172,14 +162,16 @@
         },
         methods: {
             publish() {
+                let fileList = [...this.temp.fileList, this.temp.imageList]
                 let data = {
                     title: '',
                     messages: [],
                     content: this.editor.instance.root.innerHTML,
                     type: this.titleKey,
+                    files: fileList.map(e => {
+                        return e.currentData
+                    })
                 }
-                data.images = []
-                console.log(data)
                 axios.post('/api/paper/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
@@ -195,35 +187,57 @@
             changeUploadFile(info) {
                 this.temp.fileList = info.fileList
                 if (info.file.status === 'done') {
-                    this.$message.success(`${info.file.name} 上传成功`);
+                    // this.$message.success(`${info.file.name} 上传成功`);
+                    let data = {
+                        id: info.file.response.data.id,
+                        uid: info.file.response.data.id,
+                        name: info.file.response.data.oldName,
+                        status: 'done',
+                        url: info.file.response.data.virtualPath,
+                        currentData: info.file.response.data
+                    }
+                    info.currentData = info.file.response.data
+                    this.temp.fileList.pop()
+                    this.temp.fileList.push(data)
                 } else if (info.file.status === 'error') {
                     this.$message.error(`${info.file.name} 上传失败`);
                 }
             },
             removeUploadFile(file) {
-                this.temp.fileList = []
+                this.temp.fileList = this.temp.fileList.filter(e => {
+                    return e.id !== file.id
+                })
             },
-						/*image*/
+            /*image*/
             changeUploadImage(info) {
                 this.temp.imageList = info.fileList
                 if (info.file.status === 'done') {
-                    this.$message.success(`${info.file.name} 上传成功`);
+                    // this.$message.success(`${info.file.name} 上传成功`);
+                    let data = {
+                        id: info.file.response.data.id,
+                        uid: info.file.response.data.id,
+                        name: info.file.response.data.oldName,
+                        status: 'done',
+                        url: info.file.response.data.virtualPath,
+                        currentData: info.file.response.data
+                    }
+                    info.currentData = info.file.response.data
+                    this.temp.imageList.pop()
+                    this.temp.imageList.push(data)
                 } else if (info.file.status === 'error') {
                     this.$message.error(`${info.file.name} 上传失败`);
                 }
             },
             removeUploadImage(file) {
-                this.temp.imageList = []
+                this.temp.imageList = this.temp.imageList.filter(e => {
+                    return e.id !== file.id
+                })
             },
             closePreview() {
                 this.show.previewImg = false
             },
             async showPreview(file) {
-                if (file.response) {
-                    this.temp.previewSrc = file.response.data.virtualPath
-                } else {
-                    this.temp.previewSrc = file.url
-                }
+                this.temp.previewSrc = file.url
                 this.show.previewImg = true
             },
 

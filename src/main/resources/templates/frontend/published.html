@@ -60,11 +60,9 @@
 		<div>
 			<a-col v-for="item in dataList" style="padding: 10px">
 				<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
-				<p style="font-size: 24px;word-break: break-all">{{item.content}}</p>
+				<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
 				<hr>
 			</a-col>
-			<a-pagination v-model="pagination.pageIndex" :total="pagination.pageCount" @change="changePage"
-										:default-page-size="pagination.pageSize" :hide-on-single-page="true"></a-pagination>
 		</div>
 	</div>
 </div>
@@ -74,47 +72,109 @@
         components: {},
         data() {
             return {
-                pagination: {
-                    pageSize: 3,
-                    pageIndex: 1,
-                    pageCount: 50,
-                },
+                axios: axios,
+                userInfo: {},
                 title: '校园资讯',
                 menus: [
                     {key: '', name: '已发布动态'},
-                    {key: '', name: '校园资讯'},
-                    {key: '', name: '二手交易'},
-                    {key: '', name: '就业速递'},
-                    {key: '', name: '失物招领'},
-                    {key: '', name: '校园问答'},
-                    {key: '', name: '校园交友'},
+                    {key: 'news', name: '校园资讯'},
+                    {key: 'trading', name: '二手交易'},
+                    {key: 'employment', name: '就业速递'},
+                    {key: 'lost-items', name: '失物招领'},
+                    {key: 'question', name: '校园问答'},
+                    {key: 'friends', name: '校园交友'},
                 ],
-                dataList: [
-                    {
-                        title: 'title',
-                        content: 'xxxxx'
-                    },
-                    {
-                        title: 'title',
-                        content: 'xxxxx'
-                    }
-                ]
+                dataList: [],
+                typeKey: '',
             }
 
         },
         mounted() {
+            this.getUserInfo()
+            // this.initTitle()
+            this.getList()
         },
         methods: {
+            initTitle() {
+                let url = window.location.href
+                let key = url.split('?key=')[1]
+                switch (key) {
+                    case 'other' :
+                        this.title = '其他';
+                        break;
+                    case 'question' :
+                        this.title = '校园问答';
+                        break;
+                    case 'friend' :
+                        this.title = '校园交友';
+                        break;
+                    case 'car' :
+                        this.title = '校园拼车';
+                        break;
+                }
+                this.titleKey = key
+                this.getList()
+            },
+            getList(){
+                axios.get(`/api/paper/list/${this.typeKey}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.filterDataList(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            filterDataList(source) {
+                this.dataList = source.map(e => {
+                    let files = e.files.sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    return {
+                        id: e.id,
+                        title: '题目',
+                        price: e.price,
+                        files: files,
+                        content: e.content,
+                        type: e.type,
+                        messages: e.messages,
+                        createTime: e.createTime,
+                        createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                    }
+                });
+            },
+
             changePage(e) {
                 console.log(e)
             },
             changeType(e) {
-                console.log(e.name)
+                this.typeKey = e.key
+                this.getList()
+                console.log(e)
             },
             handleChange(e) {
                 console.log(e)
             },
-
+            getUserInfo() {
+                this.axios.get('/api/user/getUserInfo').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.userInfo = result.data;
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
         }
     })
 

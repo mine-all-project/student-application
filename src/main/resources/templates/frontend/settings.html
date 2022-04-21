@@ -66,7 +66,7 @@
 					 style="width: 169px;height: 169px;margin: 5rem 1rem 0 0">
 		</div>
 		<div style="flex:3;height: 100%;display:flex;z-index: 999;flex-direction: column">
-			<div class="menus" v-for="item in menus" @click="clickMenu(item)" :key="item.id">
+			<div class="menus" v-for="item in menus" @click="clickMenu(item)" :key="item.id" v-if="item.show()">
 				<span style="flex:6">{{item.name}}</span>
 				<a-icon style="flex:2;font-size: 40px" type="unordered-list"></a-icon>
 			</div>
@@ -96,7 +96,9 @@
 	</a-modal>
 	<a-modal :visible.sync="show.publishSelect" width="20%" :footer="false" @cancel="show.publishSelect = false">
 		<a-col style="display: flex;flex-direction: column;align-items: center">
-			<a-button style="width: 80%;margin-top: 10px;"@click="toPublish(item)" v-for="item in publishType" >{{item.name}}</a-button>
+			<a-button style="width: 80%;margin-top: 10px;" @click="toPublish(item)" v-for="item in publishType"
+								v-if="item.show()">{{item.name}}
+			</a-button>
 		</a-col>
 	</a-modal>
 </div>
@@ -115,15 +117,16 @@
                 },
                 headers: headers,
                 axios: axios,
+                isAdmin: false,
                 userInfo: {},
                 menus: [
-                    {key: 'name', show: true, name: '名称'},
-                    {key: 'password', show: true, name: '修改密码	'},
-                    {key: 'published', show: true, name: '已发布动态', url: '/frontend/published.html'},
-                    {key: 'checkWait', show: true, name: '审核中动态'},
-                    {key: 'publish', show: true, name: '发布动态'},
-                    {key: 'check', show: true, name: '审核'},
-                    {key: 'comment', show: true, name: '评论'},
+                    {key: 'name', show: ()=>{return true}, name: '名称'},
+                    {key: 'password', show: ()=>{return true}, name: '修改密码	'},
+                    {key: 'published', show: ()=>{return true}, name: '已发布动态', url: '/frontend/published.html'},
+                    {key: 'checkWait', show: ()=>{return this.isAdmin}, name: '审核中动态'},
+                    {key: 'publish', show: ()=>{return true}, name: '发布动态'},
+                    {key: 'check', show: ()=>{return this.isAdmin}, name: '审核'},
+                    {key: 'comment', show: ()=>{return this.isAdmin}, name: '评论'},
                 ],
                 show: {
                     updateName: false,
@@ -143,15 +146,15 @@
                     againPassword: '',
                 },
                 publishType: [
-                    {key: 'news', show: true, name: '校园资讯'},
-                    {key: 'trading', show: true, name: '二手交易'},
-                    {key: 'employment', show: true, name: '就业速递'},
-                    {key: 'lost-items', show: true, name: '失物招领'},
-                    {key: 'question', show: true, name: '校园问答'},
-                    {key: 'friends', show: true, name: '校园交友'},
-                    {key: 'other', show: true, name: '其他'},
-                    {key: 'car', show: true, name: '校园拼车'},
-                ]
+                    {key: 'news', show: ()=>{return this.isAdmin}, name: '校园资讯'},
+                    {key: 'trading', show: ()=>{return true}, name: '二手交易'},
+                    {key: 'employment', show: ()=>{return true}, name: '就业速递'},
+                    {key: 'lost-items', show: ()=>{return true}, name: '失物招领'},
+                    {key: 'question', show: ()=>{return true}, name: '校园问答'},
+                    {key: 'friends', show: ()=>{return true}, name: '校园交友'},
+                    {key: 'other', show: ()=>{return true}, name: '其他'},
+                    {key: 'car', show: ()=>{return true}, name: '校园拼车'},
+                ],
             }
         },
         mounted() {
@@ -177,7 +180,7 @@
             },
             toPublish(e) {
                 console.log(e)
-								window.location.href = `/frontend/publish.html?key=${e.key}`
+                window.location.href = `/frontend/publish.html?key=${e.key}`
             },
             showPublishSelect() {
                 this.show.publishSelect = true
@@ -264,6 +267,7 @@
                     }
                     if (result.data !== null) {
                         this.userInfo = result.data;
+                        this.isAdmin = result.data.role === 0
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
