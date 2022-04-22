@@ -43,7 +43,7 @@
             <span class="step-content">{{ record.goods.price }}</span>
           </a-tooltip>
         </span>
-		<span slot="price" slot-scope="text,record">
+		<span slot="allPrice" slot-scope="text,record">
          {{ record.goods.price*record.countNum }}
           </a-tooltip>
         </span>
@@ -82,14 +82,12 @@
                             title: '账单id',
                         },
                         {
-                            dataIndex: 'price',
                             title: '单价',
                             scopedSlots: {customRender: 'price'},
                         },
                         {
                             dataIndex: 'countNum',
                             title: '数量',
-                            scopedSlots: {customRender: 'countNum'},
                         },
                         {
                             title: '金额',
@@ -193,6 +191,7 @@
                         address: e.address,
                         status: e.status,
                         phone: e.phone,
+                        countNum: e.countNum,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                         goods: e.goods,
