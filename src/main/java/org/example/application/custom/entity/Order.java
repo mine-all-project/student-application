@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -32,6 +33,9 @@ public class Order extends BaseEntity {
     private String address;
     @Column(columnDefinition = "tinyint default 0 comment '订单状态 0:已送货 1:待送货'")
     private String status;
+    @NotNull(message = "数量不能为空", groups = {Groups.IsNotNull.class})
+    @Column(columnDefinition = "tinyint default null comment '联系电话'")
+    private Integer countNum;
     @ManyToOne
     private Goods goods;
     @ManyToOne
