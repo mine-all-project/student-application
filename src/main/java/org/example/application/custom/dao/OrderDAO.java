@@ -46,4 +46,8 @@ public class OrderDAO extends BaseDAO {
     public List<Order> saveAll(List<Order> list) {
         return orderRepository.saveAll(list);
     }
+
+    public Order findById(String id) {
+        return orderRepository.findById(id).orElse(null);
+    }
 }

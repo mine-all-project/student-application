@@ -2,6 +2,7 @@ package org.example.application.custom.service;
 
 import org.example.application.common.BaseService;
 import org.example.application.custom.entity.Person;
+import org.example.application.custom.form.MoneyForm;
 import org.example.application.custom.form.PersonForm;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,4 +16,8 @@ public interface PersonService extends BaseService {
     Person save(HttpServletRequest request, PersonForm form);
 
     void deleteById(HttpServletRequest request,String id);
+
+    void moneyPlus(HttpServletRequest request,MoneyForm form);
+
+    void moneyReduce(HttpServletRequest request,MoneyForm form);
 }

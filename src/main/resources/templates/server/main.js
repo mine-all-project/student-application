@@ -18,7 +18,7 @@ const app = new Vue({
                 personSettings: {}
             },
             pagination: {total: 0, pageSize: 10},
-            title: "账务管理系统",
+            title: "手机账单查询系统",
             rules: {
                 name: [
                     {required: true, message: '请输入姓名', trigger: 'change'},

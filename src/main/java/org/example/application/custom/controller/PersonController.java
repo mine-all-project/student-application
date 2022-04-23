@@ -5,6 +5,7 @@ import org.example.application.common.BaseController;
 import org.example.application.common.groups.IsNotNull;
 import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.custom.entity.Person;
+import org.example.application.custom.form.MoneyForm;
 import org.example.application.custom.form.PersonForm;
 import org.example.application.custom.service.PersonService;
 import org.example.application.system.dto.ResponseDTO;
@@ -23,6 +24,22 @@ public class PersonController extends BaseController {
         this.personService = personService;
     }
 
+    @PostMapping("/money/plus")
+    public ResponseDTO moneyPlus(HttpServletRequest request, @RequestBody MoneyForm form) {
+        log.info("收到请求->余额充值");
+        personService.moneyPlus(request, form);
+        log.info("返回结果->余额充值结束");
+        return ResponseDTO.returnSuccess();
+    }
+
+    @PostMapping("/money/reduce")
+    public ResponseDTO moneyReduce(HttpServletRequest request, @RequestBody MoneyForm form) {
+        log.info("收到请求->余额消费");
+        personService.moneyReduce(request, form);
+        log.info("返回结果->余额消费结束");
+        return ResponseDTO.returnSuccess();
+    }
+
     @GetMapping("/list")
     public ResponseDTO getList(HttpServletRequest request) {
         log.info("收到请求->获取人员列表");
@@ -34,7 +51,7 @@ public class PersonController extends BaseController {
     @GetMapping("/search/{keywords}")
     public ResponseDTO search(HttpServletRequest request, @PathVariable String keywords) {
         log.info("收到请求->搜索人员列表,keywords:[{}]", keywords);
-        List<Person> list = personService.search(request,keywords);
+        List<Person> list = personService.search(request, keywords);
         log.info("返回结果->搜索人员列表结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
     }
@@ -61,7 +78,7 @@ public class PersonController extends BaseController {
     @DeleteMapping("/delete/{id}")
     public ResponseDTO deleteById(HttpServletRequest request, @PathVariable String id) {
         log.info("收到请求->删除人员,id:[{}]", id);
-        personService.deleteById(request,id);
+        personService.deleteById(request, id);
         log.info("返回结果->删除的人员结束");
         return ResponseDTO.returnSuccess();
     }

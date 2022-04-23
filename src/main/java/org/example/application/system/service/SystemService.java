@@ -6,7 +6,7 @@ import org.example.application.system.form.UserForm;
 import javax.servlet.http.HttpServletRequest;
 
 
-public interface SysService {
+public interface SystemService {
     String loginCheck(UserForm form);
 
     SysUser registry(UserForm form);

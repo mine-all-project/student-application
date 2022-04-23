@@ -5,8 +5,10 @@ import org.example.application.common.DIC;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.OrderDAO;
 import org.example.application.custom.entity.Order;
+import org.example.application.custom.form.MoneyForm;
 import org.example.application.custom.form.OrderForm;
 import org.example.application.custom.service.OrderService;
+import org.example.application.custom.service.PersonService;
 import org.example.application.system.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,13 +25,15 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
     private final OrderDAO orderDAO;
+    private final PersonService personService;
     @Value("${isDebug}")
     private boolean isDebug;
     private final UserDAO userDAO;
     private final JwtConfigure jwtConfigure;
 
-    public OrderServiceImpl(OrderDAO orderDAO, UserDAO userDAO, JwtConfigure jwtConfigure) {
+    public OrderServiceImpl(OrderDAO orderDAO, PersonService personService, UserDAO userDAO, JwtConfigure jwtConfigure) {
         this.orderDAO = orderDAO;
+        this.personService = personService;
         this.userDAO = userDAO;
         this.jwtConfigure = jwtConfigure;
     }
@@ -100,6 +104,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void checkPass(HttpServletRequest request, String id) {
         checkOrderAuth(request, jwtConfigure, userDAO);
+        Order order = orderDAO.findById(id);
+        MoneyForm form = new MoneyForm();
+        form.setId(order.getPerson().getId());
+        form.setMoneyReduce(order.getPrice());
+        personService.moneyReduce(request,form);
         orderDAO.updateStatusById(id, DIC.CHECK_PASS);
     }
 

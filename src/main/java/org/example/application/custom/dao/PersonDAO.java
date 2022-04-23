@@ -31,4 +31,7 @@ public class PersonDAO extends BaseDAO {
         personRepository.deleteById(id);
     }
 
+    public Person getById(String id) {
+        return personRepository.findById(id).orElse(null);
+    }
 }

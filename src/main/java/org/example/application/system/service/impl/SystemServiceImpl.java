@@ -8,8 +8,8 @@ import org.example.application.common.utils.jwt.JwtTokenUtils;
 import org.example.application.system.dao.UserDAO;
 import org.example.application.system.entity.SysUser;
 import org.example.application.system.form.UserForm;
-import org.example.application.system.service.SysService;
 import org.example.application.system.service.SysUserService;
+import org.example.application.system.service.SystemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,9 +23,9 @@ import java.nio.charset.StandardCharsets;
  * TODO 系统相关服务实现类
  */
 @Service
-public class SysServiceImpl implements SysService {
+public class SystemServiceImpl implements SystemService {
 
-    private static final Logger logger = LoggerFactory.getLogger(SysServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SystemServiceImpl.class);
     @Value("${isDebug}")
     private boolean isDebug;
 
@@ -34,7 +34,7 @@ public class SysServiceImpl implements SysService {
     private final JwtConfigure jwtConfigure;
 
 
-    public SysServiceImpl(SysUserService sysUserService, UserDAO userDAO, JwtConfigure jwtConfigure) {
+    public SystemServiceImpl(SysUserService sysUserService, UserDAO userDAO, JwtConfigure jwtConfigure) {
         this.sysUserService = sysUserService;
         this.userDAO = userDAO;
         this.jwtConfigure = jwtConfigure;

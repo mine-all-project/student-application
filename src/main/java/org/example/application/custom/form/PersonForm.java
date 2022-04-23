@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -20,6 +21,10 @@ public class PersonForm extends BaseForm {
     private Integer gender;
     @NotBlank(message = "手机号不能为空", groups = IsNotNull.class)
     private String phone;
+    @NotNull(message = "钱包金额不能为空", groups = IsNotNull.class)
+    private BigDecimal money;
+    @NotBlank(message = "运营商不能为空", groups = IsNotNull.class)
+    private String type;
 
     @Override
     public Person toEntity() {
