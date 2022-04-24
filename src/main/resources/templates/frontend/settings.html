@@ -69,7 +69,11 @@
 						 style="width: 169px;height: 169px;margin: 5rem 1rem 0 0" >
 				<img v-else :src="image.defaultHeadImg" alt=""
 						 style="width: 169px;height: 169px;margin: 5rem 1rem 0 0">
+				<p style="padding-right: 20px;background-color: #999999;width: 80%;margin: 0 auto;">
+					<a-icon type="camera" theme="filled" style="font-size: 40px;color:#000"></a-icon>
+				</p>
 			</a-upload>
+
 		</div>
 		<div style="flex:3;height: 100%;display:flex;z-index: 999;flex-direction: column">
 			<div class="menus" v-for="item in menus" @click="clickMenu(item)" :key="item.id" v-if="item.show()">

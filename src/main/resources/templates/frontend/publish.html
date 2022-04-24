@@ -77,6 +77,8 @@
 	<ul class="menus">
 		<li v-for="item in menus" @click="changeSecondType(item)" v-if="item.show()">{{item.name}}</li>
 	</ul>
+	<p onclick="window.history.back(-1)"><img src="/images/back.svg" style="width: 30px;">返回</p>
+	<br>
 	<div style="flex:10;height: 100%;padding: 2rem">
 		<p style="font-size:14px;background-color:#999999;color: #505050;width: max-content;padding: 1rem 3rem;">
 			{{title}}</p>
