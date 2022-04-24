@@ -21,10 +21,11 @@ public class Paper extends BaseEntity {
     //详情
     @Column
     private String content;
-    //状态 0:正常 1:待审 2:驳回
+    //状态 0:审核成功 1:审核中 2:审核失败
     private Integer status;
     private String type;
     private String secondType;
+    private String note;
     @ManyToOne
     private SysUser publisher;
     @ManyToMany

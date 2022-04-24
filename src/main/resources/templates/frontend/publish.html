@@ -70,18 +70,38 @@
           top: 185px;
           right: 19px
       }
+
+      .type {
+          font-size: 14px;
+          background-color: #999999;
+          color: #505050;
+          width: max-content;
+          padding: 1rem 3rem;
+          display: flex;
+      }
 	</style>
 </head>
 <body style="margin: 0;scroll: no; overflow-y: hidden">
 <div style="" class="content" id="app">
 	<ul class="menus">
-		<li v-for="item in menus" @click="changeSecondType(item)" v-if="item.show()">{{item.name}}</li>
+		<li v-for="(item,index) in menus" v-if="item.show()&&index<=0">{{item.name}}</li>
+		<a-collapse accordion @change="changeType">
+			<a-collapse-panel :header="item.name" v-for="(item,index) in menus" v-if="item.show() && index>0"
+												:key="item.key">
+				<p v-for="child in item.children" style="height: 40px;text-align: center;line-height: 40px"
+					 @click="changeSecondType(child)">{{ child.name }}</p>
+			</a-collapse-panel>
+		</a-collapse>
 	</ul>
+
+
 	<p onclick="window.history.back(-1)"><img src="/images/back.svg" style="width: 30px;">返回</p>
 	<br>
 	<div style="flex:10;height: 100%;padding: 2rem">
-		<p style="font-size:14px;background-color:#999999;color: #505050;width: max-content;padding: 1rem 3rem;">
-			{{title}}</p>
+		<p class="type">
+			<span> {{title}} </span>
+			<span v-if="!isRoot">&nbsp; -> {{secondTitle}}</span>
+		</p>
 		<div style="height: 3px;background-color:#999999;margin-top: 10px;width: 889px"></div>
 		<div
 				style="
@@ -121,44 +141,73 @@
                 axios: axios,
                 userInfo: {},
                 isAdmin: false,
+                isRoot: true,
                 headers: headers,
                 title: '校园资讯',
+                secondTitle: '',
                 titleKey: '',
                 menus: [
                     {
                         key: '', show: () => {
                             return true
-                        }, name: '已发布动态'
+                        }, name: '发布动态',
+                        base: true,
+                        children: [],
                     },
                     {
                         key: 'news', show: () => {
                             return this.isAdmin
-                        }, name: '校园资讯'
+                        },
+                        name: '校园资讯',
+                        root: true,
+                        children: [],
                     },
                     {
                         key: 'trading', show: () => {
-                            return true
-                        }, name: '二手交易'
+                            return !this.isAdmin
+                        }, name: '二手交易',
+                        children: [
+                            {name: '二手交易'},
+                            {name: '租赁'},
+                        ],
                     },
                     {
                         key: 'employment', show: () => {
                             return this.isAdmin
-                        }, name: '就业速递'
+                        },
+                        name: '就业速递',
+                        children: [],
+                        root: true,
                     },
                     {
                         key: 'lost-items', show: () => {
-                            return true
-                        }, name: '失物招领'
+                            return !this.isAdmin
+                        }, name: '失物招领',
+                        children: [],
                     },
                     {
                         key: 'question', show: () => {
-                            return true
-                        }, name: '校园问答'
+                            return !this.isAdmin
+                        }, name: '校园问答',
+                        children: [],
                     },
                     {
                         key: 'friends', show: () => {
-                            return true
-                        }, name: '校园交友'
+                            return !this.isAdmin
+                        }, name: '校园交友',
+                        children: [],
+                    },
+                    {
+                        key: 'car', show: () => {
+                            return !this.isAdmin
+                        }, name: '校园拼车',
+                        children: [],
+                    },
+                    {
+                        key: 'other', show: () => {
+                            return !this.isAdmin
+                        }, name: '其他',
+                        children: [],
                     },
                 ],
                 dataList: [],
@@ -185,8 +234,24 @@
         mounted() {
             this.initType()
             this.createEditor('')
+            this.getUserInfo('')
         },
         methods: {
+            getUserInfo() {
+                this.axios.get('/api/user/getUserInfo').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.userInfo = result.data;
+                        this.isAdmin = result.data.role === 0
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             publish() {
                 let fileList = []
                 this.temp.fileList.forEach(e => {
@@ -200,15 +265,17 @@
                     messages: [],
                     content: this.editor.instance.root.innerHTML,
                     type: this.titleKey,
-                    files: fileList
+                    files: fileList,
+                    secondType: this.secondTitle,
                 }
+                console.log(data)
                 this.axios.post('/api/paper/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
-                    console.log("已发布，等待管理员审核")
+                    alert("已发布，等待管理员审核")
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
@@ -326,16 +393,25 @@
                 }
                 this.titleKey = key
             },
+            changeType(key) {
+                this.isRoot = true
+                this.secondTitle = null
+                this.menus.forEach(e => {
+                    if (e.key === key) {
+                        this.title = e.name
+                        this.titleKey = e.key
+                    }
+                })
+            },
             changeSecondType(e) {
-                console.log('changeSecondType-->', e.name)
+                this.isRoot = false
+                this.secondTitle = e.name
             },
             changeOtherType(e) {
                 console.log('changeOtherType-->', e)
             },
-
         }
     })
-
 </script>
 </body>
 </html>

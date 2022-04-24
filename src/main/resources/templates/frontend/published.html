@@ -12,7 +12,8 @@
       .content {
           display: flex;
           flex-direction: row;
-          height: max-content
+          overflow-y: scroll;
+          height: 100vh;
       }
 
       .menus {
@@ -42,6 +43,7 @@
           background-position: center;
           background-color: #47bcbc;
       }
+
       .ant-pagination-item-link {
           display: flex !important;
           align-items: center !important;
@@ -61,7 +63,17 @@
 		<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
 		<div>
 			<a-col v-for="item in dataList" style="padding: 10px">
-				<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
+				<p style="font-size: 30px;font-weight: 600">
+					<span>{{item.title}}</span>
+					<a-divider type="vertical"></a-divider>
+					<a-tag color="cyan" size="small" v-if="item.status === 1">审核中</a-tag>
+					<a-tag color="green" size="small" v-if="item.status === 0">审核成功</a-tag>
+					<a-tag color="red" size="small" v-if="item.status === 2">审核失败</a-tag>
+					<a-divider type="vertical"></a-divider>
+					<a-button type="danger" size="small" @click="removePaper(item)">删除</a-button>
+					<a-divider type="vertical"></a-divider>
+					<a-button type="primary" size="small" @click="editPaper(item)">编辑</a-button>
+				</p>
 				<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
 				<hr>
 			</a-col>
@@ -79,13 +91,41 @@
                 isAdmin: false,
                 title: '校园资讯',
                 menus: [
-                    {key: '',  show: ()=>{return true}, name: '已发布动态'},
-                    {key: 'news',  show: ()=>{return this.isAdmin}, name: '校园资讯'},
-                    {key: 'trading',  show: ()=>{return true}, name: '二手交易'},
-                    {key: 'employment', show: ()=>{return this.isAdmin},  name: '就业速递'},
-                    {key: 'lost-items', show: ()=>{return true},  name: '失物招领'},
-                    {key: 'question', show: ()=>{return true},  name: '校园问答'},
-                    {key: 'friends',  show: ()=>{return true}, name: '校园交友'},
+                    {
+                        key: '', show: () => {
+                            return !this.isAdmin
+                        }, name: '已发布动态'
+                    },
+                    {
+                        key: 'news', show: () => {
+                            return this.isAdmin
+                        }, name: '校园资讯'
+                    },
+                    {
+                        key: 'trading', show: () => {
+                            return !this.isAdmin
+                        }, name: '二手交易'
+                    },
+                    {
+                        key: 'employment', show: () => {
+                            return this.isAdmin
+                        }, name: '就业速递'
+                    },
+                    {
+                        key: 'lost-items', show: () => {
+                            return !this.isAdmin
+                        }, name: '失物招领'
+                    },
+                    {
+                        key: 'question', show: () => {
+                            return !this.isAdmin
+                        }, name: '校园问答'
+                    },
+                    {
+                        key: 'friends', show: () => {
+                            return !this.isAdmin
+                        }, name: '校园交友'
+                    },
                 ],
                 dataList: [],
                 typeKey: '',
@@ -97,6 +137,27 @@
             this.getList()
         },
         methods: {
+            editPaper() {
+            },
+            removePaper(e) {
+                const _this = this;
+                this.$confirm({
+                    title: '确认删除?',
+                    cancelText: '取消',
+                    okText: '确定',
+                    onOk() {
+                        axios.delete(`/api/paper/delete/${e.id}`).then(result => {
+                            console.log('通过api获取到的数据:', result);
+                            if (result.status !== 200) {
+                                _this.$message.error(result.message);
+                            }
+                            _this.getList()
+                        }).catch(function (error) {
+                            console.log('请求出现错误:', error);
+                        });
+                    },
+                });
+            },
             initTitle() {
                 let url = window.location.href
                 let key = url.split('?key=')[1]
@@ -117,7 +178,7 @@
                 this.titleKey = key
                 this.getList()
             },
-            getList(){
+            getList() {
                 axios.get(`/api/paper/mine/list/${this.typeKey}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
@@ -145,6 +206,7 @@
                         files: files,
                         content: e.content,
                         type: e.type,
+                        status: e.status,
                         messages: e.messages,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),

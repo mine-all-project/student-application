@@ -19,7 +19,9 @@ public class PaperForm extends BaseForm<Paper> {
     private String content;
     private Integer status;
     private String type;
+    private String secondType;
     private SysUser publisher;
+    private String note;
     private List<FileInfo> files;
     private List<Message> messages;
 

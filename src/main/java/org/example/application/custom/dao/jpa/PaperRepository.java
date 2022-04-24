@@ -18,8 +18,8 @@ public interface PaperRepository extends JpaRepository<Paper, String> {
     List<Paper> findAllByPublisher(SysUser publisher, Sort sort);
 
     @Modifying
-    @Query("update Paper set status = :status where id = :id")
-    void updateStatusById(@Param("id") String id, @Param("status") int status);
+    @Query("update Paper set status = :status,note = :note where id = :id")
+    void updateStatusById(@Param("id") String id, @Param("status") int status, @Param("note") String note);
 
     List<Paper> findAllByType(String type, Sort sort);
 

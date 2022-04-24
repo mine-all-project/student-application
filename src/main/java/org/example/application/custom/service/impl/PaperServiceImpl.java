@@ -66,14 +66,10 @@ public class PaperServiceImpl implements PaperService {
         paperDAO.deleteById(id);
     }
 
-    @Override
-    public void checkPass(PaperForm form) {
-        paperDAO.updateStatusById(form.getId(), DIC.CHECK_PASS);
-    }
 
     @Override
-    public void checkFail(PaperForm form) {
-        paperDAO.updateStatusById(form.getId(), DIC.CHECK_FAIL);
+    public void check(PaperForm form) {
+        paperDAO.updateStatusById(form.getId(), form.getStatus(),form.getNote());
     }
 
     @Override

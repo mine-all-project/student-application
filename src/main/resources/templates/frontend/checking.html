@@ -12,7 +12,8 @@
       .content {
           display: flex;
           flex-direction: row;
-          height: max-content
+          overflow-y: scroll;
+          height: 100vh;
       }
 
       .menus {
@@ -145,11 +146,14 @@
                         files: files,
                         content: e.content,
                         type: e.type,
+                        status: e.status,
                         messages: e.messages,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                     }
-                });
+                }).filter(e=>{
+                    return e.status === 1
+								});
             },
 
             changeSecondType(e) {

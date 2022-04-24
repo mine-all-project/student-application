@@ -128,19 +128,12 @@ public class PaperController extends BaseController {
         return ResponseDTO.returnSuccess();
     }
 
-    @PostMapping("/checkPass")
+    @PostMapping("/check")
     public ResponseDTO checkPass(@RequestBody PaperForm form) {
-        log.info("收到请求->文章通过审核[{}]", form);
-        paperService.checkPass(form);
-        log.info("返回结果->文章通过审核结束");
+        log.info("收到请求->文章审核[{}]", form);
+        paperService.check(form);
+        log.info("返回结果->文章审核结束");
         return ResponseDTO.returnSuccess();
     }
 
-    @PostMapping("/checkFail")
-    public ResponseDTO checkFail(@RequestBody PaperForm form) {
-        log.info("收到请求->文章驳回审核[{}]", form);
-        paperService.checkFail(form);
-        log.info("返回结果->文章驳回审核结束");
-        return ResponseDTO.returnSuccess();
-    }
 }

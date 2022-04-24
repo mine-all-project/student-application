@@ -1,4 +1,4 @@
-	<html>
+<html>
 <head>
 	<div data-th-replace="/components/base :: javascript"></div>
 	<div data-th-replace="/components/vue :: javascript"></div>
@@ -12,7 +12,8 @@
       .content {
           display: flex;
           flex-direction: row;
-          height: max-content
+          overflow-y: scroll;
+          height: 100vh;
       }
 
       .menus {
@@ -63,6 +64,10 @@
 		<div>
 			<a-col v-for="item in dataList" style="padding: 10px">
 				<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
+				<a-divider type="vertical"></a-divider>
+				<a-button type="primary" size="small" @click="checkPaper(item,0)">审核成功</a-button>
+				<a-divider type="vertical"></a-divider>
+				<a-button type="danger" size="small" @click="checkPaper(item,2)">审核失败</a-button>
 				<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
 				<hr>
 			</a-col>
@@ -117,6 +122,27 @@
             this.getList()
         },
         methods: {
+            checkPaper(item, status) {
+                let data = item
+                data.status = status
+                axios.post('/api/paper/check', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            checkPass() {
+
+            },
+            checkFail() {
+
+            },
             initTitle() {
                 let url = window.location.href
                 let key = url.split('?key=')[1]

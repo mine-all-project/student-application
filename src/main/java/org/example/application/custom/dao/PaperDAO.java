@@ -39,8 +39,8 @@ public class PaperDAO extends BaseDAO {
 
 
     @Transactional
-    public void updateStatusById(String id, int status) {
-        paperRepository.updateStatusById(id, status);
+    public void updateStatusById(String id, int status, String note) {
+        paperRepository.updateStatusById(id, status,note);
     }
 
     public List<Paper> getListByType(String type) {

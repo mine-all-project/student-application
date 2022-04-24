@@ -17,11 +17,9 @@ public interface PaperService extends BaseService {
 
     void deleteById(String id);
 
-    void checkPass(PaperForm form);
-
-    void checkFail(PaperForm form);
-
     List<Paper> getMineAll(HttpServletRequest request);
 
     List<Paper> getMineListByType(HttpServletRequest request, String type);
+
+    void check(PaperForm form);
 }
