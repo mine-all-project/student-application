@@ -70,8 +70,7 @@
 	<div data-th-replace="/components/frontend/page-common :: sysname"></div>
 	<br>
 </div>
-
-
+<div data-th-replace="/components/frontend/page-common :: javascript"></div>
 <script>
     const app = new Vue({
         el: '#app',
@@ -103,10 +102,11 @@
                 interval: 2000,
                 title: '',
                 menus: [],
-								dataList: [],
-								dataListBak: [],
-                titleKey:'friend',
-                titleText:'校园交友',
+                dataList: [],
+                dataListBak: [],
+                titleKey: 'friend',
+                titleText: '校园交友',
+                isLogin: false,
             }
         },
         mounted() {
@@ -135,14 +135,14 @@
                         this.titleText = '校园拼车';
                         break;
                 }
-								this.titleKey = key
+                this.titleKey = key
                 this.getList()
             },
             toModulePage(e) {
                 this.$message.info(e)
                 window.location.href = e
             },
-            getList(){
+            getList() {
                 axios.get(`/api/paper/list/${this.titleKey}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
@@ -227,6 +227,7 @@
                     }
                     if (result.data !== null) {
                         this.userInfo = result.data;
+                        this.isLogin = true
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);

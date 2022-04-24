@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
 import org.example.application.common.DIC;
 import org.example.application.common.groups.IsNotNull;
+import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.custom.entity.Paper;
 import org.example.application.custom.form.PaperForm;
 import org.example.application.custom.service.PaperService;
@@ -29,6 +30,7 @@ public class PaperController extends BaseController {
     }
 
     @GetMapping("/list")
+    @JwtIgnore
     public ResponseDTO getList() {
         log.info("收到请求->获取文章列表");
         List<Paper> list = paperService.getAll();
@@ -38,6 +40,7 @@ public class PaperController extends BaseController {
     }
 
     @GetMapping("/list/{type}")
+    @JwtIgnore
     public ResponseDTO getListByType(@PathVariable String type) {
         log.info("收到请求->获取文章列表,type:[{}]", type);
         List<Paper> list = paperService.getListByType(type);
@@ -99,6 +102,7 @@ public class PaperController extends BaseController {
     }
 
     @GetMapping("/search/{keywords}")
+    @JwtIgnore
     public ResponseDTO search(@PathVariable String keywords) {
         log.info("收到请求->搜索文章列表,keywords:[{}]", keywords);
         List<Paper> list = paperService.search(keywords);

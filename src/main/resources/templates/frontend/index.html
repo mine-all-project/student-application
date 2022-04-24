@@ -134,6 +134,7 @@
 	<div data-th-replace="/components/frontend/page-common :: sysname"></div>
 	<br>
 </div>
+<div data-th-replace="/components/frontend/page-common :: javascript"></div>
 <script>
     const app = new Vue({
         el: '#app',
@@ -202,6 +203,7 @@
                 ],
                 interval: 2000,
                 titleText: '校园问答',
+                isLogin: false,
             }
         },
         mounted() {
@@ -250,7 +252,6 @@
                         let createTimeB = new moment(b.createTime)
                         return createTimeA.diff(createTimeB, 's');
                     })
-                    console.log(files)
                     return {
                         id: e.id,
                         title: '题目',
@@ -332,12 +333,13 @@
             getUserInfo() {
                 this.axios.get('/api/user/getUserInfo').then(response => {
                     const result = response.data
-                    if (result.status !== 200) {
+                    if (result.status !== 200 && result.status !== 401) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
                         this.userInfo = result.data;
+                        this.isLogin = true
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);

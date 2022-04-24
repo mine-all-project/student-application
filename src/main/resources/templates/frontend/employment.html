@@ -22,7 +22,7 @@
       }
 
       .menus {
-          width:168px;
+          width: 168px;
           height: 100%;
           margin: 0;
           padding: 0;
@@ -70,8 +70,7 @@
 	<div data-th-replace="/components/frontend/page-common :: sysname"></div>
 	<br>
 </div>
-
-
+<div data-th-replace="/components/frontend/page-common :: javascript"></div>
 <script>
     const app = new Vue({
         el: '#app',
@@ -112,8 +111,9 @@
                 ],
                 dataList: [],
                 dataListBak: [],
-                titleKey:'employment',
-								titleText:'校园问答'
+                titleKey: 'employment',
+                titleText: '校园问答',
+                isLogin: false,
             }
         },
         mounted() {
@@ -121,7 +121,7 @@
             this.getList()
         },
         methods: {
-            getList(){
+            getList() {
                 axios.get(`/api/paper/list/${this.titleKey}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
@@ -210,6 +210,7 @@
                     }
                     if (result.data !== null) {
                         this.userInfo = result.data;
+                        this.isLogin = true
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);

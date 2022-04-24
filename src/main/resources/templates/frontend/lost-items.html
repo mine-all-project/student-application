@@ -70,8 +70,7 @@
 	<div data-th-replace="/components/frontend/page-common :: sysname"></div>
 	<br>
 </div>
-
-
+<div data-th-replace="/components/frontend/page-common :: javascript"></div>
 <script>
     const app = new Vue({
         el: '#app',
@@ -113,6 +112,7 @@
                 dataList: [ ],
 								titleKey:'lost-items',
 								titleText:'校园问答',
+								isLogin:false,
             }
         },
         mounted() {
@@ -209,6 +209,7 @@
                     }
                     if (result.data !== null) {
                         this.userInfo = result.data;
+                        this.isLogin = true
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);

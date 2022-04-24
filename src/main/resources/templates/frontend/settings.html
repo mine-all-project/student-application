@@ -62,7 +62,7 @@
 	<div class="body">
 		<div class="body-bgi" :style="`background-image:url(${image.settings})`"></div>
 		<div style="flex:2;height: 100%;text-align: right;z-index: 999">
-			<a-upload  name="file" action="/api/uploadFile"
+			<a-upload name="file" action="/api/uploadFile"
 								:multiple="false" :file-list="temp.fileList"
 								@change="changeUploadFile" :show-upload-list="false">
 				<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" alt=""
@@ -192,37 +192,37 @@
                     },
                     {
                         key: 'trading', show: () => {
-                            return true
+                            return !this.isAdmin
                         }, name: '二手交易'
                     },
                     {
                         key: 'employment', show: () => {
-                            return true
+                            return !this.isAdmin
                         }, name: '就业速递'
                     },
                     {
                         key: 'lost-items', show: () => {
-                            return true
+                            return !this.isAdmin
                         }, name: '失物招领'
                     },
                     {
                         key: 'question', show: () => {
-                            return true
+                            return !this.isAdmin
                         }, name: '校园问答'
                     },
                     {
                         key: 'friends', show: () => {
-                            return true
+                            return !this.isAdmin
                         }, name: '校园交友'
                     },
                     {
                         key: 'other', show: () => {
-                            return true
+                            return !this.isAdmin
                         }, name: '其他'
                     },
                     {
                         key: 'car', show: () => {
-                            return true
+                            return !this.isAdmin
                         }, name: '校园拼车'
                     },
                 ],

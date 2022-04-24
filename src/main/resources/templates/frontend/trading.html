@@ -106,16 +106,17 @@
                     pageIndex: 1,
                     pageCount: 50,
                 },
-                title:'二手交易',
+                title: '二手交易',
                 menus: [
                     {key: '', name: '二手交易'},
                     {key: '', name: '二手交易'},
                     {key: '', name: '租赁'},
                 ],
-                dataList: [ ],
-                dataListBak: [ ],
-                titleKey:'trading',
-                titleText:'校园问答',
+                dataList: [],
+                dataListBak: [],
+                titleKey: 'trading',
+                titleText: '校园问答',
+                isLogin: false,
             }
         },
         mounted() {
@@ -123,7 +124,7 @@
             this.getList()
         },
         methods: {
-            getList(){
+            getList() {
                 axios.get(`/api/paper/list/${this.titleKey}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
@@ -139,7 +140,7 @@
                 });
             },
             filterDataList(source) {
-                return  source.map(e => {
+                return source.map(e => {
                     let files = e.files.sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
@@ -212,6 +213,7 @@
                     }
                     if (result.data !== null) {
                         this.userInfo = result.data;
+                        this.isLogin = true
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
