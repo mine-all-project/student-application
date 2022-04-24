@@ -230,7 +230,7 @@
 			</a-table>
 		</a-tab-pane>
 	</a-tabs>
-	<a-modal title="添加账单" :visible.sync="show.addOrderForm" width="30%" ok-text="确认"
+	<a-modal title="添加账单" :visible.sync="show.addOrderForm" width="40%" ok-text="确认"
 					 cancel-text="取消" @ok="saveOrderForm" @cancel="closeAddOrderForm">
 		<a-form-model ref="orderForm" :model="form.order" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
 			<a-form-model-item label="账单人" prop="personId">
@@ -238,9 +238,6 @@
 					<a-select-option :value="item.id" :key="item.id" v-for="item in options.person"> {{item.name}}
 					</a-select-option>
 				</a-select>
-			</a-form-model-item>
-			<a-form-model-item label="金额" prop="price">
-				<a-input-number :min="0" v-model="form.order.price"></a-input-number>
 			</a-form-model-item>
 			<a-form-model-item label="词条" prop="keyword">
 				<a-input v-model="form.order.keyword"></a-input>
@@ -257,27 +254,69 @@
 			<a-form-model-item label="备注" prop="note">
 				<a-textarea v-model="form.order.note" :rows="4"></a-textarea>
 			</a-form-model-item>
-
-			<a-form-model-item
-					v-for="(item, index) in form.order.childrenOrder">
+			<a-form-model-item label="金额" prop="price">
+				<a-input-number :min="0" v-model="form.order.price" disabled></a-input-number>
+			</a-form-model-item>
+			<a-form-model-item label="账单项目"
+												 v-for="(item, index) in form.order.childrenOrder">
 				<a-input-group compact>
-					<a-select default-value="Zhejiang">
-						<a-select-option value="Zhejiang">
-							Zhejiang
-						</a-select-option>
-						<a-select-option value="Jiangsu">
-							Jiangsu
-						</a-select-option>
+					<a-select v-model="item.type" style="width: 20%">
+						<a-select-option value="1">月固定账单</a-select-option>
+						<a-select-option value="2">增值业务费</a-select-option>
 					</a-select>
-					<a-input style="width: 50%" default-value="Xihu District, Hangzhou"></a-input>
+					<a-input style="width: 50%" v-model="item.name" placeholder="项目名称"></a-input>
+					<a-input-number style="width: 20%" v-model="item.money" placeholder="金额" :min="0"
+													@change="countMoney"></a-input-number>
+					<a-icon type="close" @click="removeChildrenOrder(index)" style="color:red;margin-left: 5px"></a-icon>
 				</a-input-group>
 			</a-form-model-item>
-			<a-form-model-item v-bind="formItemLayoutWithOutLabel">
+			<a-form-model-item>
 				<a-button type="dashed" style="width: 60%" @click="addChildrenOrder">
 					<a-icon type="plus"></a-icon>
 					添加项目
 				</a-button>
 			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="账单详情" :visible.sync="show.orderDetail" width="40%" @cancel="closeOrderDetail" :footer="false">
+		<a-form-model :label-col="labelCol" :wrapper-col="wrapperCol">
+			<a-row>
+				<a-col :span="12">
+					<a-form-model-item label="账单人">{{temp.orderDetail.person.name}}</a-form-model-item>
+				</a-col>
+				<a-col :span="12">
+					<a-form-model-item label="词条">{{temp.orderDetail.keyword}}</a-form-model-item>
+				</a-col>
+				<a-col :span="12">
+					<a-form-model-item label="账单类型">
+						<span v-if="temp.orderDetail.type === 1">月供账单</span>
+						<span v-if="temp.orderDetail.type === 2">其他账单</span>
+					</a-form-model-item>
+				</a-col>
+				<a-col :span="12">
+					<a-form-model-item label="到期时间">{{temp.orderDetail.lastTimeStr}}</a-form-model-item>
+				</a-col>
+				<a-col :span="12">
+					<a-form-model-item label="金额">{{temp.orderDetail.price}}</a-form-model-item>
+				</a-col>
+				<a-col :span="12">
+					<a-form-model-item label="备注">{{temp.orderDetail.person.note}}</a-form-model-item>
+				</a-col>
+			</a-row>
+			<a-row>
+				<a-col :span="12">
+					<a-form-model-item label="账单详情"></a-form-model-item>
+				</a-col>
+			</a-row>
+			<a-row>
+				<a-col :span="12" v-for="item in temp.orderDetail.childrenOrder">
+					<div style="display: flex;justify-content: space-evenly">
+						<span>{{item.type===1?'月固定账单':'增值业务费'}}</span>
+						<span>{{item.name}}</span>
+						<span>￥{{item.money}}</span>
+					</div>
+				</a-col>
+			</a-row>
 		</a-form-model>
 	</a-modal>
 </div>
@@ -374,6 +413,7 @@
                 },
                 show: {
                     addOrderForm: false,
+                    orderDetail: false
                 },
                 temp: {
                     isAddGoods: false,
@@ -381,6 +421,7 @@
                     passCount: 0,
                     failCount: 0,
                     waitCount: 0,
+                    orderDetail: {person: {}}
                 },
                 sysUser: sessionStorage.getItem("sysUser")
             };
@@ -458,6 +499,11 @@
             },
             showOrderDetail(e) {
                 console.log(e)
+                this.temp.orderDetail = e
+                this.show.orderDetail = true
+            },
+            closeOrderDetail() {
+                this.show.orderDetail = false
             },
             addChildrenOrder() {
                 this.form.order.childrenOrder.push({
@@ -465,6 +511,16 @@
                     name: '',
                     money: '',
                 })
+            },
+            removeChildrenOrder(index) {
+                this.form.order.childrenOrder.splice(index, 1)
+            },
+            countMoney() {
+                let countMoney = 0
+                this.form.order.childrenOrder.forEach(e => {
+                    countMoney += e.money
+                })
+                this.form.order.price = countMoney
             },
             search() {
                 axios.get(`/api/order/search/${this.form.searchText}`).then(response => {
@@ -495,7 +551,7 @@
                 });
             },
             showAddOrderForm() {
-                this.form.order = {}
+                this.form.order = {childrenOrder: []}
                 this.show.addOrderForm = true
             },
             showEditOrderForm(e) {
@@ -511,6 +567,7 @@
                 let data = this.form.order
                 data.status = 1
                 data.lastTime = new moment(this.form.order.lastTime).format('YYYY-MM-DD')
+                console.log(data)
                 axios.post('/api/order/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
@@ -585,6 +642,7 @@
                         type: e.type,
                         status: e.status,
                         createTime: e.createTime,
+                        childrenOrder: e.childrenOrder,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                         lastTime: e.lastTime,
                         lastTimeStr: new moment(e.lastTime).format('YYYY-MM-DD'),
