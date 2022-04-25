@@ -57,7 +57,12 @@
 			<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
 			<div>
 				<a-col v-for="item in dataList" style="padding: 10px">
-					<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
+					<p style="font-size: 30px;font-weight: 600;display: flex;justify-content: space-between">
+					<span>
+						<a-avatar v-if="item.publisher.headImg" :src="item.publisher.headImg.virtualPath"></a-avatar>
+						<span>{{item.publisher.username}}</span>
+					</span>
+					</p>
 					<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
 					<hr>
 				</a-col>
@@ -149,6 +154,8 @@
                         files: files,
                         content: e.content,
                         type: e.type,
+                        status: e.status,
+                        publisher: e.publisher,
                         secondType: e.secondType,
                         messages: e.messages,
                         createTime: e.createTime,
