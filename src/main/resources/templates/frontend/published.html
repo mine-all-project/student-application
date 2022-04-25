@@ -63,18 +63,25 @@
 		<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
 		<div>
 			<a-col v-for="item in dataList" style="padding: 10px">
-				<p style="font-size: 30px;font-weight: 600">
-					<span>{{item.title}}</span>
-					<a-divider type="vertical"></a-divider>
-					<a-tag color="cyan" size="small" v-if="item.status === 1">审核中</a-tag>
-					<a-tag color="green" size="small" v-if="item.status === 0">审核成功</a-tag>
-					<a-tag color="red" size="small" v-if="item.status === 2">审核失败</a-tag>
-					<a-divider type="vertical"></a-divider>
-					<a-button type="danger" size="small" @click="removePaper(item)">删除</a-button>
-					<a-divider type="vertical"></a-divider>
-					<a-button type="primary" size="small" @click="editPaper(item)">编辑</a-button>
+				<p style="font-size: 30px;font-weight: 600;display: flex;justify-content: space-between">
+					<span>
+						<a-avatar v-if="item.publisher.headImg" :src="item.publisher.headImg.virtualPath"></a-avatar>
+						<span>{{item.publisher.username}}</span>
+					</span>
+					<span v-if="false">
+						<a-divider type="vertical"></a-divider>
+						<a-tag color="cyan" size="small" v-if="item.status === 1">审核中</a-tag>
+						<a-tag color="green" size="small" v-if="item.status === 0">审核成功</a-tag>
+						<a-tag color="red" size="small" v-if="item.status === 2">退回</a-tag>
+				</span>
+
 				</p>
 				<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
+				<p>
+					<a-button type="primary" size="small" @click="editPaper(item)">编辑</a-button>
+					<a-divider type="vertical"></a-divider>
+					<a-button type="danger" size="small" @click="removePaper(item)">删除</a-button>
+				</p>
 				<hr>
 			</a-col>
 		</div>
@@ -89,7 +96,7 @@
                 axios: axios,
                 userInfo: {},
                 isAdmin: false,
-                title: '校园资讯',
+                title: '已发布动态',
                 menus: [
                     {
                         key: '', show: () => {
@@ -125,6 +132,16 @@
                         key: 'friends', show: () => {
                             return !this.isAdmin
                         }, name: '校园交友'
+                    },
+                    {
+                        key: 'car', show: () => {
+                            return !this.isAdmin
+                        }, name: '校园拼车'
+                    },
+                    {
+                        key: 'other', show: () => {
+                            return !this.isAdmin
+                        }, name: '其他'
                     },
                 ],
                 dataList: [],
@@ -207,6 +224,7 @@
                         content: e.content,
                         type: e.type,
                         status: e.status,
+                        publisher: e.publisher,
                         messages: e.messages,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),

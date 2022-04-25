@@ -204,7 +204,7 @@
             getUserInfo() {
                 this.axios.get('/api/user/getUserInfo').then(response => {
                     const result = response.data
-                    if (result.status !== 200) {
+                    if (result.status !== 200 && result.status !== 401) {
                         this.$message.error(result.message);
                         return;
                     }

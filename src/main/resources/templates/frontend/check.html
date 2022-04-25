@@ -63,16 +63,23 @@
 		<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
 		<div>
 			<a-col v-for="item in dataList" style="padding: 10px">
-				<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
-				<a-divider type="vertical"></a-divider>
-				<a-button type="primary" size="small" @click="checkPaper(item,0)">审核成功</a-button>
-				<a-divider type="vertical"></a-divider>
-				<a-button type="danger" size="small" @click="checkPaper(item,2)">审核失败</a-button>
+				<p style="font-size: 30px;font-weight: 600;display: flex;justify-content: space-between">
+					<span>
+						<a-avatar v-if="item.publisher.headImg" :src="item.publisher.headImg.virtualPath"></a-avatar>
+						<span>{{item.publisher.username}}</span>
+					</span>
+					<a-icon type="bars" @click="showCheck(item)"></a-icon>
+				</p>
 				<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
 				<hr>
 			</a-col>
 		</div>
 	</div>
+	<a-modal :visible.sync="show.check" width="30%" @cancel="closeCheck" :footer="false">
+		<input type="button" value="审核成功" @click="checkPaper(0)"/>
+		<input type="button" value="退回" @click="showCheckFail"/>
+	</a-modal>
+
 </div>
 <script>
     const app = new Vue({
@@ -83,12 +90,12 @@
                 axios: axios,
                 userInfo: {},
                 isAdmin: false,
-                title: '校园资讯',
+                title: '审核	',
                 menus: [
                     {
                         key: '', show: () => {
                             return true
-                        }, name: '审核中动态'
+                        }, name: '审核'
                     },
                     {
                         key: 'trading', show: () => {
@@ -114,6 +121,12 @@
                 dataList: [],
                 dataListBak: [],
                 typeKey: '',
+                show: {
+                    check: false
+                },
+								temp:{
+                    paper:{}
+								}
             }
 
         },
@@ -122,8 +135,22 @@
             this.getList()
         },
         methods: {
-            checkPaper(item, status) {
-                let data = item
+            showCheck(item) {
+                this.temp.paper = item
+                this.show.check = true
+            },
+            closeCheck() {
+                this.show.check = false
+            },
+            showCheckFail() {
+                let prompt1 = prompt('请输入退回原因');
+                if (prompt1 != null && prompt1 !== "") {
+                    this.temp.paper.note = prompt1
+                    this.checkPaper(2)
+                }
+            },
+            checkPaper(status) {
+                let data = this.temp.paper
                 data.status = status
                 axios.post('/api/paper/check', data).then(response => {
                     const result = response.data
@@ -132,6 +159,7 @@
                         return;
                     }
                     this.$message.success(result.message);
+                    this.closeCheck()
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -192,11 +220,15 @@
                         files: files,
                         content: e.content,
                         type: e.type,
+                        status: e.status,
+                        publisher: e.publisher,
                         messages: e.messages,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                     }
-                });
+                }).filter(e=>{
+                    return e.status === 1
+								});
             },
 
             changeSecondType(e) {
@@ -212,6 +244,9 @@
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
+                        if(result.status === 401){
+                            window.location.href = '/frontend/login.html'
+												}
                         return;
                     }
                     if (result.data !== null) {

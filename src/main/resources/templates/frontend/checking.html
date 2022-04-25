@@ -62,7 +62,12 @@
 		<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
 		<div>
 			<a-col v-for="item in dataList" style="padding: 10px">
-				<p style="font-size: 30px;font-weight: 600">{{item.title}}</p>
+				<p style="font-size: 30px;font-weight: 600;display: flex;justify-content: space-between">
+					<span>
+						<a-avatar v-if="item.publisher.headImg" :src="item.publisher.headImg.virtualPath"></a-avatar>
+						<span>{{item.publisher.username}}</span>
+					</span>
+				</p>
 				<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
 				<hr>
 			</a-col>
@@ -87,6 +92,8 @@
                     {key: 'lost-items', show: ()=>{return true},  name: '失物招领'},
                     {key: 'question', show: ()=>{return true},  name: '校园问答'},
                     {key: 'friends',  show: ()=>{return true}, name: '校园交友'},
+                    {key: 'car',  show: ()=>{return true}, name: '校园拼车'},
+                    {key: 'other',  show: ()=>{return true}, name: '其他'},
                 ],
                 dataList: [],
                 typeKey: '',
@@ -147,6 +154,7 @@
                         content: e.content,
                         type: e.type,
                         status: e.status,
+                        publisher: e.publisher,
                         messages: e.messages,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
@@ -169,6 +177,9 @@
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
+                        if(result.status === 401){
+                            window.location.href = '/frontend/login.html'
+                        }
                         return;
                     }
                     if (result.data !== null) {

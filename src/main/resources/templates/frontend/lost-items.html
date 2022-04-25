@@ -50,7 +50,7 @@
 	<div data-th-replace="/components/frontend/page-common :: nav"></div>
 	<div style="" class="content">
 		<ul class="menus">
-<!--			<li v-for="item in menus" @click="changeSecondType(item)">{{item.name}}</li>-->
+			<!--			<li v-for="item in menus" @click="changeSecondType(item)">{{item.name}}</li>-->
 		</ul>
 		<div style="flex:9;height: 100%;padding: 2rem">
 			<p style="font-size: 30px;font-weight: 600">{{title}}</p>
@@ -109,18 +109,18 @@
                     {key: '', name: '轨道交通学院'},
                     {key: '', name: '通知公告'},
                 ],
-                dataList: [ ],
-								titleKey:'lost-items',
-								titleText:'校园问答',
-								isLogin:false,
+                dataList: [],
+                titleKey: 'lost-items',
+                titleText: '校园问答',
+                isLogin: false,
             }
         },
         mounted() {
             this.getUserInfo()
-						this.getList()
+            this.getList()
         },
         methods: {
-            getList(){
+            getList() {
                 axios.get(`/api/paper/list/${this.titleKey}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
@@ -134,7 +134,7 @@
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
-						},
+            },
             filterDataList(source) {
                 return source.map(e => {
                     let files = e.files.sort((a, b) => {
@@ -203,7 +203,7 @@
             getUserInfo() {
                 this.axios.get('/api/user/getUserInfo').then(response => {
                     const result = response.data
-                    if (result.status !== 200) {
+                    if (result.status !== 200 && result.status !== 401) {
                         this.$message.error(result.message);
                         return;
                     }
