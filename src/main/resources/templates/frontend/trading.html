@@ -5,6 +5,7 @@
 	<title>校园资讯</title>
 	<div data-th-replace="/components/base :: css"></div>
 	<div data-th-replace="/components/base :: javascript"></div>
+	<div data-th-replace="/components/base :: style"></div>
 	<div data-th-replace="/components/vue :: javascript"></div>
 	<div data-th-replace="/components/ui :: antd"></div>
 	<link rel="stylesheet" th:href="@{/css/banner.css}">
@@ -40,6 +41,22 @@
           height: 10vh;
           font-family: 'Microsoft YaHei';
       }
+
+      .OwO-textarea {
+          width: 100%
+      }
+
+      .OwO-body {
+          width: 20%
+      }
+
+      .OwO {
+          /*background-color: #f00;*/
+      }
+
+      .OwO-logo {
+          border: none !important;
+      }
 	</style>
 </head>
 <body>
@@ -66,10 +83,6 @@
 					</span>
 					</p>
 					<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
-					<p>
-						<textarea class="OwO-textarea"></textarea>
-						<div class="OwO"></div>
-					</p>
 					<p style="text-align: right">
 						<a-icon type="delete"></a-icon>
 						<a-divider type="vertical"></a-divider>
@@ -82,8 +95,8 @@
 								<span>{{message.publisher.username}}</span>
 							</p>
 						</div>
-						<a-textarea :rows="4"></a-textarea>
-
+						<textarea rows="4" class="OwO-textarea"></textarea>
+						<div class="OwO"></div>
 					</div>
 					<hr>
 				</a-col>
@@ -97,8 +110,23 @@
 	<br>
 </div>
 
+<script>
+
+</script>
 
 <script>
+    function initOwo(index) {
+        var OwO_demo = new OwO({
+            logo: '<i class="iconfont icon-biaoqing"></i>',
+            container: document.getElementsByClassName('OwO')[index],
+            target: document.getElementsByClassName('OwO-textarea')[index],
+            api: '/owo/OwO.json',
+            position: 'down',
+            width: '50%',
+            maxHeight: '250px'
+        });
+    }
+
     const app = new Vue({
         el: '#app',
         components: {},
@@ -143,24 +171,44 @@
                 titleKey: 'trading',
                 titleText: '校园问答',
                 isLogin: false,
+                owo: null,
+                editor: [
+                    {
+                        instance: null,
+                        create: true,
+                    }
+								],
             }
         },
         mounted() {
-            var OwO_demo = new OwO({
-                logo: 'OωO表情',
-                container: document.getElementsByClassName('OwO')[0],
-                target: document.getElementsByClassName('OwO-textarea')[0],
-                // api: './OwO.json',
-                position: 'down',
-                width: '100%',
-                maxHeight: '250px'
-            });
             this.getUserInfo()
             this.getList()
         },
         methods: {
+            createEditor(content) {
+                setTimeout(() => {
+                    if (this.editor.create) {
+                        this.editor.instance = new window.Quill('#editor', {
+                            theme: 'snow',
+                            modules: {
+                                // toolbar: this.editor.toolbar,
+                                toolbar: '#toolbar',
+                                "emoji-toolbar": true,
+                                // "emoji-shortname": true,
+                                // "emoji-textarea": true,
+                                // handlers: {
+                                //     // 'image': customFormulaHandler
+                                // }
+                            }
+                        })
+                        this.editor.create = false
+                    }
+                    this.editor.instance.root.innerHTML = content
+                }, 1000)
+            },
             showComment(index) {
                 this.dataList[index].showComment = !this.dataList[index].showComment
+                initOwo(index)
             },
             getList() {
                 axios.get(`/api/paper/list/${this.titleKey}`).then(response => {
