@@ -53,7 +53,10 @@
 			<!--			<li v-for="item in menus" @click="changeSecondType(item)">{{item.name}}</li>-->
 		</ul>
 		<div style="flex:9;height: 100%;padding: 2rem">
-			<p style="font-size: 30px;font-weight: 600">{{title}}</p>
+			<div style="display: flex;justify-content: space-between">
+				<p style="font-size: 30px;font-weight: 600">{{title}}</p>
+				<a-input-search placeholder="输入内容" style="width: 200px" @search="search"  v-model="searchText"></a-input-search>
+			</div>
 			<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
 			<div>
 				<a-col v-for="item in dataList" style="padding: 10px">
@@ -112,6 +115,8 @@
                 titleKey: 'friend',
                 titleText: '校园交友',
                 isLogin: false,
+                editor: [],
+                searchText: '',
             }
         },
         mounted() {
@@ -119,6 +124,60 @@
             this.initTitle()
         },
         methods: {
+            search() {
+                axios.get(`/api/paper/search/${this.titleKey}/${this.searchText}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.dataList = this.filterDataList(result.data)
+                        this.dataListBak = this.filterDataList(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            publishComment(item,index){
+                let content =  this.editor[index].instance.root.innerHTML
+                let data = {
+                    id:item.id,
+                    content : content
+                }
+                this.axios.post('/api/paper/comment/add',data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200 && result.status !== 401) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                console.log(content)
+                console.log(item)
+            },
+            createEditor(index) {
+                setTimeout(() => {
+                    if (this.editor[index].create) {
+                        let editor = document.getElementsByClassName('editor')[index]
+                        let toolbar = document.getElementsByClassName('toolbar')[index]
+                        this.editor[index].instance = new window.Quill(editor, {
+                            theme: 'snow',
+                            modules: {
+                                toolbar: toolbar,
+                                "emoji-toolbar": true,
+                            }
+                        })
+                        this.editor[index].create = false
+                    }
+                }, 1000)
+            },
+            showComment(index) {
+                this.dataList[index].showComment = !this.dataList[index].showComment
+                this.createEditor(index)
+            },
             initTitle() {
                 let url = window.location.href
                 let key = url.split('?key=')[1]
@@ -163,8 +222,16 @@
                 });
             },
             filterDataList(source) {
-                return source.map(e => {
-                    let files = e.files.sort((a, b) => {
+                let editor = []
+                let data = source.map(e => {
+                    editor.push({
+                        instance: null,
+                        create: true,
+                        fileList: []
+                    })
+                    let files = e.files.filter(r => {
+                        return r.contentType.includes("image")
+                    }).sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
                         return createTimeA.diff(createTimeB, 's');
@@ -178,12 +245,15 @@
                         type: e.type,
                         status: e.status,
                         publisher: e.publisher,
+                        showComment: false,
                         secondType: e.secondType,
                         messages: e.messages,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                     }
                 });
+                this.editor = editor
+                return data
             },
 
             changeSecondType(e) {

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface PaperRepository extends JpaRepository<Paper, String> {
-    List<Paper> findAllByTitleLike(String keywords, Sort sort);
+    List<Paper> findAllByTypeAndContentContains(String type,String keywords, Sort sort);
 
     List<Paper> findAllByPublisher(SysUser publisher, Sort sort);
 

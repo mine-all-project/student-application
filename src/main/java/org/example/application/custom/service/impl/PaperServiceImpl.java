@@ -48,8 +48,8 @@ public class PaperServiceImpl implements PaperService {
     }
 
     @Override
-    public List<Paper> search(String keywords) {
-        return paperDAO.search(keywords);
+    public List<Paper> search(String type, String keywords) {
+        return paperDAO.search(type,keywords);
     }
 
     @Override

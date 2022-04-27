@@ -113,33 +113,6 @@
 	</a-modal>
 </div>
 
-<!--search() {-->
-<!--this.temp.isMinePublish = false-->
-<!--axios.get(`/api/news/search/${this.form.searchText}`).then(response => {-->
-<!--const result = response.data-->
-<!--if (result.status !== 200) {-->
-<!--this.$message.error(result.message);-->
-<!--return;-->
-<!--}-->
-<!--if (result.data !== null) {-->
-<!--this.filterNews(result.data)-->
-<!--}-->
-<!--}).catch(function (error) {-->
-<!--console.error('出现错误:', error);-->
-<!--});-->
-<!--axios.get(`/api/anonymous/search/${this.form.searchText}`).then(response => {-->
-<!--const result = response.data-->
-<!--if (result.status !== 200) {-->
-<!--this.$message.error(result.message);-->
-<!--return;-->
-<!--}-->
-<!--if (result.data !== null) {-->
-<!--this.filterAnonymous(result.data)-->
-<!--}-->
-<!--}).catch(function (error) {-->
-<!--console.error('出现错误:', error);-->
-<!--});-->
-<!--},-->
 <script>
     const app = new Vue({
         el: '#app',

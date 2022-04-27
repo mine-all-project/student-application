@@ -75,7 +75,10 @@
 			<li v-for="item in menus" @click="changeSecondType(item)">{{item.name}}</li>
 		</ul>
 		<div style="flex:9;height: 100%;padding: 2rem">
-			<p style="font-size: 30px;font-weight: 600">{{title}}</p>
+			<div style="display: flex;justify-content: space-between">
+				<p style="font-size: 30px;font-weight: 600">{{title}}</p>
+				<a-input-search placeholder="输入内容" style="width: 200px" @search="search"  v-model="searchText"></a-input-search>
+			</div>
 			<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
 			<div>
 				<a-col v-for="(item,index) in dataList" style="padding: 10px">
@@ -169,6 +172,7 @@
                 titleText: '校园问答',
                 isLogin: false,
                 editor: [],
+                searchText: '',
             }
         },
         mounted() {
@@ -176,6 +180,21 @@
             this.getList()
         },
         methods: {
+            search() {
+                axios.get(`/api/paper/search/${this.titleKey}/${this.searchText}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.dataList = this.filterDataList(result.data)
+                        this.dataListBak = this.filterDataList(result.data)
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             publishComment(item,index){
                 let content =  this.editor[index].instance.root.innerHTML
                 let data = {

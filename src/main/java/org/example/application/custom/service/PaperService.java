@@ -12,7 +12,7 @@ public interface PaperService extends BaseService {
     List<Paper> getAll();
     List<Paper> getListByType(String type);
 
-    List<Paper> search(String keywords);
+    List<Paper> search(String type, String keywords);
 
     Paper save(HttpServletRequest request, PaperForm form);
 

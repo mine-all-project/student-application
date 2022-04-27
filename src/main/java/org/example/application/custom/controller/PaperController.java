@@ -102,13 +102,21 @@ public class PaperController extends BaseController {
         return ResponseDTO.returnSuccess(list);
     }
 
-    @GetMapping("/search/{keywords}")
+    @GetMapping("/search/{type}/{keywords}")
     @JwtIgnore
-    public ResponseDTO search(@PathVariable String keywords) {
-        log.info("收到请求->搜索文章列表,keywords:[{}]", keywords);
-        List<Paper> list = paperService.search(keywords);
-        log.info("返回结果->搜索文章列表结束:[{}]", list);
+    public ResponseDTO search(@PathVariable String type, @PathVariable String keywords) {
+        log.info("收到请求->搜索文章,type:[{}],keywords:[{}]", type, keywords);
+        List<Paper> list = paperService.search(type, keywords);
+        list = filterCheckStatus(list, DIC.CHECK_PASS);
+        log.info("返回结果->搜索文章结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
+    }
+
+    @GetMapping("/search/{type}")
+    @JwtIgnore
+    public ResponseDTO search(@PathVariable String type) {
+        log.info("收到请求->搜索文章,type:[{}]", type);
+        return getListByType(type);
     }
 
     @PostMapping("/save")
@@ -138,9 +146,9 @@ public class PaperController extends BaseController {
     }
 
     @PostMapping("/comment/add")
-    public ResponseDTO addComment(HttpServletRequest request,@RequestBody Map<String,Object> comment) {
+    public ResponseDTO addComment(HttpServletRequest request, @RequestBody Map<String, Object> comment) {
         log.info("收到请求->添加评论[{}]", comment);
-        paperService.addComment(request,comment);
+        paperService.addComment(request, comment);
         log.info("返回结果->添加评论结束");
         return ResponseDTO.returnSuccess();
     }

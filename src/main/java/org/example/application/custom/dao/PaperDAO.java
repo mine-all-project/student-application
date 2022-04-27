@@ -21,8 +21,8 @@ public class PaperDAO extends BaseDAO {
         return paperRepository.findAll(desByCreateTime);
     }
 
-    public List<Paper> search(String keywords) {
-        return paperRepository.findAllByTitleLike(keywords,desByCreateTime);
+    public List<Paper> search(String type, String keywords) {
+        return paperRepository.findAllByTypeAndContentContains(type,keywords,desByCreateTime);
     }
 
     public Paper save(Paper entity) {
