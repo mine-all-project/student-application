@@ -17,15 +17,14 @@ import javax.persistence.Table;
 @Table(schema = "system")
 public class Message extends BaseEntity {
     //内容
-    @Column(columnDefinition = "varchar(256) default null ")
+    @Column(columnDefinition = "longtext")
+//    @Column(columnDefinition = "CLOB")
     private String content;
-    //状态 0:正常 1:待审 2:驳回 
+    //状态 0:正常 1:待审 2:驳回
     private Integer status;
     //审核备注
     @Column(columnDefinition = "varchar(256) default null ")
     private String note;
-//    @OneToMany
-//    private List<Message> messageList;
     @OneToOne
     private SysUser publisher;
 

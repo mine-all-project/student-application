@@ -2,6 +2,7 @@ package org.example.application.system.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
+import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.system.dto.ResponseDTO;
 import org.example.application.system.entity.FileInfo;
 import org.example.application.system.service.FileInfoService;
@@ -25,6 +26,7 @@ public class FileInfoController extends BaseController {
     }
 
     @RequestMapping("/uploadFile")
+    @JwtIgnore
     public ResponseDTO uploadFile(HttpServletRequest request) {
         log.info("收到请求->上传文件");
         FileInfo fileInfo = fileInfoService.uploadFile(request);

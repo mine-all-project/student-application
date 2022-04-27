@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.DIC;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.PaperDAO;
+import org.example.application.custom.entity.Message;
 import org.example.application.custom.entity.Paper;
 import org.example.application.custom.form.PaperForm;
 import org.example.application.custom.service.MessageService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -69,7 +71,7 @@ public class PaperServiceImpl implements PaperService {
 
     @Override
     public void check(PaperForm form) {
-        paperDAO.updateStatusById(form.getId(), form.getStatus(),form.getNote());
+        paperDAO.updateStatusById(form.getId(), form.getStatus(), form.getNote());
     }
 
     @Override
@@ -81,6 +83,22 @@ public class PaperServiceImpl implements PaperService {
     @Override
     public List<Paper> getMineListByType(HttpServletRequest request, String type) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
-        return paperDAO.getBySysUserAndType(user,type);
+        return paperDAO.getBySysUserAndType(user, type);
+    }
+
+    @Override
+    public void addComment(HttpServletRequest request, Map<String, Object> comment) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        String id = String.valueOf(comment.getOrDefault("id", ""));
+        String content = String.valueOf(comment.getOrDefault("content", ""));
+        Paper paper = paperDAO.getById(id);
+        List<Message> messages = paper.getMessages();
+        Message message = new Message();
+        message.setPublisher(user);
+        message.setContent(content);
+        message = messageService.save(request,message);
+        messages.add(message);
+        paper.setMessages(messages);
+        paperDAO.save(paper);
     }
 }

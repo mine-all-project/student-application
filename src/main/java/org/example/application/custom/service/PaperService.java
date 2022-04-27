@@ -6,6 +6,7 @@ import org.example.application.custom.form.PaperForm;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 public interface PaperService extends BaseService {
     List<Paper> getAll();
@@ -22,4 +23,6 @@ public interface PaperService extends BaseService {
     List<Paper> getMineListByType(HttpServletRequest request, String type);
 
     void check(PaperForm form);
+
+    void addComment(HttpServletRequest request, Map<String, Object> comment);
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -133,6 +134,14 @@ public class PaperController extends BaseController {
         log.info("收到请求->文章审核[{}]", form);
         paperService.check(form);
         log.info("返回结果->文章审核结束");
+        return ResponseDTO.returnSuccess();
+    }
+
+    @PostMapping("/comment/add")
+    public ResponseDTO addComment(HttpServletRequest request,@RequestBody Map<String,Object> comment) {
+        log.info("收到请求->添加评论[{}]", comment);
+        paperService.addComment(request,comment);
+        log.info("返回结果->添加评论结束");
         return ResponseDTO.returnSuccess();
     }
 
