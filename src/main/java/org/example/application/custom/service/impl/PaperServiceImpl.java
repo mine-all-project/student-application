@@ -60,6 +60,9 @@ public class PaperServiceImpl implements PaperService {
         entity.setPublisher(user);
         entity.setMessages(messageService.saveAll(request, entity.getMessages()));
         entity.setStatus(DIC.CHECK_WAIT);
+        if ("news".equals(entity.getType()) || "employment".equals(entity.getType())) {
+            entity.setStatus(DIC.CHECK_PASS);
+        }
         return paperDAO.save(entity);
     }
 
@@ -96,7 +99,7 @@ public class PaperServiceImpl implements PaperService {
         Message message = new Message();
         message.setPublisher(user);
         message.setContent(content);
-        message = messageService.save(request,message);
+        message = messageService.save(request, message);
         messages.add(message);
         paper.setMessages(messages);
         paperDAO.save(paper);

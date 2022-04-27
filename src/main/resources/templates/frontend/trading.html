@@ -11,7 +11,6 @@
 	<div data-th-replace="/components/ui :: antd"></div>
 	<link rel="stylesheet" th:href="@{/css/banner.css}">
 	<div data-th-replace="/components/frontend/page-common :: style"></div>
-	<div data-th-replace="/components/frontend/page-common :: owo"></div>
 	<style>
       p {
           padding: 0;
@@ -43,21 +42,6 @@
           font-family: 'Microsoft YaHei';
       }
 
-      .OwO-textarea {
-          width: 100%
-      }
-
-      .OwO-body {
-          width: 20%
-      }
-
-      .OwO {
-          /*background-color: #f00;*/
-      }
-
-      .OwO-logo {
-          border: none !important;
-      }
       .publish-button {
           text-align: center;
           width: 113px;
@@ -69,8 +53,14 @@
           bottom: 34px;
           right: 20px
       }
+      .comment-item{
+          font-size: 24px;word-break: break-all;
+			}
       .comment-item img{
 					width:300px !important;
+			}
+      .comment-item p{
+          display: flex !important;
 			}
 	</style>
 </head>
@@ -112,7 +102,7 @@
 								<a-avatar v-if="message.publisher.headImg" :src="message.publisher.headImg.virtualPath"></a-avatar>
 								<span>{{message.publisher.username}}</span>
 							</p>
-							<p class="comment-item" style="font-size: 24px;word-break: break-all;" v-html="message.content"></p>
+							<p class="comment-item" v-html="message.content"></p>
 							<hr>
 						</div>
 						<div class="editor" style="height: 173px;width:100%;background-color:#cccccc;margin-top:10px"></div>

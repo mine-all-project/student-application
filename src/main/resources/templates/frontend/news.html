@@ -5,6 +5,8 @@
 	<title>校园资讯</title>
 	<div data-th-replace="/components/base :: css"></div>
 	<div data-th-replace="/components/base :: javascript"></div>
+	<div data-th-replace="/components/base :: quill"></div>
+	<div data-th-replace="/components/base :: style"></div>
 	<div data-th-replace="/components/vue :: javascript"></div>
 	<div data-th-replace="/components/ui :: antd"></div>
 	<link rel="stylesheet" th:href="@{/css/banner.css}">
@@ -39,6 +41,16 @@
           height: 10vh;
           font-family: 'Microsoft YaHei';
       }
+
+      .comment-item{
+          font-size: 24px;word-break: break-all;
+      }
+      .comment-item img{
+          width:300px !important;
+      }
+      .comment-item p{
+          display: flex !important;
+      }
 	</style>
 </head>
 <body>
@@ -56,14 +68,41 @@
 			<p style="font-size: 30px;font-weight: 600">{{title}}</p>
 			<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
 			<div>
-				<a-col v-for="item in dataList" style="padding: 10px">
+				<a-col v-for="(item,index) in dataList" style="padding: 10px">
 					<p style="font-size: 30px;font-weight: 600;display: flex;justify-content: space-between">
 					<span>
 						<a-avatar v-if="item.publisher.headImg" :src="item.publisher.headImg.virtualPath"></a-avatar>
 						<span>{{item.publisher.username}}</span>
 					</span>
 					</p>
+					<div v-for="(file,index) in item.files" style="width:300px">
+						<img  :src="file.virtualPath" alt="" style="width: 100%;">
+					</div>
 					<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
+					<p style="text-align: right">
+						<a-icon type="delete"></a-icon>
+						<a-divider type="vertical"></a-divider>
+						<a-icon type="message" @click="showComment(index)"></a-icon>
+					</p>
+					<div v-show="item.showComment">
+						<div v-for="(message,i) in item.messages">
+							<p style="font-size: 30px;font-weight: 600;display: flex;">
+								<a-avatar v-if="message.publisher.headImg" :src="message.publisher.headImg.virtualPath"></a-avatar>
+								<span>{{message.publisher.username}}</span>
+							</p>
+							<p class="comment-item"  v-html="message.content"></p>
+							<hr>
+						</div>
+						<div class="editor" style="height: 173px;width:100%;background-color:#cccccc;margin-top:10px"></div>
+						<!-- Create toolbar container -->
+						<div class="toolbar" style="border: none;display: flex;align-items: center;position:relative">
+							<button class="ql-emoji" style="width: 50px;height: 50px;"></button>
+							<button class="ql-image" style="width: 50px;height: 50px;">
+								<a-icon type="camera" theme="filled" style="font-size: 40px;color:rgba(153, 153, 153, 1)"></a-icon>
+							</button>
+						</div>
+						<div class="publish-button" @click="publishComment(item,index)">评论</div>
+					</div>
 					<hr>
 				</a-col>
 			</div>
@@ -124,6 +163,7 @@
                 titleKey: 'news',
                 titleText: '校园问答',
                 isLogin: false,
+                editor: [],
             }
         },
         mounted() {
@@ -131,6 +171,45 @@
             this.getList()
         },
         methods: {
+            publishComment(item,index){
+                let content =  this.editor[index].instance.root.innerHTML
+                let data = {
+                    id:item.id,
+                    content : content
+                }
+                this.axios.post('/api/paper/comment/add',data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200 && result.status !== 401) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                console.log(content)
+                console.log(item)
+            },
+            createEditor(index) {
+                setTimeout(() => {
+                    if (this.editor[index].create) {
+                        let editor = document.getElementsByClassName('editor')[index]
+                        let toolbar = document.getElementsByClassName('toolbar')[index]
+                        this.editor[index].instance = new window.Quill(editor, {
+                            theme: 'snow',
+                            modules: {
+                                toolbar: toolbar,
+                                "emoji-toolbar": true,
+                            }
+                        })
+                        this.editor[index].create = false
+                    }
+                }, 1000)
+            },
+            showComment(index) {
+                this.dataList[index].showComment = !this.dataList[index].showComment
+                this.createEditor(index)
+            },
             getList() {
                 axios.get(`/api/paper/list/${this.titleKey}`).then(response => {
                     const result = response.data
@@ -147,8 +226,16 @@
                 });
             },
             filterDataList(source) {
-                return source.map(e => {
-                    let files = e.files.sort((a, b) => {
+                let editor = []
+                let data = source.map(e => {
+                    editor.push({
+                        instance: null,
+                        create: true,
+                        fileList: []
+                    })
+                    let files = e.files.filter(r => {
+                        return r.contentType.includes("image")
+                    }).sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
                         return createTimeA.diff(createTimeB, 's');
@@ -162,12 +249,15 @@
                         type: e.type,
                         status: e.status,
                         publisher: e.publisher,
+                        showComment: false,
                         secondType: e.secondType,
                         messages: e.messages,
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                     }
                 });
+                this.editor = editor
+                return data
             },
 
             toModulePage(e) {
