@@ -20,9 +20,14 @@ body, html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 }
 
+#app {
+    background: url(/images/login-02/bgi.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .body {
     position: fixed;
-    background: url(/images/login-02/background.png) no-repeat 50%;
     height: 461px;
     width: 1318px;
     top: 50%;
@@ -96,6 +101,7 @@ body, html {
     background-color: #fff;
     padding-left: 78px
 }
+
 /*登录按钮*/
 .form .base-div .login-button {
     height: 60px;
