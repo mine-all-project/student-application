@@ -30,6 +30,13 @@ public class OrderController extends BaseController {
         log.info("返回结果->保存订单结束:[{}]",entity);
         return ResponseDTO.returnSuccess(entity);
     }
+    @GetMapping("/saveNote/{id}")
+    public ResponseDTO saveOrderNote(HttpServletRequest request, String note, @PathVariable String id) {
+        log.info("收到请求->保存订单备注:[{}]",note);
+        Order entity = orderService.saveOrderNote(request,id,note);
+        log.info("返回结果->保存订单备注结束:[{}]",entity);
+        return ResponseDTO.returnSuccess(entity);
+    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseDTO deleteOrder(@PathVariable String id) {

@@ -18,4 +18,5 @@ public interface OrderService extends BaseService {
 
     void deleteOrder(String id);
 
+    Order saveOrderNote(HttpServletRequest request, String id, String note);
 }

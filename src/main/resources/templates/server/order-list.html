@@ -66,9 +66,25 @@
 		<span slot="action" slot-scope="text, record">
 			<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
 			<a-button type="primary" size="small" @click="showOrderInfo(record)">查看详情</a-button>
-			<a-button type="primary" size="small" @click="editOrderNote(record)">编辑</a-button>
+			<a-button type="primary" size="small" @click="editOrderNote(record)">编辑备注</a-button>
 		</span>
 	</a-table>
+	<a-modal title="详情" :visible.sync="show.orderInfo" width="20%" @cancel="closeOrderInfo" :footer="false">
+		<div v-for="item in temp.orderInfo.goods">
+			<p style="display: flex;justify-content: space-between">
+				<span>{{item.name}} </span>
+				<span>￥{{item.price}} </span>
+			</p>
+			<a-divider></a-divider>
+		</div>
+	</a-modal>
+	<a-modal title="备注" :visible.sync="show.editNote" width="20%" @cancel="closeEditOrderNote">
+		<a-input v-model="form.note" placeholder="请输入备注"></a-input>
+		<span slot="footer">
+			<a-button @click="saveOrderNote">保存</a-button>
+		</span>
+	</a-modal>
+
 </div>
 <script>
     const app = new Vue({
@@ -105,6 +121,11 @@
                             width: '10%'
                         },
                         {
+                            dataIndex: 'note',
+                            title: '备注',
+                            width: '10%'
+                        },
+                        {
                             dataIndex: 'createTime',
                             title: '时间',
                             scopedSlots: {customRender: 'createTime'},
@@ -126,10 +147,14 @@
                 form: {
                     order: {},
                     searchText: ' ',
+                    note: ' ',
                 },
                 show: {
                     orderInfo: false,
                     editNote: false,
+                },
+                temp: {
+                    orderInfo: {}
                 },
                 sysUser: sessionStorage.getItem("sysUser")
             };
@@ -138,11 +163,39 @@
             this.getList()
         },
         methods: {
-            showOrderInfo(record) {
-                this.show.orderInfo = true
+            saveOrderNote() {
+                let params = {
+                    note: this.form.note
+                }
+                axios.get(`/api/order/saveNote/${this.temp.orderInfo.id}`, {params: params}).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.closeEditOrderNote()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            closeEditOrderNote() {
+                this.show.editNote = false
+                this.form.note = ''
+                this.temp.orderInfo = {}
             },
             editOrderNote(record) {
                 this.show.editNote = true
+                this.temp.orderInfo = record
+            },
+            closeOrderInfo() {
+                this.show.orderInfo = false
+                this.form.note = ''
+                this.temp.orderInfo = {}
+            },
+            showOrderInfo(record) {
+                this.show.orderInfo = true
+                this.temp.orderInfo = record
             },
             deleteOrder(record) {
                 const _this = this

@@ -58,6 +58,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order saveOrderNote(HttpServletRequest request, String id, String note) {
+        Order entity = orderDAO.selectById(id);
+        entity.setNote(note);
+        return orderDAO.saveOrder(entity);
+    }
+
+    @Override
     public List<Order> getOrderList(HttpServletRequest request) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         return orderDAO.selectByUserId(user);
