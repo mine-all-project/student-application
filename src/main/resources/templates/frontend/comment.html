@@ -47,27 +47,29 @@
 
       .comment-item {
           display: flex;
-          justify-content: space-around;
+          justify-content: space-between;
           align-items: center;
           background-color: #999999;
           color: #505050;
-          height: 60px;
-					margin-left: 115px;
-          width: 376px;
+          /*height: 60px;*/
+          margin-left: 115px;
+          /*width: 376px;*/
       }
 
       .comment-content {
-          width: 304px;
+          /*width: 304px;*/
           font-size: 39px;
           text-align: center;
       }
 
       .comment-result {
           vertical-align: center;
-          width: 72px;
+          /*width: 72px;*/
           font-size: 19px;
           text-align: center;
+          margin-right: 2rem;
       }
+
       .body-bgi {
           background-repeat: no-repeat;
           background-size: 100%;
@@ -79,6 +81,19 @@
           top: 0;
           bottom: 0;
           z-index: 10;
+      }
+
+      .comment-item {
+          font-size: 24px;
+          word-break: break-all;
+      }
+
+      .comment-item img {
+          width: 300px !important;
+      }
+
+      .comment-item p {
+          display: flex !important;
       }
 	</style>
 </head>
@@ -95,12 +110,26 @@
 		<div style="margin-top: 88px">
 			<a-col v-for="item in dataList" style="padding: 10px;">
 				<div class="comment-item">
-					<div class="comment-content" style="">评论</div>
-					<div class="comment-result" style="">回复</div>
+					<div class="comment-content" style="" v-html="item.content">评论</div>
+					<div class="comment-result" @click="showResult(item)" v-if="item.recontent === ''">回复</div>
+				</div>
+				<br>
+				<div class="comment-item" v-if="item.recontent !== ''">
+					<div class="comment-content" style="" v-html="item.recontent">评论</div>
 				</div>
 				<div style="width: 656px;border-bottom:1px solid #999999;margin-top: 23px"></div>
 			</a-col>
 		</div>
+		<a-modal :title="false" :visible.sync="show.result" width="30%" :footer="false" @cancel="closeRecontent">
+			<a-form-model :label-col="labelCol" :wrapper-col="wrapperCol">
+				<a-form-model-item label="回复" prop="username">
+					<a-textarea placeholder="回复" :rows="4" v-model="recontent"></a-textarea>
+				</a-form-model-item>
+			</a-form-model>
+			<div style="text-align: center">
+				<button @click="saveRecontent">确认</button>
+			</div>
+		</a-modal>
 	</div>
 </div>
 <script>
@@ -109,6 +138,8 @@
         components: {},
         data() {
             return {
+                labelCol: {span: 5},
+                wrapperCol: {span: 16},
                 image: {
                     settings: '/images/settings.jpg',
                 },
@@ -153,19 +184,45 @@
                         }, name: '校园交友'
                     },
                 ],
-                dataList: [
-                    {id:'',content:'评论'},
-                    {id:'',content:'评论'},
-                    {id:'',content:'评论'},
-								],
+                dataList: [],
                 typeKey: '',
+                show: {
+                    result: false
+                },
+                recontent: '',
+                temp: {
+                    comment: {}
+                }
             }
         },
         mounted() {
             this.getUserInfo()
-            // this.getList()
+            this.getList()
         },
         methods: {
+            saveRecontent() {
+                let data = this.temp.comment
+                data.recontent = this.recontent
+                console.log(data)
+                axios.post(`/api/paper/comment/recomment`, data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.closeRecontent()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            closeRecontent() {
+                this.show.result = false
+            },
+            showResult(record) {
+                this.temp.comment = record
+                this.show.result = true
+            },
             initTitle() {
                 let url = window.location.href
                 let key = url.split('?key=')[1]
@@ -187,14 +244,14 @@
                 this.getList()
             },
             getList() {
-                axios.get(`/api/paper/mine/list/${this.typeKey}`).then(response => {
+                axios.get(`/api/paper/comment/list`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterDataList(result.data)
+                        this.dataList = result.data
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -237,6 +294,9 @@
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
+                        if (result.status === 401) {
+                            window.location.href = '/frontend/login.html'
+                        }
                         return;
                     }
                     if (result.data !== null) {

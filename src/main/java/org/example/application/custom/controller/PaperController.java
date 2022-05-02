@@ -5,6 +5,7 @@ import org.example.application.common.BaseController;
 import org.example.application.common.DIC;
 import org.example.application.common.groups.IsNotNull;
 import org.example.application.common.utils.jwt.JwtIgnore;
+import org.example.application.custom.entity.Message;
 import org.example.application.custom.entity.Paper;
 import org.example.application.custom.form.PaperForm;
 import org.example.application.custom.service.PaperService;
@@ -28,6 +29,22 @@ public class PaperController extends BaseController {
 
     private List<Paper> filterCheckStatus(List<Paper> source, int status) {
         return source.stream().filter(e -> e.getStatus() == status).collect(Collectors.toList());
+    }
+
+    @PostMapping("/comment/recomment")
+    public ResponseDTO recomment(HttpServletRequest request, @RequestBody Message message) {
+        log.info("收到请求->回复评论:[{}]", message);
+        paperService.recomment(request,message);
+        log.info("返回结果->回复评论结束");
+        return ResponseDTO.returnSuccess();
+    }
+
+    @GetMapping("/comment/list")
+    public ResponseDTO getCommentList(HttpServletRequest request) {
+        log.info("收到请求->获取我发布的文章的评论");
+        List<Message> list = paperService.getCommentList(request);
+        log.info("返回结果->获取我发布的文章的评论结束:[{}]", list);
+        return ResponseDTO.returnSuccess(list);
     }
 
     @GetMapping("/list")

@@ -12,5 +12,7 @@ public interface MessageService extends BaseService {
 
     Message save(HttpServletRequest request, Message entity);
 
+    Message save(Message entity);
+
     List<Message> saveAll(HttpServletRequest request, List<Message> list);
 }

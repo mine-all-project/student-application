@@ -16,8 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -49,7 +51,7 @@ public class PaperServiceImpl implements PaperService {
 
     @Override
     public List<Paper> search(String type, String keywords) {
-        return paperDAO.search(type,keywords);
+        return paperDAO.search(type, keywords);
     }
 
     @Override
@@ -103,5 +105,22 @@ public class PaperServiceImpl implements PaperService {
         messages.add(message);
         paper.setMessages(messages);
         paperDAO.save(paper);
+    }
+
+    @Override
+    public List<Message> getCommentList(HttpServletRequest request) {
+        SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        List<Paper> papers = paperDAO.getBySysUser(user);
+        List<Paper> paperList = papers.stream().filter(e -> e.getMessages().size() > 0).collect(Collectors.toList());
+        List<Message> messages = new ArrayList<>();
+        for (Paper paper : paperList) {
+            messages.addAll(paper.getMessages());
+        }
+        return messages;
+    }
+
+    @Override
+    public void recomment(HttpServletRequest request,Message message) {
+        messageService.save(message);
     }
 }

@@ -1,6 +1,7 @@
 package org.example.application.custom.service;
 
 import org.example.application.common.BaseService;
+import org.example.application.custom.entity.Message;
 import org.example.application.custom.entity.Paper;
 import org.example.application.custom.form.PaperForm;
 
@@ -25,4 +26,8 @@ public interface PaperService extends BaseService {
     void check(PaperForm form);
 
     void addComment(HttpServletRequest request, Map<String, Object> comment);
+
+    List<Message> getCommentList(HttpServletRequest request);
+
+    void recomment(HttpServletRequest request,Message message);
 }
