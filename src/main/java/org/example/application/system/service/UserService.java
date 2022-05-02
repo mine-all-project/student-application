@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface UserService extends BaseService {
 
+    SysUser save(SysUser user);
     SysUser updateName(HttpServletRequest request,String name);
 
     SysUser updatePassword(HttpServletRequest request,ResetPasswordForm form);

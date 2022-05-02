@@ -7,7 +7,10 @@ import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.system.dto.ResponseDTO;
 import org.example.application.system.form.UserForm;
 import org.example.application.system.service.SysService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -41,5 +44,19 @@ public class SysController extends BaseController {
         return ResponseDTO.returnSuccess();
     }
 
+    @JwtIgnore
+    @PostMapping("/findPwd")
+    public ResponseDTO findPwd(@RequestBody UserForm form) {
+        log.info("收到请求->找回密码:[{}]",form);
+        sysService.findPwd(form);
+        return ResponseDTO.returnSuccess();
+    }
 
+    @JwtIgnore
+    @PostMapping("/resetPwd")
+    public ResponseDTO resetPwd(@RequestBody UserForm form) {
+        log.info("收到请求->重置密码:[{}]",form);
+        sysService.resetPwd(form);
+        return ResponseDTO.returnSuccess();
+    }
 }

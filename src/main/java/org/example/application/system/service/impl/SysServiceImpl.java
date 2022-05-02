@@ -55,4 +55,19 @@ public class SysServiceImpl implements SysService {
         throw new ApplicationException("密码错误");
     }
 
+    @Override
+    public void findPwd(UserForm form) {
+        SysUser sysUser = userService.findByUsername(form.getUsername());
+        if (!sysUser.getName().equals(form.getName())) {
+            throw new ApplicationException("输入账号或姓名错误，无当前账号");
+        }
+    }
+
+    @Override
+    public void resetPwd(UserForm form) {
+        SysUser sysUser = userService.findByUsername(form.getUsername());
+        String password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
+        sysUser.setPassword(password);
+        userService.save(sysUser);
+    }
 }

@@ -19,12 +19,39 @@
 		<hr class="hr15">
 		<input lay-submit lay-filter="findPwd" style="width:100%;" type="button" value="忘记密码"></a>
 		<hr class="hr20">
+		<a-modal :title="false" :visible.sync="show.findPwd" width="30%" :footer="false" @cancel="closeFindPwd">
+			<a-form-model :label-col="labelCol" :wrapper-col="wrapperCol">
+				<a-form-model-item label="用户名" prop="username">
+					<a-input v-model="temp.username"></a-input>
+				</a-form-model-item>
+				<a-form-model-item label="姓名" prop="name">
+					<a-input v-model="temp.name"></a-input>
+				</a-form-model-item>
+			</a-form-model>
+			<div style="text-align: center">
+				<button @click="checkUsername">确认</button>
+			</div>
+		</a-modal>
+		<a-modal :title="false" :visible.sync="show.resetPwd" width="30%" :footer="false" @cancel="closeResetPwd">
+			<a-form-model :label-col="labelCol" :wrapper-col="wrapperCol">
+				<a-form-model-item label="新密码" prop="username">
+					<a-input v-model="temp.password" type="password"></a-input>
+				</a-form-model-item>
+				<a-form-model-item label="新密码" prop="username">
+					<a-input v-model="temp.password1" type="password"></a-input>
+				</a-form-model-item>
+			</a-form-model>
+			<div style="text-align: center">
+				<button @click="resetPwd">确认</button>
+			</div>
+		</a-modal>
 	</form>
 </div>
 <script th:src="@{/js/jquery-1.8.2.min.js}"></script>
 <link rel="stylesheet" th:href="@{/css/login-01/login.css}">
 <div th:replace="/components/vue :: javascript"></div>
 <div th:replace="/components/base :: javascript"></div>
+<div th:replace="/components/ui :: antd"></div>
 <div th:replace="/components/lay-ui :: javascript"></div>
 <div th:replace="/components/lay-ui :: x-admin"></div>
 <script>
@@ -37,7 +64,7 @@
                 return false;
             });
             form.on('submit(findPwd)', function (data) {
-                console.log(123)
+                vue.showFindPwd()
             });
         });
     }
@@ -46,14 +73,80 @@
         el: '#loginForm',
         data() {
             return {
+                labelCol: {span: 5},
+                wrapperCol: {span: 16},
                 username: '',
-                password: ''
+                password: '',
+                show: {
+                    findPwd: false,
+                    resetPwd: false,
+                },
+                temp: {
+                    username: '',
+                    name: '',
+                    password: '',
+                    password1: '',
+                }
             }
         },
         mounted() {
             initLayui()
         },
         methods: {
+            resetPwd() {
+                if (this.temp.password !== this.temp.password1) {
+                    layer.msg('两次密码不一致')
+                }
+                let data = {
+                    username: this.temp.username,
+                    password: this.temp.password,
+                }
+                axios.post('/api/resetPwd', data).then(response => {
+                    const result = response.data
+                    console.log('通过api获取到的数据:', result)
+                    if (result.status !== 200) {
+                        layer.msg(result.message)
+                        return
+                    }
+                    this.closeFindPwd()
+                    this.closeResetPwd()
+                }).catch(exception => {
+                    layer.msg('系统错误')
+                    console.error('系统错误', exception)
+                })
+            },
+            showResetPwd() {
+                this.show.resetPwd = true
+            },
+            closeResetPwd() {
+                this.show.resetPwd = false
+            },
+            checkUsername() {
+                let data = {
+                    username: this.temp.username,
+                    name: this.temp.name,
+                }
+                console.log(data)
+                axios.post('/api/findPwd', data).then(response => {
+                    const result = response.data
+                    console.log('通过api获取到的数据:', result)
+                    if (result.status !== 200) {
+                        layer.msg(result.message)
+                        return
+                    }
+                    this.closeFindPwd()
+                    this.showResetPwd()
+                }).catch(exception => {
+                    layer.msg('系统错误')
+                    console.error('系统错误', exception)
+                })
+            },
+            closeFindPwd() {
+                this.show.findPwd = false
+            },
+            showFindPwd() {
+                this.show.findPwd = true
+            },
             login(data) {
                 axios.post('/api/login', data).then(response => {
                     const result = response.data

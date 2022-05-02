@@ -194,7 +194,7 @@ const app = new Vue({
         },
         logout() {
             sessionStorage.clear()
-            window.location.href = '/server/login'
+            window.location.href = '/frontend/login'
         },
         closePreview() {
             this.show.previewImg = false

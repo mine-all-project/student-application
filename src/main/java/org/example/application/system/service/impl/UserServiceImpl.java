@@ -146,4 +146,9 @@ public class UserServiceImpl implements UserService {
         user.setHeadImg(headImage);
         return userDAO.save(user);
     }
+
+    @Override
+    public SysUser save(SysUser user) {
+        return userDAO.save(user);
+    }
 }
