@@ -34,7 +34,7 @@ const app = new Vue({
                 ],
                 oldPassword: [
                     {required: true, message: '请输入原密码', trigger: 'change'},
-                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                    // {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                 ],
                 newPassword: [
                     {required: true, message: '请输入新密码', trigger: 'change'},

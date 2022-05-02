@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.application.common.BaseEntity;
+import org.example.application.system.entity.SysUser;
+import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -31,6 +33,10 @@ public class Order extends BaseEntity {
     private LocalDate lastTime;
     @ManyToOne
     private Person person;
+
+    @ManyToOne
+    @CreatedBy
+    private SysUser createBy;
     @OneToMany
     private List<OrderItem> childrenOrder;
 

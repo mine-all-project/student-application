@@ -22,6 +22,8 @@ public class OrderController extends BaseController {
         this.orderService = orderService;
     }
 
+
+
     @GetMapping("/list")
     public ResponseDTO getList(HttpServletRequest request) {
         log.info("收到请求->获取账单列表");
@@ -30,18 +32,18 @@ public class OrderController extends BaseController {
         return ResponseDTO.returnSuccess(list);
     }
 
-//    @GetMapping("/search/{keywords}")
-//    public ResponseDTO search(HttpServletRequest request,@PathVariable String keywords) {
-//        log.info("收到请求->搜索账单列表,keywords:[{}]", keywords);
-//        List<Order> list = orderService.search(request,keywords);
-//        log.info("返回结果->搜索账单列表结束:[{}]", list);
-//        return ResponseDTO.returnSuccess(list);
-//    }
+    @GetMapping("/search/{no}")
+    public ResponseDTO search(HttpServletRequest request,@PathVariable String no) {
+        log.info("收到请求->搜索账单列表,no:[{}]", no);
+        List<Order> list = orderService.search(request,no);
+        log.info("返回结果->搜索账单列表结束:[{}]", list);
+        return ResponseDTO.returnSuccess(list);
+    }
 
     @GetMapping("/searchDate/{beginTime}/{endTime}")
-    public ResponseDTO searchDate(HttpServletRequest request,@PathVariable String beginTime, @PathVariable String endTime) {
+    public ResponseDTO searchDate(HttpServletRequest request, @PathVariable String beginTime, @PathVariable String endTime) {
         log.info("收到请求->搜索账单列表,time:[{} - {}]", beginTime, endTime);
-        List<Order> list = orderService.searchDate(request,beginTime, endTime);
+        List<Order> list = orderService.searchDate(request, beginTime, endTime);
         log.info("返回结果->搜索账单列表结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
     }
@@ -57,9 +59,9 @@ public class OrderController extends BaseController {
 
 
     @DeleteMapping("/delete/{id}")
-    public ResponseDTO deleteById(HttpServletRequest request,@PathVariable String id) {
+    public ResponseDTO deleteById(HttpServletRequest request, @PathVariable String id) {
         log.info("收到请求->删除账单,id:[{}]", id);
-        orderService.deleteById(request,id);
+        orderService.deleteById(request, id);
         log.info("返回结果->删除账单结束:");
         return ResponseDTO.returnSuccess();
     }
@@ -73,17 +75,17 @@ public class OrderController extends BaseController {
     }
 
     @PostMapping("/checkPass/{id}")
-    public ResponseDTO checkPass(HttpServletRequest request,@PathVariable String id) {
+    public ResponseDTO checkPass(HttpServletRequest request, @PathVariable String id) {
         log.info("收到请求->账单缴费,id:[{}]", id);
-        orderService.checkPass(request,id);
+        orderService.checkPass(request, id);
         log.info("返回结果->账单缴费结束");
         return ResponseDTO.returnSuccess();
     }
 
     @PostMapping("/checkFail/{id}")
-    public ResponseDTO checkFail(HttpServletRequest request,@PathVariable String id) {
+    public ResponseDTO checkFail(HttpServletRequest request, @PathVariable String id) {
         log.info("收到请求->账单逾期,id:[{}]", id);
-        orderService.checkFail(request,id);
+        orderService.checkFail(request, id);
         log.info("返回结果->账单逾期结束");
         return ResponseDTO.returnSuccess();
     }

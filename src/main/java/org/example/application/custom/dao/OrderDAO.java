@@ -25,9 +25,9 @@ public class OrderDAO extends BaseDAO {
         return orderRepository.findAll(desByCreateTime);
     }
 
-//    public List<Order> search(String keywords) {
-//        return orderRepository.findByKeywordContains(keywords, desByCreateTime);
-//    }
+    public List<Order> search(String no) {
+        return orderRepository.findByNoContains(no, desByCreateTime);
+    }
 
     public Order save(Order entity) {
         List<OrderItem> orderItems = orderItemRepository.saveAll(entity.getChildrenOrder());

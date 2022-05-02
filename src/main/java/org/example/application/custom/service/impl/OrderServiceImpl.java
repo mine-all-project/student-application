@@ -10,6 +10,7 @@ import org.example.application.custom.form.OrderForm;
 import org.example.application.custom.service.OrderService;
 import org.example.application.custom.service.PersonService;
 import org.example.application.system.dao.UserDAO;
+import org.example.application.system.entity.SysUser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -38,11 +39,22 @@ public class OrderServiceImpl implements OrderService {
         this.jwtConfigure = jwtConfigure;
     }
 
+    List<Order> filterByUser(HttpServletRequest request, List<Order> source) {
+        SysUser sysUser = getUserInfo(request, jwtConfigure, userDAO, isDebug);
+        return source.stream().filter(e -> {
+            SysUser createBy = e.getCreateBy();
+            if (null != createBy) {
+                return sysUser.getId().equals(createBy.getId());
+            }
+            return false;
+        }).collect(Collectors.toList());
+    }
+
     @Override
     public List<Order> getAll(HttpServletRequest request) {
         lastTimeOrder();
         checkOrderAuth(request, jwtConfigure, userDAO);
-        return orderDAO.getAll();
+        return filterByUser(request,orderDAO.getAll());
     }
 
     void lastTimeOrder() {
@@ -59,11 +71,11 @@ public class OrderServiceImpl implements OrderService {
         orderDAO.saveAll(list);
     }
 
-//    @Override
-//    public List<Order> search(HttpServletRequest request, String keywords) {
-//        checkOrderAuth(request, jwtConfigure, userDAO);
-//        return orderDAO.search(keywords);
-//    }
+    @Override
+    public List<Order> search(HttpServletRequest request, String no) {
+        checkOrderAuth(request, jwtConfigure, userDAO);
+        return filterByUser(request,orderDAO.search(no));
+    }
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -72,13 +84,15 @@ public class OrderServiceImpl implements OrderService {
         checkOrderAuth(request, jwtConfigure, userDAO);
         LocalDateTime beginTime = LocalDateTime.parse(beginTimeStr, dateTimeFormatter);
         LocalDateTime endTime = LocalDateTime.parse(endTimeStr, dateTimeFormatter);
-        return orderDAO.searchDate(beginTime, endTime);
+        return filterByUser(request,orderDAO.searchDate(beginTime, endTime));
     }
 
     @Override
     public Order save(HttpServletRequest request, OrderForm form) {
+        SysUser sysUser = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         checkOrderAuth(request, jwtConfigure, userDAO);
         Order entity = form.toEntity();
+        entity.setCreateBy(sysUser);
         if (StringUtils.isEmpty(entity.getNo())) {
             entity.setNo(String.valueOf(System.currentTimeMillis()));
         }
@@ -108,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
         MoneyForm form = new MoneyForm();
         form.setId(order.getPerson().getId());
         form.setMoneyReduce(order.getPrice());
-        personService.moneyReduce(request,form);
+        personService.moneyReduce(request, form);
         orderDAO.updateStatusById(id, DIC.CHECK_PASS);
     }
 
