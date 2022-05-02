@@ -1,0 +1,8 @@
+{
+  "navigationBarBackgroundColor": "#FFE16D",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "uni-datetime-picker": "/uni_modules/uni-datetime-picker/components/uni-datetime-picker/uni-datetime-picker",
+    "w-picker": "/components/w-picker/w-picker"
+  }
+}
