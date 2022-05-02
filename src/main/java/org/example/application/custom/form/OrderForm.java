@@ -11,7 +11,6 @@ import org.example.application.custom.entity.Person;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,8 +19,8 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderForm extends BaseForm<Order> {
-    @NotBlank(message = "词条不能为空", groups = IsNotNull.class)
-    private String keyword;
+//    @NotBlank(message = "词条不能为空", groups = IsNotNull.class)
+//    private String keyword;
     private Integer status;
     @NotNull(message = "金额不能为空", groups = IsNotNull.class)
     private BigDecimal price;

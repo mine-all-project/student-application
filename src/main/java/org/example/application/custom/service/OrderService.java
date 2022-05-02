@@ -10,7 +10,7 @@ import java.util.List;
 public interface OrderService extends BaseService {
     List<Order> getAll(HttpServletRequest request);
 
-    List<Order> search(HttpServletRequest request,String keywords);
+//    List<Order> search(HttpServletRequest request,String keywords);
 
     Order save(HttpServletRequest request, OrderForm form);
 

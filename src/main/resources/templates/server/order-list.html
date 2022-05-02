@@ -239,9 +239,6 @@
 					</a-select-option>
 				</a-select>
 			</a-form-model-item>
-			<a-form-model-item label="词条" prop="keyword">
-				<a-input v-model="form.order.keyword"></a-input>
-			</a-form-model-item>
 			<a-form-model-item label="账单类型" prop="type">
 				<a-radio-group name="type" v-model="form.order.type">
 					<a-radio :value="1">月供账单</a-radio>
@@ -337,11 +334,11 @@
                             dataIndex: 'price',
                             title: '金额',
                         },
-                        {
-                            dataIndex: 'keyword',
-                            title: '词条',
-                            ellipsis: true,
-                        },
+                        // {
+                        //     dataIndex: 'keyword',
+                        //     title: '词条',
+                        //     ellipsis: true,
+                        // },
                         {
                             dataIndex: 'type',
                             title: '类型',

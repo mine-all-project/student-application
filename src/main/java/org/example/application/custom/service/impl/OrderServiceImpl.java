@@ -59,11 +59,11 @@ public class OrderServiceImpl implements OrderService {
         orderDAO.saveAll(list);
     }
 
-    @Override
-    public List<Order> search(HttpServletRequest request, String keywords) {
-        checkOrderAuth(request, jwtConfigure, userDAO);
-        return orderDAO.search(keywords);
-    }
+//    @Override
+//    public List<Order> search(HttpServletRequest request, String keywords) {
+//        checkOrderAuth(request, jwtConfigure, userDAO);
+//        return orderDAO.search(keywords);
+//    }
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 

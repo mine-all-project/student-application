@@ -30,13 +30,13 @@ public class OrderController extends BaseController {
         return ResponseDTO.returnSuccess(list);
     }
 
-    @GetMapping("/search/{keywords}")
-    public ResponseDTO search(HttpServletRequest request,@PathVariable String keywords) {
-        log.info("收到请求->搜索账单列表,keywords:[{}]", keywords);
-        List<Order> list = orderService.search(request,keywords);
-        log.info("返回结果->搜索账单列表结束:[{}]", list);
-        return ResponseDTO.returnSuccess(list);
-    }
+//    @GetMapping("/search/{keywords}")
+//    public ResponseDTO search(HttpServletRequest request,@PathVariable String keywords) {
+//        log.info("收到请求->搜索账单列表,keywords:[{}]", keywords);
+//        List<Order> list = orderService.search(request,keywords);
+//        log.info("返回结果->搜索账单列表结束:[{}]", list);
+//        return ResponseDTO.returnSuccess(list);
+//    }
 
     @GetMapping("/searchDate/{beginTime}/{endTime}")
     public ResponseDTO searchDate(HttpServletRequest request,@PathVariable String beginTime, @PathVariable String endTime) {

@@ -15,8 +15,8 @@ import java.util.List;
 @Entity
 @Table(name = "order_")
 public class Order extends BaseEntity {
-    @Column(columnDefinition = "varchar(256) default null comment '词条'")
-    private String keyword;
+//    @Column(columnDefinition = "varchar(256) default null comment '词条'")
+//    private String keyword;
     @Column(columnDefinition = "tinyint default null comment '0:已缴费 1:待缴费 2:逾期'")
     private Integer status;
     @Column(columnDefinition = "decimal(10,2) default 0 comment '金额'")
