@@ -45,7 +45,7 @@
         </span>
 		<span slot="allPrice" slot-scope="text,record">
          {{ record.goods.price*record.countNum }}
-          </a-tooltip>
+			</a-tooltip>
         </span>
 		<span slot="createTime" slot-scope="text">
           <a-tooltip placement="topLeft">
@@ -64,8 +64,10 @@
           </a-tooltip>
         </span>
 		<span slot="action" slot-scope="text, record">
-					<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
-      	</span>
+			<a-button type="danger" size="small" @click="deleteOrder(record)">删除</a-button>
+			<a-button type="primary" size="small" @click="showOrderInfo(record)">查看详情</a-button>
+			<a-button type="primary" size="small" @click="editOrderNote(record)">编辑</a-button>
+		</span>
 	</a-table>
 </div>
 <script>
@@ -82,21 +84,9 @@
                             title: '账单id',
                         },
                         {
-                            title: '单价',
-                            scopedSlots: {customRender: 'price'},
-                        },
-                        {
-                            dataIndex: 'countNum',
-                            title: '数量',
-                        },
-                        {
+                            dataIndex: 'price',
                             title: '金额',
-                            scopedSlots: {customRender: 'allPrice'},
-                        },
-                        {
-                            dataIndex: 'goods',
-                            title: '商品',
-                            scopedSlots: {customRender: 'goods'},
+                            // scopedSlots: {customRender: 'allPrice'},
                         },
                         {
                             dataIndex: 'user',
@@ -137,6 +127,10 @@
                     order: {},
                     searchText: ' ',
                 },
+                show: {
+                    orderInfo: false,
+                    editNote: false,
+                },
                 sysUser: sessionStorage.getItem("sysUser")
             };
         },
@@ -144,6 +138,12 @@
             this.getList()
         },
         methods: {
+            showOrderInfo(record) {
+                this.show.orderInfo = true
+            },
+            editOrderNote(record) {
+                this.show.editNote = true
+            },
             deleteOrder(record) {
                 const _this = this
                 _this.$confirm({
@@ -190,6 +190,8 @@
                         no: e.no,
                         address: e.address,
                         status: e.status,
+                        note: e.note,
+                        price: e.price,
                         phone: e.phone,
                         countNum: e.countNum,
                         createTime: e.createTime,
