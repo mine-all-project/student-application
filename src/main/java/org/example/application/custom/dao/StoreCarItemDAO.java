@@ -5,6 +5,8 @@ import org.example.application.custom.dao.jpa.StoreCarItemRepository;
 import org.example.application.custom.entity.StoreCar;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class StoreCarItemDAO extends BaseDAO {
     private final StoreCarItemRepository storeCarItemRepository;
@@ -23,5 +25,9 @@ public class StoreCarItemDAO extends BaseDAO {
 
     public void deleteById(String id) {
         storeCarItemRepository.deleteById(id);
+    }
+
+    public List<StoreCar.StoreCarItem> saveAll(List<StoreCar.StoreCarItem> list) {
+        return storeCarItemRepository.saveAll(list);
     }
 }

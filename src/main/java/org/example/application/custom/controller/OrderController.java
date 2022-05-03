@@ -48,9 +48,10 @@ public class OrderController extends BaseController {
 
     @GetMapping("/get/list")
     public ResponseDTO getOrderList(HttpServletRequest request) {
-        log.info("收到请求->获取订单");
+        log.info("收到请求->获取订单列表");
         List<Order> list = orderService.getOrderList(request);
-        log.info("返回结果->获取订单结束");
+        System.err.println(list);
+        log.info("返回结果->获取订单列表结束:[{}]",list);
         return ResponseDTO.returnSuccess(list);
     }
 
