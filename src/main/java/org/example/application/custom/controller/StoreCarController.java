@@ -38,11 +38,18 @@ public class StoreCarController extends BaseController {
         log.info("返回结果->加入购物车结束:[{}]", id);
         return ResponseDTO.returnSuccess();
     }
+    @PostMapping("/change")
+    public ResponseDTO changeStoreCar(HttpServletRequest request,@RequestBody StoreCar.StoreCarItem entity) {
+        log.info("收到请求->修改购物车商品数量:[{}]", entity);
+        storeCarService.changeStoreCar(request, entity);
+        log.info("返回结果->修改购物车结束");
+        return ResponseDTO.returnSuccess();
+    }
 
-    @PostMapping("/remove/{index}")
-    public ResponseDTO removeStoreCar(HttpServletRequest request, @PathVariable String index) {
-        log.info("收到请求->删除购物车:[{}]", index);
-        storeCarService.removeStoreCar(request, index);
+    @PostMapping("/remove/{id}")
+    public ResponseDTO removeStoreCar(HttpServletRequest request, @PathVariable String id) {
+        log.info("收到请求->删除购物车:[{}]", id);
+        storeCarService.removeStoreCar(request, id);
         log.info("返回结果->删除购物车结束");
         return ResponseDTO.returnSuccess();
     }

@@ -17,10 +17,10 @@ public class StoreCarDAO extends BaseDAO {
     }
 
     public StoreCar findByUser(SysUser user) {
-        StoreCar newCar = new StoreCar();
-        newCar.setGoods(new ArrayList<>());
-        newCar.setUser(user);
-        return storeCarRepository.findByUser(user).orElse(newCar);
+        StoreCar storeCar = new StoreCar();
+        storeCar.setItem(new ArrayList<>());
+        storeCar.setUser(user);
+        return storeCarRepository.findByUser(user).orElse(storeCar);
     }
 
     public void save(StoreCar entity) {

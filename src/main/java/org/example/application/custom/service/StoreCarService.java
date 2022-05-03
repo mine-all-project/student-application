@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 public interface StoreCarService extends BaseService {
     void addStoreCar(HttpServletRequest request, String id);
 
-    void removeStoreCar(HttpServletRequest request, String index);
+    void removeStoreCar(HttpServletRequest request, String id);
 
     StoreCar getStoreCar(HttpServletRequest request);
+
+    void changeStoreCar(HttpServletRequest request, StoreCar.StoreCarItem entity);
 }
