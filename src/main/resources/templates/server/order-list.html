@@ -42,11 +42,13 @@
             </template>
             <span class="step-content">{{ record.goods.price }}</span>
           </a-tooltip>
-        </span>
+		</span>
+		<span slot="note" slot-scope="text,record">
+			<a-tag color="pink">{{text}}</a-tag>
+		</span>
 		<span slot="allPrice" slot-scope="text,record">
          {{ record.goods.price*record.countNum }}
-			</a-tooltip>
-        </span>
+		</span>
 		<span slot="createTime" slot-scope="text">
           <a-tooltip placement="topLeft">
             <template slot="title">
@@ -124,7 +126,8 @@
                         {
                             dataIndex: 'note',
                             title: '备注',
-                            width: '10%'
+                            width: '10%',
+														scopedSlots: {customRender: 'note'}
                         },
                         {
                             dataIndex: 'createTime',
