@@ -3,6 +3,7 @@ package org.example.application.custom.service;
 import org.example.application.common.BaseService;
 import org.example.application.system.entity.FileInfo;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -23,4 +24,8 @@ public interface CustomService extends BaseService {
     Map<String, Object> getCount();
 
     void saveCount(Map<String, Object> data);
+
+    BigDecimal getTemperatureError();
+
+    void saveTemperatureError(BigDecimal value);
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,25 @@ public class CustomController {
 
     public CustomController(CustomService customService) {
         this.customService = customService;
+    }
+
+    @JwtIgnore
+    @RequestMapping("/get/temperatureError")
+    public ResponseDTO getTemperatureError() {
+        log.info("收到请求->获取体温异常阈值");
+        BigDecimal value = customService.getTemperatureError();
+        log.info("返回结果->获取体温异常阈值结束:[{}]", value);
+        return ResponseDTO.returnSuccess(value);
+    }
+
+    @RequestMapping("/save/temperatureError")
+    public ResponseDTO saveTemperatureError(@RequestBody Map<String, Object> data) {
+        String temperatureError = String.valueOf(data.getOrDefault("content", "0"));
+        BigDecimal value = BigDecimal.valueOf(Long.parseLong(temperatureError));
+        log.info("收到请求->保存体温异常阈值:[{}]", value);
+        customService.saveTemperatureError(value);
+        log.info("返回结果->保存体温异常阈值结束");
+        return ResponseDTO.returnSuccess();
     }
 
     @JwtIgnore

@@ -59,7 +59,7 @@
                         title: '联系电话',
                         key: 'phone',
                     },
-										{
+                    {
                         dataIndex: 'symptoms',
                         title: '症状',
                         scopedSlots: {customRender: 'symptoms'}
@@ -93,13 +93,29 @@
                 show: {
                     userInfo: false,
                 },
+                temperatureError: 0,
                 sysUser: sessionStorage.getItem("sysUser")
             };
         },
         mounted() {
-            this.getList()
+            this.getTemperatureError()
         },
         methods: {
+            getTemperatureError() {
+                axios.get('/api/custom/get/temperatureError').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.temperatureError = result.data
+                        this.getList()
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             refreshData() {
                 this.getList()
             },
@@ -111,17 +127,20 @@
                         return;
                     }
                     if (result.data !== null) {
-                        this.dataSource = result.data;
-                        result.data.map(e=>{
+                        let dataSource = result.data.map(e => {
                             return {
-                                id:e.id,
-                                user:e.user,
-                                phone:e.phone,
-                                value:e.value,
-                                symptoms:e.symptoms,
-                                createTimeStr:new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
+                                id: e.id,
+                                user: e.user,
+                                phone: e.phone,
+                                value: e.value,
+                                symptoms: e.symptoms,
+                                createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                             }
+                        }).filter(e => {
+                            console.log(e.value >= this.temperatureError, e.value, this.temperatureError)
+                            return e.value >= this.temperatureError
                         })
+                        this.dataSource = dataSource;
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);

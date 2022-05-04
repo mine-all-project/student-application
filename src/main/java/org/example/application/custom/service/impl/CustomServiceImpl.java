@@ -10,6 +10,7 @@ import org.example.application.system.service.FileInfoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,19 @@ public class CustomServiceImpl implements CustomService {
         custom.setOverseasDiagnosisAdd(overseasDiagnosisAdd);
         custom.setNowSuspected(nowSuspected);
         custom.setNowSuspectedAdd(nowSuspectedAdd);
+        customDAO.save(custom);
+    }
+
+    @Override
+    public BigDecimal getTemperatureError() {
+        Custom custom = get();
+        return custom.getTemperatureError();
+    }
+
+    @Override
+    public void saveTemperatureError(BigDecimal value) {
+        Custom custom = get();
+        custom.setTemperatureError(value);
         customDAO.save(custom);
     }
 }

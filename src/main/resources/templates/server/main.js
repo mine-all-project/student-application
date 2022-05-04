@@ -111,6 +111,12 @@ const app = new Vue({
                         },
                     ]
                 },
+                {
+                    key: '11',
+                    name: '综合管理',
+                    icon: 'appstore',
+                    url: '/server/custom.html',
+                },
             ],
             sysMenus: [
                 {

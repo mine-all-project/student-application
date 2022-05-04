@@ -69,11 +69,12 @@
 			<a-button type="primary" size="small" @click="editOrderNote(record)">编辑备注</a-button>
 		</span>
 	</a-table>
-	<a-modal title="详情" :visible.sync="show.orderInfo" width="20%" @cancel="closeOrderInfo" :footer="false">
+	<a-modal title="详情" :visible.sync="show.orderInfo" width="30%" @cancel="closeOrderInfo" :footer="false">
 		<div v-for="item in temp.orderInfo.goods">
 			<p style="display: flex;justify-content: space-between">
-				<span>{{item.name}} </span>
-				<span>￥{{item.price}} </span>
+				<img :src="item.goods.images[0].virtualPath" style="width: 40%"/>
+				<span>{{item.goods.name}} </span>
+				<span>￥{{item.goods.price}} x{{item.countNum}} </span>
 			</p>
 			<a-divider></a-divider>
 		</div>

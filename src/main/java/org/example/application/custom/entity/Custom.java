@@ -9,6 +9,7 @@ import org.example.application.system.entity.FileInfo;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -36,6 +37,8 @@ public class Custom extends BaseEntity {
     private String nowSuspected;
     @Column(columnDefinition = "varchar(64) default null comment '现有疑似较昨日新增'")
     private String nowSuspectedAdd;
+    @Column(columnDefinition = "decimal(3,1) default 0 comment '体温异常阈值'")
+    private BigDecimal temperatureError;
 
 
 }

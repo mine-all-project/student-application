@@ -70,6 +70,12 @@
 				<a-button type="primary" @click="saveTemperatureNotice" style="margin-top: 1rem">保存</a-button>
 			</div>
 		</a-tab-pane>
+		<a-tab-pane key="5" tab="体温异常阈值">
+			<div style="width: 50%;">
+				<a-input-number placeholder="体温异常阈值" v-model="form.temperatureError"></a-input-number>
+				<a-button type="primary" @click="saveTemperatureError" style="margin-top: 1rem">保存</a-button>
+			</div>
+		</a-tab-pane>
 	</a-tabs>
 	<a-modal :visible="show.previewImg" :footer="null" @cancel="closePreview">
 		<img style="width: 100%" :src="temp.previewSrc"/>
@@ -94,6 +100,7 @@
                     overseasDiagnosisAdd: '',
                     nowSuspected: '',
                     nowSuspectedAdd: '',
+                    temperatureError: 0,
                 },
                 show: {
                     previewImg: false,
@@ -110,8 +117,39 @@
             this.getBaseNotice()
             this.getTemperatureNotice()
             this.getCount()
+            this.getTemperatureError()
         },
         methods: {
+            saveTemperatureError() {
+                let data = {
+                    content: this.form.temperatureError
+                }
+                axios.post('/api/custom/save/temperatureError', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.getTemperatureError()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            getTemperatureError() {
+                axios.get('/api/custom/get/temperatureError').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    if (result.data !== null) {
+                        this.form.temperatureError = result.data
+                    }
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             saveCount() {
                 let data = {
                     addDiagnosis: this.form.addDiagnosis,
