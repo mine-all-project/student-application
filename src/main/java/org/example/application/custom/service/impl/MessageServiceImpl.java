@@ -1,6 +1,5 @@
 package org.example.application.custom.service.impl;
 
-import org.example.application.common.DIC;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.MessageDAO;
 import org.example.application.custom.entity.Message;
@@ -39,7 +38,6 @@ public class MessageServiceImpl implements MessageService {
     public Message save(HttpServletRequest request, Message entity) {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         entity.setPublisher(user);
-        entity.setStatus(DIC.CHECK_WAIT);
         return messageDAO.save(entity);
     }
 
@@ -53,7 +51,6 @@ public class MessageServiceImpl implements MessageService {
         SysUser user = getUserInfo(request, jwtConfigure, userDAO, isDebug);
         final List<Message> collect = list.stream().peek(e -> {
             e.setPublisher(user);
-            e.setStatus(DIC.CHECK_WAIT);
         }).collect(Collectors.toList());
         return messageDAO.saveAll(collect);
     }

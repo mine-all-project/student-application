@@ -24,11 +24,6 @@ public class Message extends BaseEntity {
     @Column(columnDefinition = "longtext")
 //    @Column(columnDefinition = "CLOB")
     private String recontent;
-    //状态 0:正常 1:待审 2:驳回
-    private Integer status;
-    //审核备注
-    @Column(columnDefinition = "varchar(256) default null ")
-    private String note;
     @OneToOne
     private SysUser publisher;
 
