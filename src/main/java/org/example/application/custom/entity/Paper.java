@@ -19,6 +19,7 @@ public class Paper extends BaseEntity {
     @Column
     private String title;
     //详情
+    //    @Column(columnDefinition = "CLOB")
     @Column
     private String content;
     //状态 0:审核成功 1:审核中 2:审核失败

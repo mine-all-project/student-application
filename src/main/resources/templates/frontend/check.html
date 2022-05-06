@@ -192,7 +192,7 @@
                 this.getList()
             },
             getList() {
-                axios.get(`/api/paper/mine/list/${this.typeKey}`).then(response => {
+                axios.get(`/api/paper/check/list/${this.typeKey}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
