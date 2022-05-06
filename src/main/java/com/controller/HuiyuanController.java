@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,14 +60,14 @@ public class HuiyuanController {
 	 */
 	@IgnoreAuth
 	@RequestMapping(value = "/login")
-	public R login(String username, String password, String captcha, HttpServletRequest request) {
+	public R login(String username, String password, String captcha, HttpServletRequest request) throws ParseException {
 		HuiyuanEntity user = huiyuanService.selectOne(new EntityWrapper<HuiyuanEntity>().eq("zhanghao", username));
 		if(user==null || !user.getMima().equals(password)) {
 			return R.error("账号或密码不正确");
 		}
 
 		String token = tokenService.generateToken(user.getId(), username,"huiyuan",  "会员" );
-		huiyuanService.addJifen(user);
+		huiyuanService.addJifen (user);
 		return R.ok().put("token", token);
 	}
 

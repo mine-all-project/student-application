@@ -117,7 +117,7 @@ public class HuiyuanEntity<T> implements Serializable {
 	 */
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
 	@DateTimeFormat
-	private LocalDate last_login_date;
+	private Date lastlogindate;
 
 	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat
@@ -258,11 +258,11 @@ public class HuiyuanEntity<T> implements Serializable {
 		this.jifen = jifen;
 	}
 
-	public LocalDate getLast_login_date() {
-		return last_login_date;
+	public Date getLastlogindate() {
+		return lastlogindate;
 	}
 
-	public void setLast_login_date(LocalDate last_login_date) {
-		this.last_login_date = last_login_date;
+	public void setLastlogindate(Date lastlogindate) {
+		this.lastlogindate = lastlogindate;
 	}
 }

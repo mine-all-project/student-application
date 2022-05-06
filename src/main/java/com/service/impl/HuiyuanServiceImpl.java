@@ -2,8 +2,11 @@ package com.service.impl;
 
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Map;
 import java.util.List;
@@ -26,19 +29,25 @@ import com.entity.view.HuiyuanView;
 public class HuiyuanServiceImpl extends ServiceImpl<HuiyuanDao, HuiyuanEntity> implements HuiyuanService {
 
     @Override
-    public void addJifen(HuiyuanEntity user) {
-        LocalDate lastLoginDate = user.getLast_login_date();
+    public void addJifen(HuiyuanEntity user) throws ParseException {
+        Date lastLoginDate = user.getLastlogindate();
+        LocalDate now = LocalDate.now();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String nowStr = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         if (lastLoginDate != null) {
-            if (lastLoginDate.isBefore(LocalDate.now())) {
+            String lastLoginDateStr = dateFormat.format(lastLoginDate);
+            LocalDate localDate = LocalDate.parse(lastLoginDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (localDate.isBefore(now)) {
                 Long jifen = user.getJifen();
                 if (null == jifen) {
                     jifen = 0L;
                 }
                 user.setJifen(jifen + 20);
-                user.setLast_login_date(LocalDate.now());
+                user.setLastlogindate(dateFormat.parse(nowStr));
             }
         }
-        user.setLast_login_date(LocalDate.now());
+
+        user.setLastlogindate(dateFormat.parse(nowStr));
         baseMapper.updateById(user);
     }
 

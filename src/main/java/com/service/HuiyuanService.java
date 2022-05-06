@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 import com.utils.PageUtils;
 import com.entity.HuiyuanEntity;
+
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import com.entity.vo.HuiyuanVO;
@@ -33,6 +35,6 @@ public interface HuiyuanService extends IService<HuiyuanEntity> {
    	PageUtils queryPage(Map<String, Object> params,Wrapper<HuiyuanEntity> wrapper);
 
 
-    void addJifen(HuiyuanEntity user);
+    void addJifen(HuiyuanEntity user) throws ParseException;
 }
 
