@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, String> {
     List<Person> findAllByNameLike(String name, Sort desByCreateTime);
+
+    List<Person> findByNameContains(String name);
 }

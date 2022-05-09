@@ -32,10 +32,10 @@ public class OrderController extends BaseController {
         return ResponseDTO.returnSuccess(list);
     }
 
-    @GetMapping("/search/{no}")
-    public ResponseDTO search(HttpServletRequest request,@PathVariable String no) {
-        log.info("收到请求->搜索账单列表,no:[{}]", no);
-        List<Order> list = orderService.search(request,no);
+    @GetMapping("/search/{name}")
+    public ResponseDTO search(HttpServletRequest request,@PathVariable String name) {
+        log.info("收到请求->搜索账单列表,name:[{}]", name);
+        List<Order> list = orderService.search(request,name);
         log.info("返回结果->搜索账单列表结束:[{}]", list);
         return ResponseDTO.returnSuccess(list);
     }

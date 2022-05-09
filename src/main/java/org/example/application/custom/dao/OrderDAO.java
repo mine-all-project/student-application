@@ -3,8 +3,10 @@ package org.example.application.custom.dao;
 import org.example.application.common.BaseDAO;
 import org.example.application.custom.dao.jpa.OrderItemRepository;
 import org.example.application.custom.dao.jpa.OrderRepository;
+import org.example.application.custom.dao.jpa.PersonRepository;
 import org.example.application.custom.entity.Order;
 import org.example.application.custom.entity.OrderItem;
+import org.example.application.custom.entity.Person;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,18 +17,25 @@ import java.util.List;
 public class OrderDAO extends BaseDAO {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final PersonRepository personRepository;
 
-    public OrderDAO(OrderRepository orderRepository, OrderItemRepository orderItemRepository) {
+    public OrderDAO(OrderRepository orderRepository, OrderItemRepository orderItemRepository, PersonRepository personRepository) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
+        this.personRepository = personRepository;
     }
 
     public List<Order> getAll() {
         return orderRepository.findAll(desByCreateTime);
     }
 
-    public List<Order> search(String no) {
-        return orderRepository.findByNoContains(no, desByCreateTime);
+    public List<Order> search(String name) {
+        return orderRepository.findByNoContains(name, desByCreateTime);
+    }
+
+    public List<Order> searchByUser(String name) {
+        List<Person> people =  personRepository.findByNameContains(name);
+        return orderRepository.findByPersonIn(people, desByCreateTime);
     }
 
     public Order save(Order entity) {

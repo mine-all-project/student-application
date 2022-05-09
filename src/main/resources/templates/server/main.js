@@ -38,11 +38,11 @@ const app = new Vue({
                 ],
                 newPassword: [
                     {required: true, message: '请输入新密码', trigger: 'change'},
-                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                    // {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                 ],
                 againPassword: [
                     {required: true, message: '请重复新密码', trigger: 'change'},
-                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
+                    // {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                 ],
             },
             show: {

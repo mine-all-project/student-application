@@ -72,9 +72,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> search(HttpServletRequest request, String no) {
+    public List<Order> search(HttpServletRequest request, String name) {
         checkOrderAuth(request, jwtConfigure, userDAO);
-        return filterByUser(request,orderDAO.search(no));
+        return filterByUser(request,orderDAO.searchByUser(name));
     }
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

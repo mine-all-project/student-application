@@ -1,6 +1,7 @@
 package org.example.application.custom.dao.jpa;
 
 import org.example.application.custom.entity.Order;
+import org.example.application.custom.entity.Person;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +14,7 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
     List<Order> findByNoContains(String no, Sort sort);
+    List<Order> findByPersonIn(List<Person> people, Sort sort);
 
     List<Order> findByCreateTimeBetween(LocalDateTime beginTime, LocalDateTime endTime, Sort sort);
 

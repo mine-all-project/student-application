@@ -27,8 +27,8 @@ public class TaskConfigure {
         this.orderItemRepository = orderItemRepository;
     }
 
-//    @Scheduled(cron = "0 0 0 1 * ?")
-    @Scheduled(cron = "0/30 * * * * ?")
+    @Scheduled(cron = "0 0 0 1 * ?")
+//    @Scheduled(cron = "0/30 * * * * ?")
     public void refuseOrder() {
         log.info("开始刷新月账单");
         List<Order> list = orderDAO.getAll().stream().filter(e -> {
