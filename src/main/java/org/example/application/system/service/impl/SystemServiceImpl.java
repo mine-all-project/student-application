@@ -7,9 +7,9 @@ import org.example.application.common.utils.AssertUtils;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.common.utils.jwt.JwtTokenUtils;
 import org.example.application.system.dao.UserDAO;
-import org.example.application.system.entity.SysUser;
+import org.example.application.system.entity.SystemUser;
 import org.example.application.system.form.UserForm;
-import org.example.application.system.service.SysUserService;
+import org.example.application.system.service.SystemUserService;
 import org.example.application.system.service.SystemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +30,12 @@ public class SystemServiceImpl implements SystemService {
     @Value("${isDebug}")
     private boolean isDebug;
 
-    private final SysUserService sysUserService;
+    private final SystemUserService sysUserService;
     private final UserDAO userDAO;
     private final JwtConfigure jwtConfigure;
 
 
-    public SystemServiceImpl(SysUserService sysUserService, UserDAO userDAO, JwtConfigure jwtConfigure) {
+    public SystemServiceImpl(SystemUserService sysUserService, UserDAO userDAO, JwtConfigure jwtConfigure) {
         this.sysUserService = sysUserService;
         this.userDAO = userDAO;
         this.jwtConfigure = jwtConfigure;
@@ -46,7 +46,7 @@ public class SystemServiceImpl implements SystemService {
         String username = form.getUsername();
         String password = MD5.create().digestHex(form.getPassword().getBytes(StandardCharsets.UTF_8));
         logger.info("开始登录->用户名:[{}],密码:[{}]", username, password);
-        SysUser sysUser = sysUserService.findByUsername(username);
+        SystemUser sysUser = sysUserService.findByUsername(username);
         AssertUtils.notNull(sysUser, "用户名不存在");
         if (sysUser.getStatus() == DIC.USER_LOCK) {
             throw new ApplicationException("账户已被禁用，请联系管理员");
@@ -58,12 +58,12 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public SysUser getUserInfo(HttpServletRequest request) {
+    public SystemUser getUserInfo(HttpServletRequest request) {
         return sysUserService.getUserInfo(request);
     }
 
     @Override
-    public SysUser registry(UserForm form) {
+    public SystemUser registry(UserForm form) {
         form.setRole(2);
         return sysUserService.addUser(form);
     }

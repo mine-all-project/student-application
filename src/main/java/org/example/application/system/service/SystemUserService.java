@@ -1,7 +1,7 @@
 package org.example.application.system.service;
 
 import org.example.application.common.BaseService;
-import org.example.application.system.entity.SysUser;
+import org.example.application.system.entity.SystemUser;
 import org.example.application.system.form.ResetPasswordForm;
 import org.example.application.system.form.UpdateUserInfoForm;
 import org.example.application.system.form.UserForm;
@@ -13,21 +13,21 @@ import java.util.List;
 /**
  * TODO 用户相关服务
  */
-public interface SysUserService extends BaseService {
+public interface SystemUserService extends BaseService {
 
-    SysUser findByUsername(String username);
+    SystemUser findByUsername(String username);
 
-    SysUser addUser(UserForm form);
+    SystemUser addUser(UserForm form);
 
-    SysUser editUser(UserForm form);
+    SystemUser editUser(UserForm form);
 
     void delUser(String id);
 
     void changeStatus(String id);
 
-    List<SysUser> findAll();
+    List<SystemUser> findAll();
 
-    SysUser getUserInfo(HttpServletRequest request);
+    SystemUser getUserInfo(HttpServletRequest request);
 
     void resetPassword(ResetPasswordForm form);
 

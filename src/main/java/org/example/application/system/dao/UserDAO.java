@@ -2,7 +2,7 @@ package org.example.application.system.dao;
 
 import org.example.application.common.BaseDAO;
 import org.example.application.system.dao.jpa.UserRepository;
-import org.example.application.system.entity.SysUser;
+import org.example.application.system.entity.SystemUser;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -16,19 +16,19 @@ public class UserDAO extends BaseDAO {
         this.userRepository = userRepository;
     }
 
-    public SysUser findByUsername(String username) {
+    public SystemUser findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
 
-    public SysUser save(SysUser user) {
+    public SystemUser save(SystemUser user) {
         return userRepository.save(user);
     }
 
-    public SysUser findById(String id) {
+    public SystemUser findById(String id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    public List<SysUser> findByIds(List<String> ids) {
+    public List<SystemUser> findByIds(List<String> ids) {
         return userRepository.findByIdInAndStatusAndDelFlag(ids, 0, NOT_DEL);
     }
 
@@ -49,11 +49,11 @@ public class UserDAO extends BaseDAO {
     }
 
 
-    public List<SysUser> findAll() {
+    public List<SystemUser> findAll() {
         return userRepository.findByDelFlag(ascByCreateTime, NOT_DEL);
     }
 
-    public List<SysUser> getUserList(String userId, int status) {
+    public List<SystemUser> getUserList(String userId, int status) {
         return userRepository.findByIdNotAndStatusAndDelFlag(userId, status, NOT_DEL);
     }
 }

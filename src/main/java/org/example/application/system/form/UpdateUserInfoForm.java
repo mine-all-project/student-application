@@ -7,14 +7,14 @@ import org.example.application.common.ApplicationException;
 import org.example.application.common.BaseForm;
 import org.example.application.common.Groups;
 import org.example.application.system.entity.FileInfo;
-import org.example.application.system.entity.SysUser;
+import org.example.application.system.entity.SystemUser;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class UpdateUserInfoForm extends BaseForm<SysUser> {
+public class UpdateUserInfoForm extends BaseForm<SystemUser> {
     @NotBlank(message = "id不能为空", groups = Groups.IsNotNull.class)
     private String id;
 
@@ -33,7 +33,7 @@ public class UpdateUserInfoForm extends BaseForm<SysUser> {
     private FileInfo headImg;
 
     @Override
-    public SysUser toEntity() {
+    public SystemUser toEntity() {
         throw new ApplicationException("暂无转换方法");
     }
 

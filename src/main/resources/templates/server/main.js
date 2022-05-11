@@ -3,8 +3,8 @@ const app = new Vue({
     components: {},
     data() {
         return {
-            isDebug: false,
-            pageUrl: '/server/welcome.html',
+            isDebug: true,
+            pageUrl: '/server/demo.html',
             headers: headers,
             labelCol: {span: 5},
             wrapperCol: {span: 16},
@@ -34,15 +34,12 @@ const app = new Vue({
                 ],
                 oldPassword: [
                     {required: true, message: '请输入原密码', trigger: 'change'},
-                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                 ],
                 newPassword: [
                     {required: true, message: '请输入新密码', trigger: 'change'},
-                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                 ],
                 againPassword: [
                     {required: true, message: '请重复新密码', trigger: 'change'},
-                    {min: 8, max: 16, message: '长度为8-16位', trigger: 'change'},
                 ],
             },
             show: {
@@ -53,6 +50,30 @@ const app = new Vue({
             timer: null,
             menus: [],
             allMenus: [
+                {
+                    key: '1',
+                    name: '课题管理',
+                    icon: 'appstore',
+                    url: '/server/subject-list.html',
+                },
+                {
+                    key: '2',
+                    name: '课题审核',
+                    icon: 'appstore',
+                    url: '/server/subject-check.html',
+                },
+                {
+                    key: '3',
+                    name: '选择课题',
+                    icon: 'appstore',
+                    url: '/server/subject-select.html',
+                },
+                {
+                    key: '4',
+                    name: '撰写论文',
+                    icon: 'appstore',
+                    url: '/server/subject-write.html',
+                },
                 {
                     key: '3',
                     name: '信息管理',
@@ -148,25 +169,25 @@ const app = new Vue({
                     url: '/server/custom.html',
                 },
                 {
-                key: '3',
-                name: '信息管理',
-                icon: 'appstore',
-                url: '',
-                children: [
-                    {
-                        key: '31',
-                        name: '政策信息',
-                        icon: 'appstore',
-                        url: '/server/policy-list.html',
-                    },
-                    {
-                        key: '32',
-                        name: '疫情防护信息',
-                        icon: 'appstore',
-                        url: '/server/epidemic-list.html',
-                    },
-                ]
-            },
+                    key: '3',
+                    name: '信息管理',
+                    icon: 'appstore',
+                    url: '',
+                    children: [
+                        {
+                            key: '31',
+                            name: '政策信息',
+                            icon: 'appstore',
+                            url: '/server/policy-list.html',
+                        },
+                        {
+                            key: '32',
+                            name: '疫情防护信息',
+                            icon: 'appstore',
+                            url: '/server/epidemic-list.html',
+                        },
+                    ]
+                },
                 {
                     key: '5',
                     name: '商品管理',
@@ -306,7 +327,7 @@ const app = new Vue({
                 this.menus = this.sysMenus
             } else if (rule === 2) {
                 this.menus = this.managerMenus
-            }else if (rule === 0) {
+            } else if (rule === 0) {
                 this.menus = this.allMenus
             }
             if (this.isDebug) {

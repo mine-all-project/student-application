@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class SysUser extends BaseEntity {
+public class SystemUser extends BaseEntity {
     @Column(columnDefinition = "varchar(32) comment '用户名' ", unique = true)
     private String username;
     @Column(columnDefinition = "varchar(64)  comment '密码'")
@@ -21,14 +21,15 @@ public class SysUser extends BaseEntity {
     private FileInfo headImg;
     @Column(columnDefinition = "tinyint  comment '年龄'")
     private Integer age;
-    @Column(columnDefinition = "tinyint  comment '权限 0:普通管理员 1:普通用户'")
+    @Column(columnDefinition = "tinyint  comment '权限 0:管理员 1:系主任 2:教师 3:学生'")
     private Integer role;
     @Column(columnDefinition = "tinyint  comment '状态 0:正常 1:禁用'")
     private int status;
-    @Column(columnDefinition = "tinyint default 1 comment '权限 0:允许管理商品 1:禁止管理商品'")
-    private Integer goodsStatus;
-    @Column(columnDefinition = "tinyint default 1 comment '权限 0:允许管理信息 1:禁止管理信息'")
-    private Integer paperStatus;
+
+    //    @Column(columnDefinition = "tinyint default 1 comment '权限 0:允许管理商品 1:禁止管理商品'")
+//    private Integer goodsStatus;
+//    @Column(columnDefinition = "tinyint default 1 comment '权限 0:允许管理信息 1:禁止管理信息'")
+//    private Integer paperStatus;
     @Override
     public String toString() {
         return JSONObject.toJSONString(this);

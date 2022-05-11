@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.example.application.common.ApplicationException;
 import org.example.application.common.BaseForm;
 import org.example.application.common.Groups;
-import org.example.application.system.entity.SysUser;
+import org.example.application.system.entity.SystemUser;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -18,7 +18,7 @@ import javax.validation.constraints.Null;
  */
 @Getter
 @Setter
-public class UserForm extends BaseForm<SysUser> {
+public class UserForm extends BaseForm<SystemUser> {
     @NotBlank(message = "id不能为空", groups = Groups.IsEdit.class)
     @NotBlank(message = "id不能为空", groups = Groups.IsStatusChange.class)
     @Null(message = "id必须为空", groups = Groups.IsAdd.class)
@@ -43,7 +43,7 @@ public class UserForm extends BaseForm<SysUser> {
     private Integer role;
 
     @Override
-    public SysUser toEntity() {
+    public SystemUser toEntity() {
         throw new ApplicationException("暂无转换方法");
     }
 

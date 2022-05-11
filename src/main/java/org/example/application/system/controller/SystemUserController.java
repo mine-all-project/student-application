@@ -3,11 +3,11 @@ package org.example.application.system.controller;
 import org.example.application.common.BaseController;
 import org.example.application.common.Groups;
 import org.example.application.system.dto.ResponseDTO;
-import org.example.application.system.entity.SysUser;
+import org.example.application.system.entity.SystemUser;
 import org.example.application.system.form.ResetPasswordForm;
 import org.example.application.system.form.UpdateUserInfoForm;
 import org.example.application.system.form.UserForm;
-import org.example.application.system.service.SysUserService;
+import org.example.application.system.service.SystemUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -20,18 +20,18 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/api/user")
-public class SysUserController extends BaseController {
-    private final Logger logger = LoggerFactory.getLogger(SysUserController.class);
-    private final SysUserService sysUserService;
+public class SystemUserController extends BaseController {
+    private final Logger logger = LoggerFactory.getLogger(SystemUserController.class);
+    private final SystemUserService sysUserService;
 
-    public SysUserController(SysUserService sysUserService) {
+    public SystemUserController(SystemUserService sysUserService) {
         this.sysUserService = sysUserService;
     }
 
     @PostMapping("/addUser")
     public ResponseDTO addUser(@RequestBody UserForm form) {
         logger.info("收到请求->添加用户:[{}]", form);
-        SysUser user = sysUserService.addUser(form);
+        SystemUser user = sysUserService.addUser(form);
         logger.info("返回结果->用户添加完成:[{}]", user);
         return ResponseDTO.returnSuccess("操作成功", user);
     }
@@ -40,7 +40,7 @@ public class SysUserController extends BaseController {
     public ResponseDTO editUser(@RequestBody UserForm form) {
         logger.info("收到请求->修改用户:[{}]", form);
         super.validator(form, Groups.IsEdit.class);
-        SysUser user = sysUserService.editUser(form);
+        SystemUser user = sysUserService.editUser(form);
         logger.info("返回结果->用户修改完成:[{}]", user);
         return ResponseDTO.returnSuccess("操作成功", user);
     }
@@ -94,7 +94,7 @@ public class SysUserController extends BaseController {
     @GetMapping("/list")
     public ResponseDTO getUserList() {
         logger.info("收到请求->获取用户列表");
-        List<SysUser> list = sysUserService.findAll();
+        List<SystemUser> list = sysUserService.findAll();
         logger.info("返回结果->获取用户列表结束:[{}]", list);
         return ResponseDTO.returnSuccess("操作成功", list);
     }

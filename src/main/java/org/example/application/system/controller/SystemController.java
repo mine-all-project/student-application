@@ -4,7 +4,7 @@ import org.example.application.common.BaseController;
 import org.example.application.common.Groups;
 import org.example.application.common.utils.jwt.JwtIgnore;
 import org.example.application.system.dto.ResponseDTO;
-import org.example.application.system.entity.SysUser;
+import org.example.application.system.entity.SystemUser;
 import org.example.application.system.form.UserForm;
 import org.example.application.system.service.SystemService;
 import org.slf4j.Logger;
@@ -31,7 +31,7 @@ public class SystemController extends BaseController {
     @GetMapping("/getUserInfo")
     public ResponseDTO getUserInfo(HttpServletRequest request) {
         logger.info("收到请求->获取当前用户信息");
-        SysUser sysUser = systemService.getUserInfo(request);
+        SystemUser sysUser = systemService.getUserInfo(request);
         logger.info("返回结果->获取当前用户信息结束:[{}]", sysUser);
         return ResponseDTO.returnSuccess("操作成功", sysUser);
     }
@@ -51,7 +51,7 @@ public class SystemController extends BaseController {
     public ResponseDTO registry(@RequestBody UserForm form) {
         logger.info("收到请求->用户注册:[{}]", form);
         super.validator(form, Groups.IsAdd.class);
-        SysUser user = systemService.registry(form);
+        SystemUser user = systemService.registry(form);
         logger.info("返回结果->注册结束[{}]", user);
         return ResponseDTO.returnSuccess("注册成功", user);
     }

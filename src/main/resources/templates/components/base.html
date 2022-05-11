@@ -13,21 +13,35 @@
     body {
         padding: 0;
         margin: 0;
-    }</style>
-<th th:fragment="quill">
-	<script th:src="@{/js/echarts/echarts.js}"></script>
-	<link rel="stylesheet" th:href="@{/css/quill.snow.css}">
-</th>
+    }
 
+    .drawer-footer {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        border-top: 1px solid #e9e9e9;
+        padding: 10px 16px;
+        background: #fff;
+        text-align: right;
+        z-index: 1;
+    }
+
+    .ant-input-number {
+        width: 100%;
+    }
+</style>
 <th th:fragment="javascript">
 	<script th:src="@{/js/moment-with-locales.js}"></script>
 	<script th:src="@{/js/axios.min.js}"></script>
 	<script th:src="@{/js/request.js}"></script>
-	<script th:src="@{/js/quill.js}"></script>
 	<script th:src="@{/js/wangEditor.min.js}"></script>
 	<script th:src="@{/js/common.js}"></script>
 </th>
-
+<th th:fragment="quill">
+	<script th:src="@{/js/quill.js}"></script>
+	<link rel="stylesheet" th:href="@{/css/quill.snow.css}">
+</th>
 <th th:fragment="echarts">
 	<script th:src="@{/js/echarts/echarts.js}"></script>
 </th>
