@@ -13,7 +13,6 @@ import org.example.application.custom.service.SubjectService;
 import org.example.application.system.entity.SystemUser;
 import org.example.application.system.service.SystemService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedList;
@@ -46,6 +45,11 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public void deleteSubject(HttpServletRequest request, String id) {
+        subjectDAO.deleteById(id);
+    }
+
+    @Override
     public List<Subject> getAll() {
         return subjectDAO.getList();
     }
@@ -65,38 +69,65 @@ public class SubjectServiceImpl implements SubjectService {
             }
             return false;
         }).collect(Collectors.toList());
-
     }
 
+    @Override
+    public List<Subject> searchSubject(String code, String keyword) {
+        Status.Code status = Status.Code.getByCode(code);
+        List<Subject> list = subjectDAO.getListByName(keyword);
+        return list.stream().filter(e -> {
+            List<Status> statusList = e.getStatus();
+            statusList.sort((a, b) -> a.getCreateTime().isAfter(b.getCreateTime()) ? 1 : 0);
+            if (!statusList.isEmpty()) {
+                Status lastStatus = statusList.get(0);
+                if (lastStatus.getCode() == status) {
+                    return true;
+                }
+            }
+            return false;
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * 系主任审核
+     */
     @Override
     public Subject checkSubject(HttpServletRequest request, CheckForm form) {
         Subject entity = subjectDAO.findById(form.getId());
         List<Status> statusList = entity.getStatus();
         statusList.sort((a, b) -> a.getCreateTime().isAfter(b.getCreateTime()) ? 1 : 0);
         Status lastStatus = statusList.get(0);
-        if (DIC.CHECK_STATUS_PASS == form.getStatus()) {
-            lastStatus = lastStatus.next(form.getNote(), null);
-        } else {
-            lastStatus = lastStatus.close(form.getNote());
-        }
+        statusList.remove(0);
+        lastStatus.setContent(form.getContent());
         statusList.add(lastStatus);
+        Status newStatus;
+        if (DIC.CHECK_STATUS_PASS == form.getStatus()) {
+            newStatus = lastStatus.next();
+        } else {
+            newStatus = lastStatus.close(form.getContent());
+        }
+        statusList.add(newStatus);
         entity.setStatus(statusDAO.save(statusList));
         return subjectDAO.save(entity);
     }
 
+    /**
+     * 编写任务
+     */
     @Override
     public Subject editStatusContent(HttpServletRequest request, StatusForm form) {
         Subject entity = subjectDAO.findById(form.getSubjectId());
         List<Status> statusList = entity.getStatus();
         statusList.sort((a, b) -> a.getCreateTime().isAfter(b.getCreateTime()) ? 1 : 0);
+        Status nowStatus = statusDAO.findById(form.getId());
+        statusList.remove(0);
         Status lastStatus = statusList.get(0);
-        if (StringUtils.isEmpty(form.getId())) {
-            lastStatus = lastStatus.next(null, form.getContent());
-        } else {
-            lastStatus = statusDAO.findById(form.getId());
-            statusList.remove(statusList.size() - 1);
+        if (lastStatus.getCode() == Status.Code.ONE) {
+            statusList.remove(0);
         }
-        statusList.add(lastStatus);
+        nowStatus.setContent(form.getContent());
+        statusList.add(nowStatus);
+        statusList.add(nowStatus.next());
         entity.setStatus(statusDAO.save(statusList));
         return subjectDAO.save(entity);
     }
@@ -107,6 +138,9 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectDAO.findBySelecter(user);
     }
 
+    /**
+     * 选择课题(随机)
+     */
     @Override
     public Subject selectSubject(HttpServletRequest request) {
         Subject subject = mineSubject(request);
@@ -124,7 +158,7 @@ public class SubjectServiceImpl implements SubjectService {
         List<Status> statusList = entity.getStatus();
         statusList.sort((a, b) -> a.getCreateTime().isAfter(b.getCreateTime()) ? 1 : 0);
         Status lastStatus = statusList.get(0);
-        lastStatus = lastStatus.next(null, null);
+        lastStatus = lastStatus.next();
         statusList.add(lastStatus);
         entity.setStatus(statusDAO.save(statusList));
         entity.setIsSelect(DIC.IS_SELECT);
@@ -132,6 +166,9 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectDAO.save(entity);
     }
 
+    /**
+     * 选择课题(定向)
+     */
     @Override
     public Subject selectSubject(HttpServletRequest request, String id) {
         Subject subject = mineSubject(request);
@@ -139,6 +176,49 @@ public class SubjectServiceImpl implements SubjectService {
         Subject entity = subjectDAO.findById(id);
         entity.setIsSelect(DIC.IS_SELECT);
         entity.setSelecter(systemService.getUserInfo(request));
+        return subjectDAO.save(entity);
+    }
+
+    /**
+     * 撰写一稿
+     */
+    @Override
+    public Subject editFirstContent(HttpServletRequest request, StatusForm form) {
+        Subject entity = subjectDAO.findById(form.getSubjectId());
+        List<Status> statusList = entity.getStatus();
+        statusList.sort((a, b) -> a.getCreateTime().isAfter(b.getCreateTime()) ? 1 : 0);
+        Status nowStatus = statusDAO.findById(form.getId());
+        statusList.remove(0);
+        Status lastStatus = statusList.get(0);
+        if (lastStatus.getCode() == Status.Code.THREE) {
+            statusList.remove(0);
+        }
+        nowStatus.setContent(form.getContent());
+        statusList.add(nowStatus);
+        statusList.add(nowStatus.next());
+        entity.setStatus(statusDAO.save(statusList));
+        return subjectDAO.save(entity);
+    }
+
+    /**
+     * 中期检查
+     */
+    @Override
+    public Subject checkFirstContent(HttpServletRequest request, CheckForm form) {
+        Subject entity = subjectDAO.findById(form.getId());
+        List<Status> statusList = entity.getStatus();
+        statusList.sort((a, b) -> a.getCreateTime().isAfter(b.getCreateTime()) ? 1 : 0);
+        Status lastStatus = statusList.get(0);
+        statusList.remove(0);
+        lastStatus.setContent(form.getContent());
+        statusList.add(lastStatus);
+        Status newStatus;
+        if (DIC.CHECK_STATUS_PASS == form.getStatus()) {
+            newStatus = lastStatus.next();
+            statusList.add(newStatus);
+        }
+//        throw new ApplicationException("稍等");
+        entity.setStatus(statusDAO.save(statusList));
         return subjectDAO.save(entity);
     }
 }

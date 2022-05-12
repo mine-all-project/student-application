@@ -27,10 +27,11 @@
 <div id="app">
 	<a-row>
 		<a-col :span="6">
-			<a-input placeholder="输入关键字搜索" v-model="form.searchText"></a-input>
+			<a-input placeholder="输入课题名称搜索" v-model="form.searchText"></a-input>
 		</a-col>
 		<a-col :span="6" style="display: flex;justify-content: space-around">
-			<a-button type="primary" @click="search">搜索</a-button>
+			<a-button type="primary" @click="searchOfLocal" v-if="true">搜索</a-button>
+			<a-button type="primary" @click="searchOfNet" v-if="false">搜索</a-button>
 			<a-button @click="resetList">重置</a-button>
 		</a-col>
 	</a-row>
@@ -242,6 +243,19 @@
                     searchGoods: [],
                     isAddSubject: false,
                 },
+                editor: {
+                    instance: null,
+                    create: true,
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'], //加粗，斜体，下划线，删除线
+                        ['blockquote', 'code-block'],  //引用，代码块
+                        [{'list': 'ordered'}, {'list': 'bullet'}],  //列表
+                        [{'color': []}, {'background': []}],  // 字体颜色，字体背景颜色
+                        [{'align': []}], //对齐方式
+                        ['clean'], //清除字体样式
+                        ['image'] //上传图片、上传视频
+                    ]
+                },
                 sysUser: sessionStorage.getItem("sysUser")
             };
         },
@@ -252,9 +266,31 @@
             subStatus(content) {
                 return content.substring(content.indexOf('text=') + 5, content.indexOf(')'))
             },
+            createEditor(content) {
+                setTimeout(() => {
+                    if (this.editor.create) {
+                        this.editor.instance = new window.Quill('#editor', {
+                            theme: 'snow',
+                            modules: {
+                                toolbar: this.editor.toolbar
+                            }
+                        })
+                        this.editor.create = false
+                    }
+                    this.editor.instance.root.innerHTML = content
+                }, 1000)
+            },
+            destroyEditor() {
+                this.editor.instance.root.innerHTML = ''
+            },
+            /*添加课题*/
+            showAddSubject() {
+                this.temp.isAddSubject = true
+                this.show.addSubject = true
+            },
             closeAddSubject() {
                 this.show.addSubject = false
-                this.form.subject = {}
+                this.form.subject = {name: '', description: '', createBy: {}}
                 this.temp.fileList = []
             },
             saveSubject() {
@@ -305,12 +341,13 @@
                     console.error('出现错误:', error);
                 });
             },
+						/*系主任审核*/
             check(status, record) {
-                let note = prompt('备注')
+                let content = prompt('备注')
                 let data = {
                     id: record.id,
                     status: status,
-                    note: note,
+                    content: content,
                 }
                 axios.post(`/api/subject/check`, data).then(response => {
                     const result = response.data
@@ -323,6 +360,7 @@
                     console.error('出现错误:', error);
                 });
             },
+            /*显示详情*/
             showSubjectInfo(record) {
                 this.temp.subject = record
                 // this.temp.fileList = goods.images.map(e => {
@@ -340,20 +378,25 @@
                 this.temp.subject = {name: '', description: '', createBy: {}}
                 this.temp.fileList = []
             },
-
+            /*获取列表*/
             resetList() {
                 this.form.searchText = ''
                 this.getList()
             },
-            search() {
-                axios.get(`/api/goods/search/${this.form.searchText}`).then(response => {
+            searchOfLocal() {
+                this.dataList = this.dataList.filter(e => {
+                    return e.name.includes(this.form.searchText)
+                })
+            },
+            searchOfNet() {
+                axios.get(`/api/subject/search/0/${this.form.searchText}`).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
                         return;
                     }
                     if (result.data !== null) {
-                        this.filterGoods(result.data)
+                        this.filterList(result.data)
                     }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
@@ -405,6 +448,7 @@
                 console.log(dataList)
                 this.dataList = dataList
             },
+						/*文件*/
             closePreview() {
                 this.show.previewImg = false
             },

@@ -19,25 +19,26 @@ import java.util.List;
 public class Status extends BaseEntity {
     @Column(columnDefinition = "tinyint not null comment '状态码'")
     private Code code;
-    @Column(columnDefinition = "longtext comment '备注'")
-    private String next;
-    @Column(columnDefinition = "longtext comment '内容'")
+    @Column(columnDefinition = "longtext comment '详情'")
     private String content;
     @ManyToMany
     private List<FileInfo> files;
 
-
-    public Status next(String next,String content) {
+    public Status next() {
         Status instance = new Status();
         instance.code = this.code.next(this.code);
-        instance.next = next;
+        return instance;
+    }
+    public Status next(String content) {
+        Status instance = new Status();
+        instance.code = this.code.next(this.code);
         instance.content = content;
         return instance;
     }
 
-    public Status close(String next) {
+    public Status close(String content) {
         Status instance = new Status(Code.ERROR);
-        instance.next = next;
+        instance.content = content;
         return instance;
     }
 
@@ -48,9 +49,9 @@ public class Status extends BaseEntity {
         this.code = code;
     }
 
-    public Status(Code code, String next) {
+    public Status(Code code, String content) {
         this.code = code;
-        this.next = next;
+        this.content = content;
     }
 
     @ToString

@@ -24,6 +24,10 @@ public class SubjectDAO extends BaseDAO {
         return subjectRepository.findAll(desByCreateTime);
     }
 
+    public List<Subject> getListByName(String keyword) {
+        return subjectRepository.findByNameContains(keyword);
+    }
+
     public Subject findById(String id) {
         return subjectRepository.findById(id).orElse(null);
     }
@@ -31,4 +35,10 @@ public class SubjectDAO extends BaseDAO {
     public Subject findBySelecter(SystemUser user) {
         return subjectRepository.findBySelecter(user);
     }
+
+    public void deleteById(String id) {
+        subjectRepository.deleteById(id);
+    }
+
+
 }

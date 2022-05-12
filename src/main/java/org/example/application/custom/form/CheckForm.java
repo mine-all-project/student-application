@@ -10,5 +10,5 @@ import lombok.ToString;
 public class CheckForm {
     private String id;
     private Integer status;
-    private String note;
+    private String content;
 }

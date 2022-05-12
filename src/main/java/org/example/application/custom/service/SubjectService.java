@@ -11,9 +11,13 @@ import java.util.List;
 public interface SubjectService extends BaseService {
     Subject saveSubject(HttpServletRequest request, Subject entity);
 
+    void deleteSubject(HttpServletRequest request, String id);
+
     List<Subject> getAll();
 
     List<Subject> getAll(String status);
+
+    List<Subject> searchSubject(String status, String keyword);
 
     Subject checkSubject(HttpServletRequest request, CheckForm form);
 
@@ -25,4 +29,7 @@ public interface SubjectService extends BaseService {
 
     Subject selectSubject(HttpServletRequest request, String id);
 
+    Subject editFirstContent(HttpServletRequest request, StatusForm form);
+
+    Subject checkFirstContent(HttpServletRequest request, CheckForm form);
 }
