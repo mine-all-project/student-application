@@ -72,8 +72,8 @@
 			<a-button type="primary" size="small" @click="showWriteContent(record)"
 								v-if="record.lastStatusCode == 3 ||	record.lastStatusCode == 4">撰写一稿</a-button>
 			<!--撰写终稿阶段 3-->
-			<a-button type="primary" size="small" @click="showWriteContent(record)"
-								v-if="record.lastStatusCode == 5 ||	record.lastStatusCode == 4">撰写终稿</a-button>
+			<a-button type="primary" size="small" @click="showWriteLastContent(record)"
+								v-if="record.lastStatusCode == 5 ||	record.lastStatusCode == 6">撰写终稿</a-button>
 			<a-button type="primary" size="small" @click="showSubjectInfo(record)">详情</a-button>
 		</span>
 	</a-table>
@@ -85,6 +85,16 @@
 		<div class="drawer-footer">
 			<a-button style="margin-right: 8px" @click="closeWriteContent"> 关闭</a-button>
 			<a-button type="primary" @click="submitWriteContent"> 确定</a-button>
+		</div>
+	</a-drawer>
+	<a-drawer title="撰写终稿" :width="720" :visible="show.writeLastContent" @close="closeWriteLastContent">
+		<a-form-model ref="ruleForm" :model="form.subject" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+			<div v-if="editor.create">编辑器初始化中..</div>
+			<div id="editor" style="height: 40vh"></div>
+		</a-form-model>
+		<div class="drawer-footer">
+			<a-button style="margin-right: 8px" @click="closeWriteLastContent"> 关闭</a-button>
+			<a-button type="primary" @click="submitWriteLastContent"> 确定</a-button>
 		</div>
 	</a-drawer>
 	<a-modal title="详情" :visible.sync="show.subjectInfo" width="60%" @cancel="closeSubjectInfo">
@@ -211,6 +221,7 @@
                     subjectInfo: false,
                     editStatusContent: false,
                     writeContent: false,
+                    writeLastContent: false,
                 },
                 temp: {
                     previewSrc: '',
@@ -303,11 +314,6 @@
                     console.error('出现错误:', error);
                 });
             },
-            editSubject() {
-                this.show.addGoods = true
-                this.show.goodsInfo = false
-                this.temp.isAddGoods = false
-            },
             deleteSubject(record) {
                 axios.delete(`/api/subject/delete/${record.id}`).then(response => {
                     const result = response.data
@@ -374,7 +380,7 @@
                 this.temp.fileList = []
             },
             /*撰写一稿*/
-            closeWriteContent(record) {
+            closeWriteContent() {
                 this.show.writeContent = false
                 this.destroyEditor()
                 this.temp.fileList = []
@@ -410,6 +416,50 @@
                     }
                     this.$message.success(result.message);
                     this.closeWriteContent()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            /*撰写终稿*/
+            closeWriteLastContent() {
+                this.show.writeLastContent = false
+                this.destroyEditor()
+                this.temp.fileList = []
+            },
+            showWriteLastContent(record) {
+                this.temp.subject = record
+                this.show.writeLastContent = true
+                let lastCode = this.temp.subject.lastStatusCode
+                if (lastCode == 5) {
+                    this.createEditor(this.temp.subject.status[0].content)
+                } else if (lastCode == 6) {
+                    this.createEditor(this.temp.subject.status[1].content)
+                }
+            },
+            submitWriteLastContent() {
+                let lastCode = this.temp.subject.lastStatusCode
+                let id = null
+                if (lastCode == 5) {
+                    id = this.temp.subject.status[0].id
+                } else if (lastCode == 6) {
+                    id = this.temp.subject.status[1].id
+                }
+                let data = {
+                    subjectId: this.temp.subject.id,
+                    id: id,
+                    content: this.editor.instance.root.innerHTML,
+                }
+                console.log(this.temp.subject.status)
+                console.log(data)
+                axios.post('/api/subject/last/edit', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeWriteLastContent()
                     this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);

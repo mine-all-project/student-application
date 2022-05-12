@@ -324,11 +324,6 @@
                     console.error('出现错误:', error);
                 });
             },
-            editSubject() {
-                this.show.addGoods = true
-                this.show.goodsInfo = false
-                this.temp.isAddGoods = false
-            },
             deleteSubject(record) {
                 axios.delete(`/api/subject/delete/${record.id}`).then(response => {
                     const result = response.data

@@ -32,4 +32,6 @@ public interface SubjectService extends BaseService {
     Subject editFirstContent(HttpServletRequest request, StatusForm form);
 
     Subject checkFirstContent(HttpServletRequest request, CheckForm form);
+
+    Subject editLastContent(HttpServletRequest request, StatusForm form);
 }

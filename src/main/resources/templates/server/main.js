@@ -18,7 +18,7 @@ const app = new Vue({
                 personSettings: {}
             },
             pagination: {total: 0, pageSize: 10},
-            title: "居民疫情服务后台",
+            title: "毕业设计过程管理系统",
             rules: {
                 name: [
                     {required: true, message: '请输入姓名', trigger: 'change'},

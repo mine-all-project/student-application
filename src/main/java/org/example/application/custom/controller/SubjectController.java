@@ -132,21 +132,12 @@ public class SubjectController extends BaseController {
         return ResponseDTO.returnSuccess(entity);
     }
 
+    @PostMapping("/last/edit")
+    public ResponseDTO editLastContent(HttpServletRequest request, @RequestBody StatusForm form) {
+        log.info("收到请求->撰写终稿:[{}]", form);
+        Subject entity = subjectService.editLastContent(request, form);
+        log.info("返回结果->撰写终稿->结束:[{}]", entity);
+        return ResponseDTO.returnSuccess(entity);
+    }
 
-//
-//    @GetMapping("/id/{id}")
-//    public ResponseDTO findGoodsById(@PathVariable String id) {
-//        log.info("收到请求->获取商品,id:[{}]", id);
-//        Goods entity = goodsService.findGoodsById(id);
-//        log.info("返回结果->获取商品结束:[{}]", entity);
-//        return ResponseDTO.returnSuccess(entity);
-//    }
-//
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseDTO deleteGoodsById(HttpServletRequest request, @PathVariable String id) {
-//        log.info("收到请求->删除商品,id:[{}]", id);
-//        goodsService.deleteGoodsById(request, id);
-//        log.info("返回结果->删除商品结束");
-//        return ResponseDTO.returnSuccess();
-//    }
 }

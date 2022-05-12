@@ -63,7 +63,13 @@ public class Status extends BaseEntity {
         THREE(3, "一稿阶段"),
         FOUR(4, "中期检查阶段"),
         FIVE(5, "终稿阶段"),
-        SIX(6, "等待填写指导教师表");
+        SIX(6, "等待填写指导教师表"),
+        SEVEN(7, "等待填写评阅教师表"),
+        EIGHT(8, "等待生成答辩现场用表"),
+        NINE(9, "等待答辩成绩评定"),
+        TEN(10, "优秀毕业论文评选阶段"),
+        ELEVEN(11, "二次答辩阶段"),
+        TWELVE(12, "结束");
         @Getter
         private final int code;
         private final String text;

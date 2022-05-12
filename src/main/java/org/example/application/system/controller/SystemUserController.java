@@ -99,34 +99,4 @@ public class SystemUserController extends BaseController {
         return ResponseDTO.returnSuccess("操作成功", list);
     }
 
-    @PostMapping("/goods/checkPass/{id}")
-    public ResponseDTO goodsCheckPass(@PathVariable String id) {
-        logger.info("收到请求->允许管理商品[{}]", id);
-        sysUserService.goodsCheckPass(id);
-        logger.info("返回结果->允许管理商品结束");
-        return ResponseDTO.returnSuccess();
-    }
-
-    @PostMapping("/goods/checkFail/{id}")
-    public ResponseDTO goodsCheckFail(@PathVariable String id) {
-        logger.info("收到请求->禁止管理商品,id:[{}]", id);
-        sysUserService.goodsCheckFail(id);
-        logger.info("返回结果->禁止管理商品结束");
-        return ResponseDTO.returnSuccess();
-    }
-    @PostMapping("/paper/checkPass/{id}")
-    public ResponseDTO paperCheckPass(@PathVariable String id) {
-        logger.info("收到请求->允许管理信息,id:[{}]", id);
-        sysUserService.paperCheckPass(id);
-        logger.info("返回结果->允许管理信息结束");
-        return ResponseDTO.returnSuccess();
-    }
-
-    @PostMapping("/paper/checkFail/{id}")
-    public ResponseDTO paperCheckFail(@PathVariable String id) {
-        logger.info("收到请求->禁止管理信息,id:[{}]", id);
-        sysUserService.paperCheckFail(id);
-        logger.info("返回结果->禁止管理信息结束");
-        return ResponseDTO.returnSuccess();
-    }
 }

@@ -217,7 +217,27 @@ public class SubjectServiceImpl implements SubjectService {
             newStatus = lastStatus.next();
             statusList.add(newStatus);
         }
-//        throw new ApplicationException("稍等");
+        entity.setStatus(statusDAO.save(statusList));
+        return subjectDAO.save(entity);
+    }
+
+    /**
+     * 撰写终稿
+     */
+    @Override
+    public Subject editLastContent(HttpServletRequest request, StatusForm form) {
+        Subject entity = subjectDAO.findById(form.getSubjectId());
+        List<Status> statusList = entity.getStatus();
+        statusList.sort((a, b) -> a.getCreateTime().isAfter(b.getCreateTime()) ? 1 : 0);
+        Status nowStatus = statusDAO.findById(form.getId());
+        statusList.remove(0);
+        Status lastStatus = statusList.get(0);
+        if (lastStatus.getCode() == Status.Code.FIVE) {
+            statusList.remove(0);
+        }
+        nowStatus.setContent(form.getContent());
+        statusList.add(nowStatus);
+        statusList.add(nowStatus.next());
         entity.setStatus(statusDAO.save(statusList));
         return subjectDAO.save(entity);
     }

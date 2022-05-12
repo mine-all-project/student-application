@@ -76,6 +76,9 @@
 								v-if="record.lastStatusCode == 4">通过</a-button>
 			<a-button type="danger" size="small" @click="check(1,record)"
 								v-if="record.lastStatusCode == 4">驳回</a-button>
+			<!--填写指导教师表 6-->
+			<a-button type="primary" size="small" @click="editGuideTeacher(record)"
+								v-if="record.lastStatusCode == 6 ||	record.lastStatusCode == 7">填写指导教师表</a-button>
 		</span>
 	</a-table>
 	<a-modal title="添加课题" :visible.sync="show.addSubject" width="30%" ok-text="确认"
@@ -162,6 +165,25 @@
 
 		<!--		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>-->
 	</a-modal>
+	<a-modal title="填写指导教师表" :visible.sync="show.editGuideTeacher" width="60%" @cancel="closeGuideTeacher">
+		<span slot="footer">
+			<a-button type="default" @click="closeGuideTeacher">关闭</a-button>
+			<a-button type="primary" @click="submitGuideTeacher">确定</a-button>
+		</span>
+		<a-form-model ref="ruleForm" :model="form.guideTeacher" :rules="rules" :label-col="labelCol"
+									:wrapper-col="wrapperCol">
+			<a-form-model-item label="评价内容" prop="content">
+				<a-textarea v-model="form.guideTeacher.content" placeholder="请输入评价内容"
+										:auto-size="{ minRows: 2, maxRows: 6 }"></a-textarea>
+			</a-form-model-item>
+			<a-form-model-item label="评阅教师" prop="reviewer">
+				<a-select style="width: 100%" v-model="form.guideTeacher.reviewerId">
+					<a-select-option :value="item.id" v-for="item in options.teacherList">{{item.name}}</a-select-option>
+				</a-select>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+
 	<!--	<a-modal :visible="show.previewImg" :footer="null" @cancel="closePreview">-->
 	<!--		<img style="width: 100%" :src="temp.previewSrc"/>-->
 	<!--	</a-modal>-->
@@ -215,13 +237,14 @@
                 },
                 dataList: [],
                 rules: {
-                    name: [
-                        {required: true, message: '请输入名称', trigger: 'change'},
+                    content: [
+                        {required: true, message: '请输入内容', trigger: 'change'},
                     ],
-                    note: [
-                        {required: true, message: '请输入金额', trigger: 'change'},
+                    reviewer: [
+                        {required: true, message: '请选择评阅教师', trigger: 'change'},
                     ],
                 },
+                options: {teacherList: []},
                 labelCol: {span: 5},
                 wrapperCol: {span: 16},
                 form: {
@@ -231,6 +254,11 @@
                         createBy: {}
                     },
                     status: {},
+                    guideTeacher: {
+                        content: '',
+                        reviewer: {},
+                        reviewerId: '',
+                    },
                     searchText: '',
                 },
                 show: {
@@ -239,6 +267,8 @@
                     subjectInfo: false,
                     editStatusContent: false,
                     writeContent: false,
+                    writeLastContent: false,
+                    editGuideTeacher: false,
                 },
                 temp: {
                     previewSrc: '',
@@ -248,7 +278,6 @@
                         description: '',
                         createBy: {}
                     },
-                    searchGoods: [],
                     isAddSubject: false,
                 },
                 editor: {
@@ -269,8 +298,59 @@
         },
         mounted() {
             this.getList()
+            this.getTeacherList()
+
         },
         methods: {
+            getTeacherList() {
+                axios.get('/api/user/list').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.options.teacherList = result.data.filter(e => {
+                        return e.role === 2
+                    })
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            /*填写指导教师表*/
+            editGuideTeacher(record) {
+                this.temp.subject = record
+                this.show.editGuideTeacher = true
+            },
+            closeGuideTeacher() {
+                this.show.editGuideTeacher = false
+            },
+            submitGuideTeacher() {
+                let reviewer = this.options.teacherList.filter(e => {
+                    return e.id === this.form.guideTeacher.reviewerId
+                })
+                if (reviewer.length !== 1) {
+                    this.$message.error('请正确选择评阅教师')
+                    return
+                }
+                let data = {
+                    id: this.temp.subject.id,
+                    content: this.form.guideTeacher.content,
+                    reviewer: reviewer[0],
+                }
+                axios.post('/api/subject/status/edit', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeGuideTeacher()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                console.log(data)
+            },
+            /*中期审查*/
             check(status, record) {
                 let content = prompt('备注')
                 let data = {
@@ -348,11 +428,6 @@
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
-            },
-            editSubject() {
-                this.show.addGoods = true
-                this.show.goodsInfo = false
-                this.temp.isAddGoods = false
             },
             deleteSubject(record) {
                 axios.delete(`/api/subject/delete/${record.id}`).then(response => {
