@@ -69,7 +69,7 @@ public class Status extends BaseEntity {
         NINE(9, "等待答辩成绩评定"),
         TEN(10, "优秀毕业论文评选阶段"),
         ELEVEN(11, "二次答辩阶段"),
-        TWELVE(12, "结束");
+        TWELVE(12, "课题已结束");
         @Getter
         private final int code;
         private final String text;

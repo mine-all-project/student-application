@@ -3,8 +3,8 @@ const app = new Vue({
     components: {},
     data() {
         return {
-            isDebug: true,
-            pageUrl: '/server/demo.html',
+            isDebug: false,
+            pageUrl: '/server/welcome.html',
             headers: headers,
             labelCol: {span: 5},
             wrapperCol: {span: 16},
@@ -75,136 +75,48 @@ const app = new Vue({
                     url: '/server/subject-write.html',
                 },
                 {
-                    key: '3',
-                    name: '信息管理',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '31',
-                            name: '政策信息',
-                            icon: 'appstore',
-                            url: '/server/policy-list.html',
-                        },
-                        {
-                            key: '32',
-                            name: '疫情防护信息',
-                            icon: 'appstore',
-                            url: '/server/epidemic-list.html',
-                        },
-                    ]
-                },
-                {
                     key: '5',
-                    name: '商品管理',
+                    name: '用户管理',
                     icon: 'appstore',
-                    url: '/server/goods-list.html',
-                },
-                {
-                    key: '7',
-                    name: '订单管理',
-                    icon: 'appstore',
-                    url: '/server/order-list.html',
-                },
-                {
-                    key: '2',
-                    name: '体温查看',
-                    icon: 'appstore',
-                    url: '/server/temperature-list.html',
-                },
-                {
-                    key: '4',
-                    name: '管理员管理',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '40',
-                            name: '权限管理',
-                            icon: 'appstore',
-                            url: '/server/user-list-manage.html',
-                        },
-                        {
-                            key: '41',
-                            name: '用户管理',
-                            icon: 'appstore',
-                            url: '/server/user-list.html',
-                        },
-                    ]
-                },
-                {
-                    key: '11',
-                    name: '综合管理',
-                    icon: 'appstore',
-                    url: '/server/custom.html',
-                },
-            ],
-            sysMenus: [
-                {
-                    key: '4',
-                    name: '管理员管理',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '40',
-                            name: '权限管理',
-                            icon: 'appstore',
-                            url: '/server/user-list-manage.html',
-                        },
-                        {
-                            key: '41',
-                            name: '用户管理',
-                            icon: 'appstore',
-                            url: '/server/user-list.html',
-                        },
-                    ]
+                    url: '/server/user-list.html',
                 },
             ],
             managerMenus: [
                 {
-                    key: '11',
-                    name: '综合管理',
-                    icon: 'appstore',
-                    url: '/server/custom.html',
-                },
-                {
-                    key: '3',
-                    name: '信息管理',
-                    icon: 'appstore',
-                    url: '',
-                    children: [
-                        {
-                            key: '31',
-                            name: '政策信息',
-                            icon: 'appstore',
-                            url: '/server/policy-list.html',
-                        },
-                        {
-                            key: '32',
-                            name: '疫情防护信息',
-                            icon: 'appstore',
-                            url: '/server/epidemic-list.html',
-                        },
-                    ]
-                },
-                {
                     key: '5',
-                    name: '商品管理',
+                    name: '用户管理',
                     icon: 'appstore',
-                    url: '/server/goods-list.html',
+                    url: '/server/user-list.html',
                 },
-                {
-                    key: '7',
-                    name: '订单管理',
-                    icon: 'appstore',
-                    url: '/server/order-list.html',
-                },
+            ],
+            directorMenus: [
                 {
                     key: '2',
-                    name: '体温查看',
+                    name: '课题审核',
                     icon: 'appstore',
-                    url: '/server/temperature-list.html',
+                    url: '/server/subject-check.html',
+                },
+            ],
+            teacherMenus: [
+                {
+                    key: '1',
+                    name: '课题管理',
+                    icon: 'appstore',
+                    url: '/server/subject-list.html',
+                },
+            ],
+            studentMenus: [
+                {
+                    key: '3',
+                    name: '选择课题',
+                    icon: 'appstore',
+                    url: '/server/subject-select.html',
+                },
+                {
+                    key: '4',
+                    name: '撰写论文',
+                    icon: 'appstore',
+                    url: '/server/subject-write.html',
                 },
             ],
             welcome: true,
@@ -323,12 +235,14 @@ const app = new Vue({
         },
         initUserMenus() {
             let rule = this.userInfo.role
-            if (rule === 1) {
-                this.menus = this.sysMenus
-            } else if (rule === 2) {
+            if (rule === 0) {
                 this.menus = this.managerMenus
-            } else if (rule === 0) {
-                this.menus = this.allMenus
+            } else if (rule === 1) {
+                this.menus = this.directorMenus
+            } else if (rule === 2) {
+                this.menus = this.teacherMenus
+            } else if (rule === 3) {
+                this.menus = this.studentMenus
             }
             if (this.isDebug) {
                 this.menus = this.allMenus

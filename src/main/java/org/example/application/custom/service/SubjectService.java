@@ -1,11 +1,13 @@
 package org.example.application.custom.service;
 
+import com.itextpdf.text.DocumentException;
 import org.example.application.common.BaseService;
 import org.example.application.custom.entity.Subject;
 import org.example.application.custom.form.CheckForm;
 import org.example.application.custom.form.StatusForm;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 public interface SubjectService extends BaseService {
@@ -34,4 +36,12 @@ public interface SubjectService extends BaseService {
     Subject checkFirstContent(HttpServletRequest request, CheckForm form);
 
     Subject editLastContent(HttpServletRequest request, StatusForm form);
+
+    Subject createTable(HttpServletRequest request, Subject form) throws DocumentException, IOException;
+
+    Subject createEndTable(HttpServletRequest request, Subject form) throws DocumentException, IOException;
+
+    Subject isGood(HttpServletRequest request, String id, String status);
+
+    Subject saveTwoTime(HttpServletRequest request, Subject form);
 }

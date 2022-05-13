@@ -7,7 +7,6 @@
 	<div data-th-replace="/components/vue :: javascript"></div>
 	<div data-th-replace="/components/ui :: antd"></div>
 	<style>
-
 	</style>
 </head>
 <body>
@@ -45,7 +44,6 @@
 		<span slot="status" slot-scope="text,record">
 				<a-tag v-if="record.lastStatus">{{record.lastStatusText}}</a-tag>
 			<a-tag color="red" v-else>{{record.lastStatusText}}</a-tag>
-			<a-tag color="red">{{record.lastStatusCode}}</a-tag>
 		</span>
 		<span slot="createTime" slot-scope="text">
 			<a-tooltip placement="topLeft">
@@ -66,8 +64,13 @@
 		<span slot="action" slot-scope="text, record">
 			<a-button type="primary" size="small" @click="showSubjectInfo(record)">查看详情</a-button>
 			<!--系主任审核阶段 0-->
-			<a-button type="danger" size="small" @click="deleteSubject(record)"
-								v-if="record.lastStatusCode == 0">删除</a-button>
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteSubject(record)"
+										v-if="record.lastStatusCode == 0">
+				<template slot="title">
+					<p>确定要删除吗？</p>
+				</template>
+					<a-button type="danger" size="small">删除</a-button>
+			</a-popconfirm>
 			<!--填写任务阶段 1-->
 			<a-button type="primary" size="small" @click="editStatusContent(record)"
 								v-if="record.lastStatusCode == 1 ||	record.lastStatusCode == 2">填写任务</a-button>
@@ -78,7 +81,34 @@
 								v-if="record.lastStatusCode == 4">驳回</a-button>
 			<!--填写指导教师表 6-->
 			<a-button type="primary" size="small" @click="editGuideTeacher(record)"
-								v-if="record.lastStatusCode == 6 ||	record.lastStatusCode == 7">填写指导教师表</a-button>
+								v-if="record.lastStatusCode == 6 ">填写指导教师表</a-button>
+			<!--填写指导教师表 6-->
+			<a-button type="primary" size="small" @click="editReviewTeacher(record)"
+								v-if="record.lastStatusCode == 7 ">填写评阅教师表</a-button>
+			<!--生成答辩用表 8-->
+			<a-button type="primary" size="small" @click="createTable(record)"
+								v-if="record.lastStatusCode == 8 ">填写答辩信息</a-button>
+			<!--下载答辩用表 8-->
+			<a-button type="primary" size="small" @click="downloadPdf(record.paperPdfUrl,record.name)"
+								v-if="record.lastStatusCode > 8 && false">下载答辩用表</a-button>
+			<!--生成成绩表 9-->
+			<a-button type="primary" size="small" @click="createEndTable(record)"
+								v-if="record.lastStatusCode == 9 ">填写成绩</a-button>
+			<!--下载成绩表 9-->
+			<a-button type="primary" size="small" @click="downloadPdf(record.scorePdfUrl,record.name)"
+								v-if="record.lastStatusCode > 9 && false">下载成绩评定表</a-button>
+			<!--优秀论文评定 10-->
+			<a-popconfirm placement="top" ok-text="优秀" cancel-text="普通" @confirm="setIsGood(0,record.id)"
+										@cancel="setIsGood(1,record.id)"
+										v-if="record.lastStatusCode == 10">
+				<template slot="title">
+					<p>要设为优秀论文吗？</p>
+				</template>
+				<a-button type="primary" size="small">优秀论文</a-button>
+			</a-popconfirm>
+			<!--填写二次答辩时间-->
+			<a-button type="primary" size="small" @click="editTwoTime(record)"
+								v-if="record.lastStatusCode == 11 ">填写二次答辩时间</a-button>
 		</span>
 	</a-table>
 	<a-modal title="添加课题" :visible.sync="show.addSubject" width="30%" ok-text="确认"
@@ -87,7 +117,7 @@
 			<a-form-model-item label="名称" prop="name">
 				<a-input v-model="form.subject.name"></a-input>
 			</a-form-model-item>
-			<a-form-model-item label="简介" prop="content">
+			<a-form-model-item label="简介" prop="description">
 				<a-textarea v-model="form.subject.description" :rows="4"></a-textarea>
 			</a-form-model-item>
 		</a-form-model>
@@ -142,17 +172,78 @@
 				<span>{{temp.subject.lastStatusText}}</span>
 			</span>
 		</div>
+		<a-divider></a-divider>
+		<div style="display: flex;">
+			<span style="flex: 1" v-if="temp.subject.time">
+				<span style="font-weight: 600">答辩时间:</span>
+				<span>{{temp.subject.timeStr}}</span>
+			</span>
+			<span style="flex: 1" v-if="temp.subject.address">
+				<span style="font-weight: 600">答辩地点:</span>
+				<span>{{temp.subject.address}}</span>
+			</span>
+		</div>
+		<div v-if="temp.subject.groups && temp.subject.groups.length>0">
+			<a-divider></a-divider>
+			<div style="display: flex;">
+				<div style="flex: 1">
+					<span style="font-weight: 600">小组成员:</span>
+					<span v-for="item in temp.subject.groups">{{item.name }}</span>
+				</div>
+			</div>
+		</div>
+		<div v-if="temp.subject.guideTeacher">
+			<a-divider></a-divider>
+			<div style="display: flex;">
+				<div style="flex: 1">
+					<span style="font-weight: 600">指导教师评价:</span>
+					<span>{{temp.subject.guideTeacher.content }}</span>
+				</div>
+			</div>
+		</div>
+		<div v-if="temp.subject.reviewTeacher">
+			<a-divider></a-divider>
+			<div style="display: flex;">
+				<div style="flex: 1">
+					<span style="font-weight: 600">评阅教师评价:</span>
+					<span>{{temp.subject.reviewTeacher.content }}</span>
+				</div>
+			</div>
+			<a-divider></a-divider>
+		</div>
+		<div style="display: flex;">
+			<span style="flex: 1" v-if="temp.subject.isGood !== null">
+				<span style="font-weight: 600">是否为优秀毕业论文:</span>
+				<a-tag color="pink" v-if="temp.subject.isGood === 0">是</a-tag>
+				<a-tag color="green" v-if="temp.subject.isGood === 1">否</a-tag>
+			</span>
+			<span style="flex: 1" v-if="temp.subject.score">
+				<span style="font-weight: 600">得分:</span>
+				<span>{{temp.subject.score}}</span>
+			</span>
+			<span style="flex: 1" v-if="temp.subject.twoTime">
+				<span style="font-weight: 600">二次答辩时间:</span>
+				<span>{{temp.subject.twoTimeStr}}</span>
+			</span>
+		</div>
 		<div style="display: flex;">
 			<span style="font-weight: 600">简介:</span><br/>
 			<span>{{temp.subject.description}}</span>
 		</div>
+		<a-divider></a-divider>
+		<a-button type="primary" size="small" @click="downloadPdf(temp.subject.paperPdfUrl,temp.subject.name)"
+							v-if="temp.subject.lastStatusCode > 8 ">下载答辩用表
+		</a-button>
+		<a-button type="primary" size="small" @click="downloadPdf(temp.subject.scorePdfUrl,temp.subject.name)"
+							v-if="temp.subject.lastStatusCode > 9 ">下载成绩评定表
+		</a-button>
 		<a-divider></a-divider>
 		<div style="display: flex;flex-direction: column">
 			<span style="font-weight: 600">流程详情:</span><br/>
 			<div v-for="item in temp.subject.status">
 				<div>
 					<span style="font-weight: 600">阶段:</span>
-					<span>{{subStatus(item.code)}}</span>
+					<span>{{subStatusText(item.code)}}</span>
 				</div>
 				<div>
 					<span style="font-weight: 600">备注或内容:</span>
@@ -180,6 +271,71 @@
 				<a-select style="width: 100%" v-model="form.guideTeacher.reviewerId">
 					<a-select-option :value="item.id" v-for="item in options.teacherList">{{item.name}}</a-select-option>
 				</a-select>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="填写评阅教师表" :visible.sync="show.editReviewTeacher" width="60%" @cancel="closeReviewTeacher">
+		<span slot="footer">
+			<a-button type="default" @click="closeReviewTeacher">关闭</a-button>
+			<a-button type="primary" @click="submitReviewTeacher">确定</a-button>
+		</span>
+		<a-form-model ref="ruleForm" :model="form.reviewTeacher" :rules="rules" :label-col="labelCol"
+									:wrapper-col="wrapperCol">
+			<a-form-model-item label="评价内容" prop="content">
+				<a-textarea v-model="form.reviewTeacher.content" placeholder="请输入评价内容"
+										:auto-size="{ minRows: 2, maxRows: 6 }"></a-textarea>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="填写答辩信息" :visible.sync="show.createTable" width="60%" @cancel="closeCreateTable">
+		<span slot="footer">
+			<a-button type="default" @click="closeCreateTable">关闭</a-button>
+			<a-button type="primary" @click="submitCreateTable">确定</a-button>
+		</span>
+		<a-form-model ref="ruleForm" :model="form.subject" :rules="rules" :label-col="labelCol"
+									:wrapper-col="wrapperCol">
+			<a-form-model-item label="答辩时间" prop="time">
+				<a-date-picker v-model="form.subject.time" show-time placeholder="请选择答辩时间" style="width: 100%"></a-date-picker>
+			</a-form-model-item>
+			<a-form-model-item label="答辩地点" prop="address">
+				<a-input v-model="form.subject.address" placeholder="请输入答辩地点"></a-input>
+			</a-form-model-item>
+			<a-form-model-item label="选择组成员" prop="groups">
+				<a-select mode="multiple" style="width: 100%" placeholder="选择组成员" v-model="form.subject.groups">
+					<a-select-option v-for="item in options.studentList" :key="item.id">
+						{{ item.name }}
+					</a-select-option>
+				</a-select>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="填写成绩" :visible.sync="show.createEndTable" width="60%" @cancel="closeCreateEndTable">
+		<span slot="footer">
+			<a-button type="default" @click="closeCreateEndTable">关闭</a-button>
+			<a-button type="primary" @click="submitCreateEndTable">确定</a-button>
+		</span>
+		<a-form-model ref="ruleForm" :model="form.subject" :rules="rules" :label-col="labelCol"
+									:wrapper-col="wrapperCol">
+			<a-form-model-item label="评语" prop="note">
+				<a-textarea v-model="form.subject.note" placeholder="请输入评语"
+										:auto-size="{ minRows: 2, maxRows: 6 }"></a-textarea>
+			</a-form-model-item>
+			<a-form-model-item label="成绩" prop="score">
+				<a-input-number v-model="form.subject.score" placeholder="请输入成绩" :min="0" :max="100"
+												:step="0.1" style="width: 100%"></a-input-number>
+			</a-form-model-item>
+		</a-form-model>
+	</a-modal>
+	<a-modal title="二次答辩" :visible.sync="show.editTwoTime" width="60%" @cancel="closeEditTwoTime">
+		<span slot="footer">
+			<a-button type="default" @click="closeEditTwoTime">关闭</a-button>
+			<a-button type="primary" @click="submitTwoTime">确定</a-button>
+		</span>
+		<a-form-model ref="ruleForm" :model="form.subject" :rules="rules" :label-col="labelCol"
+									:wrapper-col="wrapperCol">
+			<a-form-model-item label="二次答辩时间" prop="twoTime">
+				<a-date-picker v-model="form.subject.twoTime" show-time placeholder="请选择二次答辩时间"
+											 style="width: 100%"></a-date-picker>
 			</a-form-model-item>
 		</a-form-model>
 	</a-modal>
@@ -237,11 +393,29 @@
                 },
                 dataList: [],
                 rules: {
+                    note: [
+                        {required: true, message: '请输入评语', trigger: 'change'},
+                    ],
+                    score: [
+                        {required: true, message: '请输入成绩', trigger: 'change'},
+                    ],
+                    name: [
+                        {required: true, message: '请输入名称', trigger: 'change'},
+                    ],
                     content: [
                         {required: true, message: '请输入内容', trigger: 'change'},
                     ],
+                    address: [
+                        {required: true, message: '请输入答辩地点', trigger: 'change'},
+                    ],
                     reviewer: [
                         {required: true, message: '请选择评阅教师', trigger: 'change'},
+                    ],
+                    time: [
+                        {required: true, message: '请选择答辩时间', trigger: 'change'},
+                    ],
+                    groups: [
+                        {required: true, message: '请选择答辩组成员', trigger: 'change'},
                     ],
                 },
                 options: {teacherList: []},
@@ -251,13 +425,20 @@
                     subject: {
                         name: '',
                         description: '',
-                        createBy: {}
+                        createBy: {},
+                        address: '',
+                        time: '',
+                        twoTime: '',
+                        groups: [],
                     },
                     status: {},
                     guideTeacher: {
                         content: '',
                         reviewer: {},
                         reviewerId: '',
+                    },
+                    reviewTeacher: {
+                        content: '',
                     },
                     searchText: '',
                 },
@@ -269,6 +450,10 @@
                     writeContent: false,
                     writeLastContent: false,
                     editGuideTeacher: false,
+                    editReviewTeacher: false,
+                    createTable: false,
+                    createEndTable: false,
+                    editTwoTime: false,
                 },
                 temp: {
                     previewSrc: '',
@@ -299,9 +484,149 @@
         mounted() {
             this.getList()
             this.getTeacherList()
-
+            this.getStudentList()
         },
         methods: {
+            /*截取最后状态*/
+            subStatusCode(content) {
+                return content.substring(content.indexOf('code=') + 5, content.indexOf(','))
+            },
+            subStatusText(content) {
+                return content.substring(content.indexOf('text=') + 5, content.indexOf(')'))
+            },
+            /*编辑器*/
+            createEditor(content) {
+                setTimeout(() => {
+                    if (this.editor.create) {
+                        this.editor.instance = new window.Quill('#editor', {
+                            theme: 'snow',
+                            modules: {
+                                toolbar: this.editor.toolbar
+                            }
+                        })
+                        this.editor.create = false
+                    }
+                    this.editor.instance.root.innerHTML = content
+                }, 1000)
+            },
+            destroyEditor() {
+                this.editor.instance.root.innerHTML = ''
+            },
+            /*填写二次答辩时间*/
+            editTwoTime(record) {
+                this.temp.subject = record
+                this.show.editTwoTime = true
+            },
+            closeEditTwoTime() {
+                this.show.editTwoTime = false
+            },
+            submitTwoTime() {
+                let data = {
+                    id: this.temp.subject.id,
+                    twoTime: this.form.subject.twoTime.format('YYYY-MM-DD HH:mm:ss'),
+                }
+                axios.post('/api/subject/twoTime', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeEditTwoTime()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            /*优秀论文评定*/
+            setIsGood(status, id) {
+                axios.post(`/api/subject/isGood/${id}/${status}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            /*生成成绩表*/
+            createEndTable(record) {
+                this.temp.subject = record
+                this.show.createEndTable = true
+            },
+            closeCreateEndTable() {
+                this.show.createEndTable = false
+            },
+            submitCreateEndTable() {
+                let data = {
+                    id: this.temp.subject.id,
+                    score: this.form.subject.score,
+                    note: this.form.subject.note,
+                }
+                axios.post(`/api/subject/createEndTable`, data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeCreateEndTable()
+                    this.downloadPdf(result.data.scorePdfUrl, result.data.name,)
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            /*生成答辩用表*/
+            createTable(record) {
+                this.temp.subject = record
+                this.show.createTable = true
+            },
+            closeCreateTable() {
+                this.show.createTable = false
+            },
+            submitCreateTable() {
+                let groups = this.options.studentList.filter(e => {
+                    return this.form.subject.groups.includes(e.id)
+                })
+                let data = {
+                    id: this.temp.subject.id,
+                    time: this.form.subject.time.format('YYYY-MM-DD HH:mm:ss'),
+                    address: this.form.subject.address,
+                    groups: groups,
+                }
+                axios.post(`/api/subject/createTable`, data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeCreateTable()
+                    this.downloadPdf(result.data.paperPdfUrl, result.data.name,)
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
+            /*初始化数据*/
+            getStudentList() {
+                axios.get('/api/user/list').then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.options.studentList = result.data.filter(e => {
+                        return e.role === 1
+                    })
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             getTeacherList() {
                 axios.get('/api/user/list').then(response => {
                     const result = response.data
@@ -315,6 +640,60 @@
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
+            },
+            /*填写答辩信息*/
+            editReviewTeacher(record) {
+                this.temp.subject = record
+                this.show.editReviewTeacher = true
+            },
+            closeReviewTeacher() {
+                this.show.editReviewTeacher = false
+            },
+            submitReviewTeacher() {
+                let data = {
+                    id: this.temp.subject.id,
+                    content: this.form.reviewTeacher.content,
+                }
+                axios.post('/api/review/save', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeReviewTeacher()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                console.log(data)
+            },
+            /*填写评阅教师表*/
+            editReviewTeacher(record) {
+                this.temp.subject = record
+                this.show.editReviewTeacher = true
+            },
+            closeReviewTeacher() {
+                this.show.editReviewTeacher = false
+            },
+            submitReviewTeacher() {
+                let data = {
+                    id: this.temp.subject.id,
+                    content: this.form.reviewTeacher.content,
+                }
+                axios.post('/api/review/save', data).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    this.$message.success(result.message);
+                    this.closeReviewTeacher()
+                    this.getList()
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+                console.log(data)
             },
             /*填写指导教师表*/
             editGuideTeacher(record) {
@@ -337,7 +716,7 @@
                     content: this.form.guideTeacher.content,
                     reviewer: reviewer[0],
                 }
-                axios.post('/api/subject/status/edit', data).then(response => {
+                axios.post('/api/guide/save', data).then(response => {
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
@@ -345,10 +724,10 @@
                     }
                     this.$message.success(result.message);
                     this.closeGuideTeacher()
+                    this.getList()
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
-                console.log(data)
             },
             /*中期审查*/
             check(status, record) {
@@ -368,26 +747,6 @@
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
-            },
-            subStatus(content) {
-                return content.substring(content.indexOf('text=') + 5, content.indexOf(')'))
-            },
-            createEditor(content) {
-                setTimeout(() => {
-                    if (this.editor.create) {
-                        this.editor.instance = new window.Quill('#editor', {
-                            theme: 'snow',
-                            modules: {
-                                toolbar: this.editor.toolbar
-                            }
-                        })
-                        this.editor.create = false
-                    }
-                    this.editor.instance.root.innerHTML = content
-                }, 1000)
-            },
-            destroyEditor() {
-                this.editor.instance.root.innerHTML = ''
             },
             /*添加课题*/
             showAddSubject() {
@@ -590,11 +949,8 @@
                         return createTimeB.diff(createTimeA, 's');
                     })
                     let lastStatus = status.length ? status[0].code : false
-                    let lastStatusCode = lastStatus ? lastStatus.substring(17, lastStatus.indexOf(',')) : ''
-                    let lastStatusText = lastStatus ? lastStatus.substring(25, lastStatus.length - 1) : ''
-                    if (lastStatusCode == '-1') {
-                        lastStatusText = lastStatus ? lastStatus.substring(26, lastStatus.length - 1) : ''
-                    }
+                    let lastStatusCode = lastStatus ? this.subStatusCode(lastStatus) : ''
+                    let lastStatusText = lastStatus ? this.subStatusText(lastStatus) : ''
                     return {
                         indexNum: index,
                         id: e.id,
@@ -602,6 +958,19 @@
                         description: e.description,
                         files: e.files,
                         isSelect: e.isSelect,
+                        paperPdfUrl: e.paperPdfUrl,
+                        groups: e.groups,
+                        score: e.score,
+                        scorePdfUrl: e.scorePdfUrl,
+                        isGood: e.isGood,
+                        address: e.address,
+                        note: e.note,
+                        time: e.time,
+                        guideTeacher: e.guideTeacher,
+                        reviewTeacher: e.reviewTeacher,
+                        timeStr: new moment(e.time).format('YYYY-MM-DD HH:mm:ss'),
+                        twoTime: e.twoTime,
+                        twoTimeStr: new moment(e.twoTime).format('YYYY-MM-DD HH:mm:ss'),
                         status: status,
                         lastStatus: lastStatus,
                         lastStatusCode: lastStatusCode,
@@ -638,6 +1007,12 @@
                 this.form.goods.images = this.form.goods.images.filter(e => {
                     return e.virtualPath !== file.url
                 })
+            },
+            downloadPdf(url, name) {
+                const download = document.createElement('a')
+                download.setAttribute('href', `/file/${url}`)
+                download.setAttribute('download', name)
+                download.click()
             },
         }
     })

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Title</title>
+	<style>
+      .row {
+          margin-top: 16px;
+      }
+
+      .col {
+          width: 40%;
+          display: inline-block;
+          float: left;
+      }
+
+      .black {
+          width: 10%;
+          display: inline-block;
+          float: left;
+      }
+	</style>
+</head>
+<body style="padding: 26px;font-family: 'Microsoft YaHei'">
+<div style="text-align: left;">
+	<div class="row">
+		<div class="black"></div>
+		<div class="col">
+			<span>课题名称: </span>
+			<span th:text="${subjectName}">hello,world </span>
+		</div>
+		<div class="col">
+			<span>答辩人: </span>
+			<span th:text="${subjectSelector}">admin </span>
+		</div>
+		<div class="black"></div>
+	</div>
+	<div class="row">
+		<div class="black"></div>
+		<div class="col">
+			<span>指导教师: </span>
+			<span th:text="${guideTeacher}">admin </span>
+		</div>
+		<div class="col">
+			<span>评阅教师: </span>
+			<span th:text="${reviewTeacher}">admin </span>
+		</div>
+		<div class="black"></div>
+
+	</div>
+	<div class="row">
+		<div class="black"></div>
+		<div class="col">
+			<span>答辩时间: </span>
+			<span th:text="${subjectTime}">2022-05-13T16:19:16 </span>
+		</div>
+		<div class="col">
+			<span>答辩地点: </span>
+			<span th:text="${subjectAddress}">111</span>
+		</div>
+		<div class="black"></div>
+
+	</div>
+	<div class="row">
+		<div class="black"></div>
+		<div class="col" style="width: 100%">
+			<span>答辩组成员: </span>
+			<span th:each="item : ${subjectGroups}">
+				<span th:text="${item.name}"></span>
+			</span>
+		</div>
+	</div>
+</div>
+<div style="margin-top: 16px">论文：</div>
+<span style="margin-top: 16px" th:utext="${paper}">hello,world </span>
+
+</body>
+</html>

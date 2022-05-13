@@ -32,14 +32,18 @@
 				<a-form-model-item label="姓名" prop="name">
 					<a-input v-model="form.userInfo.name" placeholder="请输入姓名"></a-input>
 				</a-form-model-item>
+				<a-form-model-item label="姓名" prop="password">
+					<a-input v-model="form.userInfo.password" placeholder="请输入密码"></a-input>
+				</a-form-model-item>
 				<a-form-model-item label="年龄" prop="age">
 					<a-input-number style="width:100%" v-model="form.userInfo.age" placeholder="请输入年龄"></a-input-number>
 				</a-form-model-item>
 				<a-form-model-item label="权限" prop="role">
 					<a-radio-group v-model="form.userInfo.role" default-value="2">
 <!--						<a-radio value="9">超级管理员*</a-radio>-->
-						<a-radio :value="1">系统管理员</a-radio>
-						<a-radio :value="2">社区管理员</a-radio>
+						<a-radio :value="1">系主任</a-radio>
+						<a-radio :value="2">教师</a-radio>
+						<a-radio :value="3">学生</a-radio>
 					</a-radio-group>
 				</a-form-model-item>
 				<a-form-model-item label="标签" prop="tags" v-if="false">
@@ -73,8 +77,10 @@
 			<span slot="role" slot-scope="role">
           <a-tag color="pink" v-if="role === 999">*超级管理员*</a-tag>
           <a-tag color="green" v-if="role === 999">系统管理员</a-tag>
-          <a-tag color="orange" v-if="role === 1">系统管理员</a-tag>
-          <a-tag color="blue" v-if="role === 2">社区管理员</a-tag>
+          <a-tag color="orange" v-if="role === 0">管理员</a-tag>
+          <a-tag color="blue" v-if="role === 1">系主任</a-tag>
+          <a-tag color="blue" v-if="role === 2">教师</a-tag>
+          <a-tag color="blue" v-if="role === 3">学生</a-tag>
       </span>
 			<span slot="status" slot-scope="status">
         <a-tag color="green" v-if="status === 0">正常</a-tag>

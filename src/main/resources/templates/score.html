@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<title>Title</title>
+	<style>
+      table {
+          border-spacing: 0;
+          width: 80%;
+          margin: 0 auto;
+          border: 1px solid #999;
+
+      }
+
+      td {
+          border: 1px solid #999;
+
+      }
+
+	</style>
+</head>
+<body style="padding: 26px;font-family: 'Microsoft YaHei'">
+<div style="text-align: left;">
+	<table>
+		<tr>
+			<td>课题名称</td>
+			<td>答辩人</td>
+			<td>指导教师</td>
+			<td>评阅教师</td>
+			<td>成绩</td>
+		</tr>
+		<tr>
+			<td th:text="${subjectName}">hello,world</td>
+			<td th:text="${subjectSelector}">admin</td>
+			<td th:text="${guideTeacher}">admin</td>
+			<td th:text="${reviewTeacher}">admin</td>
+			<td th:text="${score}">00.00</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

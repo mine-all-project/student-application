@@ -1,5 +1,6 @@
 package org.example.application.custom.controller;
 
+import com.itextpdf.text.DocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.BaseController;
 import org.example.application.common.utils.jwt.JwtIgnore;
@@ -11,6 +12,7 @@ import org.example.application.system.dto.ResponseDTO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -140,4 +142,35 @@ public class SubjectController extends BaseController {
         return ResponseDTO.returnSuccess(entity);
     }
 
+    @PostMapping("/createTable")
+    public ResponseDTO createTable(HttpServletRequest request, @RequestBody Subject form) throws DocumentException, IOException {
+        log.info("收到请求->生成答辩用表:[{}]", form);
+        Subject entity = subjectService.createTable(request, form);
+        log.info("返回结果->生成答辩用表->结束:[{}]", entity);
+        return ResponseDTO.returnSuccess(entity);
+    }
+
+    @PostMapping("/createEndTable")
+    public ResponseDTO createEndTable(HttpServletRequest request, @RequestBody Subject form) throws DocumentException, IOException {
+        log.info("收到请求->生成成绩表:[{}]", form);
+        Subject entity = subjectService.createEndTable(request, form);
+        log.info("返回结果->生成成绩表->结束:[{}]", entity);
+        return ResponseDTO.returnSuccess(entity);
+    }
+
+    @PostMapping("/isGood/{id}/{status}")
+    public ResponseDTO isGood(HttpServletRequest request, @PathVariable String id, @PathVariable String status) {
+        log.info("收到请求->是否为优秀论文:[{}],[{}]", id, status);
+        Subject entity = subjectService.isGood(request, id, status);
+        log.info("返回结果->是否为优秀论文->结束:[{}]", entity);
+        return ResponseDTO.returnSuccess(entity);
+    }
+
+    @PostMapping("/twoTime")
+    public ResponseDTO saveTwoTime(HttpServletRequest request, @RequestBody Subject form) {
+        log.info("收到请求->填写二次答辩时间:[{}]", form);
+        Subject entity = subjectService.saveTwoTime(request,form);
+        log.info("返回结果->填写二次答辩时间->结束:[{}]", entity);
+        return ResponseDTO.returnSuccess(entity);
+    }
 }

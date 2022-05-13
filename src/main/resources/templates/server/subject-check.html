@@ -106,7 +106,8 @@
 	<a-modal title="详情" :visible.sync="show.subjectInfo" width="60%" @cancel="closeSubjectInfo">
 		<span slot="footer">
 			<a-button type="default" @click="closeSubjectInfo">关闭</a-button>
-			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteSubject" v-if="false">
+			<a-popconfirm placement="top" ok-text="确定" cancel-text="取消" @confirm="deleteSubject"
+										v-if="temp.subject.lastStatusCode<2">
 				<template slot="title">
 					<p>确定要删除吗？</p>
 				</template>
@@ -131,17 +132,78 @@
 				<span>{{temp.subject.lastStatusText}}</span>
 			</span>
 		</div>
+		<a-divider></a-divider>
+		<div style="display: flex;">
+			<span style="flex: 1" v-if="temp.subject.time">
+				<span style="font-weight: 600">答辩时间:</span>
+				<span>{{temp.subject.timeStr}}</span>
+			</span>
+			<span style="flex: 1" v-if="temp.subject.address">
+				<span style="font-weight: 600">答辩地点:</span>
+				<span>{{temp.subject.address}}</span>
+			</span>
+		</div>
+		<div v-if="temp.subject.groups && temp.subject.groups.length>0">
+			<a-divider></a-divider>
+			<div style="display: flex;">
+				<div style="flex: 1">
+					<span style="font-weight: 600">小组成员:</span>
+					<span v-for="item in temp.subject.groups">{{item.name }}</span>
+				</div>
+			</div>
+		</div>
+		<div v-if="temp.subject.guideTeacher">
+			<a-divider></a-divider>
+			<div style="display: flex;">
+				<div style="flex: 1">
+					<span style="font-weight: 600">指导教师评价:</span>
+					<span>{{temp.subject.guideTeacher.content }}</span>
+				</div>
+			</div>
+		</div>
+		<div v-if="temp.subject.reviewTeacher">
+			<a-divider></a-divider>
+			<div style="display: flex;">
+				<div style="flex: 1">
+					<span style="font-weight: 600">评阅教师评价:</span>
+					<span>{{temp.subject.reviewTeacher.content }}</span>
+				</div>
+			</div>
+			<a-divider></a-divider>
+		</div>
+		<div style="display: flex;">
+			<span style="flex: 1" v-if="temp.subject.isGood !== null">
+				<span style="font-weight: 600">是否为优秀毕业论文:</span>
+				<a-tag color="pink" v-if="temp.subject.isGood === 0">是</a-tag>
+				<a-tag color="green" v-if="temp.subject.isGood === 1">否</a-tag>
+			</span>
+			<span style="flex: 1" v-if="temp.subject.score">
+				<span style="font-weight: 600">得分:</span>
+				<span>{{temp.subject.score}}</span>
+			</span>
+			<span style="flex: 1" v-if="temp.subject.twoTime">
+				<span style="font-weight: 600">二次答辩时间:</span>
+				<span>{{temp.subject.twoTimeStr}}</span>
+			</span>
+		</div>
 		<div style="display: flex;">
 			<span style="font-weight: 600">简介:</span><br/>
 			<span>{{temp.subject.description}}</span>
 		</div>
+		<a-divider></a-divider>
+		<a-button type="primary" size="small" @click="downloadPdf(temp.subject.paperPdfUrl,temp.subject.name)"
+							v-if="temp.subject.lastStatusCode > 8 ">下载答辩用表
+		</a-button>
+		<a-button type="primary" size="small" @click="downloadPdf(temp.subject.scorePdfUrl,temp.subject.name)"
+							v-if="temp.subject.lastStatusCode > 9 ">下载成绩评定表
+		</a-button>
 		<a-divider></a-divider>
 		<div style="display: flex;flex-direction: column">
 			<span style="font-weight: 600">流程详情:</span><br/>
 			<div v-for="item in temp.subject.status">
 				<div>
 					<span style="font-weight: 600">阶段:</span>
-					<span>{{subStatus(item.code)}}</span>
+					<span>{{subStatusText(item.code)}}</span>
 				</div>
 				<div>
 					<span style="font-weight: 600">备注或内容:</span>
@@ -154,9 +216,6 @@
 
 		<!--		<a-upload list-type="picture-card" :file-list="temp.fileList" @preview="showPreview"></a-upload>-->
 	</a-modal>
-	<!--	<a-modal :visible="show.previewImg" :footer="null" @cancel="closePreview">-->
-	<!--		<img style="width: 100%" :src="temp.previewSrc"/>-->
-	<!--	</a-modal>-->
 </div>
 <script>
     const app = new Vue({
@@ -263,9 +322,14 @@
             this.getList()
         },
         methods: {
-            subStatus(content) {
+            /*截取最后状态*/
+            subStatusCode(content) {
+                return content.substring(content.indexOf('code=') + 5, content.indexOf(','))
+            },
+            subStatusText(content) {
                 return content.substring(content.indexOf('text=') + 5, content.indexOf(')'))
             },
+            /*编辑器*/
             createEditor(content) {
                 setTimeout(() => {
                     if (this.editor.create) {
@@ -282,59 +346,6 @@
             },
             destroyEditor() {
                 this.editor.instance.root.innerHTML = ''
-            },
-            /*添加课题*/
-            showAddSubject() {
-                this.temp.isAddSubject = true
-                this.show.addSubject = true
-            },
-            closeAddSubject() {
-                this.show.addSubject = false
-                this.form.subject = {name: '', description: '', createBy: {}}
-                this.temp.fileList = []
-            },
-            saveSubject() {
-                let data = this.form.subject
-                let oldFile = data.files
-                let newFile = this.temp.fileList.map(e => {
-                    if (e.response) {
-                        return e.response.data
-                    } else {
-                        return null
-                    }
-                }).filter(e => {
-                    return e
-                })
-                if (this.temp.isAddSubject) {
-                    data.files = newFile
-                } else {
-                    data.files = [...oldFile, ...newFile]
-                }
-                axios.post('/api/subject/save', data).then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    this.$message.success(result.message);
-                    this.closeAddSubject()
-                    // this.closeGoodsInfo()
-                    this.getList()
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
-            },
-            deleteSubject(record) {
-                axios.delete(`/api/subject/delete/${record.id}`).then(response => {
-                    const result = response.data
-                    if (result.status !== 200) {
-                        this.$message.error(result.message);
-                        return;
-                    }
-                    this.getList()
-                }).catch(function (error) {
-                    console.error('出现错误:', error);
-                });
             },
 						/*系主任审核*/
             check(status, record) {
@@ -419,11 +430,8 @@
                         return createTimeB.diff(createTimeA, 's');
                     })
                     let lastStatus = status.length ? status[0].code : false
-                    let lastStatusCode = lastStatus ? lastStatus.substring(17, lastStatus.indexOf(',')) : ''
-                    let lastStatusText = lastStatus ? lastStatus.substring(25, lastStatus.length - 1) : ''
-                    if (lastStatusCode == '-1') {
-                        lastStatusText = lastStatus ? lastStatus.substring(26, lastStatus.length - 1) : ''
-                    }
+                    let lastStatusCode = lastStatus ? this.subStatusCode(lastStatus) : ''
+                    let lastStatusText = lastStatus ? this.subStatusText(lastStatus) : ''
                     return {
                         indexNum: index,
                         id: e.id,
@@ -431,6 +439,19 @@
                         description: e.description,
                         files: e.files,
                         isSelect: e.isSelect,
+                        paperPdfUrl: e.paperPdfUrl,
+                        groups: e.groups,
+                        score: e.score,
+                        scorePdfUrl: e.scorePdfUrl,
+                        isGood: e.isGood,
+                        address: e.address,
+                        note: e.note,
+                        time: e.time,
+                        guideTeacher: e.guideTeacher,
+                        reviewTeacher: e.reviewTeacher,
+                        timeStr: new moment(e.time).format('YYYY-MM-DD HH:mm:ss'),
+                        twoTime: e.twoTime,
+                        twoTimeStr: new moment(e.twoTime).format('YYYY-MM-DD HH:mm:ss'),
                         status: status,
                         lastStatus: lastStatus,
                         lastStatusCode: lastStatusCode,
@@ -443,30 +464,12 @@
                 console.log(dataList)
                 this.dataList = dataList
             },
-						/*文件*/
-            closePreview() {
-                this.show.previewImg = false
-            },
-            async showPreview(file) {
-                if (file.response) {
-                    this.temp.previewSrc = file.response.data.virtualPath
-                } else {
-                    this.temp.previewSrc = file.url
-                }
-                this.show.previewImg = true
-            },
-            changeUploadFile(info) {
-                this.temp.fileList = info.fileList
-                if (info.file.status === 'done') {
-                    this.$message.success(`${info.file.name} 上传成功`);
-                } else if (info.file.status === 'error') {
-                    this.$message.error(`${info.file.name} 上传失败`);
-                }
-            },
-            removeUploadFile(file) {
-                this.form.goods.images = this.form.goods.images.filter(e => {
-                    return e.virtualPath !== file.url
-                })
+            /*文件*/
+            downloadPdf(url, name) {
+                const download = document.createElement('a')
+                download.setAttribute('href', `/file/${url}`)
+                download.setAttribute('download', name)
+                download.click()
             },
         }
     })
