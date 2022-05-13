@@ -1,61 +1,49 @@
-<html lang="zh-cn">
+<!doctype html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org"
+			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="renderer" content="webkit">
-	<meta name="viewport" content="width=1280,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
-	<title>注册</title>
+	<title>用户登陆</title>
 </head>
-<body>
-<div id="app">
-	<div data-reactroot="">
-		<div class="body">
-			<div class="form">
-				<div class="title">用户注册</div>
-				<div class="base-div">
-					<div>
-						<div class="mobileIcon"></div>
-						<input type="text" maxLength="11" autoComplete="off" v-model="username" placeholder="用户名"/>
-						<p class="error-tips"></p>
-					</div>
-				</div>
-				<div class="base-div">
-					<div>
-						<div class="passwordIcon"></div>
-						<input type="password" autoComplete="off" v-model="password" placeholder="密码"/>
-						<p class="error-tips"></p>
-					</div>
-				</div>
-				<div class="base-div">
-					<div>
-						<div class="passwordIcon"></div>
-						<input type="password" autoComplete="off" v-model="againPassword" placeholder="重复密码"/>
-						<p class="error-tips"></p>
-					</div>
-				</div>
-				<div class="base-div">
-					<div>
-						<input type="text" autoComplete="off" v-model="name" placeholder="姓名"/>
-						<p class="error-tips"></p>
-					</div>
-				</div>
-				<div class="base-div">
-					<div>
-						<input type="text" autoComplete="off" v-model="age" placeholder="年龄"/>
-						<p class="error-tips"></p>
-					</div>
-				</div>
-				<div class="base-div"><a class="login-button" @click="register">注册</a></div>
-			</div>
-		</div>
-	</div>
+<body class="login-bg">
+<div class="login layui-anim layui-anim-up">
+	<div class="message">用户注册</div>
+	<div id="darkbannerwrap"></div>
+	<form method="post" class="layui-form" id="app">
+		<input name="username"  lay-verify="required" class="layui-input" placeholder="用户名" type="text"
+					 v-model="username">
+		<hr class="hr15"/>
+		<input name="password"  lay-verify="required" class="layui-input" placeholder="密码"
+					 type="password" v-model="password">
+		<hr class="hr15"/>
+		<input name="againPassword"  lay-verify="required" class="layui-input" placeholder="重复密码"
+					 type="password" v-model="againPassword">
+		<hr class="hr15"/>
+		<input name="name"  lay-verify="required" class="layui-input" placeholder="姓名" type="text"
+					 v-model="name">
+		<hr class="hr15"/>
+		<input name="age"  lay-verify="required" class="layui-input" placeholder="年龄"
+					 type="number" v-model="age">
+		<hr class="hr15"/>
+		<input @click="register" style="width:100%;" type="button" value="注册">
+	</form>
 </div>
+<script th:src="@{/js/jquery-1.8.2.min.js}"></script>
+<link rel="stylesheet" th:href="@{/css/login-01/login.css}">
 <div th:replace="/components/vue :: javascript"></div>
 <div th:replace="/components/base :: javascript"></div>
+<div th:replace="/components/ui :: antd"></div>
 <div th:replace="/components/lay-ui :: javascript"></div>
 <div th:replace="/components/lay-ui :: x-admin"></div>
-<link th:href="@{/css/login-02/login.style.css}" rel="stylesheet"/>
-<link th:href="@{/css/login-02/vendor.style.css}" rel="stylesheet"/>
 <script>
+    function initLayui() {
+        layui.use('form', function () {
+            let form = layui.form;
+            form.on('submit(register)', function (data) {
+                vue.register()
+            });
+        });
+    }
+
     let vue = new Vue({
         el: '#app',
         data() {
@@ -68,6 +56,7 @@
             }
         },
         mounted() {
+            initLayui()
         },
         methods: {
             register() {
@@ -100,7 +89,6 @@
                     console.error('系统错误', exception)
                 })
             }
-
         }
     })
 </script>
