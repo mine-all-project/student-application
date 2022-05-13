@@ -69,9 +69,9 @@ public class PersonController extends BaseController {
     @PostMapping("/registry")
     public ResponseDTO registry(HttpServletRequest request, @RequestBody PersonForm form) {
         validator(form, IsNotNull.class);
-        log.info("收到请求->注册人员:[{}]", form);
+        log.info("收到请求->添加人员:[{}]", form);
         Person entity = personService.save(request, form);
-        log.info("返回结果->注册人员结束:[{}]", entity);
+        log.info("返回结果->添加人员结束:[{}]", entity);
         return ResponseDTO.returnSuccess(entity);
     }
 

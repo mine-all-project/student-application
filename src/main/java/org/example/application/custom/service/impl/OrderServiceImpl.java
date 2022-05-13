@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.application.common.DIC;
 import org.example.application.common.utils.jwt.JwtConfigure;
 import org.example.application.custom.dao.OrderDAO;
+import org.example.application.custom.dao.PersonDAO;
 import org.example.application.custom.entity.Order;
+import org.example.application.custom.entity.Person;
 import org.example.application.custom.form.MoneyForm;
 import org.example.application.custom.form.OrderForm;
 import org.example.application.custom.service.OrderService;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,12 +33,14 @@ public class OrderServiceImpl implements OrderService {
     @Value("${isDebug}")
     private boolean isDebug;
     private final UserDAO userDAO;
+    private final PersonDAO personDAO;
     private final JwtConfigure jwtConfigure;
 
-    public OrderServiceImpl(OrderDAO orderDAO, PersonService personService, UserDAO userDAO, JwtConfigure jwtConfigure) {
+    public OrderServiceImpl(OrderDAO orderDAO, PersonService personService, UserDAO userDAO, PersonDAO personDAO, JwtConfigure jwtConfigure) {
         this.orderDAO = orderDAO;
         this.personService = personService;
         this.userDAO = userDAO;
+        this.personDAO = personDAO;
         this.jwtConfigure = jwtConfigure;
     }
 
@@ -54,16 +59,39 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getAll(HttpServletRequest request) {
         lastTimeOrder();
         checkOrderAuth(request, jwtConfigure, userDAO);
-        return filterByUser(request,orderDAO.getAll());
+        return filterByUser(request, orderDAO.getAll());
     }
 
-    void lastTimeOrder() {
+    private boolean autoReduce(Order order) {
+        MoneyForm form = new MoneyForm();
+        form.setId(order.getPerson().getId());
+        form.setMoneyReduce(order.getPrice());
+        Person person = personDAO.getById(form.getId());
+        if (person == null) {
+            return false;
+        }
+        BigDecimal money = person.getMoney();
+        BigDecimal decimal = money.subtract(form.getMoneyReduce());
+        if (decimal.compareTo(BigDecimal.ZERO) < 0) {
+            return false;
+        }
+        person.setMoney(decimal);
+        personDAO.save(person);
+        return true;
+    }
+
+    private void lastTimeOrder() {
         LocalDate now = LocalDate.now();
         List<Order> list = orderDAO.getAll().stream().peek(e -> {
             if (e.getStatus() == DIC.CHECK_WAIT) {
                 if (null != e.getLastTime()) {
                     if (e.getLastTime().isBefore(now)) {
-                        e.setStatus(DIC.CHECK_FAIL);
+                        boolean isAutoReduce = autoReduce(e);
+                        if (!isAutoReduce) {
+                            e.setStatus(DIC.CHECK_FAIL);
+                        } else {
+                            e.setStatus(DIC.CHECK_PASS);
+                        }
                     }
                 }
             }
@@ -74,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> search(HttpServletRequest request, String name) {
         checkOrderAuth(request, jwtConfigure, userDAO);
-        return filterByUser(request,orderDAO.searchByUser(name));
+        return filterByUser(request, orderDAO.searchByUser(name));
     }
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -84,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
         checkOrderAuth(request, jwtConfigure, userDAO);
         LocalDateTime beginTime = LocalDateTime.parse(beginTimeStr, dateTimeFormatter);
         LocalDateTime endTime = LocalDateTime.parse(endTimeStr, dateTimeFormatter);
-        return filterByUser(request,orderDAO.searchDate(beginTime, endTime));
+        return filterByUser(request, orderDAO.searchDate(beginTime, endTime));
     }
 
     @Override

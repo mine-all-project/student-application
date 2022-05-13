@@ -9,12 +9,15 @@ import org.example.application.custom.form.MoneyForm;
 import org.example.application.custom.form.PersonForm;
 import org.example.application.custom.service.PersonService;
 import org.example.application.system.dao.UserDAO;
+import org.example.application.system.entity.SysUser;
+import org.example.application.system.service.SystemService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,17 +27,31 @@ public class PersonServiceImpl implements PersonService {
     private boolean isDebug;
     private final UserDAO userDAO;
     private final JwtConfigure jwtConfigure;
+    private final SystemService systemService;
 
-    public PersonServiceImpl(PersonDAO personDAO, UserDAO userDAO, JwtConfigure jwtConfigure) {
+    public PersonServiceImpl(PersonDAO personDAO, UserDAO userDAO, JwtConfigure jwtConfigure,
+                             SystemService systemService) {
         this.personDAO = personDAO;
         this.userDAO = userDAO;
         this.jwtConfigure = jwtConfigure;
+        this.systemService = systemService;
     }
 
     @Override
     public List<Person> getAll(HttpServletRequest request) {
         checkOrderCountAuth(request, jwtConfigure, userDAO);
-        return personDAO.getAll();
+        List<Person> personList = personDAO.getAll();
+        final SysUser user = systemService.getUserInfo(request);
+        return personList.stream().filter(e -> {
+            SysUser createBy = e.getCreateBy();
+            if (createBy == null) {
+                return false;
+            }
+            if (createBy.getId().equals(user.getId())) {
+                return true;
+            }
+            return false;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -47,6 +64,7 @@ public class PersonServiceImpl implements PersonService {
     public Person save(HttpServletRequest request, PersonForm form) {
         checkOrderCountAuth(request, jwtConfigure, userDAO);
         Person entity = form.toEntity();
+        entity.setCreateBy(systemService.getUserInfo(request));
         return personDAO.save(entity);
     }
 

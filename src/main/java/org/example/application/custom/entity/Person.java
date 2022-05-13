@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.application.common.BaseEntity;
+import org.example.application.system.entity.SysUser;
+import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 
 @Setter
@@ -23,6 +26,9 @@ public class Person extends BaseEntity {
     private BigDecimal money;
     @Column(columnDefinition = "varchar(64) default null comment '运营商'")
     private String type;
+    @ManyToOne
+    @CreatedBy
+    private SysUser createBy;
 
     @Override
     public String toString() {
