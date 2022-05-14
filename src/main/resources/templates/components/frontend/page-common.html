@@ -10,8 +10,8 @@
         background-repeat: no-repeat;
         background-size: auto 100%;
         background-position: center;
-        background-color: #D9D9D9;
-        opacity: 0.3;
+        /*background-color: #D9D9D9;*/
+        /*opacity: 0.3;*/
     }
 
     .module-5 {
@@ -164,9 +164,9 @@
     }
 
     #app {
-        width: 70%;
+        width: 100%;
         margin: 0 auto;
-        min-width: 1400px;
+        /*min-width: 1400px;*/
 				overflow-y: scroll;
 				height: 100vh;
     }
@@ -175,14 +175,14 @@
 <div th:fragment="title" style="background-color:rgb(43,88,155);height: 10vh">
 	<a-col :span="2" :offset="4"
 				 :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`"></a-col>
-	<a-col :span="12" class="school-name" :style="`background-image:url(${image.schoolName})`">
+	<a-col :span="12" class="school-name" >
 		<p style="font-size: 40px;color: rgb(249 183 0);">{{page.schoolName}}</p>
 		<p style="font-size: 16px;color: rgb(249 183 0);">{{page.schoolNameEn}}</p>
 	</a-col>
 	<a-col :span="1" :offset="4" style="height: 10vh;text-align: center" v-if="isLogin">
-		<a href="/frontend/settings.html" style="text-align: center">
+		<a href="/frontend/settings.html"
+			 style="text-align: center;display: flex;flex-direction: column;justify-content: center">
 			<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" class="headImage">
-			<!--			<p style="color: #505050;margin-top: 10px">{{userInfo.name}}</p>-->
 			<a style="text-align: center;color: #FFF" onclick="logout()"> 退出 </a>
 		</a>
 	</a-col>
@@ -208,6 +208,10 @@
 </div>
 
 <div th:fragment="nav" class="module-5">
+	<a-col :span="2" @click="toModulePage('/frontend/index.html')">
+		<img :src="image.moduleIcon">
+		<p>首页</p>
+	</a-col>
 	<a-col :span="2" @click="toModulePage('/frontend/news.html')">
 		<img :src="image.moduleIcon">
 		<p>校园资讯</p>
@@ -229,8 +233,8 @@
 		<a-select size="small" v-model="titleText" style="width: 100%" @change="changeOtherType">
 			<a-select-option value="question"> 校园问答</a-select-option>
 			<a-select-option value="friends"> 校园交友</a-select-option>
-			<a-select-option value="other"> 其他</a-select-option>
 			<a-select-option value="car"> 校园拼车</a-select-option>
+			<a-select-option value="other"> 其他</a-select-option>
 		</a-select>
 	</a-col>
 </div>

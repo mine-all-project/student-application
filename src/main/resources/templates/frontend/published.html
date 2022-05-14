@@ -154,7 +154,8 @@
             this.getList()
         },
         methods: {
-            editPaper() {
+            editPaper(e) {
+                window.location.href = `/frontend/publish-edit.html?key=${this.typeKey}&id=${e.id}`
             },
             removePaper(e) {
                 const _this = this;
@@ -245,7 +246,7 @@
                     const result = response.data
                     if (result.status !== 200) {
                         this.$message.error(result.message);
-                        if(result.status === 401){
+                        if (result.status === 401) {
                             window.location.href = '/frontend/login.html'
                         }
                         return;

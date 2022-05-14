@@ -57,6 +57,15 @@ public class PaperController extends BaseController {
         return ResponseDTO.returnSuccess(list);
     }
 
+    @GetMapping("/id")
+    @JwtIgnore
+    public ResponseDTO getById(String id) {
+        log.info("收到请求->获取文章,id:[{}]",id);
+        Paper entity = paperService.getById(id);
+        log.info("返回结果->获取文章结束:[{}]", entity);
+        return ResponseDTO.returnSuccess(entity);
+    }
+
     @GetMapping("/list/{type}")
     @JwtIgnore
     public ResponseDTO getListByType(@PathVariable String type) {

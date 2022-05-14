@@ -30,4 +30,6 @@ public interface PaperService extends BaseService {
     List<Message> getCommentList(HttpServletRequest request);
 
     void recomment(HttpServletRequest request,Message message);
+
+    Paper getById(String id);
 }

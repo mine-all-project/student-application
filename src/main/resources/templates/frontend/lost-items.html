@@ -91,9 +91,11 @@
 					<div v-for="(file,index) in item.files" style="width:300px">
 						<img  :src="file.virtualPath" alt="" style="width: 100%;">
 					</div>
+					<div v-for="(file,index) in item.files1" style="width:300px">
+						<a :href="file.virtualPath" alt="" style="width: 100%;" download="download">{{file.oldName}}</a>
+					</div>
 					<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
 					<p style="text-align: right">
-						<a-icon type="delete"></a-icon>
 						<a-divider type="vertical"></a-divider>
 						<a-icon type="message" @click="showComment(index)"></a-icon>
 					</p>
@@ -263,11 +265,19 @@
                         let createTimeB = new moment(b.createTime)
                         return createTimeA.diff(createTimeB, 's');
                     })
+                    let files1 = e.files.filter(r => {
+                        return !(r.contentType.includes("image"))
+                    }).sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
                     return {
                         id: e.id,
                         title: '题目',
                         price: e.price,
                         files: files,
+                        files1: files1,
                         content: e.content,
                         type: e.type,
                         status: e.status,

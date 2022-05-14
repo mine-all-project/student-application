@@ -41,6 +41,7 @@
           height: 10vh;
           font-family: 'Microsoft YaHei';
       }
+
       .publish-button {
           text-align: center;
           width: 113px;
@@ -52,13 +53,17 @@
           bottom: 34px;
           right: 20px
       }
-      .comment-item{
-          font-size: 24px;word-break: break-all;
+
+      .comment-item {
+          font-size: 24px;
+          word-break: break-all;
       }
-      .comment-item img{
-          width:300px !important;
+
+      .comment-item img {
+          width: 300px !important;
       }
-      .comment-item p{
+
+      .comment-item p {
           display: flex !important;
       }
 	</style>
@@ -77,7 +82,7 @@
 		<div style="flex:9;height: 100%;padding: 2rem">
 			<div style="display: flex;justify-content: space-between">
 				<p style="font-size: 30px;font-weight: 600">{{title}}</p>
-				<a-input-search placeholder="输入内容" style="width: 200px" @search="search"  v-model="searchText"></a-input-search>
+				<a-input-search placeholder="输入内容" style="width: 200px" @search="search" v-model="searchText"></a-input-search>
 			</div>
 			<div style="height: 2px;background-color:#000;margin-top: 10px"></div>
 			<div>
@@ -89,11 +94,13 @@
 					</span>
 					</p>
 					<div v-for="(file,index) in item.files" style="width:300px">
-						<img  :src="file.virtualPath" alt="" style="width: 100%;">
+						<img :src="file.virtualPath" alt="" style="width: 100%;">
+					</div>
+					<div v-for="(file,index) in item.files1" style="width:300px">
+						<a :href="file.virtualPath" alt="" style="width: 100%;" download="download">{{file.oldName}}</a>
 					</div>
 					<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
 					<p style="text-align: right">
-						<a-icon type="delete"></a-icon>
 						<a-divider type="vertical"></a-divider>
 						<a-icon type="message" @click="showComment(index)"></a-icon>
 					</p>
@@ -195,13 +202,13 @@
                     console.error('出现错误:', error);
                 });
             },
-            publishComment(item,index){
-                let content =  this.editor[index].instance.root.innerHTML
+            publishComment(item, index) {
+                let content = this.editor[index].instance.root.innerHTML
                 let data = {
-                    id:item.id,
-                    content : content
+                    id: item.id,
+                    content: content
                 }
-                this.axios.post('/api/paper/comment/add',data).then(response => {
+                this.axios.post('/api/paper/comment/add', data).then(response => {
                     const result = response.data
                     if (result.status !== 200 && result.status !== 401) {
                         this.$message.error(result.message);
@@ -264,11 +271,19 @@
                         let createTimeB = new moment(b.createTime)
                         return createTimeA.diff(createTimeB, 's');
                     })
+                    let files1 = e.files.filter(r => {
+                        return !(r.contentType.includes("image"))
+                    }).sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
                     return {
                         id: e.id,
                         title: '题目',
                         price: e.price,
                         files: files,
+                        files1: files1,
                         content: e.content,
                         type: e.type,
                         status: e.status,

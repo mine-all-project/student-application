@@ -84,26 +84,25 @@
 <body style="margin: 0;scroll: no; overflow-y: hidden">
 <div style="" class="content" id="app">
 	<ul class="menus">
-		<li v-for="(item,index) in menus" v-if="item.show()&&index<=0">{{item.name}}</li>
-		<a-collapse accordion @change="changeType">
-			<a-collapse-panel :header="item.name" v-for="(item,index) in menus" v-if="item.show() && index>0"
-												:key="item.key">
-				<p v-for="child in item.children" style="height: 40px;text-align: center;line-height: 40px"
-					 @click="changeSecondType(child)">{{ child.name }}</p>
-			</a-collapse-panel>
-		</a-collapse>
+		<li>编辑动态</li>
 	</ul>
 	<p onclick="window.history.back(-1)"><img src="/images/back.svg" style="width: 30px;">返回</p>
 	<br>
 	<div style="flex:10;height: 100%;padding: 2rem">
 		<p class="type">
-			<span> {{title}} </span>
-			<span v-if="!isRoot">&nbsp; -> {{secondTitle}}</span>
+			<span>编辑动态</span>
 		</p>
 		<div style="height: 3px;background-color:#999999;margin-top: 10px;width: 889px"></div>
 		<div
 				style="
 				width:866px;height:271px;margin-top: 10px;background-color:rgba(153, 153, 153, 0.11);padding: 8px 27px 90px 9px;position: relative">
+			<!--			<a-upload  name="file" action="/api/uploadFile"-->
+			<!--								:multiple="true" :file-list="temp.imageList" :remove="removeUploadImage"-->
+			<!--								@preview="showPreview" @change="changeUploadImage" :show-upload-list="false">-->
+			<!--				<div style="margin-left: 35px;">-->
+			<!--					<a-icon type="camera" theme="filled" style="font-size: 40px;color:rgba(153, 153, 153, 1)"></a-icon>-->
+			<!--				</div>-->
+			<!--			</a-upload>-->
 			<div id="editor" style="height: 173px;width:830px;background-color:#cccccc;"></div>
 			<!-- Create toolbar container -->
 			<div id="toolbar" style="border: none;display: flex;align-items: center;">
@@ -140,6 +139,18 @@
 	</div>
 </div>
 <script>
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
     const app = new Vue({
         el: '#app',
         components: {},
@@ -154,70 +165,6 @@
                 title: '校园资讯',
                 secondTitle: '',
                 titleKey: '',
-                menus: [
-                    {
-                        key: '', show: () => {
-                            return true
-                        }, name: '发布动态',
-                        base: true,
-                        children: [],
-                    },
-                    {
-                        key: 'news', show: () => {
-                            return this.isAdmin
-                        },
-                        name: '校园资讯',
-                        root: true,
-                        children: [],
-                    },
-                    {
-                        key: 'trading', show: () => {
-                            return !this.isAdmin
-                        }, name: '二手交易',
-                        children: [
-                            {name: '二手交易'},
-                            {name: '租赁'},
-                        ],
-                    },
-                    {
-                        key: 'employment', show: () => {
-                            return this.isAdmin
-                        },
-                        name: '就业速递',
-                        children: [],
-                        root: true,
-                    },
-                    {
-                        key: 'lost-items', show: () => {
-                            return !this.isAdmin
-                        }, name: '失物招领',
-                        children: [],
-                    },
-                    {
-                        key: 'question', show: () => {
-                            return !this.isAdmin
-                        }, name: '校园问答',
-                        children: [],
-                    },
-                    {
-                        key: 'friends', show: () => {
-                            return !this.isAdmin
-                        }, name: '校园交友',
-                        children: [],
-                    },
-                    {
-                        key: 'car', show: () => {
-                            return !this.isAdmin
-                        }, name: '校园拼车',
-                        children: [],
-                    },
-                    {
-                        key: 'other', show: () => {
-                            return !this.isAdmin
-                        }, name: '其他',
-                        children: [],
-                    },
-                ],
                 dataList: [],
                 editor: {
                     instance: null,
@@ -241,11 +188,15 @@
                     fileList: [],
                     previewSrc: '',
                 },
+                tt: {
+                    id: '',
+                    type: '',
+                    secondType: '',
+                }
             }
         },
         mounted() {
             this.initType()
-            this.createEditor('')
             this.getUserInfo('')
         },
         methods: {
@@ -276,6 +227,9 @@
                     fileList.push(e.currentData)
                 })
                 let data = {
+                    id: this.tt.id,
+                    type: this.tt.type,
+                    secondType: this.tt.secondType,
                     title: '',
                     messages: [],
                     content: this.editor.instance.root.innerHTML,
@@ -377,9 +331,54 @@
             destroyEditor() {
                 this.editor.instance.root.innerHTML = ''
             },
+            findById(id) {
+                this.axios.get(`/api/paper/id?id=${id}`).then(response => {
+                    const result = response.data
+                    if (result.status !== 200) {
+                        this.$message.error(result.message);
+                        return;
+                    }
+                    console.log(result.data.files)
+                    let files = result.data.files.map(e => {
+                        let data = {
+                            id: e.id,
+                            uid: e.id,
+                            name: e.oldName,
+                            status: 'done',
+                            url: e.virtualPath,
+                            contentType: e.contentType,
+                            currentData: e
+                        }
+                        return data
+                    })
+                    let image = files.filter(r => {
+                        return r.contentType.includes("image")
+                    }).sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    files = files.filter(r => {
+                        return (!r.contentType.includes("image"))
+                    }).sort((a, b) => {
+                        let createTimeA = new moment(a.createTime)
+                        let createTimeB = new moment(b.createTime)
+                        return createTimeA.diff(createTimeB, 's');
+                    })
+                    this.temp.imageList = image
+                    this.temp.fileList = files
+                    this.tt.id = id
+                    this.tt.type = result.data.type
+                    this.tt.secondType = result.data.secondType
+                    this.createEditor(result.data.content)
+                }).catch(function (error) {
+                    console.error('出现错误:', error);
+                });
+            },
             initType() {
-                let url = window.location.href
-                let key = url.split('?key=')[1]
+                let key = getQueryVariable('key')
+                let id = getQueryVariable('id')
+                this.findById(id)
                 switch (key) {
                     case 'news' :
                         this.title = '校园资讯';
@@ -407,16 +406,6 @@
                         break;
                 }
                 this.titleKey = key
-            },
-            changeType(key) {
-                this.isRoot = true
-                this.secondTitle = null
-                this.menus.forEach(e => {
-                    if (e.key === key) {
-                        this.title = e.name
-                        this.titleKey = e.key
-                    }
-                })
             },
             changeSecondType(e) {
                 this.isRoot = false

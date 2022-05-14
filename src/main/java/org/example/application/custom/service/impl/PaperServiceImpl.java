@@ -123,4 +123,9 @@ public class PaperServiceImpl implements PaperService {
     public void recomment(HttpServletRequest request,Message message) {
         messageService.save(message);
     }
+
+    @Override
+    public Paper getById(String id) {
+        return paperDAO.getById(id);
+    }
 }
