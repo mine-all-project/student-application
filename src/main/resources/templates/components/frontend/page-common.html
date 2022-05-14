@@ -68,7 +68,6 @@
         border-radius: 50%;
     }
 
-
     .banner-wrap {
         width: 100%;
         /*height: 500px;*/
@@ -164,87 +163,92 @@
     }
 
     #app {
-        width: 100%;
+        width: 70%;
         margin: 0 auto;
         /*min-width: 1400px;*/
-				overflow-y: scroll;
-				height: 100vh;
+        overflow-y: scroll;
+        height: 100vh;
+        background-color: #fff;
+    }
+    body{
+        background-image: url("/images/bgi.png") !important;
     }
 </style>
 
 <div th:fragment="title" style="background-color:rgb(43,88,155);height: 10vh">
-	<a-col :span="2" :offset="4"
-				 :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`"></a-col>
-	<a-col :span="12" class="school-name" >
-		<p style="font-size: 40px;color: rgb(249 183 0);">{{page.schoolName}}</p>
-		<p style="font-size: 16px;color: rgb(249 183 0);">{{page.schoolNameEn}}</p>
-	</a-col>
-	<a-col :span="1" :offset="4" style="height: 10vh;text-align: center" v-if="isLogin">
-		<a href="/frontend/settings.html"
-			 style="text-align: center;display: flex;flex-direction: column;justify-content: center">
-			<img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" class="headImage">
-			<a style="text-align: center;color: #FFF" onclick="logout()"> 退出 </a>
-		</a>
-	</a-col>
-	<a-col :span="1" :offset="4" style="height: 10vh;text-align: center" v-else>
-		<a href="/frontend/login.html" style="text-align: center;color: #fff"> 登录 </a>
-	</a-col>
+    <a-col :span="2" :offset="6"
+           :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`"></a-col>
+    <a-col :span="10" class="school-name">
+        <p style="font-size: 30px;color: rgb(249 183 0);">{{page.schoolName}}</p>
+        <p style="font-size: 16px;color: rgb(249 183 0);">{{page.schoolNameEn}}</p>
+    </a-col>
+    <a-col :span="1" :offset="4" style="height: 10vh;text-align: center" v-if="isLogin">
+        <a href="/frontend/settings.html"
+           style="text-align: center;display: flex;flex-direction: column;justify-content: center">
+            <img v-if="userInfo.headImg" :src="userInfo.headImg.virtualPath" class="headImage">
+            <img v-else src="/images/defaultHeadImg.jpg" alt="" class="headImage"/>
+            <a style="text-align: center;color: #FFF" onclick="logout()"> 退出 </a>
+        </a>
+    </a-col>
+    <a-col :span="1" :offset="4" style="height: 10vh;text-align: center" v-else>
+        <a href="/frontend/login.html" style="text-align: center;color: #fff"> 登录 </a>
+    </a-col>
 </div>
 
 <div th:fragment="banner" class="m-banner-wrap" v-if="bannerData.length">
-	<div class="m-banner-list">
-		<div class="u-banner-item fade"
-				 v-for="(item, index) in bannerData" :key="index"
-				 v-show="index===activeIndex"
-				 @mouseover="onOver()" @mouseout="onOut()">
-			<img :src="item.src" alt="" style="width: 100%;height: 100%">
-		</div>
-	</div>
-	<div class="m-dot-list" v-if="bannerData.length > 1">
-		<div v-for="(item, index) in bannerData" :key="index" :class="['u-dot-item', {active: index===activeIndex}]"
-				 @mouseenter="onEnter(index)" @mouseleave="onLeave">
-		</div>
-	</div>
+    <div class="m-banner-list">
+        <div class="u-banner-item fade"
+             v-for="(item, index) in bannerData" :key="index"
+             v-show="index===activeIndex"
+             @mouseover="onOver()" @mouseout="onOut()">
+            <img :src="item.src" alt="" style="width: 100%;height: 100%">
+        </div>
+    </div>
+    <div class="m-dot-list" v-if="bannerData.length > 1">
+        <div v-for="(item, index) in bannerData" :key="index" :class="['u-dot-item', {active: index===activeIndex}]"
+             @mouseenter="onEnter(index)" @mouseleave="onLeave">
+        </div>
+    </div>
 </div>
 
 <div th:fragment="nav" class="module-5">
-	<a-col :span="2" @click="toModulePage('/frontend/index.html')">
-		<img :src="image.moduleIcon">
-		<p>首页</p>
-	</a-col>
-	<a-col :span="2" @click="toModulePage('/frontend/news.html')">
-		<img :src="image.moduleIcon">
-		<p>校园资讯</p>
-	</a-col>
-	<a-col :span="2" @click="toModulePage('/frontend/trading.html')">
-		<img :src="image.moduleIcon">
-		<p>二手交易</p>
-	</a-col>
-	<a-col :span="2" @click="toModulePage('/frontend/employment.html')">
-		<img :src="image.moduleIcon">
-		<p>就业速递</p>
-	</a-col>
-	<a-col :span="2" @click="toModulePage('/frontend/lost-items.html')">
-		<img :src="image.moduleIcon">
-		<p>失物招领</p>
-	</a-col>
-	<a-col :span="2">
-		<img :src="image.moduleIcon">
-		<a-select size="small" v-model="titleText" style="width: 100%" @change="changeOtherType">
-			<a-select-option value="question"> 校园问答</a-select-option>
-			<a-select-option value="friends"> 校园交友</a-select-option>
-			<a-select-option value="car"> 校园拼车</a-select-option>
-			<a-select-option value="other"> 其他</a-select-option>
-		</a-select>
-	</a-col>
+    <a-col :span="2" @click="toModulePage('/frontend/index.html')">
+        <img :src="image.moduleIcon">
+        <p>首页</p>
+    </a-col>
+    <a-col :span="2" @click="toModulePage('/frontend/news.html')">
+        <img :src="image.moduleIcon">
+        <p>校园资讯</p>
+    </a-col>
+    <a-col :span="2" @click="toModulePage('/frontend/trading.html')">
+        <img :src="image.moduleIcon">
+        <p>二手交易</p>
+    </a-col>
+    <a-col :span="2" @click="toModulePage('/frontend/employment.html')">
+        <img :src="image.moduleIcon">
+        <p>就业速递</p>
+    </a-col>
+    <a-col :span="2" @click="toModulePage('/frontend/lost-items.html')">
+        <img :src="image.moduleIcon">
+        <p>失物招领</p>
+    </a-col>
+    <a-col :span="2">
+        <img :src="image.moduleIcon">
+        <a-select size="small" v-model="titleText" style="width: 100%" @change="changeOtherType">
+            <a-select-option value="question"> 校园问答</a-select-option>
+            <a-select-option value="friends"> 校园交友</a-select-option>
+            <a-select-option value="car"> 校园拼车</a-select-option>
+            <a-select-option value="other"> 其他</a-select-option>
+        </a-select>
+    </a-col>
 </div>
 
 <div th:fragment="xiaoxun" class="xiaoxun" :style="`background-image:url(${image.xiaoxun})`">
-	<p>{{page.xiaoxun}}</p>
+    <p>{{page.xiaoxun}}</p>
 </div>
 
 <div th:fragment="sysname" class="sysname" style="text-align: center">
-	<p>{{page.sysName}}</p>
+    <p>{{page.sysName}}</p>
 </div>
 <script th:fragment="javascript">
     function logout() {
@@ -253,6 +257,6 @@
     }
 </script>
 <div th:fragment="owo">
-	<link rel="stylesheet" th:href="@{/owo/OwO.min.css}">
-	<script th:src="@{/owo/OwO.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/owo/OwO.min.css}">
+    <script th:src="@{/owo/OwO.min.js}"></script>
 </div>

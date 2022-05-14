@@ -65,7 +65,8 @@
 						<a href="/frontend/news.html">
 							<div
 									style="padding: 20px;display: flex;justify-content: space-between;background-color:rgb(196,196,196);">
-								<img v-if="item.files.length" :src="item.files[0].virtualPath" alt="" style="width: 49%;height: 30vh">
+								<img v-if="item.files.length" :src="item.files[0].virtualPath" alt=""
+										 style="width: 49%;height: 30vh">
 								<img v-else :src="image.schoolLogo" alt="" style="width: 49%;height: 30vh">
 								<div class="news-content" style="" v-html="item.content"></div>
 							</div>
@@ -73,7 +74,8 @@
 					</div>
 				</div>
 				<div class="dot-list" v-if="page.news.length > 1">
-					<div v-for="(item, index) in page.news" :key="index" :class="['dot-item', {active: index===newsActiveIndex}]"
+					<div v-for="(item, index) in page.news" :key="index"
+							 :class="['dot-item', {active: index===newsActiveIndex}]"
 							 @mouseenter="onNewsEnter(index)" @mouseleave="onNewsLeave">
 					</div>
 				</div>
@@ -103,11 +105,17 @@
 			<div class="employment-item" style="" v-for="(item,index) in page.employment" v-if="index<2">
 				<img v-if="item.files.length" :src="item.files[0].virtualPath" alt="" style="width: 80%;height: 50%">
 				<img v-else :src="image.schoolName" alt="" style="width: 80%;height: 50%">
-				<div style="width: 80%;height: 50%;font-size: 30px" v-html="item.content"></div>
+				<div
+						style="width: 200px;height: 50%;font-size: 30px;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;"
+						v-html="item.content"></div>
 			</div>
 			<div style="flex: 5;display: flex;flex-direction: column;align-items: center;justify-content: center">
 				<img :src="image.schoolName" alt="" style="width: 80%;height: 50%">
-				<div style="width: 80%;height: 50%;font-size: 30px">此处为用户管理员发布的就业相关信息，上部分图片简介，下部分可为详细简介</div>
+				<div style="width: 200px;height: 50%;font-size: 30px;overflow: hidden;
+               text-overflow:ellipsis;display: -webkit-box;
+                     -webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">
+					此处为用户管理员发布的就业相关信息，上部分图片简介，下部分可为详细简介
+				</div>
 			</div>
 		</div>
 		<div style="flex:8;display: flex;padding: 10px;margin-top: 10px;flex-direction: column">
@@ -218,7 +226,8 @@
             getNewsData() {
                 axios.get(`/api/paper/list/news`).then(response => {
                     const result = response.data
-                    if (result.status !== 200) {
+                    if (result.status !== 200
+                    ) {
                         this.$message.error(result.message);
                         return;
                     }
@@ -232,7 +241,8 @@
             getEmploymentData() {
                 axios.get(`/api/paper/list/employment`).then(response => {
                     const result = response.data
-                    if (result.status !== 200) {
+                    if (result.status !== 200
+                    ) {
                         this.$message.error(result.message);
                         return;
                     }
@@ -246,8 +256,9 @@
             filterDataList(source) {
                 return source.map(e => {
                     let files = e.files.filter(r => {
-                        return r.contentType.includes("image")
-                    }).sort((a, b) => {
+                            return r.contentType.includes("image")
+                        }
+                    ).sort((a, b) => {
                         let createTimeA = new moment(a.createTime)
                         let createTimeB = new moment(b.createTime)
                         return createTimeA.diff(createTimeB, 's');
@@ -264,7 +275,8 @@
                         createTime: e.createTime,
                         createTimeStr: new moment(e.createTime).format('YYYY-MM-DD HH:mm:ss'),
                     }
-                });
+                })
+                    ;
             },
             toModulePage(e) {
                 this.pageUrl = e
@@ -333,7 +345,8 @@
             getUserInfo() {
                 this.axios.get('/api/user/getUserInfo').then(response => {
                     const result = response.data
-                    if (result.status !== 200 && result.status !== 401) {
+                    if (result.status !== 200 && result.status !== 401
+                    ) {
                         this.$message.error(result.message);
                         return;
                     }

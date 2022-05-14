@@ -290,7 +290,11 @@
                         this.$message.error(result.message);
                         return;
                     }
+                    if(!(this.titleKey === 'employment' || this.titleKey === 'news')){
                     alert("已发布，等待管理员审核")
+					}else{
+                        alert("已发布")
+                    }
                 }).catch(function (error) {
                     console.error('出现错误:', error);
                 });
