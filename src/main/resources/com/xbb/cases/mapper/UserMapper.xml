@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbb.cases.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.xbb.cases.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="BIT" property="sex" />
+    <result column="cellphone" jdbcType="VARCHAR" property="cellphone" />
+    <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+    <result column="role" jdbcType="INTEGER" property="role" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="identity_card" jdbcType="VARCHAR" property="identityCard" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, name, sex, cellphone, head_img, role, address, identity_card, 
+    age
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xbb.cases.entity.User">
+    insert into user (id, username, password, 
+      name, sex, cellphone, head_img, 
+      role, address, identity_card, 
+      age)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{sex,jdbcType=BIT}, #{cellphone,jdbcType=VARCHAR}, #{headImg,jdbcType=VARCHAR}, 
+      #{role,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{identityCard,jdbcType=VARCHAR}, 
+      #{age,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xbb.cases.entity.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="cellphone != null">
+        cellphone,
+      </if>
+      <if test="headImg != null">
+        head_img,
+      </if>
+      <if test="role != null">
+        role,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="identityCard != null">
+        identity_card,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=BIT},
+      </if>
+      <if test="cellphone != null">
+        #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null">
+        #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="identityCard != null">
+        #{identityCard,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xbb.cases.entity.User">
+    update user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=BIT},
+      </if>
+      <if test="cellphone != null">
+        cellphone = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="headImg != null">
+        head_img = #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null">
+        role = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="identityCard != null">
+        identity_card = #{identityCard,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        age = #{age,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xbb.cases.entity.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=BIT},
+      cellphone = #{cellphone,jdbcType=VARCHAR},
+      head_img = #{headImg,jdbcType=VARCHAR},
+      role = #{role,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      identity_card = #{identityCard,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectListByPaging" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    <where>
+      <if test="role != null">
+        and role = #{role}
+      </if>
+      <if test="sex != null">
+        and sex = #{sex}
+      </if>
+      <if test="name != null">
+        and name like concat(concat('%',#{name}),'%')
+      </if>
+      <if test="cellphone != null">
+        and cellphone like concat(concat('%',#{cellphone}),'%')
+      </if>
+    </where>
+    order by id desc
+    limit #{page}, #{limit}
+  </select>
+  <select id="selectCountByPaging" resultType="java.lang.Integer">
+    select count(*) from user
+    <where>
+      <if test="role != null">
+        and role = #{role}
+      </if>
+      <if test="sex != null">
+        and sex = #{sex}
+      </if>
+      <if test="name != null">
+        and name like concat(concat('%',#{name}),'%')
+      </if>
+      <if test="cellphone != null">
+        and cellphone like concat(concat('%',#{cellphone}),'%')
+      </if>
+    </where>
+  </select>
+  <select id="selectByUsername" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where username = #{username}
+  </select>
+  <select id="selectListByRole" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where role = #{role}
+  </select>
+</mapper>

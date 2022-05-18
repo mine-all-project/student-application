@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbb.cases.mapper.CasesMapper">
+    <resultMap id="BaseResultMap" type="com.xbb.cases.entity.Cases">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime"/>
+        <result column="cases_type" jdbcType="INTEGER" property="casesType"/>
+        <result column="start_hospitalized" jdbcType="VARCHAR" property="startHospitalized"/>
+        <result column="end_hospitalized" jdbcType="VARCHAR" property="endHospitalized"/>
+        <result column="start_reason" jdbcType="VARCHAR" property="startReason"/>
+        <result column="end_reason" jdbcType="VARCHAR" property="endReason"/>
+        <result column="record" jdbcType="VARCHAR" property="record"/>
+        <result column="blood_type" jdbcType="VARCHAR" property="bloodType"/>
+        <result column="surgical_record" jdbcType="VARCHAR" property="surgicalRecord"/>
+        <result column="autograph" jdbcType="VARCHAR" property="autograph"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="create_by_id" jdbcType="INTEGER" property="createById"/>
+    </resultMap>
+    <resultMap id="ResultMap" extends="BaseResultMap" type="com.xbb.cases.entity.Cases">
+        <association property="user" javaType="com.xbb.cases.entity.User">
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="sex" jdbcType="BIT" property="sex"/>
+            <result column="cellphone" jdbcType="VARCHAR" property="cellphone"/>
+            <result column="address" jdbcType="VARCHAR" property="address"/>
+            <result column="identity_card" jdbcType="VARCHAR" property="identityCard"/>
+            <result column="age" jdbcType="INTEGER" property="age"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id
+        , title, user_id, status, creat_time, cases_type, start_hospitalized, end_hospitalized,
+    start_reason, end_reason, record, blood_type, surgical_record, autograph, content,create_by_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cases
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from cases
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.xbb.cases.entity.Cases">
+        insert into cases (id, title, user_id,
+                           status, creat_time, cases_type,
+                           start_hospitalized, end_hospitalized, start_reason,
+                           end_reason, record, blood_type,
+                           surgical_record, autograph, content, create_by_id)
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
+                #{status,jdbcType=INTEGER}, #{creatTime,jdbcType=TIMESTAMP}, #{casesType,jdbcType=INTEGER},
+                #{startHospitalized,jdbcType=VARCHAR}, #{endHospitalized,jdbcType=VARCHAR},
+                #{startReason,jdbcType=VARCHAR},
+                #{endReason,jdbcType=VARCHAR}, #{record,jdbcType=VARCHAR}, #{bloodType,jdbcType=VARCHAR},
+                #{surgicalRecord,jdbcType=VARCHAR}, #{autograph,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR},
+                #{createById,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.xbb.cases.entity.Cases">
+        insert into cases
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="creatTime != null">
+                creat_time,
+            </if>
+            <if test="casesType != null">
+                cases_type,
+            </if>
+            <if test="startHospitalized != null">
+                start_hospitalized,
+            </if>
+            <if test="endHospitalized != null">
+                end_hospitalized,
+            </if>
+            <if test="startReason != null">
+                start_reason,
+            </if>
+            <if test="endReason != null">
+                end_reason,
+            </if>
+            <if test="record != null">
+                record,
+            </if>
+            <if test="bloodType != null">
+                blood_type,
+            </if>
+            <if test="surgicalRecord != null">
+                surgical_record,
+            </if>
+            <if test="autograph != null">
+                autograph,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="createById != null">
+                create_by_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="casesType != null">
+                #{casesType,jdbcType=INTEGER},
+            </if>
+            <if test="startHospitalized != null">
+                #{startHospitalized,jdbcType=VARCHAR},
+            </if>
+            <if test="endHospitalized != null">
+                #{endHospitalized,jdbcType=VARCHAR},
+            </if>
+            <if test="startReason != null">
+                #{startReason,jdbcType=VARCHAR},
+            </if>
+            <if test="endReason != null">
+                #{endReason,jdbcType=VARCHAR},
+            </if>
+            <if test="record != null">
+                #{record,jdbcType=VARCHAR},
+            </if>
+            <if test="bloodType != null">
+                #{bloodType,jdbcType=VARCHAR},
+            </if>
+            <if test="surgicalRecord != null">
+                #{surgicalRecord,jdbcType=VARCHAR},
+            </if>
+            <if test="autograph != null">
+                #{autograph,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="createById != null">
+                #{createById,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xbb.cases.entity.Cases">
+        update cases
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="creatTime != null">
+                creat_time = #{creatTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="casesType != null">
+                cases_type = #{casesType,jdbcType=INTEGER},
+            </if>
+            <if test="startHospitalized != null">
+                start_hospitalized = #{startHospitalized,jdbcType=VARCHAR},
+            </if>
+            <if test="endHospitalized != null">
+                end_hospitalized = #{endHospitalized,jdbcType=VARCHAR},
+            </if>
+            <if test="startReason != null">
+                start_reason = #{startReason,jdbcType=VARCHAR},
+            </if>
+            <if test="endReason != null">
+                end_reason = #{endReason,jdbcType=VARCHAR},
+            </if>
+            <if test="record != null">
+                record = #{record,jdbcType=VARCHAR},
+            </if>
+            <if test="bloodType != null">
+                blood_type = #{bloodType,jdbcType=VARCHAR},
+            </if>
+            <if test="surgicalRecord != null">
+                surgical_record = #{surgicalRecord,jdbcType=VARCHAR},
+            </if>
+            <if test="autograph != null">
+                autograph = #{autograph,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xbb.cases.entity.Cases">
+        update cases
+        set title              = #{title,jdbcType=VARCHAR},
+            user_id            = #{userId,jdbcType=INTEGER},
+            status             = #{status,jdbcType=INTEGER},
+            creat_time         = #{creatTime,jdbcType=TIMESTAMP},
+            cases_type         = #{casesType,jdbcType=INTEGER},
+            start_hospitalized = #{startHospitalized,jdbcType=VARCHAR},
+            end_hospitalized   = #{endHospitalized,jdbcType=VARCHAR},
+            start_reason       = #{startReason,jdbcType=VARCHAR},
+            end_reason         = #{endReason,jdbcType=VARCHAR},
+            record             = #{record,jdbcType=VARCHAR},
+            blood_type         = #{bloodType,jdbcType=VARCHAR},
+            surgical_record    = #{surgicalRecord,jdbcType=VARCHAR},
+            autograph          = #{autograph,jdbcType=VARCHAR},
+            content            = #{content,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xbb.cases.entity.Cases">
+        update cases
+        set title              = #{title,jdbcType=VARCHAR},
+            user_id            = #{userId,jdbcType=INTEGER},
+            status             = #{status,jdbcType=INTEGER},
+            creat_time         = #{creatTime,jdbcType=TIMESTAMP},
+            cases_type         = #{casesType,jdbcType=INTEGER},
+            start_hospitalized = #{startHospitalized,jdbcType=VARCHAR},
+            end_hospitalized   = #{endHospitalized,jdbcType=VARCHAR},
+            start_reason       = #{startReason,jdbcType=VARCHAR},
+            end_reason         = #{endReason,jdbcType=VARCHAR},
+            record             = #{record,jdbcType=VARCHAR},
+            blood_type         = #{bloodType,jdbcType=VARCHAR},
+            surgical_record    = #{surgicalRecord,jdbcType=VARCHAR},
+            autograph          = #{autograph,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectListByPaging" resultMap="ResultMap">
+        select
+        t1.*,
+        t2.name, t2.sex, t2.age, t2.cellphone, t2.address, t2.identity_card
+        from cases t1
+        left join user t2 on t1.user_id = t2.id
+        <where>
+            <if test="name != null">
+                and t2.name like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="cellphone != null">
+                and t2.cellphone like concat(concat('%',#{cellphone}),'%')
+            </if>
+            <if test="identityCard != null">
+                and t2.identity_card like concat(concat('%',#{identityCard}),'%')
+            </if>
+            <if test="status != null">
+                and t1.status = #{status}
+            </if>
+            <if test="casesType != null">
+                and t1.cases_type = #{casesType}
+            </if>
+        </where>
+        order by t1.id desc
+        limit #{page}, #{limit}
+    </select>
+    <select id="selectCountByPaging" resultType="java.lang.Integer">
+        select
+        count(*)
+        from cases t1
+        left join user t2 on t1.user_id = t2.id
+        <where>
+            <if test="name != null">
+                and t2.name like concat(concat('%',#{name}),'%')
+            </if>
+            <if test="cellphone != null">
+                and t2.cellphone like concat(concat('%',#{cellphone}),'%')
+            </if>
+            <if test="identityCard != null">
+                and t2.identity_card like concat(concat('%',#{identityCard}),'%')
+            </if>
+            <if test="status != null">
+                and t1.status = #{status}
+            </if>
+            <if test="casesType != null">
+                and t1.cases_type = #{casesType}
+            </if>
+        </where>
+    </select>
+    <select id="selectById" resultMap="ResultMap">
+        select t1.*,
+               t2.name,
+               t2.sex,
+               t2.age,
+               t2.cellphone,
+               t2.address,
+               t2.identity_card
+        from cases t1
+                 left join user t2 on t1.user_id = t2.id
+        where t1.id = #{id}
+    </select>
+</mapper>

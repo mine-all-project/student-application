@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xbb.cases.mapper.LeavesMapper">
+  <resultMap id="BaseResultMap" type="com.xbb.cases.entity.Leaves">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="leaves_time" jdbcType="TIMESTAMP" property="leavesTime" />
+    <result column="reply_con" jdbcType="VARCHAR" property="replyCon" />
+    <result column="reply_time" jdbcType="TIMESTAMP" property="replyTime" />
+  </resultMap>
+  <resultMap id="ResultMap" extends="BaseResultMap" type="com.xbb.cases.entity.Leaves">
+    <association property="user" javaType="com.xbb.cases.entity.User">
+      <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="cellphone" jdbcType="VARCHAR" property="cellphone" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, content, leaves_time, reply_con, reply_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from leaves
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from leaves
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xbb.cases.entity.Leaves">
+    insert into leaves (id, user_id, content, 
+      leaves_time, reply_con, reply_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{leavesTime,jdbcType=TIMESTAMP}, #{replyCon,jdbcType=VARCHAR}, #{replyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xbb.cases.entity.Leaves">
+    insert into leaves
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="leavesTime != null">
+        leaves_time,
+      </if>
+      <if test="replyCon != null">
+        reply_con,
+      </if>
+      <if test="replyTime != null">
+        reply_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="leavesTime != null">
+        #{leavesTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyCon != null">
+        #{replyCon,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null">
+        #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xbb.cases.entity.Leaves">
+    update leaves
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="leavesTime != null">
+        leaves_time = #{leavesTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyCon != null">
+        reply_con = #{replyCon,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null">
+        reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xbb.cases.entity.Leaves">
+    update leaves
+    set user_id = #{userId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      leaves_time = #{leavesTime,jdbcType=TIMESTAMP},
+      reply_con = #{replyCon,jdbcType=VARCHAR},
+      reply_time = #{replyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectListByPaging" resultMap="ResultMap">
+    select
+    t1.*,
+    t2.name, t2.cellphone
+    from leaves t1
+    left join user t2 on t1.user_id = t2.id
+    <where>
+      <if test="userId != null">
+        and t1.user_id = #{userId}
+      </if>
+      <if test="content != null">
+        and t1.content like concat(concat('%',#{content}),'%')
+      </if>
+      <if test="name != null">
+        and t2.name like concat(concat('%',#{name}),'%')
+      </if>
+      <if test="cellphone != null">
+        and t2.cellphone like concat(concat('%',#{cellphone}),'%')
+      </if>
+    </where>
+    order by t1.id desc
+    limit #{page}, #{limit}
+  </select>
+  <select id="selectCountByPaging" resultType="java.lang.Integer">
+    select
+    count(*)
+    from leaves t1
+    left join user t2 on t1.user_id = t2.id
+    <where>
+      <if test="userId != null">
+        and t1.user_id = #{userId}
+      </if>
+      <if test="content != null">
+        and t1.content like concat(concat('%',#{content}),'%')
+      </if>
+      <if test="name != null">
+        and t2.name like concat(concat('%',#{name}),'%')
+      </if>
+      <if test="cellphone != null">
+        and t2.cellphone like concat(concat('%',#{cellphone}),'%')
+      </if>
+    </where>
+  </select>
+</mapper>
