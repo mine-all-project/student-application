@@ -1,26 +1,22 @@
 <template>
 	<view class="content">
 		<form class="app-update-pv">
-
 			<view
 				:style='{"padding":" 0 20rpx 0 0","boxShadow":"0 0 0px rgba(0,0,0,.3)","margin":"0 0 20rpx 0","borderColor":"#ccc","backgroundColor":"rgba(255, 255, 255, 1)","borderRadius":"0","borderWidth":"0","width":"100%","borderStyle":"solid","height":"108rpx"}'
 				class="cu-form-group">
 				<view
 					:style='{"padding":"0","boxShadow":"0 0 16rpx rgba(0,0,0,0)","margin":"0","borderColor":"#ccc","backgroundColor":"rgba(0,0,0,0)","color":"rgba(0, 0, 0, 1)","textAlign":"center","borderRadius":"0","borderWidth":"0","width":"160rpx","lineHeight":"80rpx","fontSize":"28rpx","borderStyle":"solid"}'
 					class="title">业务</view>
-				<select
-					:style='{"padding":"0 30rpx","boxShadow":"0 0 0px rgba(0,0,0,.6) inset","margin":"0","borderColor":"rgba(0,0,0,.6)","backgroundColor":"rgba(255, 255, 255, 0)","color":"rgba(0, 0, 0, 1)","textAlign":"left","borderRadius":"16rpx","borderWidth":"2rpx","width":"calc(100% - 160rpx)","fontSize":"28rpx","borderStyle":"solid","height":"80rpx"}'
-					:disabled="ro.type" v-model="ruleForm.type" placeholder="项目" @change="changeType">
-					<option>保修</option>
-					<option>救援</option>
-					<option>试驾</option>
-				</select>
+				<picker mode="selector" :range="options.type" :value="ruleForm.type" @change="typeChange">
+					<view class="uni-input"
+						:style='{"padding":"0 20rpx","boxShadow":"0 2rpx 12rpx rgba(0,0,0,0)","margin":"0","borderColor":"#ccc","backgroundColor":"rgba(0,0,0,0)","color":"#333","textAlign":"left","borderRadius":"0","borderWidth":"2rpx","width":"100%","lineHeight":"80rpx","fontSize":"28rpx","borderStyle":"solid"}'>
+						{{ruleForm.type}}
+					</view>
+				</picker>
 			</view>
-			
+
 
 			<!-- ${location} -->
-
-
 			<view v-if="isJiuyuan"
 				:style='{"padding":" 0 20rpx 0 0","boxShadow":"0 0 0px rgba(0,0,0,.3)","margin":"0 0 20rpx 0","borderColor":"#ccc","backgroundColor":"rgba(255, 255, 255, 1)","borderRadius":"0","borderWidth":"0","width":"100%","borderStyle":"solid","height":"108rpx"}'
 				class="cu-form-group">
@@ -32,25 +28,26 @@
 					:disabled="ro.address" v-model="ruleForm.address" placeholder="地址">
 				</input>
 			</view>
-			<view  v-else>
-			
-				
+			<view v-else>
 				<view
 					:style='{"padding":" 0 20rpx 0 0","boxShadow":"0 0 0px rgba(0,0,0,.3)","margin":"0 0 20rpx 0","borderColor":"#ccc","backgroundColor":"rgba(255, 255, 255, 1)","borderRadius":"0","borderWidth":"0","width":"100%","borderStyle":"solid","height":"108rpx"}'
 					class="cu-form-group">
 					<view
 						:style='{"padding":"0","boxShadow":"0 0 16rpx rgba(0,0,0,0)","margin":"0","borderColor":"#ccc","backgroundColor":"rgba(0,0,0,0)","color":"rgba(0, 0, 0, 1)","textAlign":"center","borderRadius":"0","borderWidth":"0","width":"160rpx","lineHeight":"80rpx","fontSize":"28rpx","borderStyle":"solid"}'
 						class="title">4S店</view>
-					<select
-						:style='{"padding":"0 30rpx","boxShadow":"0 0 0px rgba(0,0,0,.6) inset","margin":"0","borderColor":"rgba(0,0,0,.6)","backgroundColor":"rgba(255, 255, 255, 0)","color":"rgba(0, 0, 0, 1)","textAlign":"left","borderRadius":"16rpx","borderWidth":"2rpx","width":"calc(100% - 160rpx)","fontSize":"28rpx","borderStyle":"solid","height":"80rpx"}'
-						:disabled="ro.store" v-model="ruleForm.store" placeholder="4S店">
-						<option v-for="item in options.store" :value="item">{{item.name}}</option>
-					</select>
+
+					<picker mode="selector" :range="options.storeOptions" :value="ruleForm.storeIndex"
+						@change="storeChange">
+						<view class="uni-input"
+							:style='{"padding":"0 20rpx","boxShadow":"0 2rpx 12rpx rgba(0,0,0,0)","margin":"0","borderColor":"#ccc","backgroundColor":"rgba(0,0,0,0)","color":"#333","textAlign":"left","borderRadius":"0","borderWidth":"2rpx","width":"100%","lineHeight":"80rpx","fontSize":"28rpx","borderStyle":"solid"}'>
+							{{ruleForm.store.name}}
+						</view>
+					</picker>
 				</view>
 				<view style="z-index: 999;">
 					<uni-datetime-picker type="date" @change="changeLog" />
 				</view>
-							
+
 			</view>
 			<view class="btn">
 				<button
@@ -71,12 +68,17 @@
 			return {
 				cross: '',
 				options: {
-					type: [],
+					type: ['保修', '试驾', '救援'],
 					store: [],
+					storeOptions: [],
 				},
 				ruleForm: {
-					type: '',
-					store: '',
+					type: '保修',
+					typeIndex: 0,
+					store: {
+						name: '请选择'
+					},
+					storeIndex: 0,
 					date: '',
 					address: '',
 				},
@@ -98,15 +100,14 @@
 			baseUrl() {
 				return this.$base.url;
 			},
-
-
-
-
 		},
 		async onShow(options) {
 			let res = await this.$http.get('jingxiaodian/flist');
 			this.options.store = res.data
-			console.log(this.options.store)
+			this.options.storeOptions = this.options.store.map(e => {
+				return e.name
+			})
+			console.log(JSON.stringify(this.options.storeOptions))
 		},
 		async onLoad(options) {
 			let table = uni.getStorageSync("nowTable");
@@ -161,6 +162,20 @@
 			this.styleChange()
 		},
 		methods: {
+			storeChange(e) {
+				console.log(JSON.stringify(e))
+				this.ruleForm.storeIndex = e.detail.value
+				this.ruleForm.store = this.options.store[e.detail.value]
+			},
+			typeChange(e) {
+				console.log(JSON.stringify(e.detail))
+				this.storeruleFormIndex.typeIndex = e.detail.value
+				this.ruleForm.type = this.options.type[e.detail.value]
+				this.isJiuyuan = false
+				if (this.ruleForm.type === '救援') {
+					this.isJiuyuan = true
+				}
+			},
 			changeType() {
 				console.log(this.ruleForm.type)
 				this.isJiuyuan = false
@@ -181,19 +196,34 @@
 				if (this.ruleForm.type === '救援') {
 					this.ruleForm.store = null
 				}
-				let res = await this.$http.post('yuyue/save',this.ruleForm);
+				let res = await this.$http.post('yuyue/save', this.ruleForm);
 				this.$utils.msgBack('提交成功');
 
 			},
 			styleChange() {
-				this.$nextTick(()=>{
-				})
+				this.$nextTick(() => {})
 			},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
+	.cu-form-group uni-picker::after {
+		font-family: cuIcon;
+		display: block;
+		content: "";
+		position: absolute;
+		font-size: 17px;
+		color: #8799a3;
+		line-height: 50px;
+		width: 30px;
+		text-align: center;
+		top: 0;
+		bottom: 0;
+		right: -10px;
+		margin: auto;
+	}
+
 	.container {
 		padding: 20upx;
 	}
