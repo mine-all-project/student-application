@@ -31,6 +31,34 @@
           background-color: rgba(153, 153, 153, 1);
           font-size: 21px;
       }
+
+      .job {
+          width: 100%;
+          height: 70%;
+          font-size: 30px;
+
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 6;
+          overflow: hidden;
+
+      }
+
+      .job > p {
+					width:80%;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 5;
+          overflow: hidden;
+          word-break: break-all;
+          margin: 0 auto;
+      }
+			.jobs-more>p{
+          text-overflow: ellipsis;
+          overflow: hidden;
+			}
 	</style>
 </head>
 <body>
@@ -41,7 +69,7 @@
 	<div data-th-replace="/components/frontend/page-common :: banner"></div>
 	<div data-th-replace="/components/frontend/page-common :: nav"></div>
 	<!--校园资讯-->
-	<div style="width: 100%;background-color:rgba(153, 153, 153, 0.32);">
+	<div style="width: 100%;background-color:rgba(153, 153, 153, 0.32);" v-if="false">
 		<div style="display: flex;justify-content: space-between;padding: 16px 3rem 0 2rem;">
 			<div style="font-size: 2rem">
 				<a-icon type="mail"></a-icon>
@@ -86,12 +114,15 @@
 				<div style="width: 95%;background-color:#cccccc;" v-for="(item,index) in page.news" v-if="index<5">
 					<a href="/frontend/news.html" style="display: flex;align-items: center;padding: 8px">
 						<i class="iconfont icon-playlistplay" style="font-size:30px;color:#999999"></i>
-						<span v-html="item.content" style="color:#505050;overflow: hidden"></span>
+						<span v-html="item.content"
+									style="color:#505050;width: 600px;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;">
+						</span>
 					</a>
 				</div>
 			</div>
 		</div>
 	</div>
+
 	<!--	就业速递-->
 	<div style="width: 100%;background-color:rgba(177, 86, 86, 0.14);display: flex;flex-direction: row">
 		<div style="flex:2;font-size: 2rem;writing-mode: tb-rl
@@ -101,30 +132,23 @@
 			<span style="margin-top:20px;font-size:40px;color:#505050;letter-spacing:30px">就业速递</span>
 		</div>
 		<div style="width: 1px;border-right: 1px solid #000;margin: 1rem 0"></div>
+
+
 		<div style="flex:15;display: flex;padding: 10px;margin-top: 10px;">
-			<div class="employment-item" style="" v-for="(item,index) in page.employment" v-if="index<2">
+			<div class="employment-item" style="width: 100%" v-for="(item,index) in page.employment" v-if="index<2">
 				<img v-if="item.files.length" :src="item.files[0].virtualPath" alt="" style="width: 80%;height: 50%">
 				<img v-else :src="image.schoolName" alt="" style="width: 80%;height: 50%">
-				<div
-						style="width: 200px;height: 50%;font-size: 30px;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;"
-						v-html="item.content"></div>
-			</div>
-			<div style="flex: 5;display: flex;flex-direction: column;align-items: center;justify-content: center">
-				<img :src="image.schoolName" alt="" style="width: 80%;height: 50%">
-				<div style="width: 200px;height: 50%;font-size: 30px;overflow: hidden;
-               text-overflow:ellipsis;display: -webkit-box;
-                     -webkit-box-orient: vertical;-webkit-line-clamp: 3;overflow: hidden;">
-					此处为用户管理员发布的就业相关信息，上部分图片简介，下部分可为详细简介
-				</div>
+					<div class="job" v-html="item.content"></div>
 			</div>
 		</div>
-		<div style="flex:8;display: flex;padding: 10px;margin-top: 10px;flex-direction: column">
-			<div class="employment-simple-item" style="" v-for="(item,index) in page.employment" v-if="index<3">
-				<span v-html="item.content"></span>
+
+		<div style="flex:8;display: flex;padding: 10px;margin-top: 10px;flex-direction: column;width: 20px">
+			<div class="employment-simple-item" style="width: 100%" v-for="(item,index) in page.employment" v-if="index<3">
+				<span v-html="item.content" style="overflow: hidden" class="jobs-more"></span>
 				<br>
 			</div>
 			<div style="flex: 1;border: 1px solid #adacac;border-left: none;
-			border-right: none;font-size: 21px;line-height: 21px;display: flex;justify-content: center;align-items: center">
+		border-right: none;font-size: 21px;line-height: 21px;display: flex;justify-content: center;align-items: center">
 				<a href="/frontend/employment.html" style="color:#505050">
 					<span>查看更多</span>
 					<a-icon type="right"></a-icon>

@@ -168,7 +168,14 @@
                         },
                         name: '校园资讯',
                         root: true,
-                        children: [],
+                        children: [
+                            {name: '校园咨询'},
+                            {name: '校园要闻'},
+                            {name: '校园快讯'},
+                            {name: '学术动态'},
+                            {name: '校园宣传'},
+                            {name: '通知公告'},
+												],
                     },
                     {
                         key: 'trading', show: () => {
@@ -184,7 +191,13 @@
                             return this.isAdmin
                         },
                         name: '就业速递',
-                        children: [],
+                        children: [
+                            {name: '物联网学院'},
+                            {name: '计算机学院'},
+                            {name: '人文政法学院'},
+                            {name: '轨道交通学院'},
+                            {name: '通知公告'},
+												],
                         root: true,
                     },
                     {
