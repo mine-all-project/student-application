@@ -61,6 +61,32 @@
       .comment-item p{
           display: flex !important;
       }
+
+      .detail {
+          padding: 5px 50px 5px 0;
+          font-size: 14px;
+      }
+
+      .default {
+          padding: 5px 50px 5px 0;
+          font-size: 14px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          position: relative;
+      }
+
+
+      .content-text {
+          font-size: 24px;
+          width: 100%;
+      }
+      .content-text >p{
+          word-break: break-all;
+          overflow: hidden;
+          width: 100%;
+          text-overflow: ellipsis;
+      }
 	</style>
 </head>
 <body>
@@ -94,7 +120,10 @@
 					<div v-for="(file,index) in item.files1" style="width:300px">
 						<a :href="file.virtualPath" alt="" style="width: 100%;" download="download">{{file.oldName}}</a>
 					</div>
-					<p style="font-size: 24px;word-break: break-all" v-html="item.content"></p>
+					<div :class="isOpen[index] ? 'detail' : 'default'" style="width: 80vw;">
+						<p class="content-text" style="" v-html="item.content"></p>
+					</div>
+					<a-button type="text" class="popper-btn" @click="isOpen[index]=!isOpen[index]">展开/收起</a-button>
 					<p style="text-align: right">
 						<a-divider type="vertical"></a-divider>
 						<a-icon type="message" @click="showComment(index)"></a-icon>
@@ -136,6 +165,7 @@
         components: {},
         data() {
             return {
+                isOpen: [],
                 image: {
                     schoolLogo: '/images/xiaohui.png',
                     schoolName: '/images/blackimg.png',
@@ -251,8 +281,10 @@
                 });
             },
             filterDataList(source) {
+                let isOpen = []
                 let editor = []
                 let data = source.map(e => {
+                    isOpen.push(false)
                     editor.push({
                         instance: null,
                         create: true,
@@ -290,6 +322,7 @@
                     }
                 });
                 this.editor = editor
+                this.isOpen = isOpen
                 return data
             },
 
