@@ -177,8 +177,8 @@
 
 <div th:fragment="title" style="background-color:rgb(43,88,155);height: 10vh">
     <a-col :span="2" :offset="6"
-           :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`"></a-col>
-    <a-col :span="10" class="school-name">
+           :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`" v-if="false"></a-col>
+    <a-col :span="12" :offset="6" class="school-name">
         <p style="font-size: 30px;color: rgb(249 183 0);">{{page.schoolName}}</p>
         <p style="font-size: 16px;color: rgb(249 183 0);">{{page.schoolNameEn}}</p>
     </a-col>
