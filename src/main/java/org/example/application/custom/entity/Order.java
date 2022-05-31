@@ -37,7 +37,7 @@ public class Order extends BaseEntity {
     @ManyToOne
     @CreatedBy
     private SysUser createBy;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<OrderItem> childrenOrder;
 
     @Override
