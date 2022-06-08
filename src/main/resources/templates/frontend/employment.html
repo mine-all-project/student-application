@@ -126,7 +126,7 @@
 					<div v-for="(file,index) in item.files1" style="width:300px">
 						<a :href="file.virtualPath" alt="" style="width: 100%;" download="download">{{file.oldName}}</a>
 					</div>
-					<div :class="isOpen[index] ? 'detail' : 'default'" style="width: 80vw;">
+					<div :class="isOpen[index] ? 'detail' : 'default'" style="width: 40vw;">
 						<p class="content-text" style="" v-html="item.content"></p>
 					</div>
 					<a-button type="text" class="popper-btn" @click="isOpen[index]=!isOpen[index]">展开/收起</a-button>
@@ -334,7 +334,6 @@
             },
 
             toModulePage(e) {
-                this.$message.info(e)
                 window.location.href = e
             },
             changeSecondType(e) {

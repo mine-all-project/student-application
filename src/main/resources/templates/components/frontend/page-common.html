@@ -163,7 +163,7 @@
     }
 
     #app {
-        width: 100%;
+        width: 69%;
         margin: 0 auto;
         /*min-width: 1400px;*/
         overflow-y: scroll;
@@ -171,14 +171,15 @@
         background-color: #fff;
     }
     body{
-        background-image: url("/images/bgi.png") !important;
+        background-image: url("/images/background-image.gif") !important;
+        background-size:100% 100% !important;
     }
 </style>
 
 <div th:fragment="title" style="background-color:rgb(43,88,155);height: 10vh">
     <a-col :span="2" :offset="6"
-           :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`" v-if="false"></a-col>
-    <a-col :span="12" :offset="6" class="school-name">
+           :style="`height: 10vh;background-image:url(${image.schoolLogo});margin-right: 10px`" v-if="true"></a-col>
+    <a-col :span="10"  class="school-name">
         <p style="font-size: 30px;color: rgb(249 183 0);">{{page.schoolName}}</p>
         <p style="font-size: 16px;color: rgb(249 183 0);">{{page.schoolNameEn}}</p>
     </a-col>
